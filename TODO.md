@@ -74,6 +74,7 @@
 ## iconの設定
 
 - [IconKitchen](https://icon.kitchen/)で、dev/stag/prodのアイコンを作成
+- pngの512x512px
 - _assets/icons配下に配置
 - _scripts/setup_icons.shを実行
 
