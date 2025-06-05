@@ -98,7 +98,7 @@ Future<void> startup(Ref ref) async {
     ref.watch(authSignOutWhenFirstRunProvider.future),
   ]);
 
-  final [uid] = await Future.wait([
+  final [uid, ..._] = await Future.wait([
     // authStoreが初期化できたら、起動時の認証チェック完了とする
     ref.read(authStoreProvider.future),
 
