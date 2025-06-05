@@ -4,6 +4,9 @@
 - appName: Yatta Day
 - flavor: dev/stag/prod
 - account: <team.yatta.day@gmail.com>
+- firebase project
+  - prod: yattaday-prod
+  - stag: yattaday-stag
 
 ## ルーティング
 

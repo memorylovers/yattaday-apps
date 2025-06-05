@@ -3,7 +3,9 @@
     "allow": [
       "Bash(flutter:*)",
       "Bash(melos:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(firebase --version)",
+      "Bash(firebase projects:list:*)"
     ],
     "deny": []
   }

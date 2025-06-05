@@ -1,13 +1,13 @@
 #!/bin/bash
 
 set -e
-ACCOUNT="<YOUR-EMAIL-ADDRESS>"
+ACCOUNT="team.yatta.day@gmail.com"
 
-ANDROID_PKG_NAME="com.memorylovers.myapp"
-IOS_BUNDLE_ID="com.memorylovers.myapp"
+ANDROID_PKG_NAME="com.memorylovers.yattaday"
+IOS_BUNDLE_ID="com.memorylovers.yattaday"
 
-PROJECT_ID_PROD="memorylovers-myapp-prod"
-PROJECT_ID_DEV="memorylovers-myapp-stag"
+PROJECT_ID_PROD="yattaday-prod"
+PROJECT_ID_DEV="yattaday-stag"
 
 PLATFORMS="android,ios,web"
 
