@@ -26,8 +26,8 @@
 - [x] applicationIdの設定
 - [x] Firebaseプロジェクトの設定
 - [ ] 認証
-  - [ ] 匿名認証
-  - [ ] Google認証
+  - [x] 匿名認証
+  - [x] Google認証
   - [ ] Apple認証
 - リリース用証明書:
   - Android
