@@ -1,4 +1,4 @@
-# Memory Lovers Templates
+# YattaDay
 
 - applicationId: com.memorylovers.yattaday
 - appName: Yatta Day
