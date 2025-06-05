@@ -1,11 +1,5 @@
 # TODO
 
-## サンプルアプリ
-
-- applicationId: com.memorylovers.yattaday
-- appName: Yatta Day
-- flavor: dev/stag/prod
-
 ## Summary
 
 - [x] アプリ名の設定

@@ -1,30 +1,11 @@
 # Memory Lovers Templates
 
-Repository template by Memory Lovers, LLC.
-
-## Base
-
-- .github
-- .vscode
-- .scripts
-
-## variation
-
-- flutter
-- nuxt(web)
-- nuxt(server)
-- ts package
-- dart package
-
----
-
-## サンプル
-
-- applicationId: com.memorylovers.myapp
-- appName: My App / マイアプリ
+- applicationId: com.memorylovers.yattaday
+- appName: Yatta Day
 - flavor: dev/stag/prod
+- account: <team.yatta.day@gmail.com>
 
-### ルーティング
+## ルーティング
 
 - `/` ... ログイン画面
 - `/home` ... ホーム画面(BottomNav)
