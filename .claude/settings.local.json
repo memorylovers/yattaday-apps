@@ -5,7 +5,8 @@
       "Bash(melos:*)",
       "Bash(git add:*)",
       "Bash(firebase --version)",
-      "Bash(firebase projects:list:*)"
+      "Bash(firebase projects:list:*)",
+      "WebFetch(domain:api.flutter.dev)"
     ],
     "deny": []
   }
