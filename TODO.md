@@ -39,7 +39,7 @@
 - [ ] RevenueCat
 - [ ] AdMob
 - [ ] GoogleAnalytics
-- [ ] iconの設定
+- [x] iconの設定
 
 ### 未対応
 
@@ -77,6 +77,11 @@
 - pngの512x512px
 - _assets/icons配下に配置
 - _scripts/setup_icons.shを実行
+
+アイコン自体の作成は
+
+- ChatGPT/Geminiで素案作成
+- 素材探して、Canvaで生成(png/512x512px)
 
 ## Firebaseプロジェクトの作成
 
