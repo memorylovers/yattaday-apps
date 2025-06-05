@@ -36,26 +36,26 @@ android {
     productFlavors {
         create("dev") {
             dimension = "flavor"
-            applicationId = "com.memorylovers.myapp.dev"
+            applicationId = "com.memorylovers.yattaday.dev"
             versionNameSuffix = "-dev"
             resValue("string", "admob_app_id", "ca-app-pub-3940256099942544~3347511713")
         }
         create("stag") {
             dimension = "flavor"
-            applicationId = "com.memorylovers.myapp.stag"
+            applicationId = "com.memorylovers.yattaday.stag"
             versionNameSuffix = "-stag"
             resValue("string", "admob_app_id", "ca-app-pub-3940256099942544~3347511713")
         }
         create("prod") {
             dimension = "flavor"
-            applicationId = "com.memorylovers.myapp"
+            applicationId = "com.memorylovers.yattaday"
             versionNameSuffix = ""
             // TODO: set your admob_app_id
             resValue("string", "admob_app_id", "")
         }
     }
     
-    namespace = "com.memorylovers.myapp"
+    namespace = "com.memorylovers.yattaday"
     compileSdk = flutter.compileSdkVersion
     // Using flutter.ndkVersion will display a warning during the build process.
     ndkVersion = "27.0.12077973"
