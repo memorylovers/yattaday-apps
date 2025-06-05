@@ -4,27 +4,27 @@
 
 以下を決定し、READMEを更新する
 
-- [ ] アプリ名
-- [ ] applicationId
-- [ ] Gmailアドレス
-- [ ] FirebaseプロジェクトID
+- [x] アプリ名
+- [x] applicationId
+- [x] Gmailアドレス
+- [x] FirebaseプロジェクトID
 
 ## 手動で行うこと
 
-- [ ] Googleアカウントの作成
+- [x] Googleアカウントの作成
   - メールアドレスの転送設定
-- [ ] Firebaseプロジェクトの作成(stag/prod)
+- [x] Firebaseプロジェクトの作成(stag/prod)
   - オーナーアカウントの追加
   - Auth(匿名認証/Google/Apple)
   - Firestore
   - Hosting
-- [ ] Firebase CLIで認証
+- [x] Firebase CLIで認証
 
 ## やること
 
 - [x] アプリ名の設定
 - [x] applicationIdの設定
-- [ ] Firebaseプロジェクトの設定
+- [x] Firebaseプロジェクトの設定
 - [ ] 認証
   - [ ] 匿名認証
   - [ ] Google認証
@@ -82,6 +82,13 @@
 - その際、プロジェクトの公開名やサポートメールを設定
 - 合わせて、オーナーメンバを追加
 - 細かい設定は、後々していく
+
+Google認証の場合
+
+- ios/Flutter/{dev,stag,prod}.xcconfigの修正
+  - GOOGLE_OAUTH_REVERSED_CLIENT_IDの値を  
+  - ios/Runnser/{dev,stag,prod}/GoogleService-Info.plistにある
+  - REVERSED_CLIENT_IDの値に変える
 
 ## Apple Developerの設定
 
