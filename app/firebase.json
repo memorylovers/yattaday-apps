@@ -4,18 +4,18 @@
       "android": {
         "buildConfigurations": {
           "android/app/src/dev": {
-            "projectId": "memorylovers-myapp-stag",
-            "appId": "1:272104754808:android:6795356ba7d0508bcc278d",
+            "projectId": "yattaday-stag",
+            "appId": "1:764704445887:android:98ead9aad69d5fff827d0a",
             "fileOutput": "android/app/src/dev/google-services.json"
           },
           "android/app/src/stag": {
-            "projectId": "memorylovers-myapp-stag",
-            "appId": "1:272104754808:android:3792b779cd15cd4ecc278d",
+            "projectId": "yattaday-stag",
+            "appId": "1:764704445887:android:9aa3870da493c796827d0a",
             "fileOutput": "android/app/src/stag/google-services.json"
           },
           "android/app/src/prod": {
-            "projectId": "memorylovers-myapp-prod",
-            "appId": "1:249468482016:android:105cafee1bf1c91fe3fb85",
+            "projectId": "yattaday-prod",
+            "appId": "1:965620404751:android:eae3aec51d5f919443097a",
             "fileOutput": "android/app/src/prod/google-services.json"
           }
         },
@@ -34,56 +34,56 @@
         },
         "buildConfigurations": {
           "Debug-dev": {
-            "projectId": "memorylovers-myapp-stag",
-            "appId": "1:272104754808:ios:3f891a356a871a93cc278d",
+            "projectId": "yattaday-stag",
+            "appId": "1:764704445887:ios:5faf8a539641224e827d0a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/dev/GoogleService-Info.plist"
           },
           "Release-dev": {
-            "projectId": "memorylovers-myapp-stag",
-            "appId": "1:272104754808:ios:3f891a356a871a93cc278d",
+            "projectId": "yattaday-stag",
+            "appId": "1:764704445887:ios:5faf8a539641224e827d0a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/dev/GoogleService-Info.plist"
           },
           "Profile-dev": {
-            "projectId": "memorylovers-myapp-stag",
-            "appId": "1:272104754808:ios:3f891a356a871a93cc278d",
+            "projectId": "yattaday-stag",
+            "appId": "1:764704445887:ios:5faf8a539641224e827d0a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/dev/GoogleService-Info.plist"
           },
           "Debug-stag": {
-            "projectId": "memorylovers-myapp-stag",
-            "appId": "1:272104754808:ios:013e16c3bbfc917acc278d",
+            "projectId": "yattaday-stag",
+            "appId": "1:764704445887:ios:4156f7c0271e7456827d0a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/stag/GoogleService-Info.plist"
           },
           "Release-stag": {
-            "projectId": "memorylovers-myapp-stag",
-            "appId": "1:272104754808:ios:013e16c3bbfc917acc278d",
+            "projectId": "yattaday-stag",
+            "appId": "1:764704445887:ios:4156f7c0271e7456827d0a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/stag/GoogleService-Info.plist"
           },
           "Profile-stag": {
-            "projectId": "memorylovers-myapp-stag",
-            "appId": "1:272104754808:ios:013e16c3bbfc917acc278d",
+            "projectId": "yattaday-stag",
+            "appId": "1:764704445887:ios:4156f7c0271e7456827d0a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/stag/GoogleService-Info.plist"
           },
           "Debug-prod": {
-            "projectId": "memorylovers-myapp-prod",
-            "appId": "1:249468482016:ios:72319fc0c6717212e3fb85",
+            "projectId": "yattaday-prod",
+            "appId": "1:965620404751:ios:f6e9b10dd94e2ddc43097a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/prod/GoogleService-Info.plist"
           },
           "Release-prod": {
-            "projectId": "memorylovers-myapp-prod",
-            "appId": "1:249468482016:ios:72319fc0c6717212e3fb85",
+            "projectId": "yattaday-prod",
+            "appId": "1:965620404751:ios:f6e9b10dd94e2ddc43097a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/prod/GoogleService-Info.plist"
           },
           "Profile-prod": {
-            "projectId": "memorylovers-myapp-prod",
-            "appId": "1:249468482016:ios:72319fc0c6717212e3fb85",
+            "projectId": "yattaday-prod",
+            "appId": "1:965620404751:ios:f6e9b10dd94e2ddc43097a",
             "uploadDebugSymbols": true,
             "fileOutput": "ios/Runner/prod/GoogleService-Info.plist"
           }
@@ -112,6 +112,24 @@
             "android": "1:249468482016:android:d8e388151596533be3fb85",
             "ios": "1:249468482016:ios:72319fc0c6717212e3fb85",
             "web": "1:249468482016:web:ad1420b260d6e491e3fb85"
+          }
+        },
+        "lib/_gen/firebase/firebase_options_dev.dart": {
+          "projectId": "yattaday-stag",
+          "configurations": {
+            "ios": "1:764704445887:ios:5faf8a539641224e827d0a"
+          }
+        },
+        "lib/_gen/firebase/firebase_options_stag.dart": {
+          "projectId": "yattaday-stag",
+          "configurations": {
+            "ios": "1:764704445887:ios:4156f7c0271e7456827d0a"
+          }
+        },
+        "lib/_gen/firebase/firebase_options_prod.dart": {
+          "projectId": "yattaday-prod",
+          "configurations": {
+            "ios": "1:965620404751:ios:f6e9b10dd94e2ddc43097a"
           }
         }
       }

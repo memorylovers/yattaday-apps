@@ -38,7 +38,7 @@ for f in $FLAVORS; do
     --out="${OUTDIR_FLUTTER}/firebase_options_${f}.dart" \
     --android-package-name="${ANDROID_PKG_NAME}${SUFFIX}" \
     --android-out="${OUTDIR_ANDROID}/${f}/google-services.json" \
-    --platforms="${PLATFORMS}" 
+    --platforms="android,web" 
 
   # for ios
   for buildConfig in Debug Release Profile; do
@@ -49,6 +49,6 @@ for f in $FLAVORS; do
       --ios-bundle-id="${IOS_BUNDLE_ID}${SUFFIX}" \
       --ios-build-config="${buildConfig}-${f}" \
       --ios-out="${OUTDIR_IOS}/${f}/GoogleService-Info.plist" \
-      --platforms="${PLATFORMS}" 
+      --platforms="ios" 
   done
 done

@@ -1,11 +1,29 @@
 # TODO
 
-## Summary
+## 事前に決めること
+
+以下を決定し、READMEを更新する
+
+- [ ] アプリ名
+- [ ] applicationId
+- [ ] Gmailアドレス
+- [ ] FirebaseプロジェクトID
+
+## 手動で行うこと
+
+- [ ] Googleアカウントの作成
+  - メールアドレスの転送設定
+- [ ] Firebaseプロジェクトの作成(stag/prod)
+  - オーナーアカウントの追加
+  - Auth(匿名認証/Google/Apple)
+  - Firestore
+  - Hosting
+- [ ] Firebase CLIで認証
+
+## やること
 
 - [x] アプリ名の設定
 - [x] applicationIdの設定
-- [ ] iconの設定
-- [ ] Firebaseプロジェクトの作成
 - [ ] Firebaseプロジェクトの設定
 - [ ] 認証
   - [ ] 匿名認証
@@ -19,6 +37,7 @@
 - [ ] RevenueCat
 - [ ] AdMob
 - [ ] GoogleAnalytics
+- [ ] iconの設定
 
 ### 未対応
 

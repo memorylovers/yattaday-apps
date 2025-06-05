@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>249468482016-u49lrnncs6krhhn2cmd97rcbus3t7fll.apps.googleusercontent.com</string>
+	<string>965620404751-pgpbouir95b0no5skvqecmibli3tuku6.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.249468482016-u49lrnncs6krhhn2cmd97rcbus3t7fll</string>
+	<string>com.googleusercontent.apps.965620404751-pgpbouir95b0no5skvqecmibli3tuku6</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD8GO-qcgUMT6tijfB345Bbli5_HDmyCpo</string>
+	<string>AIzaSyDv4amnhTdiAOk9lm6Tsvmk3iIjFVNq_5w</string>
 	<key>GCM_SENDER_ID</key>
-	<string>249468482016</string>
+	<string>965620404751</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.memorylovers.myapp</string>
+	<string>com.memorylovers.yattaday</string>
 	<key>PROJECT_ID</key>
-	<string>memorylovers-myapp-prod</string>
+	<string>yattaday-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>memorylovers-myapp-prod.firebasestorage.app</string>
+	<string>yattaday-prod.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:249468482016:ios:72319fc0c6717212e3fb85</string>
+	<string>1:965620404751:ios:f6e9b10dd94e2ddc43097a</string>
 </dict>
 </plist>

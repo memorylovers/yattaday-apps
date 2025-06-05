@@ -47,31 +47,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBGe46i_wnu1t9OfU63sA0NAN-0bF34Wc0',
-    appId: '1:272104754808:web:f096e7632915c64bcc278d',
-    messagingSenderId: '272104754808',
-    projectId: 'memorylovers-myapp-stag',
-    authDomain: 'memorylovers-myapp-stag.firebaseapp.com',
-    storageBucket: 'memorylovers-myapp-stag.firebasestorage.app',
-    measurementId: 'G-HYQ2KYXT5F',
+    apiKey: 'AIzaSyBPHI-8Swhb2GFtQuuN6E8m7MIEAZ81ZOU',
+    appId: '1:764704445887:web:1878c2b659dc39e5827d0a',
+    messagingSenderId: '764704445887',
+    projectId: 'yattaday-stag',
+    authDomain: 'yattaday-stag.firebaseapp.com',
+    storageBucket: 'yattaday-stag.firebasestorage.app',
+    measurementId: 'G-F0SX70T639',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD_7aHHiX2GBcp0D1kfZRnl1Ey8qN_onOg',
-    appId: '1:272104754808:android:6795356ba7d0508bcc278d',
-    messagingSenderId: '272104754808',
-    projectId: 'memorylovers-myapp-stag',
-    storageBucket: 'memorylovers-myapp-stag.firebasestorage.app',
+    apiKey: 'AIzaSyDBqBAbIftvbLXi09W5wNXLMXZQf8JW16g',
+    appId: '1:764704445887:android:9aa3870da493c796827d0a',
+    messagingSenderId: '764704445887',
+    projectId: 'yattaday-stag',
+    storageBucket: 'yattaday-stag.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAJfZmp77sP8ujuiOY2Iwbpn1yHHrBPAtQ',
-    appId: '1:272104754808:ios:013e16c3bbfc917acc278d',
-    messagingSenderId: '272104754808',
-    projectId: 'memorylovers-myapp-stag',
-    storageBucket: 'memorylovers-myapp-stag.firebasestorage.app',
-    iosClientId: '272104754808-87qn5it48q7hapgr0qp17icpgq2iv596.apps.googleusercontent.com',
-    iosBundleId: 'com.memorylovers.myapp.stag',
+    apiKey: 'AIzaSyADYmWaGEP-mPhO12Rn-OX2uzZ24B0tR0U',
+    appId: '1:764704445887:ios:4156f7c0271e7456827d0a',
+    messagingSenderId: '764704445887',
+    projectId: 'yattaday-stag',
+    storageBucket: 'yattaday-stag.firebasestorage.app',
+    iosClientId: '764704445887-mnpo5pat47inm0sm91g4n614f942o874.apps.googleusercontent.com',
+    iosBundleId: 'com.memorylovers.yattaday.stag',
   );
 
 }
