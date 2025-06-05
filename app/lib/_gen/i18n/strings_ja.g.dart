@@ -54,7 +54,7 @@ class _TranslationsAppJa extends TranslationsAppEn {
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	@override String get name => 'マイアプリ';
+	@override String get name => 'YattaDay';
 }
 
 // Path: common
@@ -138,7 +138,7 @@ class _TranslationsForceUpdateJa extends TranslationsForceUpdateEn {
 extension on TranslationsJa {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
-			case 'app.name': return 'マイアプリ';
+			case 'app.name': return 'YattaDay';
 			case 'common.retry': return 'Retry';
 			case 'common.ok': return 'OK';
 			case 'common.cancel': return 'Cancel';

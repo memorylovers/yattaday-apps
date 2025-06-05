@@ -70,6 +70,10 @@
   - ios/Flutter/{dev,stag,prod}.xcconfig
   - ios/{en,ja}.lproj/InfoPlist.strings
   - 言語ごとに、`CFBundleDisplayName` / `CFBundleName`を設定
+- Flutter:
+  - assets/i18n/{en,ja}.i18n.json
+  - `app.name`にアプリ名を設定
+  - .i18n.json変更後は、build_runnerでの再ビルドが必要
 
 ## iconの設定
 

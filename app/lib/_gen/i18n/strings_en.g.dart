@@ -55,7 +55,7 @@ class TranslationsAppEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get name => 'MyApp';
+	String get name => 'YattaDay';
 }
 
 // Path: common
@@ -139,7 +139,7 @@ class TranslationsForceUpdateEn {
 extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
-			case 'app.name': return 'MyApp';
+			case 'app.name': return 'YattaDay';
 			case 'common.retry': return 'Retry';
 			case 'common.ok': return 'OK';
 			case 'common.cancel': return 'Cancel';
