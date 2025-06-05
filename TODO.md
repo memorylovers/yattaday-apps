@@ -8,8 +8,8 @@
 
 ## Summary
 
-- [ ] アプリ名の設定
-- [ ] applicationIdの設定
+- [x] アプリ名の設定
+- [x] applicationIdの設定
 - [ ] iconの設定
 - [ ] Firebaseプロジェクトの作成
 - [ ] Firebaseプロジェクトの設定
