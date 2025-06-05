@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../_gen/assets/assets.gen.dart';
 import '../../../_gen/i18n/strings.g.dart';
-import '../../../common/theme/app_colors.dart';
 import '../../../common/types/types.dart';
 import '../../../common/utils/snack_bar_handler.dart';
 import '../../../components/buttons/buttons.dart';
@@ -51,7 +50,8 @@ class LoginPage extends HookConsumerWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      // backgroundColor: lightColorScheme.primary,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -62,9 +62,7 @@ class LoginPage extends HookConsumerWidget {
               Assets.icons.iconCircle512.image(width: 160, height: 160),
               Text(
                 i18n.app.name,
-                style: Theme.of(
-                  context,
-                ).textTheme.headlineSmall?.copyWith(color: Colors.white),
+                style: Theme.of(context).textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),
               const Gap(48),

@@ -13,6 +13,12 @@ class AppColors {
 
 final colorSchemeLight = ColorScheme.fromSeed(seedColor: AppColors.primary);
 
+final gradientColor = LinearGradient(
+  colors: [Color(0xFF30C2D8), Color(0xFFF8DC5B)],
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+);
+
 const ColorScheme lightColorScheme = ColorScheme(
   brightness: Brightness.light,
   primary: Color(0xFF30C2D8), // シアン（主色）

@@ -20,7 +20,7 @@ samePageTransitions(PageTransitionsBuilder builder) {
 /// アプリのテーマデータ
 final appTheme = ThemeData(
   useMaterial3: true,
-  colorScheme: colorSchemeLight,
+  colorScheme: lightColorScheme,
   scaffoldBackgroundColor: Colors.white,
 
   // フォント
