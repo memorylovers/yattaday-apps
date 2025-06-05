@@ -29,6 +29,8 @@
   - [x] 匿名認証
   - [x] Google認証
   - [ ] Apple認証
+  - [ ]`kKeychainGroup`の設定
+- [ ] 強制アップデート
 - リリース用証明書:
   - Android
   - iOS
@@ -41,7 +43,6 @@
 
 ### 未対応
 
-- [ ] 強制アップデート
 - [ ] ローカルプッシュ通知
 - [ ] FCM
 - [ ] 課金
@@ -52,8 +53,14 @@
 
 - Android: android/app/build.gradle.kts
   - flavorごとに`applicationId`を設定
+- Android: MainActivity.ktの移動
+  - android/app/src/main/kotlin/com/memorylovers/myapp/MainActivity.kt
+  - applicationIdに合わせてファイルを移動する
 - iOS: ios/Flutter/{dev,stag,prod}.xcconfig
   - flavorごとに`BUNDLE_IDENTIFIER`
+- Flutter: lib/constants.dart
+  - `kKeychainGroup`を設定する
+  - `com.memorylovers.myapp`を変更する
 
 ## アプリ名の設定
 

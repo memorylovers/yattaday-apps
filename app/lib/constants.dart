@@ -8,12 +8,11 @@ const kFirebaseConfigForceUpdateVersionKey = "force_update_version";
 const kReCaptchaV3SiteKey = "";
 
 /// Firebase Auth
-// TODO: setup kKeychainGroup
 String kKeychainGroup = switch (kFlavor) {
   // <TEAM_ID>.<BUNDLE_ID>.<GROUP_NAME>
-  AppEnv.dev => "95RXYMCL35.com.memorylovers.myapp.dev.keychain-group",
-  AppEnv.stag => "95RXYMCL35.com.memorylovers.myapp.stag.keychain-group",
-  AppEnv.prod => "95RXYMCL35.com.memorylovers.myapp.keychain-group",
+  AppEnv.dev => "95RXYMCL35.com.memorylovers.yattaday.dev.keychain-group",
+  AppEnv.stag => "95RXYMCL35.com.memorylovers.yattaday.stag.keychain-group",
+  AppEnv.prod => "95RXYMCL35.com.memorylovers.yattaday.keychain-group",
 };
 
 /// RevenuCatのOffering ID
