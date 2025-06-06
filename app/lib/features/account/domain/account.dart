@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../common/json_converter/datetime_converter.dart';
-import '../../../common/json_converter/firestore_timestamp_converter.dart';
 
 part 'account.freezed.dart';
 part 'account.g.dart';
@@ -16,7 +15,8 @@ class Account with _$Account {
     @DateTimeConverter() required DateTime updatedAt,
   }) = _Account;
 
-  factory Account.fromJson(Json json) => _$AccountFromJson(json);
+  factory Account.fromJson(Map<String, dynamic> json) =>
+      _$AccountFromJson(json);
 
   /// firestoreのcollection path
   static String get collectionPath => "accounts";

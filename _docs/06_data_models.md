@@ -44,8 +44,6 @@ class RecordItem {
   String title;           // 名前
   String? description;    // 説明
   String? unit;           // 単位（例：回、分、ページなど）
-  IconData icon;          // アイコン
-  String color;           // カラーコード（#RRGGBB形式）
   int sortOrder;          // 表示順序
   DateTime createdAt;     // 作成日時
   DateTime updatedAt;     // 最終更新日時

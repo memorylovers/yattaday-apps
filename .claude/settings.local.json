@@ -7,7 +7,10 @@
       "Bash(rg:*)",
       "Edit(./:*)",
       "Bash(mkdir:*)",
-      "Bash(gh:*)"
+      "Bash(gh:*)",
+      "Bash(melos run gen:*)",
+      "Bash(dart run:*)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": []
   }
