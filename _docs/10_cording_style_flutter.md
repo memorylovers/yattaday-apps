@@ -236,7 +236,7 @@ class FirebaseExampleRepository implements IExampleRepository {
 
 3. **CRUD操作**
    - 作成: `SetOptions(merge: false)`
-   - 更新: `SetOptions(merge: true)` 
+   - 更新: `SetOptions(merge: true)`
    - 削除: `docRef.delete()`
    - 取得: `docSnapshot.data()`で直接モデル取得
 
@@ -344,3 +344,33 @@ class ExamplePage extends HookConsumerWidget {
 ## 強制アップデート
 
 - TDB
+
+## コードフォーマット
+
+生成するコードは必ずフォーマットを実行する：
+
+```bash
+# 推奨: 生成ファイルを除外してフォーマット
+make format
+
+# 手動でフォーマットする場合
+cd app && dart format .
+cd widgetbook && dart format .
+```
+
+### 重要な点
+
+1. **自動フォーマット**
+   - コード生成後は必ず `dart format` を実行
+   - build_runnerによる生成ファイルは対象外
+   - 一貫したコードスタイルを維持
+
+2. **フォーマット対象**
+   - 全ての`.dart`ファイル
+   - 生成ファイル（`*.g.dart`, `*.freezed.dart`）は含まない
+   - Widgetbookファイルも対象
+
+3. **タイミング**
+   - ファイル作成・編集後
+   - コード生成（build_runner）実行後
+   - コミット前
