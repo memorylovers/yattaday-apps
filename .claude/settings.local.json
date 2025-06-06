@@ -5,7 +5,9 @@
       "Bash(npx:*)",
       "Bash(find:*)",
       "Bash(rg:*)",
-      "Edit(./:*)"
+      "Edit(./:*)",
+      "Bash(mkdir:*)",
+      "Bash(gh:*)"
     ],
     "deny": []
   }
