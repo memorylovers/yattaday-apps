@@ -93,8 +93,10 @@ app/
 │       ├── _authentication/       # 認証（匿名・Google・Apple）
 │       │   ├── data/              # データレイヤ(Repository/DTO/DataSource)
 │       │   ├── domain/            # ドメインレイヤ(Model)
-│       │   ├── application/       # アプリケーションレイヤ(UseCase)
-│       │   └── presentation/      # プレゼンテーションレイヤ(View/State/Controller)
+│       │   ├── application/       # アプリケーションレイヤ(Riverpodプロバイダー)
+│       │   └── presentation/      # プレゼンテーションレイヤ(View/ViewModel)
+│       │       ├── view_model/    # ViewModel(Riverpodプロバイダー)
+│       │       └── pages/         # View(Widget/Page)
 │       ├── _advertisement/        # 広告機能: Admob/ATTなど
 │       ├── _force_update/         # 強制アップデート機能
 │       ├── _payment/              # 決済機能: プレミアム課金・購入・復元
@@ -155,6 +157,181 @@ app/
 - Talkerを使用したロギング
 - Crashlyticsへのログ送信
 - デバッグモードでのログ表示
+
+## Firestoreリポジトリ実装
+
+### 基本パターン
+
+Firestoreリポジトリでは、型安全性と保守性を高めるため以下のパターンを使用する：
+
+```dart
+class FirebaseExampleRepository implements IExampleRepository {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // コレクション参照ヘルパーメソッド（コンバーター付き）
+  CollectionReference<ExampleModel> _col(String userId) => _firestore
+      .collection(ExampleModel.collectionPath(userId))
+      .withConverter(
+        fromFirestore: ExampleModel.fromFirestore,
+        toFirestore: ExampleModel.toFirestore,
+      );
+
+  @override
+  Future<void> create(ExampleModel model) async {
+    try {
+      final docRef = _col(model.userId).doc(model.id);
+      await docRef.set(model, SetOptions(merge: false));
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  @override
+  Future<void> update(ExampleModel model) async {
+    try {
+      final docRef = _col(model.userId).doc(model.id);
+      await docRef.set(model, SetOptions(merge: true));
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  @override
+  Future<ExampleModel?> getById(String userId, String id) async {
+    try {
+      final docSnapshot = await _col(userId).doc(id).get();
+      if (!docSnapshot.exists) return null;
+      return docSnapshot.data();
+    } catch (error) {
+      handleError(error);
+      return null;
+    }
+  }
+
+  @override
+  Stream<List<ExampleModel>> watchByUserId(String userId) {
+    try {
+      return _col(userId)
+          .orderBy('createdAt')
+          .snapshots()
+          .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+    } catch (error) {
+      handleError(error);
+      return Stream.value([]);
+    }
+  }
+}
+```
+
+### 重要なポイント
+
+1. **withConverterの使用**
+   - `fromFirestore` / `toFirestore`メソッドを活用
+   - 型安全なコレクション参照を実現
+   - 手動JSON変換を排除
+
+2. **ヘルパーメソッド**
+   - `_col(userId)`でコレクション参照の重複を排除
+   - 一貫したコンバーター適用
+
+3. **CRUD操作**
+   - 作成: `SetOptions(merge: false)`
+   - 更新: `SetOptions(merge: true)` 
+   - 削除: `docRef.delete()`
+   - 取得: `docSnapshot.data()`で直接モデル取得
+
+4. **エラーハンドリング**
+   - すべての操作で`handleError()`を使用
+   - 適切なデフォルト値を返却
+
+## Presentation層の構成
+
+### ディレクトリ構造
+
+```
+features/feature_name/presentation/
+├── view_model/             # ViewModel層
+│   └── feature_providers.dart  # Riverpodプロバイダー
+└── pages/                  # View層
+    ├── feature_page.dart   # メインページ
+    └── widgets/            # 専用ウィジェット
+        └── feature_widget.dart
+```
+
+### ViewModel層の実装
+
+ViewModelはRiverpodプロバイダーとして実装し、以下のパターンを使用する：
+
+```dart
+// repositories
+final IExampleRepository exampleRepository = FirebaseExampleRepository();
+
+/// 一覧取得プロバイダー
+@riverpod
+Stream<List<ExampleModel>> exampleList(Ref ref) async* {
+  final uid = await ref.watch(authUidProvider.future);
+  if (uid == null) {
+    yield [];
+    return;
+  }
+  yield* exampleRepository.watchByUserId(uid);
+}
+
+/// 作成プロバイダー
+@riverpod
+class ExampleCreator extends _$ExampleCreator {
+  @override
+  FutureOr<void> build() {}
+
+  Future<void> create({required String title}) async {
+    final uid = await ref.read(authUidProvider.future);
+    if (uid == null) throw Exception('ユーザーが認証されていません');
+
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      await exampleRepository.create(/* ... */);
+    });
+  }
+}
+```
+
+### View層の実装
+
+ViewはHookConsumerWidgetとして実装し、ViewModelとの結合を最小限にする：
+
+```dart
+class ExamplePage extends HookConsumerWidget {
+  const ExamplePage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final exampleListAsync = ref.watch(exampleListProvider);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('Example')),
+      body: exampleListAsync.when(
+        data: (examples) => _buildExampleList(context, ref, examples),
+        loading: () => const Center(child: LoadingWidget()),
+        error: (error, stackTrace) => _buildError(context, ref, error),
+      ),
+    );
+  }
+}
+```
+
+### 重要な原則
+
+1. **責務の分離**
+   - ViewModel: 状態管理・ビジネスロジック
+   - View: UI表示・ユーザー入力
+
+2. **依存関係の方向**
+   - View → ViewModel（一方向）
+   - ViewModelはViewを知らない
+
+3. **状態管理**
+   - AsyncValueを活用したエラーハンドリング
+   - riverpod_generatorによるコード生成
 
 ## 広告
 
