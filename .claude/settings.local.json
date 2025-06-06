@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:codewithandrea.com)",
-      "Bash(npx:*)"
+      "Bash(npx:*)",
+      "Bash(find:*)",
+      "Bash(rg:*)"
     ],
     "deny": []
   }
