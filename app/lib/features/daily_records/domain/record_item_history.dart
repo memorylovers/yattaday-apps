@@ -12,16 +12,22 @@ class RecordItemHistory with _$RecordItemHistory {
   const factory RecordItemHistory({
     /// 日次記録ID（uuid v7）
     required String id,
+
     /// ユーザーID
     required String userId,
+
     /// 記録日（yyyy-MM-dd形式）
     required String date,
+
     /// 記録項目ID
     required String recordItemId,
+
     /// メモ（将来拡張用）
     String? note,
+
     /// 作成日時
     @DateTimeConverter() required DateTime createdAt,
+
     /// 最終更新日時
     @DateTimeConverter() required DateTime updatedAt,
   }) = _RecordItemHistory;

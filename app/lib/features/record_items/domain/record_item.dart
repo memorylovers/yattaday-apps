@@ -12,23 +12,31 @@ class RecordItem with _$RecordItem {
   const factory RecordItem({
     /// 記録項目ID（uuid v7）
     required String id,
+
     /// 所有者のユーザーID
     required String userId,
+
     /// 記録項目の名前
     required String title,
+
     /// 記録項目の説明（オプション）
     String? description,
+
     /// 単位（例：回、分、ページなど）
     String? unit,
+
     /// 表示順序
     required int sortOrder,
+
     /// 作成日時
     @DateTimeConverter() required DateTime createdAt,
+
     /// 最終更新日時
     @DateTimeConverter() required DateTime updatedAt,
   }) = _RecordItem;
 
-  factory RecordItem.fromJson(Map<String, dynamic> json) => _$RecordItemFromJson(json);
+  factory RecordItem.fromJson(Map<String, dynamic> json) =>
+      _$RecordItemFromJson(json);
 
   /// firestoreのcollection path
   static String collectionPath(String userId) => "users/$userId/recordItems";
@@ -38,4 +46,3 @@ class RecordItem with _$RecordItem {
 
   static ToFirestore<RecordItem> get toFirestore => (data, _) => data.toJson();
 }
-
