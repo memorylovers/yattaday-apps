@@ -15,7 +15,8 @@
       "Bash(rmdir:*)",
       "Bash(flutter clean:*)",
       "Bash(flutter pub:*)",
-      "Bash(dart format:*)"
+      "Bash(dart format:*)",
+      "Bash(make format)"
     ],
     "deny": []
   }

@@ -4,8 +4,7 @@ enum BorderPos {
   t,
   b,
   l,
-  r,
-  ;
+  r;
 
   static get all => [t, b, l, r];
   static get th => [t, l, r];

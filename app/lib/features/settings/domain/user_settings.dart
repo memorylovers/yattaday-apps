@@ -13,19 +13,25 @@ class UserSettings with _$UserSettings {
   const factory UserSettings({
     /// ユーザーID
     required String userId,
+
     /// 言語設定（ja, en）
     required String locale,
+
     /// 通知有効フラグ
     required bool notificationsEnabled,
+
     /// 通知時刻（HH:mm形式）
     String? notificationTime,
+
     /// 作成日時
     @DateTimeConverter() required DateTime createdAt,
+
     /// 最終更新日時
     @DateTimeConverter() required DateTime updatedAt,
   }) = _UserSettings;
 
-  factory UserSettings.fromJson(Map<String, dynamic> json) => _$UserSettingsFromJson(json);
+  factory UserSettings.fromJson(Map<String, dynamic> json) =>
+      _$UserSettingsFromJson(json);
 
   /// firestoreのcollection path
   static String get collectionPath => "user_settings";
@@ -33,7 +39,8 @@ class UserSettings with _$UserSettings {
   static FromFirestore<UserSettings> get fromFirestore =>
       (snapshot, _) => UserSettings.fromJson(snapshot.data() ?? {});
 
-  static ToFirestore<UserSettings> get toFirestore => (data, _) => data.toJson();
+  static ToFirestore<UserSettings> get toFirestore =>
+      (data, _) => data.toJson();
 }
 
 extension UserSettingsExtension on UserSettings {

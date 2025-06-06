@@ -29,9 +29,10 @@ extension ContextEx on BuildContext {
   currentRoute() {
     final router = GoRouter.of(this);
     final RouteMatch last = router.routerDelegate.currentConfiguration.last;
-    final RouteMatchList matchList = last is ImperativeRouteMatch
-        ? last.matches
-        : router.routerDelegate.currentConfiguration;
+    final RouteMatchList matchList =
+        last is ImperativeRouteMatch
+            ? last.matches
+            : router.routerDelegate.currentConfiguration;
     final String location = matchList.uri.toString();
     return location;
   }
