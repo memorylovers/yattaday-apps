@@ -1,20 +1,9 @@
 {
-  "cleanupPeriodDays": 30,
   "permissions": {
     "allow": [
-      "Bash(flutter:*)",
-      "Bash(melos:*)",
-      "Bash(git:*)",
-      "Bash(firebase:*)",
-      "WebFetch(domain:api.flutter.dev)",
-      "Edit(./:*)"
+      "WebFetch(domain:codewithandrea.com)",
+      "Bash(npx:*)"
     ],
     "deny": []
-  },
-  "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "DISABLE_COST_WARNINGS": "0"
-  },
-  "apiKeyHelper": null,
-  "preferredNotifChannel": "terminal_bell"
+  }
 }
