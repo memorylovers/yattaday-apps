@@ -32,5 +32,8 @@
     {
       "text": "Use conventional commit message format and japanese."
     }
-  ]
+  ],
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-issue-config.json": ".github/ISSUE_TEMPLATE/config.yaml"
+  }
 }
