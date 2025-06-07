@@ -124,7 +124,7 @@ dev_dependencies:
   fake_cloud_firestore: ^3.1.0
 
   # setup: flavor
-  flutter_flavorizr:
+  flutter_flavorizr: 2.4.1
 
   # widgetbook
   widgetbook_generator:
