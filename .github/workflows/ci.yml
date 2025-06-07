@@ -48,7 +48,7 @@ jobs:
         run: melos run test --no-select
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           file: app/coverage/lcov.info
           flags: unittests
