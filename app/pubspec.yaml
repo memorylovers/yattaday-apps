@@ -41,7 +41,7 @@ dependencies:
   # logging
   talker: ^4.7.2
   talker_dio_logger:
-  talker_flutter:
+  talker_flutter: 4.8.3
   talker_riverpod_logger:
 
   # core
