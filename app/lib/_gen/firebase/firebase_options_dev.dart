@@ -70,8 +70,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '764704445887',
     projectId: 'yattaday-stag',
     storageBucket: 'yattaday-stag.firebasestorage.app',
-    iosClientId: '764704445887-u0prk3g8hl9c7hbnoddr156jl0tdhd6l.apps.googleusercontent.com',
+    iosClientId:
+        '764704445887-u0prk3g8hl9c7hbnoddr156jl0tdhd6l.apps.googleusercontent.com',
     iosBundleId: 'com.memorylovers.yattaday.dev',
   );
-
 }
