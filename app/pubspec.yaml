@@ -39,7 +39,7 @@ dependencies:
   slang_flutter:
 
   # logging
-  talker: ^4.7.2
+  talker: ^4.8.3
   talker_dio_logger:
   talker_flutter:
   talker_riverpod_logger:
