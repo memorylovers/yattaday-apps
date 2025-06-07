@@ -51,6 +51,8 @@ features/feature_name/
 └── presentation/   # UI（ページ、ウィジェット）
 ```
 
+詳細な実装例やコード規約は [コーディングスタイル](_docs/10_cording_style_flutter.md) を参照してください。
+
 ### 技術スタック
 
 - **状態管理**: Riverpod + hooks_riverpod
@@ -67,6 +69,8 @@ features/feature_name/
 1. **Red**: 失敗するテストを書く → `make test`
 2. **Green**: テストを通す最小限の実装 → `make test`  
 3. **Refactor**: コード改善 → `make format` → `make lint`
+
+具体的なテスト実装方法は [コーディングスタイル - TDD](_docs/10_cording_style_flutter.md#tddテスト駆動開発) を参照してください。
 
 ## 開発ガイドライン
 
@@ -96,6 +100,8 @@ git checkout -b hotfix/critical-bug
 - **状態管理**: Riverpodパターンに準拠
 - **ドキュメント**: 日本語で記載
 - **命名規則**: snake_case（ファイル）、PascalCase（クラス）
+
+実装例とベストプラクティスは [コーディングスタイル](_docs/10_cording_style_flutter.md) で詳しく説明しています。
 
 ### コミットメッセージ
 
