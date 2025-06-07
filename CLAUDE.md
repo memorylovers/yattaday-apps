@@ -74,25 +74,50 @@ features/feature_name/
 
 ## 開発ガイドライン
 
-### ブランチ戦略（GitHub Flow）
+### Issue駆動開発フロー
 
-- **main**: 本番環境用ブランチ（常にデプロイ可能な状態を維持）
-- **feature/〇〇**: 新機能開発・バグ修正・ドキュメント更新など
-- **hotfix/〇〇**: 緊急修正用
+**全ての作業はIssueから開始**
+
+1. **Issue作成・分析**
+   - 機能要求・バグレポート・改善提案をIssueとして作成
+   - Issueテンプレートを使用して必要な情報を記載
+   - ラベル・マイルストーン・担当者を設定
+
+2. **ブランチ作成**
+   - Issueに基づいてブランチを作成
+   - ブランチ名: `feature/#issue-number-brief-description`
 
 ```bash
-# ブランチ作成例
-git checkout -b feature/record-item-crud
-git checkout -b feature/fix-login-error
-git checkout -b hotfix/critical-bug
+# Issue #123 "ユーザー認証機能の追加" の場合
+git checkout -b feature/#123-user-authentication
+
+# Issue #456 "ログインバグ修正" の場合  
+git checkout -b feature/#456-fix-login-bug
+
+# 緊急修正の場合
+git checkout -b hotfix/#789-critical-security-fix
 ```
 
-**ワークフロー**:
+3. **TDD開発サイクル**
+   - **Red**: Issueの受け入れ条件に基づくテストを書く
+   - **Green**: テストを通す最小限の実装
+   - **Refactor**: コード品質向上
 
-1. mainから最新を取得してブランチ作成
-2. 開発・テスト実施
-3. Pull Requestを作成
-4. コードレビュー後にmainへマージ
+4. **Pull Request作成**
+   - PRタイトル: `fix #123: ユーザー認証機能を追加`
+   - 自動的にIssueとリンク（`fix #123`, `close #123`を使用）
+   - レビュー依頼・テスト結果を記載
+
+5. **レビュー・マージ**
+   - コードレビュー実施
+   - CI/CDチェック通過確認
+   - mainブランチへマージ（Issueが自動クローズ）
+
+### ブランチ戦略
+
+- **main**: 本番環境用（常にデプロイ可能）
+- **feature/#issue-number-description**: Issue対応
+- **hotfix/#issue-number-description**: 緊急修正
 
 ### コーディング規約
 
