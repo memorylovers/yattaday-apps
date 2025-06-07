@@ -5,20 +5,20 @@
       "Bash(npx:*)",
       "Bash(find:*)",
       "Bash(rg:*)",
-      "Edit(./:*)",
       "Bash(mkdir:*)",
       "Bash(gh:*)",
-      "Bash(melos run gen:*)",
-      "Bash(dart run:*)",
-      "mcp__ide__getDiagnostics",
       "Bash(mv:*)",
       "Bash(rmdir:*)",
-      "Bash(flutter clean:*)",
-      "Bash(flutter pub:*)",
-      "Bash(dart format:*)",
-      "Bash(make format)",
-      "Bash(melos:*)"
+      "Bash(make:*)",
+      "Bash(melos:*)",
+      "Bash(fvm:*)",
+      "Edit(:*)",
+      "mcp__ide__getDiagnostics"
     ],
-    "deny": []
+    "deny": [
+      "Edit(../:*)",
+      "Bash(flutter:*)",
+      "Bash(dart:*)"
+    ]
   }
 }
