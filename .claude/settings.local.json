@@ -21,7 +21,8 @@
       "Bash(fvm:*)",
       "Bash(make:*)",
       "Bash(touch:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [
       "Read(../**)",
