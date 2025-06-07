@@ -27,3 +27,6 @@ lint:
 
 test:
 	melos run test
+
+cc:
+	npx ccusage@latest
