@@ -20,7 +20,8 @@
       "Bash(melos:*)",
       "Bash(fvm:*)",
       "Bash(make:*)",
-      "Bash(touch:*)"
+      "Bash(touch:*)",
+      "Bash(ls:*)"
     ],
     "deny": [
       "Read(../**)",
