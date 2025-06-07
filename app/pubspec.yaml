@@ -35,7 +35,7 @@ dependencies:
   app_tracking_transparency: ^2.0.6
 
   # i18n
-  slang: ^4.7.1
+  slang: ^4.7.2
   slang_flutter:
 
   # logging
