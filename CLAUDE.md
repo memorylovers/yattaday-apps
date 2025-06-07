@@ -41,23 +41,23 @@ cd app
 
 ```bash
 # 異なるフレーバーでアプリを実行
-flutter run --flavor dev
-flutter run --flavor stag  
-flutter run --flavor prod
+fvm flutter run --flavor dev
+fvm flutter run --flavor stag  
+fvm flutter run --flavor prod
 
 # 異なるプラットフォームとフレーバーでビルド
-flutter build apk --flavor dev
-flutter build ios --flavor prod
-flutter build web
+fvm flutter build apk --flavor dev
+fvm flutter build ios --flavor prod
+fvm flutter build web
 
 # テスト実行
-flutter test
+fvm flutter test
 
 # コード解析
-flutter analyze
+fvm flutter analyze
 
 # コードフォーマット
-dart format .
+make format
 ```
 
 **リント:**
@@ -190,8 +190,8 @@ features/feature_name/
 make format
 
 # 手動でフォーマットする場合
-cd app && dart format .
-cd widgetbook && dart format .
+cd app && fvm dart format .
+cd widgetbook && fvm dart format .
 ```
 
 ### フォーマット実行タイミング
