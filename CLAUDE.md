@@ -146,7 +146,7 @@ features/feature_name/
 1. **変更を加える場合**: モデル/プロバイダー変更後は必ずコード生成を実行：
 
    ```bash
-   melos run gen
+   make gen
    ```
 
 2. **異なるフレーバーのテスト**: 環境固有の設定をテストするためにフレーバー固有のコマンドを使用
@@ -200,7 +200,7 @@ make format
    - 既存ファイル編集時
 
 2. **コード生成実行後**
-   - `melos run gen --no-select` 実行後
+   - `melos run gen` 実行後
    - `build_runner build` 実行後
 
 3. **コミット前**
