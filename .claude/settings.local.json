@@ -1,9 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:codewithandrea.com)",
-      "WebFetch(domain:pub.dev)",
+      "WebFetch(domain:*)",
       "Bash(npx:*)",
+      "Bash(pnpm:*)",
       "Bash(find:*)",
       "Bash(rg:*)",
       "Bash(grep:*)",
@@ -25,5 +25,7 @@
       "Bash(flutter:*)",
       "Bash(dart:*)"
     ]
-  }
+  },
+  "cleanupPeriodDays": 60,
+  "includeCoAuthoredBy": false
 }
