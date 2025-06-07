@@ -70,6 +70,26 @@ features/feature_name/
 
 ## 開発ガイドライン
 
+### ブランチ戦略（GitHub Flow）
+
+- **main**: 本番環境用ブランチ（常にデプロイ可能な状態を維持）
+- **feature/〇〇**: 新機能開発・バグ修正・ドキュメント更新など
+- **hotfix/〇〇**: 緊急修正用
+
+```bash
+# ブランチ作成例
+git checkout -b feature/record-item-crud
+git checkout -b feature/fix-login-error
+git checkout -b hotfix/critical-bug
+```
+
+**ワークフロー**:
+
+1. mainから最新を取得してブランチ作成
+2. 開発・テスト実施
+3. Pull Requestを作成
+4. コードレビュー後にmainへマージ
+
 ### コーディング規約
 
 - **アーキテクチャ**: 4層構造（presentation/application/domain/data）を厳守
