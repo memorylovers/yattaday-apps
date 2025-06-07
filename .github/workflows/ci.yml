@@ -40,7 +40,7 @@ jobs:
         run: melos run lint --no-select
 
       - name: Check Markdown formatting
-        uses: DavidAnson/markdownlint-cli2-action@v16
+        uses: DavidAnson/markdownlint-cli2-action@v20
         with:
           globs: "**/*.md"
 
