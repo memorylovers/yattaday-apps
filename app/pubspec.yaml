@@ -116,7 +116,7 @@ dev_dependencies:
   json_serializable:
   riverpod_generator:
   slang_build_runner:
-  go_router_builder:
+  go_router_builder: 3.0.0
   flutter_gen_runner:
 
   # test utils
