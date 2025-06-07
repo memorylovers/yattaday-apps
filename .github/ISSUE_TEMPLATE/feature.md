@@ -14,25 +14,25 @@ assignees: ''
 
 ## 受け入れ条件
 <!-- この機能が完成したと判断できる条件をリストアップ -->
-- [ ] 
-- [ ] 
-- [ ] 
+- [ ]
+- [ ]
+- [ ]
 
 ## 設計・実装方針
 <!-- アーキテクチャ、使用技術、実装アプローチなど -->
 
 ### 影響範囲
 <!-- 変更が影響するファイル・コンポーネント -->
-- [ ] Domain層: 
-- [ ] Data層: 
-- [ ] Application層: 
-- [ ] Presentation層: 
+- [ ] Domain層:
+- [ ] Data層:
+- [ ] Application層:
+- [ ] Presentation層:
 
 ### テスト計画
 <!-- どのようなテストを作成するか -->
-- [ ] Unit Test: 
-- [ ] Widget Test: 
-- [ ] Integration Test: 
+- [ ] Unit Test:
+- [ ] Widget Test:
+- [ ] Integration Test:
 
 ## 追加情報
 <!-- スクリーンショット、参考資料、関連Issueなど -->
