@@ -21,7 +21,7 @@ dependencies:
   json_annotation:
 
   # routing
-  go_router: ^15.0.0
+  go_router: ^15.1.3
 
   # font
   google_fonts: ^6.2.1
