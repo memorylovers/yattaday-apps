@@ -13,14 +13,16 @@
       "Bash(make:*)",
       "Bash(melos:*)",
       "Bash(fvm:*)",
-      "Edit(**)",
+      "Read(./**)",
+      "Edit(./**)",
       "mcp__ide__getDiagnostics",
       "Bash(fvm flutter:*)",
       "Bash(fvm dart:*)",
       "Bash(grep:*)"
     ],
     "deny": [
-      "Edit(../:*)",
+      "Read(../**)",
+      "Edit(../**)",
       "Bash(flutter:*)",
       "Bash(dart:*)"
     ]
