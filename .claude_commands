@@ -1,0 +1,3 @@
+# Claude Code Custom Commands
+
+/cc: npx ccusage@latest
