@@ -55,6 +55,7 @@ dependencies:
   nanoid2: ^2.0.1
   ulid4d: ^2.0.0
   shortid: ^0.1.2
+  uuid: ^4.5.1
 
   # firebase and auth
   firebase_core: ^3.12.1
