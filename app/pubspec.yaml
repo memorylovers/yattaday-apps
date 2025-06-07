@@ -127,7 +127,7 @@ dev_dependencies:
   flutter_flavorizr:
 
   # widgetbook
-  widgetbook_generator:
+  widgetbook_generator: 3.13.0
 
 flutter:
   uses-material-design: true
