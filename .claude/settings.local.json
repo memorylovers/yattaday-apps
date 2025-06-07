@@ -1,4 +1,6 @@
 {
+  "cleanupPeriodDays": 60,
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
       "WebFetch(domain:*)",
@@ -17,7 +19,8 @@
       "mcp__ide__getDiagnostics",
       "Bash(melos:*)",
       "Bash(fvm:*)",
-      "Bash(make:*)"
+      "Bash(make:*)",
+      "Bash(touch:*)"
     ],
     "deny": [
       "Read(../**)",
@@ -25,7 +28,5 @@
       "Bash(flutter:*)",
       "Bash(dart:*)"
     ]
-  },
-  "cleanupPeriodDays": 60,
-  "includeCoAuthoredBy": false
+  }
 }

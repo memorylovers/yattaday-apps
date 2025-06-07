@@ -26,11 +26,6 @@
     "**/*.g.dart": true,
     "**/*.freezed.dart": true
   },
-  "markdownlint.config": {
-    "MD029": false,
-    "MD040": false,
-    "MD041": false
-  },
   "workbench.editor.limit.enabled": true,
   "workbench.editor.limit.value": 10,
   "github.copilot.chat.commitMessageGeneration.instructions": [
