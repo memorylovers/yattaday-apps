@@ -21,4 +21,8 @@ scripts:
 
   gen: melos exec -- fvm dart run build_runner build --delete-conflicting-outputs
 
+  lint: melos exec -- fvm flutter analyze
+
+  test: melos exec -- fvm flutter test
+
 sdkPath: .fvm/flutter_sdk

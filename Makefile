@@ -13,27 +13,17 @@ melos:
 melos_bs:
 	dart pub get
 
-generate_code:
-	melos run gen --no-select
+gen:
+	melos run gen
 
 flutterfire_cli:
 	fvm dart pub global activate flutterfire_cli
 
 format:
-	@echo "Formatting app files (excluding generated files)..."
-	find app -name "*.dart" \
-		-not -path "**/.*" \
-		-not -path "**/*.g.dart" \
-		-not -path "**/*.freezed.dart" \
-		-not -path "**/firebase_options*.dart" \
-		-not -path "**/_gen/**" \
-		-not -path "**/build/**" \
-		| xargs fvm dart format
-	@echo "Formatting widgetbook files (excluding generated files)..."
-	find widgetbook -name "*.dart" \
-		-not -path "**/.*" \
-		-not -path "**/*.g.dart" \
-		-not -path "**/*.freezed.dart" \
-		-not -path "**/build/**" \
-		| xargs fvm dart format
-	@echo "Format completed."
+	melos run format
+
+lint:
+	melos run lint
+
+test:
+	melos run test

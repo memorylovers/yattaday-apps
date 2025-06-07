@@ -51,13 +51,16 @@ fvm flutter build ios --flavor prod
 fvm flutter build web
 
 # テスト実行
-fvm flutter test
-
-# コード解析
-fvm flutter analyze
+make test
 
 # コードフォーマット
 make format
+
+# コード自動生成
+make gen
+
+# コードの静的解析
+make lint
 ```
 
 **リント:**
@@ -143,7 +146,7 @@ features/feature_name/
 1. **変更を加える場合**: モデル/プロバイダー変更後は必ずコード生成を実行：
 
    ```bash
-   melos run gen --no-select
+   melos run gen
    ```
 
 2. **異なるフレーバーのテスト**: 環境固有の設定をテストするためにフレーバー固有のコマンドを使用
@@ -188,10 +191,6 @@ features/feature_name/
 ```bash
 # 推奨: 生成ファイルを除外してフォーマット
 make format
-
-# 手動でフォーマットする場合
-cd app && fvm dart format .
-cd widgetbook && fvm dart format .
 ```
 
 ### フォーマット実行タイミング
