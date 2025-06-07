@@ -19,7 +19,7 @@ jobs:
         uses: kuhnroyal/flutter-fvm-config-action/setup@v3
 
       - name: Install Melos
-        run: fvm dart pub global activate melos
+        run: dart pub global activate melos
 
       - name: Bootstrap workspace
         run: melos bootstrap
