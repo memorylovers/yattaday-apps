@@ -2,234 +2,90 @@
 
 このファイルは、このリポジトリでコードを扱う際のClaude Code (claude.ai/code) への指針を提供します。
 
-## **重要**
+## **重要事項**
 
-- このプロジェクトでは日本語でのコミュニケーションと、コメントおよびドキュメントの記載を推奨します。
-- タスクを終えたら `npx ccusage@latest` を実行して、コストを表示してください。
+- 日本語でのコミュニケーションとドキュメント記載を推奨
+- タスク完了時は `npx ccusage@latest` でコストを表示
+- **TDD（テスト駆動開発）で実装すること**
 
-## 開発環境セットアップ
-
-### 初期セットアップ
-
-開発環境の初回セットアップには以下のコマンドを実行してください：
+## クイックスタート
 
 ```bash
+# 初期セットアップ
 make
-```
 
-これによりfvm、melos、flutterfire_cliがインストールされ、Flutter環境がセットアップされます。
+# よく使うコマンド
+make test    # テスト実行
+make gen     # コード生成
+make format  # フォーマット
+make lint    # 静的解析
 
-### 共通コマンド
-
-**開発コマンド:**
-
-```bash
-# ワークスペースをブートストラップし、依存関係をインストール
-melos bootstrap
-
-# すべてのパッケージをクリーン
-melos clean
-
-# コード生成（freezed、json_serializable等）
-melos run gen --no-select
-
-# Flutterコマンド用にappディレクトリに移動
-cd app
-```
-
-**Flutterコマンド（app/ディレクトリから実行）:**
-
-```bash
-# 異なるフレーバーでアプリを実行
+# アプリ実行（app/ディレクトリで）
 fvm flutter run --flavor dev
-fvm flutter run --flavor stag  
-fvm flutter run --flavor prod
-
-# 異なるプラットフォームとフレーバーでビルド
-fvm flutter build apk --flavor dev
-fvm flutter build ios --flavor prod
-fvm flutter build web
-
-# テスト実行
-make test
-
-# コードフォーマット
-make format
-
-# コード自動生成
-make gen
-
-# コードの静的解析
-make lint
 ```
 
-**リント:**
+## アーキテクチャ概要
 
-- flutter_lints、custom_lint、riverpod_lintを使用
-- `app/analysis_options.yaml`で設定
-- 生成ファイル（*.g.dart、*.freezed.dart）を除外
-
-## アーキテクチャ
-
-このFlutterアプリは**Feature-Firstアーキテクチャ**とクリーンアーキテクチャの原則を使用しています：
+**Feature-Firstアーキテクチャ** + クリーンアーキテクチャ
 
 ### プロジェクト構造
 
-- **Melosを使用したMonorepoセットアップ**、メインアプリは`app/`ディレクトリ内
-- **マルチフレーバー対応**（dev/stag/prod）、独立したFirebase設定
-- **Feature-first構成**、`lib/features/`配下
-
-### 主要なアーキテクチャパターン
-
-**状態管理:**
-
-- hooks_riverpodを使用したRiverpodによる状態管理
-- riverpod_generatorによるコード生成を伴うProviderパターン
-
-**データレイヤー:**
-
-- データアクセスのためのRepositoryパターン
-- プライマリバックエンドとしてのFirebase（Auth、Firestore、Analytics、Crashlytics）
-- サブスクリプション管理のためのRevenueCat
-- 画像ストレージのためのCloudflare R2
-
-**コード生成:**
-
-- イミュータブルデータクラスのためのFreezed
-- JSONシリアライゼーションのためのjson_serializable
-- 国際化のためのslang
-- タイプセーフルーティングのためのgo_router_builder
-- アセット管理のためのflutter_gen
+```
+yattaday-apps/
+├── app/                    # メインアプリ（Melosモノレポ）
+│   ├── lib/
+│   │   ├── features/       # 機能別モジュール
+│   │   ├── common/         # 共通ユーティリティ
+│   │   └── components/     # 再利用可能UIコンポーネント
+│   └── test/              # テストファイル
+└── widgetbook/            # UIカタログ
+```
 
 ### フィーチャー構成
 
-各フィーチャーはクリーンアーキテクチャレイヤーに従います：
-
 ```
 features/feature_name/
-├── data/           # Repository実装、DTO、データソース
-├── domain/         # モデル、エンティティ
-├── application/    # ユースケース、ビジネスロジック
-└── presentation/   # UIウィジェット、ページ、コントローラ
+├── data/           # Repository実装
+├── domain/         # モデル、エンティティ  
+├── application/    # ビジネスロジック
+└── presentation/   # UI（ページ、ウィジェット）
 ```
 
-**コアフィーチャー:**
+### 技術スタック
 
-- `_authentication/` - Firebase Auth（匿名、Google、Apple）
-- `_payment/` - サブスクリプション用RevenueCat連携
-- `_advertisement/` - 同意管理を伴うAdMob連携
-- `_startup/` - アプリ初期化とルーティングロジック
-- `_force_update/` - バージョンチェックと強制アップデート
-- `account/` - ユーザープロフィールと設定
+- **状態管理**: Riverpod + hooks_riverpod
+- **バックエンド**: Firebase (Auth, Firestore, Analytics)
+- **決済**: RevenueCat
+- **広告**: AdMob
+- **国際化**: slang
+- **コード生成**: freezed, json_serializable, go_router_builder
 
-### Firebase連携
+## TDD開発フロー
 
-- 独立したFirebaseプロジェクトによるマルチ環境対応
-- `lib/_gen/firebase/`に生成された設定
-- `lib/flavors.dart`内のフレーバー固有設定
+**Red → Green → Refactor サイクル**
 
-### 国際化
+1. **Red**: 失敗するテストを書く → `make test`
+2. **Green**: テストを通す最小限の実装 → `make test`  
+3. **Refactor**: コード改善 → `make format` → `make lint`
 
-- タイプセーフi18nのためのslangパッケージを使用
-- `assets/i18n/`内の翻訳ファイル
-- `lib/_gen/i18n/`内の生成された文字列
+## 開発ガイドライン
 
-### 共通ユーティリティ
+### コーディング規約
 
-- `common/theme/` - アプリ全体のテーマとスタイル
-- `common/logger/` - Crashlytics連携を伴うTalkerベースのロギング
-- `common/firebase/` - Firebase認証ユーティリティ
-- `components/` - 再利用可能UIコンポーネント
+- **アーキテクチャ**: 4層構造（presentation/application/domain/data）を厳守
+- **状態管理**: Riverpodパターンに準拠
+- **ドキュメント**: 日本語で記載
+- **命名規則**: snake_case（ファイル）、PascalCase（クラス）
 
-## 開発ワークフロー
+### コミットメッセージ
 
-### TDD（テスト駆動開発）アプローチ
-
-このプロジェクトではTDD（Test-Driven Development）を採用しています。新機能の実装や既存機能の修正時は、以下のサイクルに従ってください：
-
-1. **Red（失敗するテストを書く）**
-   - 期待する動作を定義するテストを最初に書く
-   - `make test`でテストが失敗することを確認
-
-2. **Green（テストを通す最小限の実装）**
-   - テストが通る最小限のコードを実装
-   - 過度な設計や最適化は避ける
-   - `make test`でテストが成功することを確認
-
-3. **Refactor（リファクタリング）**
-   - テストが通る状態を維持しながらコードを改善
-   - 重複の除去、可読性の向上、設計の改善
-   - `make format`でコードフォーマット
-   - `make lint`で静的解析
-
-### 一般的な開発フロー
-
-1. **変更を加える場合**: モデル/プロバイダー変更後は必ずコード生成を実行：
-
-   ```bash
-   make gen
-   ```
-
-2. **異なるフレーバーのテスト**: 環境固有の設定をテストするためにフレーバー固有のコマンドを使用
-
-3. **国際化**: `assets/i18n/`ファイルに翻訳を追加して再生成
-
-4. **Firebase**: フレーバー固有のFirebase設定はflutterfire_cliにより自動生成
-
-## コーディング規約とベストプラクティス
-
-詳細なコーディングスタイルについては [コーディングスタイル(Flutter)](_docs/10_cording_style_flutter.md) を参照してください。
-
-**主な規約:**
-
-- プレゼンテーション、アプリケーション、ドメイン、データの4層アーキテクチャに従う
-- Riverpodを使用した状態管理パターンに準拠
-- Firebase認証、エラーハンドリング、ロギングの共通基盤を活用
-- 日本語でのコメントとドキュメント記載を推奨
-
-## コミットメッセージ規約
-
-**Conventional Commits形式を使用し、1行で簡潔に記載する:**
-
-- `feat: 新機能追加`
-- `fix: バグ修正`
-- `docs: ドキュメント更新`
-- `style: コードフォーマット`
-- `refactor: リファクタリング`
-- `test: テスト追加・修正`
-- `chore: その他の変更`
-
-## ファイル命名規則
-
-- ファイルとディレクトリにはsnake_caseを使用
-- 生成ファイルには`.g.dart`または`.freezed.dart`接尾辞
-- コアフィーチャーのディレクトリにはアンダースコアプレフィックスを使用（例：`_authentication`）
-
-## コードフォーマット規則
-
-### 必須事項: 生成したコードは必ずフォーマットを実行すること
-
-```bash
-# 推奨: 生成ファイルを除外してフォーマット
-make format
+```
+feat: 新機能追加
+fix: バグ修正
+test: テスト追加・修正
+refactor: リファクタリング
+docs: ドキュメント更新
+chore: その他の変更
 ```
 
-### フォーマット実行タイミング
-
-1. **ファイル作成・編集後**
-   - 新規ファイル作成時
-   - 既存ファイル編集時
-
-2. **コード生成実行後**
-   - `melos run gen` 実行後
-   - `build_runner build` 実行後
-
-3. **コミット前**
-   - git add前に必ず実行
-   - 一貫したコードスタイルを維持
-
-### 重要な点
-
-- 自動生成ファイル（`*.g.dart`, `*.freezed.dart`）は対象外
-- Widgetbookファイルも含むすべての`.dart`ファイルが対象
-- フォーマット未実行のコードは品質基準を満たさないため修正対象
+詳細は [コーディングスタイル](_docs/10_cording_style_flutter.md) を参照
