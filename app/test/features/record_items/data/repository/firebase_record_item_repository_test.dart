@@ -225,7 +225,7 @@ void main() {
     });
 
     group('generateId', () {
-      test('新しいIDを生成できること（UUID v7形式）', () {
+      test('新しいIDを生成できること（ULID形式）', () {
         final id1 = repository.generateId();
         final id2 = repository.generateId();
 
@@ -233,16 +233,15 @@ void main() {
         expect(id2, isNotEmpty);
         expect(id1, isNot(equals(id2))); // 毎回異なるIDが生成される
 
-        // UUID v7の形式をチェック（8-4-4-4-12の形式）
-        final uuidRegex = RegExp(
-          r'^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',
-          caseSensitive: false,
-        );
-        expect(id1, matches(uuidRegex));
-        expect(id2, matches(uuidRegex));
+        // ULIDの形式をチェック（26文字の大文字英数字）
+        final ulidRegex = RegExp(r'^[0-9A-Z]{26}$');
+        expect(id1, matches(ulidRegex));
+        expect(id2, matches(ulidRegex));
+        expect(id1.length, equals(26));
+        expect(id2.length, equals(26));
 
-        // UUID v7はタイムスタンプベースなので、後に生成されたIDの方が大きい
-        expect(id2.compareTo(id1), greaterThan(0));
+        // ULIDはタイムスタンプベースなので、後に生成されたIDの方が辞書順で大きい
+        expect(id2.compareTo(id1), greaterThanOrEqualTo(0));
       });
     });
   });

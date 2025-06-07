@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
+import 'package:ulid4d/ulid4d.dart';
 
 import '../../../../common/exception/handling_error.dart';
 import '../../domain/record_item.dart';
@@ -8,7 +8,6 @@ import 'record_item_repository.dart';
 /// RecordItemRepositoryのFirestore実装
 class FirebaseRecordItemRepository implements IRecordItemRepository {
   final FirebaseFirestore _firestore;
-  final Uuid _uuid = const Uuid();
 
   FirebaseRecordItemRepository({FirebaseFirestore? firestore})
     : _firestore = firestore ?? FirebaseFirestore.instance;
@@ -107,6 +106,6 @@ class FirebaseRecordItemRepository implements IRecordItemRepository {
     }
   }
 
-  /// 新しいIDを生成（UUID v7を使用）
-  String generateId() => _uuid.v7();
+  /// 新しいIDを生成（ULIDを使用）
+  String generateId() => ULID.randomULID();
 }
