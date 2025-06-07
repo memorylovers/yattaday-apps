@@ -1,4 +1,34 @@
-# コーデングスタイル(Flutter)
+# コーディングスタイル(Flutter)
+
+## TDD（テスト駆動開発）
+
+このプロジェクトでは**TDD（Test-Driven Development）**を採用しています。
+
+### TDDサイクル
+
+**Red → Green → Refactor**
+
+1. **Red（失敗するテストを書く）**
+   - 期待する動作を定義するテストを最初に書く
+   - `make test`でテストが失敗することを確認
+
+2. **Green（テストを通す最小限の実装）**
+   - テストが通る最小限のコードを実装
+   - 過度な設計や最適化は避ける
+   - `make test`でテストが成功することを確認
+
+3. **Refactor（リファクタリング）**
+   - テストが通る状態を維持しながらコードを改善
+   - 重複の除去、可読性の向上、設計の改善
+   - `make format`でコードフォーマット
+   - `make lint`で静的解析
+
+### テスト作成の指針
+
+- **各機能は必ずテストから始める**
+- **Repository層は`fake_cloud_firestore`を使用してテスト**
+- **Provider層はRiverpodのテストユーティリティを活用**
+- **UI層はWidgetTestでテスト**
 
 ## アーキテクチャ
 
@@ -79,7 +109,7 @@ app/
 │   │   ├── exceptions/            # 共通例外
 │   │   ├── firebase/              # Firebase関連
 │   │   ├── json_converter/        # JsonConverter関連
-│   │   ├── logger/                # ロギング関連(takler)
+│   │   ├── logger/                # ロギング関連(talker)
 │   │   ├── theme/                 # アプリ共通のスタイル設定
 │   │   ├── types/                 # 共通の型定義
 │   │   └── utils/                 # 汎用ロジック
@@ -127,7 +157,7 @@ app/
   - [go_router](https://pub.dev/packages/go_router)
   - [go_router_builder](https://pub.dev/packages/go_router_builder)
 - ロギング:
-  - [takler](https://pub.dev/packages/talker)
+  - [talker](https://pub.dev/packages/talker)
 - lint:
   - [custom_lint](https://pub.dev/packages/custom_lint)
   - [riverpod_lint](https://pub.dev/packages/riverpod_lint)
