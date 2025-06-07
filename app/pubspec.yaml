@@ -98,7 +98,7 @@ dependencies:
 
   # widgetbook
   widgetbook: ^3.10.2
-  widgetbook_annotation:
+  widgetbook_annotation: 3.5.0
 
 dev_dependencies:
   flutter_test:
