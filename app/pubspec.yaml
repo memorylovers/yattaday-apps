@@ -69,7 +69,7 @@ dependencies:
   # firebase_performance:
   # firebase_in_app_messaging:
   # firebase_database:
-  firebase_remote_config:
+  firebase_remote_config: 5.4.4
   google_sign_in:
 
   # http client
