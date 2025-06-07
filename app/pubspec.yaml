@@ -57,7 +57,7 @@ dependencies:
   shortid: ^0.1.2
 
   # firebase and auth
-  firebase_core: ^3.12.1
+  firebase_core: ^3.13.1
   firebase_auth:
   firebase_analytics:
   # firebase_messaging:
