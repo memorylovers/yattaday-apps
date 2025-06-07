@@ -27,7 +27,7 @@ dependencies:
   google_fonts: ^6.2.1
 
   # payment
-  purchases_flutter: ^8.7.3
+  purchases_flutter: ^8.10.1
 
   # ads
   google_mobile_ads: ^6.0.0
