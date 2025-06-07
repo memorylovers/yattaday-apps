@@ -106,7 +106,7 @@ dev_dependencies:
 
   # lint
   custom_lint:
-  flutter_lints:
+  flutter_lints: 6.0.0
   riverpod_lint:
 
   # generator
