@@ -18,6 +18,8 @@ import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
     as _i4;
 import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
     as _i5;
+import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_card.dart'
+    as _i8;
 import 'package:widgetbook_workspace/features/startup/widgets/startup_error_widget.dart'
     as _i6;
 import 'package:widgetbook_workspace/features/startup/widgets/startup_loading_widget.dart'
@@ -92,6 +94,42 @@ final directories = <_i1.WidgetbookNode>[
                       name: 'Default',
                       builder: _i7.usecaseStartupLoadingWidget,
                     ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+      _i1.WidgetbookFolder(
+        name: 'record_items',
+        children: [
+          _i1.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _i1.WidgetbookFolder(
+                name: 'widgets',
+                children: [
+                  _i1.WidgetbookComponent(
+                    name: 'RecordItemCard',
+                    useCases: [
+                      _i1.WidgetbookUseCase(
+                        name: 'Default',
+                        builder: _i8.recordItemCardDefault,
+                      ),
+                      _i1.WidgetbookUseCase(
+                        name: 'Minimal',
+                        builder: _i8.recordItemCardMinimal,
+                      ),
+                      _i1.WidgetbookUseCase(
+                        name: 'Without Description',
+                        builder: _i8.recordItemCardWithoutDescription,
+                      ),
+                      _i1.WidgetbookUseCase(
+                        name: 'Without Unit',
+                        builder: _i8.recordItemCardWithoutUnit,
+                      ),
+                    ],
                   ),
                 ],
               ),

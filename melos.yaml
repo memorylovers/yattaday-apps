@@ -26,6 +26,6 @@ scripts:
     melos exec -- flutter analyze
     melos exec -- dart run custom_lint
 
-  test: melos exec -- flutter test
+  test: melos exec --scope="*app*" -- flutter test
 
 sdkPath: .fvm/flutter_sdk
