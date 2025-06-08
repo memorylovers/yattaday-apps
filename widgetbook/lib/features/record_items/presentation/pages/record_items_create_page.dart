@@ -44,19 +44,19 @@ class MockRecordItemRepository implements IRecordItemRepository {
   Stream<List<RecordItem>> watchByUserId(String userId) => Stream.value([]);
 
   @override
-  Future<void> update(RecordItem recordItem) async => throw UnimplementedError();
+  Future<void> update(RecordItem recordItem) async =>
+      throw UnimplementedError();
 
   @override
-  Future<void> delete(String userId, String recordItemId) async => throw UnimplementedError();
+  Future<void> delete(String userId, String recordItemId) async =>
+      throw UnimplementedError();
 
   @override
-  Future<RecordItem?> getById(String userId, String recordItemId) async => throw UnimplementedError();
+  Future<RecordItem?> getById(String userId, String recordItemId) async =>
+      throw UnimplementedError();
 }
 
-@widgetbook.UseCase(
-  name: 'Default',
-  type: RecordItemsCreatePage,
-)
+@widgetbook.UseCase(name: 'Default', type: RecordItemsCreatePage)
 Widget recordItemsCreatePageDefault(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -68,10 +68,7 @@ Widget recordItemsCreatePageDefault(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(
-  name: 'With Error',
-  type: RecordItemsCreatePage,
-)
+@widgetbook.UseCase(name: 'With Error', type: RecordItemsCreatePage)
 Widget recordItemsCreatePageWithError(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -83,10 +80,7 @@ Widget recordItemsCreatePageWithError(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(
-  name: 'With Loading',
-  type: RecordItemsCreatePage,
-)
+@widgetbook.UseCase(name: 'With Loading', type: RecordItemsCreatePage)
 Widget recordItemsCreatePageWithLoading(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -98,10 +92,7 @@ Widget recordItemsCreatePageWithLoading(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(
-  name: 'Empty UserID',
-  type: RecordItemsCreatePage,
-)
+@widgetbook.UseCase(name: 'Empty UserID', type: RecordItemsCreatePage)
 Widget recordItemsCreatePageEmptyUserId(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -113,10 +104,7 @@ Widget recordItemsCreatePageEmptyUserId(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(
-  name: 'Long UserID',
-  type: RecordItemsCreatePage,
-)
+@widgetbook.UseCase(name: 'Long UserID', type: RecordItemsCreatePage)
 Widget recordItemsCreatePageLongUserId(BuildContext context) {
   return ProviderScope(
     overrides: [
