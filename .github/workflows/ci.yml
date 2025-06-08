@@ -20,6 +20,9 @@ jobs:
       - name: Install Melos
         run: dart pub global activate melos
 
+      - name: ls
+        run: ls -al
+
       - name: Bootstrap workspace
         run: melos bootstrap
 
