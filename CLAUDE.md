@@ -83,19 +83,23 @@ features/feature_name/
    - Issueテンプレートを使用して必要な情報を記載
    - ラベル・マイルストーン・担当者を設定
 
-2. **ブランチ作成**
-   - Issueに基づいてブランチを作成
+2. **ブランチ作成（git worktree使用）**
+   - Issueに基づいてworktreeを作成
    - ブランチ名: `feature/#issue-number-brief-description`
 
 ```bash
 # Issue #123 "ユーザー認証機能の追加" の場合
-git checkout -b feature/#123-user-authentication
+git worktree add ../yattaday-apps-feature-123 -b feature/#123-user-authentication
 
 # Issue #456 "ログインバグ修正" の場合  
-git checkout -b feature/#456-fix-login-bug
+git worktree add ../yattaday-apps-feature-456 -b feature/#456-fix-login-bug
 
 # 緊急修正の場合
-git checkout -b hotfix/#789-critical-security-fix
+git worktree add ../yattaday-apps-hotfix-789 -b hotfix/#789-critical-security-fix
+
+# 作業完了後のクリーンアップ
+git worktree remove ../yattaday-apps-feature-123
+git branch -d feature/#123-user-authentication
 ```
 
 3. **TDD開発サイクル**
