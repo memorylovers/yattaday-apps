@@ -18,8 +18,10 @@ import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
     as _i4;
 import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
     as _i5;
-import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_card.dart'
+import 'package:widgetbook_workspace/features/record_items/presentation/pages/record_items_list_page.dart'
     as _i8;
+import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_card.dart'
+    as _i9;
 import 'package:widgetbook_workspace/features/startup/widgets/startup_error_widget.dart'
     as _i6;
 import 'package:widgetbook_workspace/features/startup/widgets/startup_loading_widget.dart'
@@ -108,6 +110,36 @@ final directories = <_i1.WidgetbookNode>[
             name: 'presentation',
             children: [
               _i1.WidgetbookFolder(
+                name: 'pages',
+                children: [
+                  _i1.WidgetbookComponent(
+                    name: 'RecordItemsListPage',
+                    useCases: [
+                      _i1.WidgetbookUseCase(
+                        name: 'Default',
+                        builder: _i8.recordItemsListPageDefault,
+                      ),
+                      _i1.WidgetbookUseCase(
+                        name: 'Empty List',
+                        builder: _i8.recordItemsListPageEmpty,
+                      ),
+                      _i1.WidgetbookUseCase(
+                        name: 'Error State',
+                        builder: _i8.recordItemsListPageError,
+                      ),
+                      _i1.WidgetbookUseCase(
+                        name: 'Loading State',
+                        builder: _i8.recordItemsListPageLoading,
+                      ),
+                      _i1.WidgetbookUseCase(
+                        name: 'Many Items',
+                        builder: _i8.recordItemsListPageManyItems,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              _i1.WidgetbookFolder(
                 name: 'widgets',
                 children: [
                   _i1.WidgetbookComponent(
@@ -115,19 +147,19 @@ final directories = <_i1.WidgetbookNode>[
                     useCases: [
                       _i1.WidgetbookUseCase(
                         name: 'Default',
-                        builder: _i8.recordItemCardDefault,
+                        builder: _i9.recordItemCardDefault,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Minimal',
-                        builder: _i8.recordItemCardMinimal,
+                        builder: _i9.recordItemCardMinimal,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Without Description',
-                        builder: _i8.recordItemCardWithoutDescription,
+                        builder: _i9.recordItemCardWithoutDescription,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Without Unit',
-                        builder: _i8.recordItemCardWithoutUnit,
+                        builder: _i9.recordItemCardWithoutUnit,
                       ),
                     ],
                   ),
