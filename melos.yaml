@@ -15,16 +15,16 @@ command:
 scripts:
   bootstrap: flutter pub get
 
-  clean: melos exec -- fvm flutter clean
+  clean: melos exec -- flutter clean
 
-  format: melos exec -- fvm dart format .
+  format: melos exec -- dart format .
 
-  gen: melos exec -- fvm dart run build_runner build --delete-conflicting-outputs
+  gen: melos exec -- dart run build_runner build --delete-conflicting-outputs
 
   lint: |
-    melos exec -- fvm flutter analyze
-    melos exec -- fvm dart run custom_lint
+    melos exec -- flutter analyze
+    melos exec -- dart run custom_lint
 
-  test: melos exec -- fvm flutter test
+  test: melos exec -- flutter test
 
 sdkPath: .fvm/flutter_sdk
