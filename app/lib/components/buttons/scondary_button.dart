@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 /// Secondary Button
 ///
@@ -78,40 +77,4 @@ class SecondaryButton extends StatelessWidget {
       ),
     );
   }
-}
-
-@UseCase(name: "Default", type: SecondaryButton, path: "components/buttons")
-Widget usecaseSecondaryButton(BuildContext context) {
-  return Scaffold(
-    body: SafeArea(
-      child: Center(
-        child: Column(
-          spacing: 20,
-          children: [
-            //
-            SecondaryButton(text: "Button", onPressed: () {}),
-            //
-            SecondaryButton(text: "Disabled", onPressed: null),
-            //
-            SecondaryButton(text: "Loading", onPressed: () {}, isLoading: true),
-            //
-            SecondaryButton(text: "Button", icon: Icons.home, onPressed: () {}),
-            //
-            SecondaryButton(
-              text: "Disabled",
-              icon: Icons.home,
-              onPressed: null,
-            ),
-            //
-            SecondaryButton(
-              text: "Loading",
-              icon: Icons.home,
-              onPressed: () {},
-              isLoading: true,
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
 }

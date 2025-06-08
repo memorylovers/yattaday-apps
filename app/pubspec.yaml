@@ -96,9 +96,6 @@ dependencies:
   # audio
   # audioplayers: ^6.0.0
 
-  # widgetbook
-  widgetbook: ^3.10.2
-  widgetbook_annotation:
 
 dev_dependencies:
   flutter_test:
@@ -126,8 +123,6 @@ dev_dependencies:
   # setup: flavor
   flutter_flavorizr:
 
-  # widgetbook
-  widgetbook_generator:
 
 flutter:
   uses-material-design: true

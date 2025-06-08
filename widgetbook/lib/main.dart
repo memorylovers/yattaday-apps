@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:myapp/_gen/i18n/strings.g.dart';
+import 'package:myapp/common/theme/app_theme.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
@@ -46,7 +47,7 @@ class WidgetbookApp extends StatelessWidget {
         ),
         MaterialThemeAddon(
           themes: [
-            WidgetbookTheme(name: 'Light', data: ThemeData.light()),
+            WidgetbookTheme(name: 'Light', data: appTheme),
             WidgetbookTheme(name: 'Dark', data: ThemeData.dark()),
           ],
         ),

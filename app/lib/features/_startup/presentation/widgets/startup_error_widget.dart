@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
 
@@ -26,9 +25,4 @@ class StartupErrorWidget extends StatelessWidget {
       ),
     );
   }
-}
-
-@UseCase(name: "Default", type: StartupErrorWidget, path: "features/startup")
-Widget usecaseStartupErrorWidget(BuildContext context) {
-  return StartupErrorWidget(onRetry: () {});
 }

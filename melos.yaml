@@ -1,6 +1,7 @@
 name: one_day_price
 packages:
   - app
+  - widgetbook
 
 command:
   clean:
