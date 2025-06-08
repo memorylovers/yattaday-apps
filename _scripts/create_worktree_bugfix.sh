@@ -2,27 +2,22 @@
 
 set -e
 
-# git worktree作成スクリプト
-# Usage: ./create_worktree.sh <issue-number> <description> [type]
-# Example: ./create_worktree.sh 123 "user-authentication" feature
-# Example: ./create_worktree.sh 456 "critical-security-fix" hotfix
+# bugfix worktree作成スクリプト
+# Usage: ./create_worktree_bugfix.sh <issue-number>
+# Example: ./create_worktree_bugfix.sh 789
 
 # 引数チェック
-if [ $# -lt 2 ]; then
-    echo "Usage: $0 <issue-number> <description> [type]"
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <issue-number>"
     echo "  issue-number: GitHub Issue番号"
-    echo "  description: 簡潔な説明（ハイフン区切り）"
-    echo "  type: branch type (feature|hotfix|bugfix) [default: feature]"
     echo ""
-    echo "Examples:"
-    echo "  $0 123 user-authentication"
-    echo "  $0 456 critical-security-fix hotfix"
+    echo "Example:"
+    echo "  $0 789"
     exit 1
 fi
 
 ISSUE_NUMBER=$1
-DESCRIPTION=$2
-BRANCH_TYPE=${3:-feature}
+BRANCH_TYPE="bugfix"
 
 # パラメータ検証
 if ! [[ "$ISSUE_NUMBER" =~ ^[0-9]+$ ]]; then
@@ -30,13 +25,8 @@ if ! [[ "$ISSUE_NUMBER" =~ ^[0-9]+$ ]]; then
     exit 1
 fi
 
-if ! [[ "$BRANCH_TYPE" =~ ^(feature|hotfix|bugfix)$ ]]; then
-    echo "Error: ブランチタイプは feature, hotfix, bugfix のいずれかである必要があります"
-    exit 1
-fi
-
 # ブランチ名とディレクトリ名を構築
-BRANCH_NAME="${BRANCH_TYPE}/#${ISSUE_NUMBER}-${DESCRIPTION}"
+BRANCH_NAME="${BRANCH_TYPE}/issue-${ISSUE_NUMBER}"
 WORKTREE_DIR="../yattaday-apps-${BRANCH_TYPE}-${ISSUE_NUMBER}"
 
 # 現在のリポジトリルートを取得
@@ -44,10 +34,9 @@ REPO_ROOT=$(git rev-parse --show-toplevel)
 REPO_NAME=$(basename "$REPO_ROOT")
 
 echo "========================================="
-echo "Git Worktree作成中..."
+echo "Bugfix Worktree作成中..."
 echo "========================================="
 echo "Issue番号: #${ISSUE_NUMBER}"
-echo "説明: ${DESCRIPTION}"
 echo "ブランチタイプ: ${BRANCH_TYPE}"
 echo "ブランチ名: ${BRANCH_NAME}"
 echo "ワークツリーディレクトリ: ${WORKTREE_DIR}"
@@ -88,7 +77,7 @@ echo "ワークツリーを作成中..."
 git worktree add "$WORKTREE_DIR" -b "$BRANCH_NAME"
 
 echo "========================================="
-echo "✓ ワークツリーが正常に作成されました!"
+echo "✓ Bugfix Worktreeが正常に作成されました!"
 echo "========================================="
 echo ""
 echo "ワークツリーディレクトリに移動しています..."
@@ -101,7 +90,7 @@ echo "   git worktree remove ${WORKTREE_DIR}"
 echo "   git branch -d ${BRANCH_NAME}"
 echo ""
 echo "プルリクエスト作成時のタイトル例:"
-echo "   fix #${ISSUE_NUMBER}: ${DESCRIPTION//-/ }"
+echo "   fix #${ISSUE_NUMBER}: バグ修正の説明"
 echo ""
 
 # 新しいシェルセッションを開始

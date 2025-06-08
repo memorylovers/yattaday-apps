@@ -85,21 +85,21 @@ features/feature_name/
 
 2. **ブランチ作成（git worktree使用）**
    - Issueに基づいてworktreeを作成
-   - ブランチ名: `feature/#issue-number-brief-description`
+   - ブランチ名: `[type]/issue-[number]` (例: `feature/issue-123`)
 
 ```bash
-# Issue #123 "ユーザー認証機能の追加" の場合
-git worktree add ../yattaday-apps-feature-123 -b feature/#123-user-authentication
+# Issue #123 の場合（機能追加）
+./_scripts/create_worktree_feature.sh 123
 
-# Issue #456 "ログインバグ修正" の場合  
-git worktree add ../yattaday-apps-feature-456 -b feature/#456-fix-login-bug
+# Issue #456 の場合（バグ修正）
+./_scripts/create_worktree_bugfix.sh 456
 
-# 緊急修正の場合
-git worktree add ../yattaday-apps-hotfix-789 -b hotfix/#789-critical-security-fix
+# Issue #789 の場合（緊急修正）
+./_scripts/create_worktree_hotfix.sh 789
 
 # 作業完了後のクリーンアップ
 git worktree remove ../yattaday-apps-feature-123
-git branch -d feature/#123-user-authentication
+git branch -d feature/issue-123
 ```
 
 3. **TDD開発サイクル**
@@ -120,8 +120,9 @@ git branch -d feature/#123-user-authentication
 ### ブランチ戦略
 
 - **main**: 本番環境用（常にデプロイ可能）
-- **feature/#issue-number-description**: Issue対応
-- **hotfix/#issue-number-description**: 緊急修正
+- **feature/issue-[number]**: 機能追加
+- **bugfix/issue-[number]**: バグ修正
+- **hotfix/issue-[number]**: 緊急修正
 
 ### コーディング規約
 
