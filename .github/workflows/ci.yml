@@ -7,7 +7,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   quality-checks:
-    name: Quality Checks (Format, Lint, Test)
+    name: format/lint/test
     runs-on: ubuntu-latest
 
     steps:
