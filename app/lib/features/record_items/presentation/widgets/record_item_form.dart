@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/providers/record_item_form_provider.dart';
+import '../../domain/record_item.dart';
 
-/// 記録項目作成フォームウィジェット
+/// 記録項目作成・編集フォームウィジェット
 class RecordItemForm extends ConsumerStatefulWidget {
   const RecordItemForm({
     super.key,
     required this.userId,
+    this.initialItem,
     this.onSuccess,
     this.onCancel,
   });
 
   final String userId;
+  final RecordItem? initialItem;
   final VoidCallback? onSuccess;
   final VoidCallback? onCancel;
 
@@ -28,9 +31,32 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _unitController = TextEditingController();
+    // 編集モードの場合は初期値を設定
+    final initialItem = widget.initialItem;
+    _titleController = TextEditingController(text: initialItem?.title ?? '');
+    _descriptionController = TextEditingController(
+      text: initialItem?.description ?? '',
+    );
+    _unitController = TextEditingController(text: initialItem?.unit ?? '');
+
+    // 編集モードの場合は初期値をProviderに設定
+    if (initialItem != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(recordItemFormProvider.notifier)
+            .updateTitle(initialItem.title);
+        if (initialItem.description != null) {
+          ref
+              .read(recordItemFormProvider.notifier)
+              .updateDescription(initialItem.description!);
+        }
+        if (initialItem.unit != null) {
+          ref
+              .read(recordItemFormProvider.notifier)
+              .updateUnit(initialItem.unit!);
+        }
+      });
+    }
 
     // TextEditingControllerの変更をProviderに同期
     _titleController.addListener(() {
@@ -176,7 +202,7 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
                             width: 20,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                          : const Text('作成'),
+                          : Text(widget.initialItem != null ? '更新' : '作成'),
                 ),
               ),
             ],
@@ -188,9 +214,17 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
 
   /// フォーム送信処理
   Future<void> _onSubmit() async {
-    final success = await ref
-        .read(recordItemFormProvider.notifier)
-        .submit(widget.userId);
+    final success =
+        widget.initialItem != null
+            ? await ref
+                .read(recordItemFormProvider.notifier)
+                .update(
+                  userId: widget.userId,
+                  recordItemId: widget.initialItem!.id,
+                )
+            : await ref
+                .read(recordItemFormProvider.notifier)
+                .submit(widget.userId);
 
     if (success && widget.onSuccess != null) {
       widget.onSuccess!();

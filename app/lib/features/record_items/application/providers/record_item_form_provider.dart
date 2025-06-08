@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../use_cases/create_record_item_usecase.dart';
+import '../use_cases/update_record_item_usecase.dart';
 import 'record_items_provider.dart';
 
 part 'record_item_form_provider.freezed.dart';
@@ -31,18 +32,28 @@ final createRecordItemUseCaseProvider = Provider<CreateRecordItemUseCase>((
   return CreateRecordItemUseCase(repository);
 });
 
+/// UpdateRecordItemUseCaseのプロバイダ
+final updateRecordItemUseCaseProvider = Provider<UpdateRecordItemUseCase>((
+  ref,
+) {
+  final repository = ref.watch(recordItemRepositoryProvider);
+  return UpdateRecordItemUseCase(repository);
+});
+
 /// 記録項目フォームの状態管理プロバイダ
 final recordItemFormProvider =
     StateNotifierProvider<RecordItemFormNotifier, RecordItemFormState>((ref) {
       final createUseCase = ref.watch(createRecordItemUseCaseProvider);
-      return RecordItemFormNotifier(createUseCase);
+      final updateUseCase = ref.watch(updateRecordItemUseCaseProvider);
+      return RecordItemFormNotifier(createUseCase, updateUseCase);
     });
 
 /// 記録項目フォームの状態管理クラス
 class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
   final CreateRecordItemUseCase _createUseCase;
+  final UpdateRecordItemUseCase _updateUseCase;
 
-  RecordItemFormNotifier(this._createUseCase)
+  RecordItemFormNotifier(this._createUseCase, this._updateUseCase)
     : super(const RecordItemFormState());
 
   /// タイトルを更新
@@ -97,6 +108,43 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
 
       // 成功時はフォームをリセット
       state = const RecordItemFormState();
+      return true;
+    } catch (error) {
+      // エラー時はエラーメッセージを設定
+      state = state.copyWith(
+        isSubmitting: false,
+        errorMessage: error.toString(),
+      );
+      return false;
+    }
+  }
+
+  /// 記録項目を更新
+  Future<bool> update({
+    required String userId,
+    required String recordItemId,
+  }) async {
+    // バリデーション
+    if (!state.isValid) {
+      state = state.copyWith(errorMessage: 'タイトルを入力してください');
+      return false;
+    }
+
+    // submission開始
+    state = state.copyWith(isSubmitting: true, errorMessage: null);
+
+    try {
+      // 記録項目を更新
+      await _updateUseCase.execute(
+        userId: userId,
+        recordItemId: recordItemId,
+        title: state.title,
+        description: state.description,
+        unit: state.unit,
+      );
+
+      // 成功時は処理完了状態にする（フォームはリセットしない）
+      state = state.copyWith(isSubmitting: false);
       return true;
     } catch (error) {
       // エラー時はエラーメッセージを設定
