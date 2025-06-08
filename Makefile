@@ -11,22 +11,22 @@ melos:
 	dart pub global activate melos
 
 melos_bs:
-	dart pub get
+	melos bootstrap
 
 gen:
-	melos run gen
+	melos run gen --no-select
 
 flutterfire_cli:
 	fvm dart pub global activate flutterfire_cli
 
 format:
-	melos run format
+	melos run format --no-select
 
 lint:
-	melos run lint
+	melos run lint --no-select
 
 test:
-	melos run test
+	melos run test --no-select
 
 cc:
 	npx ccusage@latest
