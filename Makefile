@@ -29,7 +29,7 @@ lint-md:
 	npx markdownlint-cli2 "**/*.md" "#**/.dart_tool" "#**/.fvm" "#**/ios"
 
 test:
-	melos run test --no-select
+	melos run test
 
 cc:
 	npx ccusage@latest
