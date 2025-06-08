@@ -37,7 +37,7 @@ class FakeRecordItemRepository implements IRecordItemRepository {
     if (_exception != null) return Stream.error(_exception!);
     return Stream.value(
       _items.where((item) => item.userId == userId).toList()
-        ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder))
+        ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
     );
   }
 
@@ -57,14 +57,18 @@ class FakeRecordItemRepository implements IRecordItemRepository {
   @override
   Future<void> delete(String userId, String recordItemId) async {
     if (_exception != null) throw _exception!;
-    _items.removeWhere((item) => item.id == recordItemId && item.userId == userId);
+    _items.removeWhere(
+      (item) => item.id == recordItemId && item.userId == userId,
+    );
   }
 
   @override
   Future<RecordItem?> getById(String userId, String recordItemId) async {
     if (_exception != null) throw _exception!;
     try {
-      return _items.firstWhere((item) => item.id == recordItemId && item.userId == userId);
+      return _items.firstWhere(
+        (item) => item.id == recordItemId && item.userId == userId,
+      );
     } catch (_) {
       return null;
     }
@@ -75,7 +79,10 @@ class FakeRecordItemRepository implements IRecordItemRepository {
     if (_exception != null) throw _exception!;
     final userItems = _items.where((item) => item.userId == userId).toList();
     if (userItems.isEmpty) return 0;
-    return userItems.map((item) => item.sortOrder).reduce((a, b) => a > b ? a : b) + 1;
+    return userItems
+            .map((item) => item.sortOrder)
+            .reduce((a, b) => a > b ? a : b) +
+        1;
   }
 }
 
@@ -108,16 +115,12 @@ void main() {
       );
     }
 
-    Widget createTestWidget({
-      String userId = 'test-user-id',
-    }) {
+    Widget createTestWidget({String userId = 'test-user-id'}) {
       return ProviderScope(
         overrides: [
           recordItemRepositoryProvider.overrideWithValue(fakeRepository),
         ],
-        child: MaterialApp(
-          home: RecordItemsListPage(userId: userId),
-        ),
+        child: MaterialApp(home: RecordItemsListPage(userId: userId)),
       );
     }
 
@@ -303,7 +306,7 @@ void main() {
     group('リアルタイム更新', () {
       testWidgets('StreamProviderが使用されている', (tester) async {
         const userId = 'test-user-id';
-        
+
         // 初期状態は空
         fakeRepository.setItems([]);
 
@@ -311,7 +314,7 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(find.text('記録項目がありません'), findsOneWidget);
-        
+
         // StreamProviderが実際に使用されていることを確認
         // （実際のリアルタイム更新はFakeRepositoryの制約上、統合テストで確認）
         expect(find.byType(RecordItemsListPage), findsOneWidget);

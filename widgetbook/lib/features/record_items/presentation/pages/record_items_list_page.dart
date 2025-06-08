@@ -23,33 +23,35 @@ class MockRecordItemRepository implements IRecordItemRepository {
   Stream<List<RecordItem>> watchByUserId(String userId) {
     return Stream.value(
       _mockItems.where((item) => item.userId == userId).toList()
-        ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder))
+        ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
     );
   }
 
   @override
-  Future<void> create(RecordItem recordItem) async => throw UnimplementedError();
+  Future<void> create(RecordItem recordItem) async =>
+      throw UnimplementedError();
 
   @override
-  Future<void> update(RecordItem recordItem) async => throw UnimplementedError();
+  Future<void> update(RecordItem recordItem) async =>
+      throw UnimplementedError();
 
   @override
-  Future<void> delete(String userId, String recordItemId) async => throw UnimplementedError();
+  Future<void> delete(String userId, String recordItemId) async =>
+      throw UnimplementedError();
 
   @override
-  Future<RecordItem?> getById(String userId, String recordItemId) async => throw UnimplementedError();
+  Future<RecordItem?> getById(String userId, String recordItemId) async =>
+      throw UnimplementedError();
 
   @override
-  Future<int> getNextSortOrder(String userId) async => throw UnimplementedError();
+  Future<int> getNextSortOrder(String userId) async =>
+      throw UnimplementedError();
 }
 
-@widgetbook.UseCase(
-  name: 'Default',
-  type: RecordItemsListPage,
-)
+@widgetbook.UseCase(name: 'Default', type: RecordItemsListPage)
 Widget recordItemsListPageDefault(BuildContext context) {
   const userId = 'widgetbook-user';
-  
+
   final mockItems = [
     RecordItem(
       id: '1',
@@ -92,10 +94,7 @@ Widget recordItemsListPageDefault(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(
-  name: 'Empty List',
-  type: RecordItemsListPage,
-)
+@widgetbook.UseCase(name: 'Empty List', type: RecordItemsListPage)
 Widget recordItemsListPageEmpty(BuildContext context) {
   const userId = 'widgetbook-user';
 
@@ -109,28 +108,20 @@ Widget recordItemsListPageEmpty(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(
-  name: 'Loading State',
-  type: RecordItemsListPage,
-)
+@widgetbook.UseCase(name: 'Loading State', type: RecordItemsListPage)
 Widget recordItemsListPageLoading(BuildContext context) {
   const userId = 'widgetbook-user';
 
   // 長時間のローディングを模擬
   final mockRepository = MockRecordItemRepository([]);
-  
+
   return ProviderScope(
-    overrides: [
-      recordItemRepositoryProvider.overrideWithValue(mockRepository),
-    ],
+    overrides: [recordItemRepositoryProvider.overrideWithValue(mockRepository)],
     child: const RecordItemsListPage(userId: userId),
   );
 }
 
-@widgetbook.UseCase(
-  name: 'Error State',
-  type: RecordItemsListPage,
-)
+@widgetbook.UseCase(name: 'Error State', type: RecordItemsListPage)
 Widget recordItemsListPageError(BuildContext context) {
   const userId = 'widgetbook-user';
 
@@ -145,13 +136,10 @@ Widget recordItemsListPageError(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(
-  name: 'Many Items',
-  type: RecordItemsListPage,
-)
+@widgetbook.UseCase(name: 'Many Items', type: RecordItemsListPage)
 Widget recordItemsListPageManyItems(BuildContext context) {
   const userId = 'widgetbook-user';
-  
+
   // 大量のデータを生成
   final mockItems = List.generate(20, (index) {
     return RecordItem(
@@ -189,17 +177,22 @@ class _ErrorMockRepository implements IRecordItemRepository {
   }
 
   @override
-  Future<void> create(RecordItem recordItem) async => throw UnimplementedError();
+  Future<void> create(RecordItem recordItem) async =>
+      throw UnimplementedError();
 
   @override
-  Future<void> update(RecordItem recordItem) async => throw UnimplementedError();
+  Future<void> update(RecordItem recordItem) async =>
+      throw UnimplementedError();
 
   @override
-  Future<void> delete(String userId, String recordItemId) async => throw UnimplementedError();
+  Future<void> delete(String userId, String recordItemId) async =>
+      throw UnimplementedError();
 
   @override
-  Future<RecordItem?> getById(String userId, String recordItemId) async => throw UnimplementedError();
+  Future<RecordItem?> getById(String userId, String recordItemId) async =>
+      throw UnimplementedError();
 
   @override
-  Future<int> getNextSortOrder(String userId) async => throw UnimplementedError();
+  Future<int> getNextSortOrder(String userId) async =>
+      throw UnimplementedError();
 }
