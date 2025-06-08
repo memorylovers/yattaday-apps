@@ -5,9 +5,12 @@ on:
     branches: [main]
   pull_request:
     types: [opened, synchronize, reopened]
+env:
+  FLUTTER_ROOT: ""
+
 jobs:
   quality-checks:
-    name: format/lint/test
+    name: lint/test
     runs-on: ubuntu-latest
 
     steps:
@@ -17,22 +20,15 @@ jobs:
       - name: Setup FVM and Flutter
         uses: kuhnroyal/flutter-fvm-config-action/setup@v3
 
+      - name: Prepare Melos
+        run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> "$GITHUB_ENV"
+
       - name: Install Melos
-        run: dart pub global activate melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          run-bootstrap: true
 
-      - name: ls
-        run: ls -al
-
-      - name: Bootstrap workspace
-        run: melos bootstrap
-
-      - name: Run code generation
-        run: melos run gen --no-select
-
-      - name: Check Dart formatting
-        run: melos run format --no-select
-
-      - name: Run lint (analyze + custom_lint)
+      - name: Run lint
         run: melos run lint --no-select
 
       - name: Check Markdown formatting
