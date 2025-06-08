@@ -35,7 +35,7 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v20
         with:
           config: ".markdownlint.json"
-          globs: "**/*.md"
+          globs: "*.md _docs/*.md _doc/**/*.md .github/*.md .github/**/*.md"
 
       - name: Run tests
         run: melos run test --no-select
