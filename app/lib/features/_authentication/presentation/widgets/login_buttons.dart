@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../../_gen/i18n/strings.g.dart';
 
-class LoginButton extends StatelessWidget {
-  const LoginButton({
-    super.key,
+class _LoginButton extends StatelessWidget {
+  const _LoginButton({
     required this.isLoading,
     required this.icon,
     required this.label,
@@ -30,6 +30,64 @@ class LoginButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         ),
       ),
+    );
+  }
+}
+
+class GoogleLoginButton extends StatelessWidget {
+  const GoogleLoginButton({super.key, required this.isLoading, this.onPressed});
+
+  final bool isLoading;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return _LoginButton(
+      isLoading: isLoading,
+      icon: Icons.g_mobiledata,
+      label: i18n.login.googleSignIn,
+      onPressed: onPressed,
+      semanticsId: 'google_login_button',
+    );
+  }
+}
+
+class AppleLoginButton extends StatelessWidget {
+  const AppleLoginButton({super.key, required this.isLoading, this.onPressed});
+
+  final bool isLoading;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return _LoginButton(
+      isLoading: isLoading,
+      icon: Icons.apple,
+      label: i18n.login.appleSignIn,
+      onPressed: onPressed,
+      semanticsId: 'apple_login_button',
+    );
+  }
+}
+
+class AnonymousLoginButton extends StatelessWidget {
+  const AnonymousLoginButton({
+    super.key,
+    required this.isLoading,
+    this.onPressed,
+  });
+
+  final bool isLoading;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return _LoginButton(
+      isLoading: isLoading,
+      icon: Icons.person_outline,
+      label: i18n.login.anonymousSignIn,
+      onPressed: onPressed,
+      semanticsId: 'anonymous_login_button',
     );
   }
 }
