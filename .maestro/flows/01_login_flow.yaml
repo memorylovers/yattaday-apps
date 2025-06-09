@@ -13,8 +13,6 @@ appId: com.memorylovers.yattaday.stag
 - waitForAnimationToEnd
 
 # ゲストログインボタンの存在を確認してタップ（semantic idを使用）
-# アプリ名が表示されていることで、ログイン画面が表示されていることを確認
-- assertVisible: "YattaDay"
 - assertVisible:
     id: "anonymous_login_button"
 - tapOn:

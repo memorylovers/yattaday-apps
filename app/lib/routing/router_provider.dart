@@ -16,7 +16,9 @@ import 'router_routes.dart';
 part 'router_provider.g.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: "route");
-final recordItemsTabKey = GlobalKey<NavigatorState>(debugLabel: "recordItemsTab");
+final recordItemsTabKey = GlobalKey<NavigatorState>(
+  debugLabel: "recordItemsTab",
+);
 final settingTabKey = GlobalKey<NavigatorState>(debugLabel: "settingTab");
 
 BuildContext? get rootContext =>

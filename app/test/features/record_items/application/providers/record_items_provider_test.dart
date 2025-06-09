@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:myapp/features/_authentication/application/auth_providers.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
@@ -214,10 +215,16 @@ void main() {
 
         fakeRepository.setItems(initialItems);
 
-        // Act
-        final result = await container.read(
-          watchRecordItemsProvider(userId).future,
+        // authUidProviderをオーバーライド
+        container = ProviderContainer(
+          overrides: [
+            recordItemRepositoryProvider.overrideWithValue(fakeRepository),
+            authUidProvider.overrideWith((ref) async => userId),
+          ],
         );
+
+        // Act
+        final result = await container.read(watchRecordItemsProvider.future);
 
         // Assert
         expect(result, equals(initialItems));
@@ -228,10 +235,16 @@ void main() {
         const userId = 'user123';
         fakeRepository.setItems(<RecordItem>[]);
 
-        // Act
-        final result = await container.read(
-          watchRecordItemsProvider(userId).future,
+        // authUidProviderをオーバーライド
+        container = ProviderContainer(
+          overrides: [
+            recordItemRepositoryProvider.overrideWithValue(fakeRepository),
+            authUidProvider.overrideWith((ref) async => userId),
+          ],
         );
+
+        // Act
+        final result = await container.read(watchRecordItemsProvider.future);
 
         // Assert
         expect(result, isEmpty);
@@ -242,12 +255,36 @@ void main() {
         const userId = 'user123';
         fakeRepository.setException(Exception('Network error'));
 
+        // authUidProviderをオーバーライド
+        container = ProviderContainer(
+          overrides: [
+            recordItemRepositoryProvider.overrideWithValue(fakeRepository),
+            authUidProvider.overrideWith((ref) async => userId),
+          ],
+        );
+
         // Act & Assert
         expect(
-          () async =>
-              await container.read(watchRecordItemsProvider(userId).future),
+          () async => await container.read(watchRecordItemsProvider.future),
           throwsA(isA<Exception>()),
         );
+      });
+
+      test('未認証の場合は空のリストを返す', () async {
+        // Arrange
+        // authUidProviderがnullを返すようにオーバーライド
+        container = ProviderContainer(
+          overrides: [
+            recordItemRepositoryProvider.overrideWithValue(fakeRepository),
+            authUidProvider.overrideWith((ref) async => null),
+          ],
+        );
+
+        // Act
+        final result = await container.read(watchRecordItemsProvider.future);
+
+        // Assert
+        expect(result, isEmpty);
       });
     });
   });

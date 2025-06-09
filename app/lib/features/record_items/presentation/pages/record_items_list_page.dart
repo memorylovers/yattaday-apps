@@ -33,8 +33,7 @@ class RecordItemsListPage extends ConsumerWidget {
                   const Text('エラーが発生しました', style: TextStyle(fontSize: 16)),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed:
-                        () => ref.refresh(watchRecordItemsProvider),
+                    onPressed: () => ref.refresh(watchRecordItemsProvider),
                     child: const Text('再試行'),
                   ),
                 ],

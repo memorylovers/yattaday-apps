@@ -25,7 +25,9 @@
       "WebFetch(domain:github.com)",
       "Bash(cp:*)",
       "Bash(maestro test:*)",
-      "WebFetch(domain:docs.maestro.dev)"
+      "WebFetch(domain:docs.maestro.dev)",
+      "Bash(maestro hierarchy:*)",
+      "Bash(adb install:*)"
     ],
     "deny": [
       "Read(../**)",

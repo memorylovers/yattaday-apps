@@ -50,7 +50,11 @@ class LoginPageRoute extends GoRouteData {
 @TypedStatefulShellRoute<HomePageLaytoutRoute>(
   branches: [
     TypedStatefulShellBranch<RecordItemsListPageBranch>(
-      routes: [TypedGoRoute<RecordItemsListPageRoute>(path: RecordItemsListPageRoute.path)],
+      routes: [
+        TypedGoRoute<RecordItemsListPageRoute>(
+          path: RecordItemsListPageRoute.path,
+        ),
+      ],
     ),
     TypedStatefulShellBranch<SettingsPageBranch>(
       routes: [

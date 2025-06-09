@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:myapp/features/_authentication/application/auth_providers.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
@@ -119,8 +120,9 @@ void main() {
       return ProviderScope(
         overrides: [
           recordItemRepositoryProvider.overrideWithValue(fakeRepository),
+          authUidProvider.overrideWith((ref) async => userId),
         ],
-        child: MaterialApp(home: RecordItemsListPage(userId: userId)),
+        child: const MaterialApp(home: RecordItemsListPage()),
       );
     }
 
