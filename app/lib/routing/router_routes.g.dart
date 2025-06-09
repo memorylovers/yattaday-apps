@@ -62,14 +62,14 @@ RouteBase get $homePageLaytoutRoute => StatefulShellRouteData.$route(
   factory: $HomePageLaytoutRouteExtension._fromState,
   branches: [
     StatefulShellBranchData.$branch(
-      navigatorKey: FooPageBranch.$navigatorKey,
-      restorationScopeId: FooPageBranch.$restorationScopeId,
+      navigatorKey: RecordItemsListPageBranch.$navigatorKey,
+      restorationScopeId: RecordItemsListPageBranch.$restorationScopeId,
 
       routes: [
         GoRouteData.$route(
-          path: '/foo',
+          path: '/record-items',
 
-          factory: $FooPageRouteExtension._fromState,
+          factory: $RecordItemsListPageRouteExtension._fromState,
         ),
       ],
     ),
@@ -100,10 +100,11 @@ extension $HomePageLaytoutRouteExtension on HomePageLaytoutRoute {
       const HomePageLaytoutRoute();
 }
 
-extension $FooPageRouteExtension on FooPageRoute {
-  static FooPageRoute _fromState(GoRouterState state) => const FooPageRoute();
+extension $RecordItemsListPageRouteExtension on RecordItemsListPageRoute {
+  static RecordItemsListPageRoute _fromState(GoRouterState state) =>
+      const RecordItemsListPageRoute();
 
-  String get location => GoRouteData.$location('/foo');
+  String get location => GoRouteData.$location('/record-items');
 
   void go(BuildContext context) => context.go(location);
 

@@ -7,13 +7,11 @@ import '../widgets/record_item_list_view.dart';
 
 /// 記録項目一覧画面
 class RecordItemsListPage extends ConsumerWidget {
-  const RecordItemsListPage({super.key, required this.userId});
-
-  final String userId;
+  const RecordItemsListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordItemsAsync = ref.watch(watchRecordItemsProvider(userId));
+    final recordItemsAsync = ref.watch(watchRecordItemsProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('記録項目')),
@@ -36,7 +34,7 @@ class RecordItemsListPage extends ConsumerWidget {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed:
-                        () => ref.refresh(watchRecordItemsProvider(userId)),
+                        () => ref.refresh(watchRecordItemsProvider),
                     child: const Text('再試行'),
                   ),
                 ],

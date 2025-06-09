@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../_authentication/application/auth_providers.dart';
 import '../../data/repository/firebase_record_item_repository.dart';
 import '../../data/repository/record_item_repository.dart';
 import '../../domain/record_item.dart';
@@ -28,8 +29,12 @@ final recordItemsProvider = FutureProvider.family<List<RecordItem>, String>((
 });
 
 /// 指定したユーザーの記録項目一覧をリアルタイム監視するプロバイダ
-final watchRecordItemsProvider =
-    StreamProvider.family<List<RecordItem>, String>((ref, userId) {
-      final useCase = ref.watch(fetchRecordItemsUseCaseProvider);
-      return useCase.watch(userId);
-    });
+final watchRecordItemsProvider = StreamProvider<List<RecordItem>>((ref) async* {
+  final userId = await ref.watch(authUidProvider.future);
+  if (userId == null) {
+    yield [];
+    return;
+  }
+  final useCase = ref.watch(fetchRecordItemsUseCaseProvider);
+  yield* useCase.watch(userId);
+});
