@@ -90,41 +90,35 @@ Widget recordItemsListPageDefault(BuildContext context) {
         MockRecordItemRepository(mockItems),
       ),
     ],
-    child: const RecordItemsListPage(userId: userId),
+    child: const RecordItemsListPage(),
   );
 }
 
 @widgetbook.UseCase(name: 'Empty List', type: RecordItemsListPage)
 Widget recordItemsListPageEmpty(BuildContext context) {
-  const userId = 'widgetbook-user';
-
   return ProviderScope(
     overrides: [
       recordItemRepositoryProvider.overrideWithValue(
         MockRecordItemRepository([]), // 空のリスト
       ),
     ],
-    child: const RecordItemsListPage(userId: userId),
+    child: const RecordItemsListPage(),
   );
 }
 
 @widgetbook.UseCase(name: 'Loading State', type: RecordItemsListPage)
 Widget recordItemsListPageLoading(BuildContext context) {
-  const userId = 'widgetbook-user';
-
   // 長時間のローディングを模擬
   final mockRepository = MockRecordItemRepository([]);
 
   return ProviderScope(
     overrides: [recordItemRepositoryProvider.overrideWithValue(mockRepository)],
-    child: const RecordItemsListPage(userId: userId),
+    child: const RecordItemsListPage(),
   );
 }
 
 @widgetbook.UseCase(name: 'Error State', type: RecordItemsListPage)
 Widget recordItemsListPageError(BuildContext context) {
-  const userId = 'widgetbook-user';
-
   /// エラー用のモックリポジトリ
   final errorRepository = _ErrorMockRepository();
 
@@ -132,7 +126,7 @@ Widget recordItemsListPageError(BuildContext context) {
     overrides: [
       recordItemRepositoryProvider.overrideWithValue(errorRepository),
     ],
-    child: const RecordItemsListPage(userId: userId),
+    child: const RecordItemsListPage(),
   );
 }
 
@@ -160,7 +154,7 @@ Widget recordItemsListPageManyItems(BuildContext context) {
         MockRecordItemRepository(mockItems),
       ),
     ],
-    child: const RecordItemsListPage(userId: userId),
+    child: const RecordItemsListPage(),
   );
 }
 
