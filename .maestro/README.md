@@ -67,28 +67,33 @@ fvm flutter build apk --debug --flavor dev               # Android
 ## テストフローの構成
 
 ### 00_install_app.yaml
+
 - アプリのインストールと初期設定
 - 権限の許可
 - 初回起動の確認
 
 ### 01_login_flow.yaml
+
 - ゲストログイン
 - Googleログイン（シミュレート）
 - Appleログイン（iOSのみ）
 
 ### 02_record_item_create_flow.yaml
+
 - 新規記録項目の作成
 - バリデーションエラーのテスト
 - 複数項目の作成
 - 作成のキャンセル
 
 ### 03_record_item_edit_delete_flow.yaml
+
 - 記録項目の編集
 - 個別削除
 - 削除のキャンセル
 - スワイプ削除（iOSのみ）
 
 ### 04_end_to_end_flow.yaml
+
 - アプリの初回起動から基本操作まで
 - ゲストログインから記録項目作成
 - 記録の追加
@@ -122,6 +127,7 @@ Semantics(
 ### ベストプラクティス
 
 1. **待機時間の適切な設定**
+
    ```yaml
    - assertVisible:
        text: "記録項目"
@@ -129,6 +135,7 @@ Semantics(
    ```
 
 2. **条件付き実行**
+
    ```yaml
    - runFlow:
        when:
@@ -139,11 +146,13 @@ Semantics(
    ```
 
 3. **スクリーンショットの活用**
+
    ```yaml
    - takeScreenshot: "test_step_completed"
    ```
 
 4. **プラットフォーム固有の処理**
+
    ```yaml
    - runFlow:
        when:
@@ -156,6 +165,7 @@ Semantics(
 ## トラブルシューティング
 
 ### アプリが見つからない場合
+
 ```bash
 # アプリIDを確認
 maestro app-info
@@ -166,11 +176,13 @@ fvm flutter build ios --debug --flavor dev
 ```
 
 ### テストが失敗する場合
+
 1. スクリーンショットを確認: `.maestro/screenshots/`
 2. タイムアウトを増やす
 3. Semantics IDが正しく設定されているか確認
 
 ### デバイスの問題
+
 ```bash
 # iOSシミュレータのリスト
 xcrun simctl list devices
