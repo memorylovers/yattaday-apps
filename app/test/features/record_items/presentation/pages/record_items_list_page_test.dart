@@ -120,6 +120,7 @@ void main() {
       return ProviderScope(
         overrides: [
           recordItemRepositoryProvider.overrideWithValue(fakeRepository),
+          // ignore: scoped_providers_should_specify_dependencies
           authUidProvider.overrideWith((ref) async => userId),
         ],
         child: const MaterialApp(home: RecordItemsListPage()),
