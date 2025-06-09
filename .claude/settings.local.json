@@ -22,8 +22,12 @@
       "Bash(make:*)",
       "Bash(touch:*)",
       "Bash(ls:*)",
+      "Bash(cp:*)",
+      "Bash(maestro:*)",
+      "Bash(adb:*)",
+      "Bash(test:*)",
       "WebFetch(domain:github.com)",
-      "Bash(cp:*)"
+      "Bash(fuser:*)"
     ],
     "deny": [
       "Read(../**)",

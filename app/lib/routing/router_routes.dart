@@ -5,8 +5,8 @@ import '../features/_authentication/presentation/login_page.dart';
 import '../features/_payment/presentation/payment_page.dart';
 import '../features/_startup/presentation/startup_page.dart';
 import '../features/account/presentation/settings_page.dart';
-import '../features/foo/presentation/foo_page.dart';
 import '../features/home/presentation/home_page_layout.dart';
+import '../features/record_items/presentation/pages/record_items_list_page.dart';
 import 'router_provider.dart';
 
 part 'router_routes.g.dart';
@@ -18,7 +18,7 @@ final initialPath = StartupPageRoute.path;
 final loginPath = LoginPageRoute.path;
 
 /// ログイン済みの画面
-final homePath = FooPageRoute.path;
+final homePath = RecordItemsListPageRoute.path;
 
 /// /startup: Startup
 @TypedGoRoute<StartupPageRoute>(path: StartupPageRoute.path)
@@ -49,12 +49,13 @@ class LoginPageRoute extends GoRouteData {
 /// ホーム画面のレイアウト
 @TypedStatefulShellRoute<HomePageLaytoutRoute>(
   branches: [
-    TypedStatefulShellBranch<FooPageBranch>(
-      routes: [TypedGoRoute<FooPageRoute>(path: FooPageRoute.path)],
+    TypedStatefulShellBranch<RecordItemsListPageBranch>(
+      routes: [
+        TypedGoRoute<RecordItemsListPageRoute>(
+          path: RecordItemsListPageRoute.path,
+        ),
+      ],
     ),
-    // TypedStatefulShellBranch<MemoListPageBranch>(
-    //   routes: [TypedGoRoute<MemoListPageRoute>(path: MemoListPageRoute.path)],
-    // ),
     TypedStatefulShellBranch<SettingsPageBranch>(
       routes: [
         TypedGoRoute<SettingsPageRoute>(
@@ -81,20 +82,21 @@ class HomePageLaytoutRoute extends StatefulShellRouteData {
   }
 }
 
-/// /foo: サンプル画面
-class FooPageRoute extends GoRouteData {
-  const FooPageRoute();
+/// /record-items: 記録項目一覧画面
+class RecordItemsListPageRoute extends GoRouteData {
+  const RecordItemsListPageRoute();
 
-  static const path = '/foo';
+  static const path = '/record-items';
 
   @override
-  Page<void> buildPage(BuildContext context, GoRouterState state) {
-    return const MaterialPage(child: FooPage(), name: path);
+  Widget build(BuildContext context, GoRouterState state) {
+    // RecordItemsListPageWithAuth を作成して認証済みユーザーIDを渡す
+    return const RecordItemsListPage();
   }
 }
 
-class FooPageBranch extends StatefulShellBranchData {
-  static final GlobalKey<NavigatorState> $navigatorKey = fooTabKey;
+class RecordItemsListPageBranch extends StatefulShellBranchData {
+  static final GlobalKey<NavigatorState> $navigatorKey = recordItemsTabKey;
   static const String $restorationScopeId = 'restorationScopeId';
 }
 

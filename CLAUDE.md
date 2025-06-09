@@ -72,6 +72,55 @@ features/feature_name/
 
 具体的なテスト実装方法は [コーディングスタイル - TDD](_docs/10_cording_style_flutter.md#tddテスト駆動開発) を参照してください。
 
+### **🔥 コード実装時の必須チェックリスト**
+
+**すべてのコード実装（UseCase・Provider・Widget・Page）で必須**
+
+#### **実装完了後の必須実行コマンド（絶対忘れるな！）**
+
+1. **フォーマット**: `make format` - コードスタイル統一
+2. **コード生成**: `make gen` - Freezed・build_runner実行
+3. **リント**: `make lint` - 静的解析チェック
+4. **テスト**: `make test` - 全テスト実行
+
+#### **⚠️ 絶対ルール**
+
+- **実装完了後、必ず4つのコマンドを順番通り実行**
+- **コミット前に必ず実行確認**
+- **エラーが出た場合は必ず修正してからコミット**
+- **忘れた場合は即座に実行してコミット修正**
+
+### **🔥 Widget/Page実装時の必須チェックリスト**
+
+**すべてのPresentation層コンポーネント（Widget・Page）で必須**
+
+#### **実装フロー（厳守）**
+
+1. **テスト作成**: Red フェーズ
+2. **Widget/Page実装**: Green フェーズ
+3. **Widgetbook実装**: **必須** - UIカタログ追加
+4. **コード生成**: `fvm flutter packages pub run build_runner build`
+
+#### **Widgetbook要件**
+
+- [ ] **最低3つのUseCase**: Default・Error・Edge Case
+- [ ] **MockRepository**: 各状態を模擬するリポジトリ
+- [ ] **実際のデータ**: リアルなサンプルデータ使用
+- [ ] **コールバック**: onSuccess・onError等の動作確認
+
+#### **完了確認**
+
+- [ ] **テスト全通過**: `fvm flutter test`
+- [ ] **Widgetbook登録確認**: `lib/main.directories.g.dart`で確認
+- [ ] **動作確認**: 各UseCaseの表示・操作確認
+
+#### **⚠️ 重要ルール**
+
+- **Widget実装完了 = Widgetbook実装完了**
+- **Widgetbookを忘れた場合は即座に作成**
+- **コミット前にWidgetbook確認必須**
+- **レビュー時にWidgetbook動作確認**
+
 ## 開発ガイドライン
 
 ### Issue駆動開発フロー

@@ -1,0 +1,50 @@
+# RecordItem作成フローのE2Eテスト
+# 記録項目の作成、検証、エラーケースをテスト
+
+appId: com.memorylovers.yattaday.stag
+
+---
+
+# 前提条件: ログイン済みの状態を作る
+- launchApp:
+    appId: com.memorylovers.yattaday.stag
+    clearState: true
+
+- waitForAnimationToEnd
+# アプリ名が表示されていることで、ログイン画面が表示されていることを確認
+- assertVisible: "YattaDay"
+- tapOn:
+    id: "anonymous_login_button"
+- waitForAnimationToEnd
+- assertVisible: "記録項目"
+
+# FABまたは追加ボタンをタップ
+- tapOn:
+    id: "add_record_item_fab"
+
+# 作成画面が表示されることを確認
+- waitForAnimationToEnd
+- assertVisible: "新しい記録項目"
+
+# タイトルを入力
+- tapOn:
+    id: "record_item_title_field"
+- inputText: "朝のジョギング"
+
+# 説明を入力（オプション）
+- tapOn:
+    id: "record_item_description_field"
+- inputText: "毎朝30分のジョギングを記録"
+
+# 保存ボタンをタップ
+- tapOn: "保存"
+
+# 一覧画面に戻ることを確認
+- waitForAnimationToEnd
+- assertVisible: "記録項目"
+
+# 作成した項目が表示されることを確認
+- assertVisible: "朝のジョギング"
+
+# スクリーンショットを撮影
+- takeScreenshot: "record_item_created"

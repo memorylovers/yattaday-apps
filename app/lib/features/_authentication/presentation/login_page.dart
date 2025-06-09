@@ -7,21 +7,8 @@ import '../../../_gen/assets/assets.gen.dart';
 import '../../../_gen/i18n/strings.g.dart';
 import '../../../common/types/types.dart';
 import '../../../common/utils/snack_bar_handler.dart';
-import '../../../components/buttons/buttons.dart';
 import '../application/auth_providers.dart';
-
-/// ログインボタンの要素
-typedef LoginButtonItem = ({String label, IconData icon, AuthType type});
-
-final List<LoginButtonItem> loginButtons = [
-  (label: i18n.login.googleSignIn, icon: Icons.login, type: AuthType.google),
-  (label: i18n.login.appleSignIn, icon: Icons.apple, type: AuthType.apple),
-  (
-    label: i18n.login.anonymousSignIn,
-    icon: Icons.person_outline,
-    type: AuthType.anonymous,
-  ),
-];
+import 'widgets/login_buttons.dart';
 
 /// ログイン画面
 class LoginPage extends HookConsumerWidget {
@@ -32,14 +19,14 @@ class LoginPage extends HookConsumerWidget {
     final isLoading = useState(false);
 
     /// ログイン押下時の処理
-    onClickLogin(LoginButtonItem v) async {
+    onClickLogin(AuthType authType) async {
       try {
         isLoading.value = true;
 
         // await Future.delayed(3.seconds);
 
         // throw AppException();
-        await ref.read(authStoreProvider.notifier).signIn(v.type);
+        await ref.read(authStoreProvider.notifier).signIn(authType);
       } catch (e) {
         if (!context.mounted) return;
 
@@ -81,14 +68,20 @@ class LoginPage extends HookConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        for (final v in loginButtons)
-                          Button(
-                            onPressed:
-                                isLoading.value ? null : () => onClickLogin(v),
-                            icon: v.icon,
-                            label: v.label,
-                            labelWidth: 200,
-                          ),
+                        GoogleLoginButton(
+                          isLoading: isLoading.value,
+                          onPressed: () => onClickLogin(AuthType.google),
+                        ),
+                        const Gap(8),
+                        AppleLoginButton(
+                          isLoading: isLoading.value,
+                          onPressed: () => onClickLogin(AuthType.apple),
+                        ),
+                        const Gap(8),
+                        AnonymousLoginButton(
+                          isLoading: isLoading.value,
+                          onPressed: () => onClickLogin(AuthType.anonymous),
+                        ),
                       ],
                     ),
                   ),

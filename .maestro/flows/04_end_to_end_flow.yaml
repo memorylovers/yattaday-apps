@@ -1,0 +1,59 @@
+# エンドツーエンド統合テスト
+# アプリの主要な機能を通しでテスト
+
+appId: com.memorylovers.yattaday.stag
+
+---
+
+# アプリを完全にリセットして起動
+- launchApp:
+    appId: com.memorylovers.yattaday.stag
+    clearState: true
+    clearKeychain: true
+
+# スプラッシュスクリーンまたは初期画面の確認
+- waitForAnimationToEnd
+
+# ログイン画面が表示される
+# アプリ名が表示されていることで、ログイン画面が表示されていることを確認
+- assertVisible: "YattaDay"
+- takeScreenshot: "app_first_launch"
+
+# ゲストとしてログイン
+- tapOn:
+    id: "anonymous_login_button"
+- waitForAnimationToEnd
+
+# ホーム画面（記録項目一覧）へ遷移
+- assertVisible: "記録項目"
+
+# 新規記録項目を作成（項目1）
+- tapOn:
+    id: "add_record_item_fab"
+- waitForAnimationToEnd
+- tapOn:
+    id: "record_item_title_field"
+- inputText: "毎日の運動"
+- tapOn:
+    id: "record_item_description_field"
+- inputText: "運動した時間を記録"
+- tapOn: "保存"
+- waitForAnimationToEnd
+
+# 新規記録項目を作成（項目2）
+- tapOn:
+    id: "add_record_item_fab"
+- waitForAnimationToEnd
+- tapOn:
+    id: "record_item_title_field"
+- inputText: "睡眠時間"
+- tapOn:
+    id: "record_item_description_field"
+- inputText: "睡眠の質と時間を記録"
+- tapOn: "保存"
+- waitForAnimationToEnd
+
+# 作成した項目が表示されることを確認
+- assertVisible: "毎日の運動"
+- assertVisible: "睡眠時間"
+- takeScreenshot: "all_items_created"
