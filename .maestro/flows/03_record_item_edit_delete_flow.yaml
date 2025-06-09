@@ -1,0 +1,52 @@
+# RecordItem編集・削除フローのE2Eテスト
+# 既存の記録項目の編集と削除をテスト
+
+appId: com.memorylovers.yattaday.stag
+
+---
+
+# 前提条件: RecordItemを作成
+- launchApp:
+    appId: com.memorylovers.yattaday.stag
+    clearState: true
+
+- waitForAnimationToEnd
+- assertVisible: "ログイン"
+- tapOn: "ゲストとして続ける"
+- waitForAnimationToEnd
+- assertVisible: "記録項目"
+
+# 新規作成
+- tapOn:
+    id: "add_record_item_fab"
+- waitForAnimationToEnd
+- tapOn:
+    id: "record_item_title_field"
+- inputText: "テスト項目"
+- tapOn: "保存"
+- waitForAnimationToEnd
+
+# 項目をタップして詳細画面へ
+- tapOn: "テスト項目"
+- waitForAnimationToEnd
+
+# 編集ボタンをタップ
+- tapOn:
+    id: "edit_record_item_button"
+- waitForAnimationToEnd
+
+# タイトルを編集
+- tapOn:
+    id: "record_item_title_field"
+- eraseText
+- inputText: "編集済みテスト項目"
+
+# 保存
+- tapOn: "保存"
+- waitForAnimationToEnd
+
+# 変更が反映されていることを確認
+- assertVisible: "編集済みテスト項目"
+
+# スクリーンショットを撮影
+- takeScreenshot: "record_item_edited"

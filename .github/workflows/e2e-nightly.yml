@@ -1,0 +1,79 @@
+name: Nightly E2E Tests
+
+on:
+  schedule:
+    # 毎日日本時間の午前2時に実行（UTC 17:00）
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.24.5'
+  JAVA_VERSION: '17'
+
+jobs:
+  e2e-full-test:
+    name: Full E2E Test Suite
+    runs-on: macos-latest
+    timeout-minutes: 60
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Setup FVM
+        run: |
+          dart pub global activate fvm
+          fvm install ${{ env.FLUTTER_VERSION }}
+          fvm use ${{ env.FLUTTER_VERSION }}
+
+      - name: Install Maestro
+        run: |
+          curl -Ls https://get.maestro.mobile.dev | bash
+          echo "${HOME}/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Run full test suite
+        run: |
+          # アプリのビルドとテスト実行
+          cd app
+          fvm flutter pub get
+          
+          # iOS用ビルド
+          fvm flutter build ios --debug --flavor dev --simulator --no-codesign
+          
+          # Android用ビルド
+          fvm flutter build apk --debug --flavor dev
+          
+          cd ..
+          
+          # 全てのテストを実行
+          bash _scripts/run_maestro_tests.sh
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-test-results-${{ github.run_number }}
+          path: |
+            .maestro/reports/
+            .maestro/screenshots/
+          retention-days: 30
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Slack通知やGitHub Issueの作成など
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `[E2E] Nightly test failed - ${new Date().toISOString().split('T')[0]}`,
+              body: `Nightly E2E tests failed.\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              labels: ['bug', 'e2e-test']
+            });

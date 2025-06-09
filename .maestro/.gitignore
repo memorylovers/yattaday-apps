@@ -1,0 +1,18 @@
+# Maestro関連の無視ファイル
+
+# スクリーンショット
+screenshots/
+*.png
+*.jpg
+
+# テスト結果レポート
+reports/
+*.html
+*.xml
+
+# 一時ファイル
+*.tmp
+.DS_Store
+
+# ローカル設定
+local-config.yaml

@@ -31,5 +31,32 @@ lint-md:
 test:
 	melos run test
 
+# Maestro E2Eテスト
+e2e:
+	./_scripts/run_maestro_tests.sh
+
+e2e-ios:
+	./_scripts/run_maestro_tests.sh --ios
+
+e2e-android:
+	./_scripts/run_maestro_tests.sh --android
+
+e2e-login:
+	./_scripts/run_maestro_tests.sh login
+
+e2e-create:
+	./_scripts/run_maestro_tests.sh create
+
+e2e-edit:
+	./_scripts/run_maestro_tests.sh edit
+
+e2e-full:
+	./_scripts/run_maestro_tests.sh e2e
+
+# Maestroのインストール
+maestro:
+	curl -Ls "https://get.maestro.mobile.dev" | bash
+	@echo "PATHに以下を追加してください: export PATH=\"\$$PATH:\$$HOME/.maestro/bin\""
+
 cc:
 	npx ccusage@latest

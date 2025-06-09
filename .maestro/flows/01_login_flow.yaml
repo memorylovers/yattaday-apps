@@ -1,0 +1,25 @@
+# ログインフローのE2Eテスト
+# Googleログインとゲストログインのテストケース
+
+appId: com.memorylovers.yattaday.stag
+
+---
+
+# アプリを起動
+- launchApp:
+    appId: com.memorylovers.yattaday.stag
+    clearState: true
+
+# ログイン画面が表示されるまで待機
+- waitForAnimationToEnd
+
+# ゲストログインボタンをタップ
+- assertVisible: "ログイン"
+- tapOn: "ゲストとして続ける"
+
+# ホーム画面への遷移を確認
+- waitForAnimationToEnd
+- assertVisible: "記録項目"
+
+# スクリーンショットを撮影
+- takeScreenshot: "guest_login_success"

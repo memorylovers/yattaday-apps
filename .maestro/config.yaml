@@ -1,0 +1,5 @@
+# Maestro E2Eテスト設定ファイル
+# stag flavorでのテスト実行を前提としています
+
+# アプリケーション設定
+appId: com.memorylovers.yattaday.stag

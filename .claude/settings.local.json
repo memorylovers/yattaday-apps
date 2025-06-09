@@ -23,7 +23,8 @@
       "Bash(touch:*)",
       "Bash(ls:*)",
       "WebFetch(domain:github.com)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(maestro test:*)"
     ],
     "deny": [
       "Read(../**)",
