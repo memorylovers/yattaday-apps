@@ -1,13 +1,10 @@
 name: CI/CD Pipeline
-# TODO: エラーが発生するため、一旦保留
+
 on:
+  push:
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened]
-  push:
-    branches:
-      - main
-      - develop
-      - feature/**
 env:
   FLUTTER_ROOT: ""
 

@@ -1,5 +1,5 @@
 name: Nightly E2E Tests
-
+# TODO: エラーが発生するため、一旦保留
 on:
   schedule:
     # 毎日日本時間の午前2時に実行（UTC 17:00）
@@ -15,7 +15,7 @@ jobs:
     name: Full E2E Test Suite
     runs-on: macos-latest
     timeout-minutes: 60
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,15 +42,15 @@ jobs:
           # アプリのビルドとテスト実行
           cd app
           fvm flutter pub get
-          
+
           # iOS用ビルド
           fvm flutter build ios --debug --flavor dev --simulator --no-codesign
-          
+
           # Android用ビルド
           fvm flutter build apk --debug --flavor dev
-          
+
           cd ..
-          
+
           # 全てのテストを実行
           bash _scripts/run_maestro_tests.sh
 

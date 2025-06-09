@@ -1,5 +1,5 @@
 name: E2E Tests
-
+# TODO: エラーが発生するため、一旦保留
 on:
   pull_request:
     types: [opened, synchronize, reopened]
