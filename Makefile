@@ -19,10 +19,15 @@ gen:
 flutterfire_cli:
 	fvm dart pub global activate flutterfire_cli
 
+check-all:
+	make format && make lint && make test
+
 format:
 	melos run format --no-select
 
-lint:
+lint: lint-flutter lint-md
+
+lint-flutter:
 	melos run lint --no-select
 
 lint-md:
