@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../../../_gen/i18n/strings.g.dart';
 
-class _LoginButton extends StatelessWidget {
-  const _LoginButton({
+class LoginButton extends StatelessWidget {
+  const LoginButton({
+    super.key,
     required this.isLoading,
     required this.icon,
     required this.label,
@@ -42,7 +43,7 @@ class GoogleLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _LoginButton(
+    return LoginButton(
       isLoading: isLoading,
       icon: Icons.g_mobiledata,
       label: i18n.login.googleSignIn,
@@ -60,7 +61,7 @@ class AppleLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _LoginButton(
+    return LoginButton(
       isLoading: isLoading,
       icon: Icons.apple,
       label: i18n.login.appleSignIn,
@@ -82,7 +83,7 @@ class AnonymousLoginButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _LoginButton(
+    return LoginButton(
       isLoading: isLoading,
       icon: Icons.person_outline,
       label: i18n.login.anonymousSignIn,

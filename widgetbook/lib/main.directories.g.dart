@@ -124,35 +124,12 @@ final directories = <_i1.WidgetbookNode>[
                 name: 'widgets',
                 children: [
                   _i1.WidgetbookLeafComponent(
-                    name: 'AnonymousLoginButton',
+                    name: 'LoginButton',
                     useCase: _i1.WidgetbookUseCase(
-                      name: 'Default',
-                      builder: _i7.anonymousLoginButtonUseCase,
+                      name: 'All Variants',
+                      builder: _i7.loginButtonUseCase,
                       designLink: '',
                     ),
-                  ),
-                  _i1.WidgetbookLeafComponent(
-                    name: 'AppleLoginButton',
-                    useCase: _i1.WidgetbookUseCase(
-                      name: 'Default',
-                      builder: _i7.appleLoginButtonUseCase,
-                      designLink: '',
-                    ),
-                  ),
-                  _i1.WidgetbookComponent(
-                    name: 'GoogleLoginButton',
-                    useCases: [
-                      _i1.WidgetbookUseCase(
-                        name: 'All Variants',
-                        builder: _i7.allLoginButtonsUseCase,
-                        designLink: '',
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Default',
-                        builder: _i7.googleLoginButtonUseCase,
-                        designLink: '',
-                      ),
-                    ],
                   ),
                 ],
               ),
