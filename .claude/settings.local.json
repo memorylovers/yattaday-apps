@@ -25,7 +25,8 @@
       "Bash(cp:*)",
       "Bash(maestro:*)",
       "Bash(adb:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": [
       "Read(../**)",
