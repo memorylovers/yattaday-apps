@@ -15,11 +15,13 @@ appId: com.memorylovers.yattaday.stag
 - waitForAnimationToEnd
 
 # ログイン画面が表示される
-- assertVisible: "ログイン"
+# アプリ名が表示されていることで、ログイン画面が表示されていることを確認
+- assertVisible: "YattaDay"
 - takeScreenshot: "app_first_launch"
 
 # ゲストとしてログイン
-- tapOn: "ゲストとして続ける"
+- tapOn:
+    id: "anonymous_login_button"
 - waitForAnimationToEnd
 
 # ホーム画面（記録項目一覧）へ遷移

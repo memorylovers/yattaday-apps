@@ -11,8 +11,10 @@ appId: com.memorylovers.yattaday.stag
     clearState: true
 
 - waitForAnimationToEnd
-- assertVisible: "ログイン"
-- tapOn: "ゲストとして続ける"
+# アプリ名が表示されていることで、ログイン画面が表示されていることを確認
+- assertVisible: "YattaDay"
+- tapOn:
+    id: "anonymous_login_button"
 - waitForAnimationToEnd
 - assertVisible: "記録項目"
 
