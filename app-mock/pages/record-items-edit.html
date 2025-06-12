@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yattaday - 記録項目編集</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emoji-picker {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            background: var(--color-white);
+            border: 1px solid var(--color-outline);
+            border-radius: var(--radius-md);
+        }
+
+        .emoji-option {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .emoji-option:hover {
+            background: var(--color-primary-container);
+        }
+
+        .emoji-option.selected {
+            border-color: var(--color-primary);
+            background: var(--color-primary-container);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+
+        .form-actions .btn {
+            flex: 1;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.875rem;
+            color: var(--color-outline);
+            margin-top: var(--spacing-xs);
+        }
+
+        .form-help-text {
+            font-size: 0.875rem;
+            color: var(--color-outline);
+            margin-top: var(--spacing-xs);
+        }
+
+        .delete-section {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-outline);
+        }
+
+        .delete-button {
+            background: var(--color-error);
+            color: var(--color-surface);
+            width: 100%;
+        }
+
+        .delete-button:hover {
+            background: #9A0000;
+        }
+
+        .delete-warning {
+            font-size: 0.875rem;
+            color: var(--color-error);
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <div class="mobile-screen">
+            <!-- App Bar -->
+            <div class="app-bar">
+                <button class="app-bar-action" onclick="history.back()">
+                    <span class="material-icons">arrow_back</span>
+                </button>
+                <h1 class="app-bar-title">記録項目を編集</h1>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <form>
+                    <!-- Emoji Selection -->
+                    <div class="form-field">
+                        <label class="form-label">アイコンを選択</label>
+                        <div class="emoji-picker">
+                            <div class="emoji-option selected">💊</div>
+                            <div class="emoji-option">🏃</div>
+                            <div class="emoji-option">💧</div>
+                            <div class="emoji-option">📚</div>
+                            <div class="emoji-option">😴</div>
+                            <div class="emoji-option">🍎</div>
+                            <div class="emoji-option">💪</div>
+                            <div class="emoji-option">🧘</div>
+                            <div class="emoji-option">📝</div>
+                            <div class="emoji-option">🎯</div>
+                            <div class="emoji-option">⭐</div>
+                            <div class="emoji-option">❤️</div>
+                            <div class="emoji-option">🌱</div>
+                            <div class="emoji-option">🎨</div>
+                            <div class="emoji-option">🎵</div>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="form-field">
+                        <label class="form-label" for="title">タイトル *</label>
+                        <input
+                            type="text"
+                            id="title"
+                            class="form-input"
+                            placeholder="例: お薬、運動、水分補給"
+                            maxlength="20"
+                            value="お薬"
+                            required
+                        >
+                        <div class="character-count">3 / 20</div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-field">
+                        <label class="form-label" for="description">説明</label>
+                        <textarea
+                            id="description"
+                            class="form-input"
+                            rows="4"
+                            placeholder="この記録項目の詳細を入力してください"
+                            maxlength="200"
+                        >毎日の薬の服用を記録します。朝・昼・夜の服用タイミングを管理できます。</textarea>
+                        <div class="character-count">39 / 200</div>
+                        <p class="form-help-text">記録する内容の詳細や目的を入力してください</p>
+                    </div>
+
+                    <!-- Unit -->
+                    <div class="form-field">
+                        <label class="form-label" for="unit">単位</label>
+                        <input
+                            type="text"
+                            id="unit"
+                            class="form-input"
+                            placeholder="例: 回、ml、ページ、時間"
+                            maxlength="10"
+                            value="回"
+                        >
+                        <p class="form-help-text">記録する際の単位を設定できます（省略可）</p>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outlined" onclick="history.back()">
+                            キャンセル
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            保存
+                        </button>
+                    </div>
+
+                    <!-- Delete Section -->
+                    <div class="delete-section">
+                        <p class="delete-warning">
+                            <span class="material-icons" style="vertical-align: middle; font-size: 1rem;">warning</span>
+                            この記録項目を削除すると、関連するすべての記録データも削除されます
+                        </p>
+                        <button type="button" class="btn delete-button">
+                            <span class="material-icons">delete</span>
+                            <span>この記録項目を削除</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: var(--spacing-lg);">
+        <a href="../index.html" class="btn btn-text">← トップに戻る</a>
+        <a href="record-items-list.html" class="btn btn-text" style="margin-left: var(--spacing-md);">一覧に戻る</a>
+    </div>
+
+    <script>
+        // Emoji selection
+        document.querySelectorAll('.emoji-option').forEach(emoji => {
+            emoji.addEventListener('click', function() {
+                document.querySelectorAll('.emoji-option').forEach(e => e.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Character count
+        function updateCharacterCount(element) {
+            const count = element.value.length;
+            const maxLength = element.getAttribute('maxlength');
+            element.parentElement.querySelector('.character-count').textContent = `${count} / ${maxLength}`;
+        }
+
+        document.getElementById('title').addEventListener('input', function() {
+            updateCharacterCount(this);
+        });
+
+        document.getElementById('description').addEventListener('input', function() {
+            updateCharacterCount(this);
+        });
+
+        // Initialize character counts
+        updateCharacterCount(document.getElementById('title'));
+        updateCharacterCount(document.getElementById('description'));
+
+        // Delete confirmation
+        document.querySelector('.delete-button').addEventListener('click', function() {
+            if (confirm('本当にこの記録項目を削除しますか？\nこの操作は取り消せません。')) {
+                alert('削除機能はモックアップのため実装されていません');
+            }
+        });
+    </script>
+</body>
+</html>

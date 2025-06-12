@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yattaday - 記録項目一覧</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .record-item-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-outline);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .record-item-card:hover {
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-1px);
+        }
+
+        .record-item-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--color-primary-container);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .record-item-content {
+            flex: 1;
+        }
+
+        .record-item-title {
+            font-weight: 500;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-black);
+        }
+
+        .record-item-description {
+            font-size: 0.875rem;
+            color: var(--color-outline);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .record-item-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .record-item-action {
+            background: none;
+            border: none;
+            padding: var(--spacing-sm);
+            border-radius: 50%;
+            cursor: pointer;
+            color: var(--color-outline);
+            transition: all 0.2s ease;
+        }
+
+        .record-item-action:hover {
+            background: var(--color-outline);
+            color: var(--color-surface);
+        }
+
+        .tab-indicator {
+            height: 2px;
+            background: var(--color-primary);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50%;
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <div class="mobile-screen">
+            <!-- App Bar -->
+            <div class="app-bar">
+                <h1 class="app-bar-title">記録項目</h1>
+                <button class="app-bar-action">
+                    <span class="material-icons">search</span>
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Empty State (コメントアウト) -->
+                <!--
+                <div class="empty-state">
+                    <span class="material-icons empty-state-icon">inbox</span>
+                    <h2 class="empty-state-title">記録項目がありません</h2>
+                    <p class="empty-state-text">新しい記録項目を作成してみましょう</p>
+                    <button class="btn btn-primary">
+                        <span class="material-icons">add</span>
+                        <span>記録項目を作成</span>
+                    </button>
+                </div>
+                -->
+
+                <!-- Record Items List -->
+                <div class="record-items-list">
+                    <div class="record-item-card">
+                        <div class="record-item-icon">💊</div>
+                        <div class="record-item-content">
+                            <h3 class="record-item-title">お薬</h3>
+                            <p class="record-item-description">毎日の薬の服用を記録します。朝・昼・夜の服用タイミングを管理できます。</p>
+                        </div>
+                        <div class="record-item-actions">
+                            <button class="record-item-action">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button class="record-item-action">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="record-item-card">
+                        <div class="record-item-icon">🏃</div>
+                        <div class="record-item-content">
+                            <h3 class="record-item-title">運動</h3>
+                            <p class="record-item-description">ランニング、ウォーキング、筋トレなどの運動記録</p>
+                        </div>
+                        <div class="record-item-actions">
+                            <button class="record-item-action">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button class="record-item-action">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="record-item-card">
+                        <div class="record-item-icon">💧</div>
+                        <div class="record-item-content">
+                            <h3 class="record-item-title">水分補給</h3>
+                            <p class="record-item-description">1日の水分摂取量を記録して健康管理</p>
+                        </div>
+                        <div class="record-item-actions">
+                            <button class="record-item-action">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button class="record-item-action">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="record-item-card">
+                        <div class="record-item-icon">📚</div>
+                        <div class="record-item-content">
+                            <h3 class="record-item-title">読書</h3>
+                            <p class="record-item-description">読んだ本のページ数や感想を記録</p>
+                        </div>
+                        <div class="record-item-actions">
+                            <button class="record-item-action">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button class="record-item-action">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="record-item-card">
+                        <div class="record-item-icon">😴</div>
+                        <div class="record-item-content">
+                            <h3 class="record-item-title">睡眠</h3>
+                            <p class="record-item-description">睡眠時間と質を記録して生活リズムを整える</p>
+                        </div>
+                        <div class="record-item-actions">
+                            <button class="record-item-action">
+                                <span class="material-icons">edit</span>
+                            </button>
+                            <button class="record-item-action">
+                                <span class="material-icons">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Action Button -->
+            <button class="fab">
+                <span class="material-icons">add</span>
+            </button>
+
+            <!-- Bottom Navigation -->
+            <nav class="bottom-nav">
+                <a href="record-items-list.html" class="bottom-nav-item active">
+                    <span class="material-icons">list_alt</span>
+                    <span>記録項目</span>
+                </a>
+                <a href="settings.html" class="bottom-nav-item">
+                    <span class="material-icons">settings</span>
+                    <span>設定</span>
+                </a>
+                <div class="tab-indicator"></div>
+            </nav>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: var(--spacing-lg);">
+        <a href="../index.html" class="btn btn-text">← トップに戻る</a>
+        <a href="settings.html" class="btn btn-primary" style="margin-left: var(--spacing-md);">設定画面へ →</a>
+    </div>
+</body>
+</html>

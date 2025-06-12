@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yattaday - スタートアップ</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .startup-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+        }
+
+        .app-logo {
+            width: 120px;
+            height: 120px;
+            margin-bottom: var(--spacing-lg);
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.19)) drop-shadow(0 6px 6px rgba(0, 0, 0, 0.23));
+        }
+
+        .app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .app-name {
+            font-size: 2.5rem;
+            color: var(--color-surface);
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .startup-loading {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .startup-loading .loading-spinner {
+            border-color: rgba(255, 255, 255, 0.3);
+            border-top-color: var(--color-surface);
+        }
+
+        .startup-loading-text {
+            color: var(--color-surface);
+            font-size: 1.125rem;
+        }
+
+        .version-info {
+            position: absolute;
+            bottom: var(--spacing-lg);
+            color: var(--color-surface);
+            opacity: 0.8;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-frame">
+        <div class="startup-screen">
+            <div class="app-logo">
+                <img src="../images/yattaday_icon.png" alt="Yattaday Logo">
+            </div>
+            <h1 class="app-name">Yattaday</h1>
+            <div class="startup-loading">
+                <div class="loading-spinner"></div>
+                <p class="startup-loading-text">初期化中...</p>
+            </div>
+            <p class="version-info">Version 1.0.0</p>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: var(--spacing-lg);">
+        <a href="../index.html" class="btn btn-text">← トップに戻る</a>
+        <p style="margin-top: var(--spacing-md); color: var(--color-outline);">
+            この画面は通常2-3秒表示され、認証状態に応じて自動的に遷移します。
+        </p>
+    </div>
+</body>
+</html>
