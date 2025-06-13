@@ -21,14 +21,18 @@ class LoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       identifier: semanticsId,
-      child: ElevatedButton.icon(
+      child: OutlinedButton.icon(
         onPressed: isLoading ? null : onPressed,
-        icon: Icon(icon),
+        icon: Icon(icon, size: 20),
         label: Text(label),
-        style: ElevatedButton.styleFrom(
-          iconSize: 28,
-          textStyle: TextStyle(fontSize: 18),
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: Colors.black87,
+          backgroundColor: Colors.white,
+          side: BorderSide(color: Colors.grey.shade300),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+          minimumSize: const Size(double.infinity, 48),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
     );
@@ -85,7 +89,7 @@ class AnonymousLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoginButton(
       isLoading: isLoading,
-      icon: Icons.person_outline,
+      icon: Icons.person,
       label: i18n.login.anonymousSignIn,
       onPressed: onPressed,
       semanticsId: 'anonymous_login_button',
