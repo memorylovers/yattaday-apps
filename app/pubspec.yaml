@@ -96,7 +96,6 @@ dependencies:
   # audio
   # audioplayers: ^6.0.0
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -123,7 +122,6 @@ dev_dependencies:
   # setup: flavor
   flutter_flavorizr:
 
-
 flutter:
   uses-material-design: true
 
@@ -131,3 +129,14 @@ flutter:
   assets:
     - assets/google_fonts/
     - assets/icons/
+
+# https://pub.dev/packages/flutter_gen_runner
+flutter_gen:
+  integrations:
+    image: true
+    flutter_svg: true
+    rive: false
+    lottie: false
+  assets:
+    outputs:
+      package_parameter_enabled: true

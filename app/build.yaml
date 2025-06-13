@@ -23,14 +23,3 @@ targets:
       flutter_gen:
         options:
           output: lib/_gen/assets
-          integrations:
-            image: true
-            flutter_svg: true
-            rive: false
-            lottie: false
-          # fonts:
-          #   enabled: true
-          # colors:
-          #   enabled: true
-          #   inputs:
-          #     - assets/color/colors.xml # Optional

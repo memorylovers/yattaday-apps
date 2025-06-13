@@ -27,7 +27,8 @@
       "Bash(adb:*)",
       "Bash(test:*)",
       "WebFetch(domain:github.com)",
-      "Bash(fuser:*)"
+      "Bash(fuser:*)",
+      "Bash(./_scripts/fix_record_item_tests.sh:*)"
     ],
     "deny": [
       "Read(../**)",
