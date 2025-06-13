@@ -29,7 +29,49 @@
   },
   "payment": {
     "title": "プレミアムプラン",
-    "description": "プレミアムでより多くの機能を開放しよう"
+    "description": "プレミアムでより多くの機能を開放しよう",
+    "selectPlan": "プラン選択",
+    "header": {
+      "title": "より多くの機能を利用して",
+      "subtitle": "毎日の記録をさらに便利に"
+    },
+    "currentPlan": "現在のプラン: ${plan}",
+    "plans": {
+      "free": {
+        "name": "フリー",
+        "features": {
+          "items": "記録項目: 3つまで",
+          "basicRecording": "基本的な記録機能",
+          "simpleStats": "シンプルな統計"
+        }
+      },
+      "standard": {
+        "name": "スタンダード",
+        "features": {
+          "items": "記録項目: 無制限",
+          "detailedStats": "詳細な統計・グラフ",
+          "dataExport": "データエクスポート",
+          "reminder": "リマインダー機能"
+        }
+      },
+      "premium": {
+        "name": "プレミアム",
+        "features": {
+          "allStandard": "スタンダードの全機能",
+          "aiAnalysis": "AI分析・アドバイス",
+          "teamShare": "チーム共有機能",
+          "prioritySupport": "優先サポート"
+        }
+      }
+    },
+    "price": {
+      "perMonth": "/月"
+    },
+    "buttons": {
+      "currentPlan": "現在のプラン",
+      "selectPlan": "このプランを選択",
+      "recommended": "おすすめ"
+    }
   },
   "forceUpdate": {
     "title": "更新のお知らせ",

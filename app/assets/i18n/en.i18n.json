@@ -29,7 +29,49 @@
   },
   "payment": {
     "title": "Subscription",
-    "description": "Upgrade to premium for more features"
+    "description": "Upgrade to premium for more features",
+    "selectPlan": "Select Plan",
+    "header": {
+      "title": "Unlock More Features",
+      "subtitle": "Make your daily records even better"
+    },
+    "currentPlan": "Current Plan: ${plan}",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "features": {
+          "items": "Record items: Up to 3",
+          "basicRecording": "Basic recording features",
+          "simpleStats": "Simple statistics"
+        }
+      },
+      "standard": {
+        "name": "Standard",
+        "features": {
+          "items": "Record items: Unlimited",
+          "detailedStats": "Detailed stats & graphs",
+          "dataExport": "Data export",
+          "reminder": "Reminder features"
+        }
+      },
+      "premium": {
+        "name": "Premium",
+        "features": {
+          "allStandard": "All Standard features",
+          "aiAnalysis": "AI analysis & advice",
+          "teamShare": "Team sharing",
+          "prioritySupport": "Priority support"
+        }
+      }
+    },
+    "price": {
+      "perMonth": "/month"
+    },
+    "buttons": {
+      "currentPlan": "Current Plan",
+      "selectPlan": "Select This Plan",
+      "recommended": "Recommended"
+    }
   },
   "forceUpdate": {
     "title": "Please Update",
