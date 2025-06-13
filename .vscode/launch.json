@@ -46,17 +46,6 @@
       ]
     },
     {
-      "name": "widgetbook:internal",
-      "cwd": "app",
-      "program": "lib/widgetbook.dart",
-      "request": "launch",
-      "type": "dart",
-      "flutterMode": "debug",
-      "args": [
-        "--device-id=chrome"
-      ]
-    },
-    {
       "name": "widgetbook",
       "cwd": "widgetbook",
       "program": "lib/main.dart",
