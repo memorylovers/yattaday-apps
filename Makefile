@@ -36,6 +36,12 @@ lint-md:
 test:
 	melos run test
 
+book:
+	cd widgetbook && fvm flutter run lib/main.dart --device-id=chrome
+
+mock:
+	npx http-server app-mock/
+
 # Maestro E2Eテスト
 e2e:
 	./_scripts/run_maestro_tests.sh

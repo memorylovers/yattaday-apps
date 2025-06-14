@@ -69,7 +69,9 @@ class PaymentPage extends HookConsumerWidget {
                         ),
                       ),
                       child: Text(
-                        i18n.payment.currentPlan(plan: i18n.payment.plans.free.name),
+                        i18n.payment.currentPlan(
+                          plan: i18n.payment.plans.free.name,
+                        ),
                         style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -145,10 +147,7 @@ class PaymentPage extends HookConsumerWidget {
             borderRadius: BorderRadius.circular(16),
             side:
                 isSelected
-                    ? BorderSide(
-                      color: const Color(0xFF5DD3DC),
-                      width: 2,
-                    )
+                    ? BorderSide(color: const Color(0xFF5DD3DC), width: 2)
                     : BorderSide.none,
           ),
           child: Padding(
@@ -266,7 +265,10 @@ class PaymentPage extends HookConsumerWidget {
               ),
               child: Text(
                 i18n.payment.buttons.recommended,
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
               ),
             ),
           ),
