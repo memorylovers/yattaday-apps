@@ -13,6 +13,7 @@ class UpdateRecordItemUseCase {
     required String recordItemId,
     required String title,
     String? description,
+    String? icon,
     String? unit,
   }) async {
     // バリデーション
@@ -42,6 +43,7 @@ class UpdateRecordItemUseCase {
           description != null
               ? (description.trim().isEmpty ? null : description.trim())
               : existingItem.description,
+      icon: icon ?? existingItem.icon,
       unit:
           unit != null
               ? (unit.trim().isEmpty ? null : unit.trim())

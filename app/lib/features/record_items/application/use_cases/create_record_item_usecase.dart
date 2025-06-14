@@ -14,6 +14,7 @@ class CreateRecordItemUseCase {
     required String title,
     String? description,
     String? unit,
+    String icon = '📝',
   }) async {
     // バリデーション
     if (userId.trim().isEmpty) {
@@ -45,6 +46,7 @@ class CreateRecordItemUseCase {
       title: title.trim(),
       description:
           description?.trim().isEmpty == true ? null : description?.trim(),
+      icon: icon,
       unit: unit?.trim().isEmpty == true ? null : unit?.trim(),
       sortOrder: sortOrder,
       createdAt: now,
