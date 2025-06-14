@@ -112,7 +112,7 @@ void main() {
         expect(find.byType(AppBar), findsOneWidget);
 
         // フォームの確認
-        expect(find.text('タイトル'), findsOneWidget);
+        expect(find.text('タイトル *'), findsOneWidget);
         expect(find.text('説明'), findsOneWidget);
         expect(find.text('単位'), findsOneWidget);
         expect(find.text('作成'), findsOneWidget);
@@ -197,7 +197,9 @@ void main() {
         await tester.tap(find.text('作成画面へ'));
         await tester.pumpAndSettle();
 
-        // キャンセルボタンをタップ
+        // キャンセルボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(TextButton, 'キャンセル'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(TextButton, 'キャンセル'));
         await tester.pumpAndSettle();
 
@@ -250,7 +252,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 作成ボタンをタップ
+        // 作成ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
@@ -274,7 +278,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 作成ボタンをタップ
+        // 作成ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
@@ -305,7 +311,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 作成ボタンをタップ
+        // 作成ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
@@ -329,7 +337,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 作成ボタンをタップ
+        // 作成ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
@@ -349,7 +359,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 作成ボタンをタップ
+        // 作成ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 

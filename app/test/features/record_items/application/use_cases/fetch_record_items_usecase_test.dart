@@ -3,6 +3,8 @@ import 'package:myapp/features/record_items/application/use_cases/fetch_record_i
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
 
+import '../../../../test_helpers/record_item_helpers.dart';
+
 class FakeRecordItemRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];
   Exception? _exception;
@@ -96,7 +98,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         final expectedItems = [
-          RecordItem(
+          createTestRecordItem(
             id: 'item1',
             userId: userId,
             title: '読書',
@@ -104,7 +106,7 @@ void main() {
             createdAt: DateTime(2024, 1, 1),
             updatedAt: DateTime(2024, 1, 1),
           ),
-          RecordItem(
+          createTestRecordItem(
             id: 'item2',
             userId: userId,
             title: '運動',
@@ -152,7 +154,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         final expectedItems = [
-          RecordItem(
+          createTestRecordItem(
             id: 'item1',
             userId: userId,
             title: '読書',

@@ -3,6 +3,8 @@ import 'package:myapp/features/record_items/application/use_cases/delete_record_
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
 
+import '../../../../test_helpers/record_item_helpers.dart';
+
 class FakeRecordItemRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];
   Exception? _exception;
@@ -123,7 +125,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: 'テストタイトル',
@@ -148,7 +150,7 @@ void main() {
         const userId = 'user123';
         const targetItemId = 'item2';
         final items = [
-          RecordItem(
+          createTestRecordItem(
             id: 'item1',
             userId: userId,
             title: 'タイトル1',
@@ -156,7 +158,7 @@ void main() {
             createdAt: DateTime(2024, 1, 1),
             updatedAt: DateTime(2024, 1, 1),
           ),
-          RecordItem(
+          createTestRecordItem(
             id: targetItemId,
             userId: userId,
             title: 'タイトル2',
@@ -164,7 +166,7 @@ void main() {
             createdAt: DateTime(2024, 1, 1),
             updatedAt: DateTime(2024, 1, 1),
           ),
-          RecordItem(
+          createTestRecordItem(
             id: 'item3',
             userId: userId,
             title: 'タイトル3',
@@ -193,7 +195,7 @@ void main() {
         const sameItemId = 'item1';
 
         final items = [
-          RecordItem(
+          createTestRecordItem(
             id: sameItemId,
             userId: userId,
             title: 'ユーザー123の項目',
@@ -201,7 +203,7 @@ void main() {
             createdAt: DateTime(2024, 1, 1),
             updatedAt: DateTime(2024, 1, 1),
           ),
-          RecordItem(
+          createTestRecordItem(
             id: sameItemId,
             userId: otherUserId,
             title: '他のユーザーの項目',
@@ -299,7 +301,7 @@ void main() {
 
       test('異なるユーザーの記録項目にアクセスした場合はエラー', () async {
         // Arrange
-        final otherUserItem = RecordItem(
+        final otherUserItem = createTestRecordItem(
           id: 'item1',
           userId: 'other-user',
           title: '他のユーザーの項目',
@@ -324,7 +326,7 @@ void main() {
 
       test('リポジトリからエラーが発生した場合', () async {
         // Arrange
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: 'item1',
           userId: 'user123',
           title: 'テストタイトル',
@@ -354,7 +356,7 @@ void main() {
         // Arrange
         final longUserId = 'u' * 1000; // 1000文字のユーザーID
         const recordItemId = 'item1';
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: recordItemId,
           userId: longUserId,
           title: 'テストタイトル',
@@ -375,7 +377,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         final longItemId = 'i' * 1000; // 1000文字のアイテムID
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: longItemId,
           userId: userId,
           title: 'テストタイトル',
@@ -396,7 +398,7 @@ void main() {
         // Arrange
         const specialUserId = r'user@#$%^&*()_+-=[]{}|;:,.<>?';
         const specialItemId = r'item🚀@2024/01/01#1';
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: specialItemId,
           userId: specialUserId,
           title: 'テストタイトル',
@@ -422,7 +424,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: 'テストタイトル',
@@ -455,7 +457,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         final items = [
-          RecordItem(
+          createTestRecordItem(
             id: 'item1',
             userId: userId,
             title: 'タイトル1',
@@ -463,7 +465,7 @@ void main() {
             createdAt: DateTime(2024, 1, 1),
             updatedAt: DateTime(2024, 1, 1),
           ),
-          RecordItem(
+          createTestRecordItem(
             id: 'item2',
             userId: userId,
             title: 'タイトル2',

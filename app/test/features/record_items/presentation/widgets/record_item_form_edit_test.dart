@@ -6,6 +6,8 @@ import 'package:myapp/features/record_items/data/repository/record_item_reposito
 import 'package:myapp/features/record_items/domain/record_item.dart';
 import 'package:myapp/features/record_items/presentation/widgets/record_item_form.dart';
 
+import '../../../../test_helpers/record_item_helpers.dart';
+
 class FakeRecordItemRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];
   Exception? _exception;
@@ -131,7 +133,7 @@ void main() {
 
     group('編集モードの初期化', () {
       testWidgets('既存データが渡された場合は編集モードになる', (tester) async {
-        final existingItem = RecordItem(
+        final existingItem = createTestRecordItem(
           id: 'item1',
           userId: 'user1',
           title: '既存タイトル',
@@ -170,7 +172,7 @@ void main() {
 
     group('編集モードでの操作', () {
       testWidgets('更新ボタンタップで記録項目が更新される', (tester) async {
-        final existingItem = RecordItem(
+        final existingItem = createTestRecordItem(
           id: 'item1',
           userId: 'test-user-id',
           title: '既存タイトル',
@@ -198,7 +200,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 更新ボタンをタップ
+        // 更新ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
 
@@ -214,7 +218,7 @@ void main() {
       });
 
       testWidgets('一部フィールドのみ更新できる', (tester) async {
-        final existingItem = RecordItem(
+        final existingItem = createTestRecordItem(
           id: 'item1',
           userId: 'test-user-id',
           title: '既存タイトル',
@@ -235,7 +239,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 更新ボタンをタップ
+        // 更新ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
 
@@ -247,7 +253,7 @@ void main() {
       });
 
       testWidgets('更新失敗時はエラーメッセージが表示される', (tester) async {
-        final existingItem = RecordItem(
+        final existingItem = createTestRecordItem(
           id: 'item1',
           userId: 'test-user-id',
           title: '既存タイトル',
@@ -267,7 +273,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 更新ボタンをタップ
+        // 更新ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
 
@@ -278,7 +286,7 @@ void main() {
 
     group('バリデーション', () {
       testWidgets('編集モードでもタイトルが必須', (tester) async {
-        final existingItem = RecordItem(
+        final existingItem = createTestRecordItem(
           id: 'item1',
           userId: 'test-user-id',
           title: '既存タイトル',
@@ -304,7 +312,7 @@ void main() {
       });
 
       testWidgets('編集モードでタイトルが有効なら更新ボタンが有効', (tester) async {
-        final existingItem = RecordItem(
+        final existingItem = createTestRecordItem(
           id: 'item1',
           userId: 'test-user-id',
           title: '既存タイトル',
@@ -328,7 +336,7 @@ void main() {
 
     group('UI表示', () {
       testWidgets('編集モードではAppBarタイトルが「記録項目編集」になる', (tester) async {
-        final existingItem = RecordItem(
+        final existingItem = createTestRecordItem(
           id: 'item1',
           userId: 'test-user-id',
           title: '既存タイトル',

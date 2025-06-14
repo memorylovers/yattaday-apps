@@ -16,6 +16,7 @@ class RecordItemsListPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recordItemsAsync = ref.watch(watchRecordItemsProvider);
     final selectedDate = useState(DateTime.now());
+    final completedItemIds = useState<Set<String>>({});
 
     // 日付フォーマット（例：2024年6月14日）
     final dateFormatter = DateFormat('yyyy年M月d日');
@@ -71,10 +72,17 @@ class RecordItemsListPage extends HookConsumerWidget {
               data:
                   (items) => RecordItemListView(
                     items: items,
+                    completedItemIds: completedItemIds.value,
                     onItemTap: (item) => _navigateToDetail(context, item),
-                    onItemEdit: (item) => _navigateToEdit(context, item),
-                    onItemDelete:
-                        (item) => _showDeleteConfirmDialog(context, ref, item),
+                    onItemToggleComplete: (item) {
+                      final newSet = Set<String>.from(completedItemIds.value);
+                      if (newSet.contains(item.id)) {
+                        newSet.remove(item.id);
+                      } else {
+                        newSet.add(item.id);
+                      }
+                      completedItemIds.value = newSet;
+                    },
                   ),
               loading: () => const Center(child: CircularProgressIndicator()),
               error:
@@ -117,35 +125,11 @@ class RecordItemsListPage extends HookConsumerWidget {
     );
   }
 
-  /// 記録項目編集画面への遷移（現在はモック実装）
-  void _navigateToEdit(BuildContext context, RecordItem item) {
-    // TODO: 編集画面の実装後に実際のナビゲーションを追加
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(i18n.recordItems.navigateToEdit(title: item.title)),
-      ),
-    );
-  }
-
   /// 記録項目作成画面への遷移（現在はモック実装）
   void _navigateToCreate(BuildContext context) {
     // TODO: 作成画面の実装後に実際のナビゲーションを追加
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(i18n.recordItems.navigateToCreate)));
-  }
-
-  /// 削除確認ダイアログの表示（現在はモック実装）
-  void _showDeleteConfirmDialog(
-    BuildContext context,
-    WidgetRef ref,
-    RecordItem item,
-  ) {
-    // TODO: 削除機能の実装後に実際の削除処理を追加
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(i18n.recordItems.deleteConfirm(title: item.title)),
-      ),
-    );
   }
 }

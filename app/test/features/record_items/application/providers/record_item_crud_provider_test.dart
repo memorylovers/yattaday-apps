@@ -2,24 +2,30 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/features/record_items/application/providers/record_item_crud_provider.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
-import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
 
-class FakeRecordItemRepository implements IRecordItemRepository {
+import '../../../../test_helpers/fake_record_item_repository.dart'
+    as test_helpers;
+import '../../../../test_helpers/record_item_helpers.dart';
+
+class FakeRecordItemRepository extends test_helpers.FakeRecordItemRepository {
   final List<RecordItem> _items = [];
   Exception? _exception;
   int _updateCallCount = 0;
   int _deleteCallCount = 0;
 
+  @override
   void setItems(List<RecordItem> items) {
     _items.clear();
     _items.addAll(items);
   }
 
+  @override
   void setException(Exception exception) {
     _exception = exception;
   }
 
+  @override
   void clearException() {
     _exception = null;
   }
@@ -130,7 +136,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -183,7 +189,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -224,7 +230,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: 'テストタイトル',
@@ -267,7 +273,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: 'テストタイトル',
@@ -331,7 +337,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -363,7 +369,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final item = RecordItem(
+        final item = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: 'テストタイトル',

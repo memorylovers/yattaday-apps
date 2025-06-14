@@ -9,15 +9,15 @@ class RecordItemListView extends StatelessWidget {
   const RecordItemListView({
     super.key,
     required this.items,
+    required this.completedItemIds,
     this.onItemTap,
-    this.onItemEdit,
-    this.onItemDelete,
+    this.onItemToggleComplete,
   });
 
   final List<RecordItem> items;
+  final Set<String> completedItemIds;
   final void Function(RecordItem item)? onItemTap;
-  final void Function(RecordItem item)? onItemEdit;
-  final void Function(RecordItem item)? onItemDelete;
+  final void Function(RecordItem item)? onItemToggleComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +40,12 @@ class RecordItemListView extends StatelessWidget {
         final item = sortedItems[index];
         return RecordItemCard(
           recordItem: item,
+          isCompleted: completedItemIds.contains(item.id),
           onTap: onItemTap != null ? () => onItemTap!(item) : null,
-          onEdit: onItemEdit != null ? () => onItemEdit!(item) : null,
-          onDelete: onItemDelete != null ? () => onItemDelete!(item) : null,
+          onToggleComplete:
+              onItemToggleComplete != null
+                  ? () => onItemToggleComplete!(item)
+                  : null,
         );
       },
     );

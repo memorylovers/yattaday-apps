@@ -6,6 +6,8 @@ import 'package:myapp/features/record_items/data/repository/record_item_reposito
 import 'package:myapp/features/record_items/domain/record_item.dart';
 import 'package:myapp/features/record_items/presentation/pages/record_items_edit_page.dart';
 
+import '../../../../test_helpers/record_item_helpers.dart';
+
 class FakeRecordItemRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];
   Exception? _exception;
@@ -105,7 +107,7 @@ void main() {
 
     setUp(() {
       fakeRepository = FakeRecordItemRepository();
-      testRecordItem = RecordItem(
+      testRecordItem = createTestRecordItem(
         id: 'item1',
         userId: 'test-user-id',
         title: '既存タイトル',
@@ -144,7 +146,7 @@ void main() {
         expect(find.byType(AppBar), findsOneWidget);
 
         // フォームの確認
-        expect(find.text('タイトル'), findsOneWidget);
+        expect(find.text('タイトル *'), findsOneWidget);
         expect(find.text('説明'), findsOneWidget);
         expect(find.text('単位'), findsOneWidget);
         expect(find.text('更新'), findsOneWidget);
@@ -235,7 +237,9 @@ void main() {
         await tester.tap(find.text('編集画面へ'));
         await tester.pumpAndSettle();
 
-        // キャンセルボタンをタップ
+        // キャンセルボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(TextButton, 'キャンセル'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(TextButton, 'キャンセル'));
         await tester.pumpAndSettle();
 
@@ -286,7 +290,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 更新ボタンをタップ
+        // 更新ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
 
@@ -311,7 +317,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 更新ボタンをタップ
+        // 更新ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
 
@@ -341,7 +349,9 @@ void main() {
         await tester.enterText(find.widgetWithText(TextFormField, '個'), '時間');
         await tester.pumpAndSettle();
 
-        // 更新ボタンをタップ
+        // 更新ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
 
@@ -361,7 +371,9 @@ void main() {
         await tester.enterText(find.widgetWithText(TextFormField, '個'), '');
         await tester.pumpAndSettle();
 
-        // 更新ボタンをタップ
+        // 更新ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
 
@@ -388,7 +400,9 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        // 更新ボタンをタップ
+        // 更新ボタンをタップ（スクロールして表示）
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
+        await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
 
@@ -428,6 +442,8 @@ void main() {
           find.widgetWithText(TextFormField, '既存タイトル'),
           '更新1',
         );
+        await tester.pumpAndSettle();
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();
         await tester.tap(find.widgetWithText(ElevatedButton, '更新'));
         await tester.pumpAndSettle();

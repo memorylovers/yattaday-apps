@@ -3,6 +3,8 @@ import 'package:myapp/features/record_items/application/use_cases/update_record_
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
 
+import '../../../../test_helpers/record_item_helpers.dart';
+
 class FakeRecordItemRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];
   Exception? _exception;
@@ -102,7 +104,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -146,7 +148,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -175,7 +177,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -206,7 +208,7 @@ void main() {
         // Arrange
         const userId = 'user123';
         const recordItemId = 'item1';
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -325,7 +327,7 @@ void main() {
 
       test('異なるユーザーの記録項目にアクセスした場合はエラー', () async {
         // Arrange
-        final otherUserItem = RecordItem(
+        final otherUserItem = createTestRecordItem(
           id: 'item1',
           userId: 'other-user',
           title: '他のユーザーの項目',
@@ -354,7 +356,7 @@ void main() {
 
       test('リポジトリからエラーが発生した場合', () async {
         // Arrange
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: 'item1',
           userId: 'user123',
           title: '元のタイトル',
@@ -389,7 +391,7 @@ void main() {
         const userId = 'user123';
         const recordItemId = 'item1';
         final longTitle = 'あ' * 1000; // 1000文字のタイトル
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -415,7 +417,7 @@ void main() {
         const userId = 'user123';
         const recordItemId = 'item1';
         final longDescription = 'あ' * 2000; // 2000文字の説明
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',
@@ -445,7 +447,7 @@ void main() {
         const specialDescription =
             'Line1\nLine2\tTab "Quote" \'Single\' & <tag>';
         const specialUnit = '個/日';
-        final originalItem = RecordItem(
+        final originalItem = createTestRecordItem(
           id: recordItemId,
           userId: userId,
           title: '元のタイトル',

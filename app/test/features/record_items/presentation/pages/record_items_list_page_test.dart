@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:myapp/_gen/i18n/strings.g.dart';
 import 'package:myapp/features/_authentication/application/auth_providers.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
@@ -8,6 +11,8 @@ import 'package:myapp/features/record_items/domain/record_item.dart';
 import 'package:myapp/features/record_items/presentation/pages/record_items_list_page.dart';
 import 'package:myapp/features/record_items/presentation/widgets/record_item_card.dart';
 import 'package:myapp/features/record_items/presentation/widgets/record_item_list_view.dart';
+
+import '../../../../test_helpers/record_item_helpers.dart';
 
 class FakeRecordItemRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];
@@ -91,11 +96,13 @@ void main() {
   group('RecordItemsListPage', () {
     late FakeRecordItemRepository fakeRepository;
 
-    setUp(() {
+    setUp(() async {
       fakeRepository = FakeRecordItemRepository();
+      // Initialize locale settings for tests
+      await LocaleSettings.setLocale(AppLocale.ja);
     });
 
-    RecordItem createTestRecordItem({
+    RecordItem createTestcreateTestRecordItem({
       String id = 'test-id',
       String userId = 'test-user-id',
       String title = 'テスト項目',
@@ -104,7 +111,7 @@ void main() {
       int sortOrder = 0,
     }) {
       final now = DateTime.now();
-      return RecordItem(
+      return createTestRecordItem(
         id: id,
         userId: userId,
         title: title,
@@ -123,17 +130,39 @@ void main() {
           // ignore: scoped_providers_should_specify_dependencies
           authUidProvider.overrideWith((ref) async => userId),
         ],
-        child: const MaterialApp(home: RecordItemsListPage()),
+        child: MaterialApp(
+          locale: const Locale('ja'),
+          supportedLocales: AppLocaleUtils.supportedLocales,
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          home: TranslationProvider(child: const RecordItemsListPage()),
+        ),
       );
     }
 
     group('UI表示', () {
-      testWidgets('AppBarのタイトルが正しく表示される', (tester) async {
+      testWidgets('AppBarに日付が正しく表示される', (tester) async {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
-        expect(find.text('記録項目'), findsOneWidget);
+        final dateFormatter = DateFormat('yyyy年M月d日');
+        final today = dateFormatter.format(DateTime.now());
+
+        expect(find.text(today), findsOneWidget);
         expect(find.byType(AppBar), findsOneWidget);
+      });
+
+      testWidgets('AppBarに左矢印（前日）ボタンが表示される', (tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.byIcon(Icons.chevron_left), findsOneWidget);
+      });
+
+      testWidgets('AppBarに右矢印（翌日）ボタンが表示される', (tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        expect(find.byIcon(Icons.chevron_right), findsOneWidget);
       });
 
       testWidgets('FloatingActionButtonが表示される', (tester) async {
@@ -147,14 +176,14 @@ void main() {
       testWidgets('記録項目一覧が正しく表示される', (tester) async {
         const userId = 'test-user-id';
         final items = [
-          createTestRecordItem(
+          createTestcreateTestRecordItem(
             id: 'item1',
             userId: userId,
             title: '読書',
             description: '本を読む',
             sortOrder: 0,
           ),
-          createTestRecordItem(
+          createTestcreateTestRecordItem(
             id: 'item2',
             userId: userId,
             title: '運動',
@@ -179,7 +208,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
-        expect(find.text('記録項目がありません'), findsOneWidget);
+        expect(find.text(i18n.recordItems.empty), findsOneWidget);
         expect(find.byType(RecordItemCard), findsNothing);
       });
 
@@ -196,12 +225,72 @@ void main() {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
-        expect(find.text('エラーが発生しました'), findsOneWidget);
-        expect(find.text('再試行'), findsOneWidget);
+        expect(find.text(i18n.recordItems.errorMessage), findsOneWidget);
+        expect(find.text('Retry'), findsOneWidget);
       });
     });
 
     group('ユーザー操作', () {
+      testWidgets('左矢印ボタンをタップすると前日に移動する', (tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final dateFormatter = DateFormat('yyyy年M月d日');
+        final today = DateTime.now();
+        final yesterday = today.subtract(const Duration(days: 1));
+
+        // 初期状態で今日の日付が表示されていることを確認
+        expect(find.text(dateFormatter.format(today)), findsOneWidget);
+
+        // 左矢印ボタンをタップ
+        await tester.tap(find.byIcon(Icons.chevron_left));
+        await tester.pumpAndSettle();
+
+        // 昨日の日付が表示されることを確認
+        expect(find.text(dateFormatter.format(yesterday)), findsOneWidget);
+        expect(find.text(dateFormatter.format(today)), findsNothing);
+      });
+
+      testWidgets('右矢印ボタンをタップすると翌日に移動する（過去の日付から）', (tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final dateFormatter = DateFormat('yyyy年M月d日');
+        final today = DateTime.now();
+        final yesterday = today.subtract(const Duration(days: 1));
+
+        // まず昨日に移動
+        await tester.tap(find.byIcon(Icons.chevron_left));
+        await tester.pumpAndSettle();
+        expect(find.text(dateFormatter.format(yesterday)), findsOneWidget);
+
+        // 右矢印ボタンをタップして今日に戻る
+        await tester.tap(find.byIcon(Icons.chevron_right));
+        await tester.pumpAndSettle();
+
+        // 今日の日付が表示されることを確認
+        expect(find.text(dateFormatter.format(today)), findsOneWidget);
+        expect(find.text(dateFormatter.format(yesterday)), findsNothing);
+      });
+
+      testWidgets('右矢印ボタンは未来の日付には移動できない', (tester) async {
+        await tester.pumpWidget(createTestWidget());
+        await tester.pumpAndSettle();
+
+        final dateFormatter = DateFormat('yyyy年M月d日');
+        final today = DateTime.now();
+
+        // 初期状態で今日の日付が表示されていることを確認
+        expect(find.text(dateFormatter.format(today)), findsOneWidget);
+
+        // 右矢印ボタンをタップ（未来への移動を試みる）
+        await tester.tap(find.byIcon(Icons.chevron_right));
+        await tester.pumpAndSettle();
+
+        // 日付が変わらないことを確認（今日のまま）
+        expect(find.text(dateFormatter.format(today)), findsOneWidget);
+      });
+
       testWidgets('FloatingActionButtonをタップすると作成画面に遷移する', (tester) async {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
@@ -218,7 +307,7 @@ void main() {
 
       testWidgets('記録項目をタップすると詳細画面に遷移する', (tester) async {
         const userId = 'test-user-id';
-        final item = createTestRecordItem(
+        final item = createTestcreateTestRecordItem(
           id: 'item1',
           userId: userId,
           title: 'テスト項目',
@@ -239,9 +328,9 @@ void main() {
         // 実際のナビゲーションは後で実装
       });
 
-      testWidgets('編集ボタンをタップすると編集画面に遷移する', (tester) async {
+      testWidgets('完了ボタンをタップすると完了状態がトグルされる', (tester) async {
         const userId = 'test-user-id';
-        final item = createTestRecordItem(
+        final item = createTestcreateTestRecordItem(
           id: 'item1',
           userId: userId,
           title: 'テスト項目',
@@ -252,37 +341,24 @@ void main() {
         await tester.pumpWidget(createTestWidget(userId: userId));
         await tester.pumpAndSettle();
 
-        final editButtonFinder = find.byIcon(Icons.edit);
-        expect(editButtonFinder, findsOneWidget);
+        // 初期状態は未完了
+        expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+        expect(find.byIcon(Icons.check_circle), findsNothing);
 
-        // タップ時の動作をテスト（現在はモック実装）
-        await tester.tap(editButtonFinder);
+        // 完了ボタンをタップ
+        await tester.tap(find.byIcon(Icons.check_circle_outline));
         await tester.pumpAndSettle();
 
-        // 実際のナビゲーションは後で実装
-      });
+        // 完了状態になる
+        expect(find.byIcon(Icons.check_circle), findsOneWidget);
+        expect(find.byIcon(Icons.check_circle_outline), findsNothing);
 
-      testWidgets('削除ボタンをタップすると確認ダイアログが表示される', (tester) async {
-        const userId = 'test-user-id';
-        final item = createTestRecordItem(
-          id: 'item1',
-          userId: userId,
-          title: 'テスト項目',
-        );
-
-        fakeRepository.setItems([item]);
-
-        await tester.pumpWidget(createTestWidget(userId: userId));
+        // 再度タップで未完了に戻る
+        await tester.tap(find.byIcon(Icons.check_circle));
         await tester.pumpAndSettle();
 
-        final deleteButtonFinder = find.byIcon(Icons.delete);
-        expect(deleteButtonFinder, findsOneWidget);
-
-        // タップ時の動作をテスト（現在はモック実装）
-        await tester.tap(deleteButtonFinder);
-        await tester.pumpAndSettle();
-
-        // 確認ダイアログの実装は後で実装
+        expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+        expect(find.byIcon(Icons.check_circle), findsNothing);
       });
 
       testWidgets('エラー時の再試行ボタンをタップするとリロードされる', (tester) async {
@@ -291,7 +367,7 @@ void main() {
         await tester.pumpWidget(createTestWidget());
         await tester.pumpAndSettle();
 
-        final retryButtonFinder = find.text('再試行');
+        final retryButtonFinder = find.text('Retry');
         expect(retryButtonFinder, findsOneWidget);
 
         // エラーを解除して再試行
@@ -301,8 +377,8 @@ void main() {
         await tester.tap(retryButtonFinder);
         await tester.pumpAndSettle();
 
-        expect(find.text('記録項目がありません'), findsOneWidget);
-        expect(find.text('エラーが発生しました'), findsNothing);
+        expect(find.text(i18n.recordItems.empty), findsOneWidget);
+        expect(find.text(i18n.recordItems.errorMessage), findsNothing);
       });
     });
 
@@ -316,7 +392,7 @@ void main() {
         await tester.pumpWidget(createTestWidget(userId: userId));
         await tester.pumpAndSettle();
 
-        expect(find.text('記録項目がありません'), findsOneWidget);
+        expect(find.text(i18n.recordItems.empty), findsOneWidget);
 
         // StreamProviderが実際に使用されていることを確認
         // （実際のリアルタイム更新はFakeRepositoryの制約上、統合テストで確認）

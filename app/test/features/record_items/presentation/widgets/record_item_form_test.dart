@@ -119,11 +119,16 @@ void main() {
       testWidgets('フォームの基本構成が表示される', (tester) async {
         await tester.pumpWidget(createTestWidget());
 
-        expect(find.text('タイトル'), findsOneWidget);
+        expect(find.text('アイコンを選択'), findsOneWidget);
+        expect(find.text('タイトル *'), findsOneWidget);
         expect(find.text('説明'), findsOneWidget);
         expect(find.text('単位'), findsOneWidget);
         expect(find.text('作成'), findsOneWidget);
         expect(find.text('キャンセル'), findsOneWidget);
+
+        // 絵文字ピッカーの確認
+        expect(find.byType(GridView), findsOneWidget);
+        expect(find.text('📝'), findsOneWidget);
 
         expect(find.byType(TextFormField), findsNWidgets(3));
         expect(find.byType(ElevatedButton), findsOneWidget);
@@ -142,11 +147,13 @@ void main() {
       testWidgets('タイトルを入力すると作成ボタンが有効になる', (tester) async {
         await tester.pumpWidget(createTestWidget());
 
+        // まず絵文字を選択
+        await tester.tap(find.text('📝'));
+        await tester.pumpAndSettle();
+
         // タイトルフィールドに入力
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書',
-        );
+        final titleField = find.byType(TextFormField).first;
+        await tester.enterText(titleField, '読書');
         await tester.pumpAndSettle();
 
         final createButton = tester.widget<ElevatedButton>(
@@ -168,18 +175,25 @@ void main() {
 
         await tester.pumpWidget(createTestWidget());
 
+        // まず絵文字を選択
+        await tester.tap(find.text('📝'));
+        await tester.pumpAndSettle();
+
         // タイトルを入力
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書',
-        );
+        final titleField = find.byType(TextFormField).first;
+        await tester.enterText(titleField, '読書');
+        await tester.pumpAndSettle();
+
+        // ボタンを表示領域にスクロール
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
         // 作成ボタンをタップ
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
-        expect(find.text('Exception: Network error'), findsOneWidget);
+        // エラーメッセージが表示される
+        expect(find.textContaining('Network error'), findsOneWidget);
       });
 
       testWidgets('ローディング中は作成ボタンが無効になり、インジケーターが表示される', (tester) async {
@@ -201,6 +215,10 @@ void main() {
         );
         expect(createButtonBefore.onPressed, isNotNull);
 
+        // ボタンを表示領域にスクロール
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
+        await tester.pumpAndSettle();
+
         // 作成ボタンをタップ（即座にsubmissionが完了するため、ローディング状態の検証は困難）
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
@@ -218,10 +236,8 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         const inputText = '読書記録';
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          inputText,
-        );
+        final titleField = find.byType(TextFormField).first;
+        await tester.enterText(titleField, inputText);
         await tester.pumpAndSettle();
 
         expect(find.text(inputText), findsOneWidget);
@@ -231,10 +247,8 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         const inputText = '本を読んで知識を身につける';
-        await tester.enterText(
-          find.widgetWithText(TextFormField, '説明を入力してください（任意）'),
-          inputText,
-        );
+        final descriptionField = find.byType(TextFormField).at(1);
+        await tester.enterText(descriptionField, inputText);
         await tester.pumpAndSettle();
 
         expect(find.text(inputText), findsOneWidget);
@@ -244,10 +258,8 @@ void main() {
         await tester.pumpWidget(createTestWidget());
 
         const inputText = 'ページ';
-        await tester.enterText(
-          find.widgetWithText(TextFormField, '単位を入力してください（任意）'),
-          inputText,
-        );
+        final unitField = find.byType(TextFormField).at(2);
+        await tester.enterText(unitField, inputText);
         await tester.pumpAndSettle();
 
         expect(find.text(inputText), findsOneWidget);
@@ -256,18 +268,13 @@ void main() {
       testWidgets('複数フィールドに同時に入力できる', (tester) async {
         await tester.pumpWidget(createTestWidget());
 
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書',
-        );
-        await tester.enterText(
-          find.widgetWithText(TextFormField, '説明を入力してください（任意）'),
-          '毎日30分読書する',
-        );
-        await tester.enterText(
-          find.widgetWithText(TextFormField, '単位を入力してください（任意）'),
-          'ページ',
-        );
+        final titleField = find.byType(TextFormField).first;
+        final descriptionField = find.byType(TextFormField).at(1);
+        final unitField = find.byType(TextFormField).at(2);
+
+        await tester.enterText(titleField, '読書');
+        await tester.enterText(descriptionField, '毎日30分読書する');
+        await tester.enterText(unitField, 'ページ');
         await tester.pumpAndSettle();
 
         expect(find.text('読書'), findsOneWidget);
@@ -285,19 +292,22 @@ void main() {
           createTestWidget(onSuccess: () => onSuccessCalled = true),
         );
 
+        // まず絵文字を選択
+        await tester.tap(find.text('📝'));
+        await tester.pumpAndSettle();
+
         // フォームに入力
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書',
-        );
-        await tester.enterText(
-          find.widgetWithText(TextFormField, '説明を入力してください（任意）'),
-          '本を読む',
-        );
-        await tester.enterText(
-          find.widgetWithText(TextFormField, '単位を入力してください（任意）'),
-          'ページ',
-        );
+        final titleField = find.byType(TextFormField).first;
+        final descriptionField = find.byType(TextFormField).at(1);
+        final unitField = find.byType(TextFormField).at(2);
+
+        await tester.enterText(titleField, '読書');
+        await tester.enterText(descriptionField, '本を読む');
+        await tester.enterText(unitField, 'ページ');
+        await tester.pumpAndSettle();
+
+        // ボタンを表示領域にスクロール
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
         // 作成ボタンをタップ
@@ -312,6 +322,7 @@ void main() {
         expect(savedItems.length, equals(1));
         expect(savedItems.first.title, equals('読書'));
         expect(savedItems.first.description, equals('本を読む'));
+        expect(savedItems.first.icon, equals('📝'));
         expect(savedItems.first.unit, equals('ページ'));
       });
 
@@ -321,6 +332,10 @@ void main() {
         await tester.pumpWidget(
           createTestWidget(onCancel: () => onCancelCalled = true),
         );
+
+        // ボタンを表示領域にスクロール
+        await tester.ensureVisible(find.widgetWithText(TextButton, 'キャンセル'));
+        await tester.pumpAndSettle();
 
         // キャンセルボタンをタップ
         await tester.tap(find.widgetWithText(TextButton, 'キャンセル'));
@@ -334,15 +349,20 @@ void main() {
 
         await tester.pumpWidget(createTestWidget());
 
+        // まず絵文字を選択
+        await tester.tap(find.text('📝'));
+        await tester.pumpAndSettle();
+
         // フォームに入力
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書',
-        );
-        await tester.enterText(
-          find.widgetWithText(TextFormField, '説明を入力してください（任意）'),
-          '本を読む',
-        );
+        final titleField = find.byType(TextFormField).first;
+        final descriptionField = find.byType(TextFormField).at(1);
+
+        await tester.enterText(titleField, '読書');
+        await tester.enterText(descriptionField, '本を読む');
+        await tester.pumpAndSettle();
+
+        // ボタンを表示領域にスクロール
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
         // 作成ボタンをタップ
@@ -350,15 +370,10 @@ void main() {
         await tester.pumpAndSettle();
 
         // フォームがリセットされている
-        final titleField = tester.widget<TextFormField>(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-        );
-        final descriptionField = tester.widget<TextFormField>(
-          find.widgetWithText(TextFormField, '説明を入力してください（任意）'),
-        );
-
-        expect(titleField.controller?.text, isEmpty);
-        expect(descriptionField.controller?.text, isEmpty);
+        // TextFormFieldから直接controllerにアクセスすることはできないので、
+        // フィールドの内容を再度検索して確認
+        expect(find.text('読書'), findsNothing);
+        expect(find.text('本を読む'), findsNothing);
 
         // 作成ボタンが再び無効になっている
         final createButton = tester.widget<ElevatedButton>(
@@ -372,11 +387,17 @@ void main() {
 
         await tester.pumpWidget(createTestWidget());
 
+        // まず絵文字を選択
+        await tester.tap(find.text('📝'));
+        await tester.pumpAndSettle();
+
         // フォームに入力
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書',
-        );
+        final titleField = find.byType(TextFormField).first;
+        await tester.enterText(titleField, '読書');
+        await tester.pumpAndSettle();
+
+        // ボタンを表示領域にスクロール
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
         // 作成ボタンをタップ
@@ -400,27 +421,30 @@ void main() {
 
         await tester.pumpWidget(createTestWidget());
 
+        // まず絵文字を選択
+        await tester.tap(find.text('📝'));
+        await tester.pumpAndSettle();
+
         // タイトルを入力して作成ボタンをタップ（エラー発生）
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書',
-        );
+        final titleField = find.byType(TextFormField).first;
+        await tester.enterText(titleField, '読書');
+        await tester.pumpAndSettle();
+
+        // ボタンを表示領域にスクロール
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
         // エラーメッセージが表示される
-        expect(find.text('Exception: Network error'), findsOneWidget);
+        expect(find.textContaining('Network error'), findsOneWidget);
 
         // フィールドを編集するとエラーメッセージが消える
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書記録',
-        );
+        await tester.enterText(titleField, '読書記録');
         await tester.pumpAndSettle();
 
-        expect(find.text('Exception: Network error'), findsNothing);
+        expect(find.textContaining('Network error'), findsNothing);
       });
 
       testWidgets('空のタイトルでの作成はエラーになる', (tester) async {
@@ -447,10 +471,16 @@ void main() {
 
         await tester.pumpWidget(createTestWidget(onSuccess: null));
 
-        await tester.enterText(
-          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
-          '読書',
-        );
+        // まず絵文字を選択
+        await tester.tap(find.text('📝'));
+        await tester.pumpAndSettle();
+
+        final titleField = find.byType(TextFormField).first;
+        await tester.enterText(titleField, '読書');
+        await tester.pumpAndSettle();
+
+        // スクロールしてボタンを表示
+        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
         // エラーなく作成できる
@@ -462,6 +492,10 @@ void main() {
 
       testWidgets('onCancelコールバックがnullでも動作する', (tester) async {
         await tester.pumpWidget(createTestWidget(onCancel: null));
+
+        // スクロールしてボタンを表示
+        await tester.ensureVisible(find.widgetWithText(TextButton, 'キャンセル'));
+        await tester.pumpAndSettle();
 
         // エラーなくキャンセルボタンをタップできる
         await tester.tap(find.widgetWithText(TextButton, 'キャンセル'));

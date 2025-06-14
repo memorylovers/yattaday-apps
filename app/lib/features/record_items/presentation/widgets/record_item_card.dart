@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../../../_gen/i18n/strings.g.dart';
 import '../../domain/record_item.dart';
 
 class RecordItemCard extends StatelessWidget {
   const RecordItemCard({
     super.key,
     required this.recordItem,
+    required this.isCompleted,
     this.onTap,
-    this.onEdit,
-    this.onDelete,
+    this.onToggleComplete,
   });
 
   final RecordItem recordItem;
+  final bool isCompleted;
   final VoidCallback? onTap;
-  final VoidCallback? onEdit;
-  final VoidCallback? onDelete;
+  final VoidCallback? onToggleComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -79,22 +78,15 @@ class RecordItemCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (onEdit != null)
-                    IconButton(
-                      onPressed: onEdit,
-                      icon: Icon(Icons.edit_outlined, color: Colors.grey[600]),
-                      tooltip: i18n.recordItems.edit,
-                    ),
-                  if (onDelete != null)
-                    IconButton(
-                      onPressed: onDelete,
-                      icon: Icon(Icons.delete_outline, color: Colors.grey[600]),
-                      tooltip: i18n.recordItems.delete,
-                    ),
-                ],
+              // 完了/未完了ボタン
+              IconButton(
+                onPressed: onToggleComplete,
+                icon: Icon(
+                  isCompleted ? Icons.check_circle : Icons.check_circle_outline,
+                  size: 32,
+                  color: isCompleted ? Colors.green : Colors.grey[400],
+                ),
+                tooltip: isCompleted ? '未完了にする' : '完了にする',
               ),
             ],
           ),

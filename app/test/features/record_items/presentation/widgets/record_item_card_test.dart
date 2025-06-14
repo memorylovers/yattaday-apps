@@ -3,16 +3,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
 import 'package:myapp/features/record_items/presentation/widgets/record_item_card.dart';
 
+import '../../../../test_helpers/record_item_helpers.dart';
+
 void main() {
   group('RecordItemCard', () {
     late RecordItem testRecordItem;
 
     setUp(() {
-      testRecordItem = RecordItem(
+      testRecordItem = createTestRecordItem(
         id: 'test-id',
         userId: 'test-user-id',
         title: 'テスト項目',
         description: 'テスト説明',
+        icon: '✅',
         unit: '回',
         sortOrder: 1,
         createdAt: DateTime(2024, 1, 1),
@@ -23,13 +26,18 @@ void main() {
     testWidgets('記録項目の情報を表示する', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(body: RecordItemCard(recordItem: testRecordItem)),
+          home: Scaffold(
+            body: RecordItemCard(
+              recordItem: testRecordItem,
+              isCompleted: false,
+            ),
+          ),
         ),
       );
 
       expect(find.text('テスト項目'), findsOneWidget);
       expect(find.text('テスト説明'), findsOneWidget);
-      expect(find.text('回'), findsOneWidget);
+      expect(find.text('✅'), findsOneWidget); // アイコン
     });
 
     testWidgets('説明がない場合は説明を表示しない', (WidgetTester tester) async {
@@ -40,30 +48,46 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: RecordItemCard(recordItem: recordItemWithoutDescription),
+            body: RecordItemCard(
+              recordItem: recordItemWithoutDescription,
+              isCompleted: false,
+            ),
           ),
         ),
       );
 
       expect(find.text('テスト項目'), findsOneWidget);
       expect(find.text('テスト説明'), findsNothing);
-      expect(find.text('回'), findsOneWidget);
+      expect(find.text('✅'), findsOneWidget); // アイコン
     });
 
-    testWidgets('単位がない場合は単位を表示しない', (WidgetTester tester) async {
-      final recordItemWithoutUnit = testRecordItem.copyWith(unit: null);
-
+    testWidgets('完了状態が正しく表示される', (WidgetTester tester) async {
+      // 未完了状態
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
-            body: RecordItemCard(recordItem: recordItemWithoutUnit),
+            body: RecordItemCard(
+              recordItem: testRecordItem,
+              isCompleted: false,
+            ),
           ),
         ),
       );
 
-      expect(find.text('テスト項目'), findsOneWidget);
-      expect(find.text('テスト説明'), findsOneWidget);
-      expect(find.text('回'), findsNothing);
+      expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle), findsNothing);
+
+      // 完了状態
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: RecordItemCard(recordItem: testRecordItem, isCompleted: true),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.check_circle), findsOneWidget);
+      expect(find.byIcon(Icons.check_circle_outline), findsNothing);
     });
 
     testWidgets('タップ時にonTapコールバックが呼ばれる', (WidgetTester tester) async {
@@ -74,6 +98,7 @@ void main() {
           home: Scaffold(
             body: RecordItemCard(
               recordItem: testRecordItem,
+              isCompleted: false,
               onTap: () => wasTapped = true,
             ),
           ),
@@ -84,40 +109,25 @@ void main() {
       expect(wasTapped, isTrue);
     });
 
-    testWidgets('編集ボタンタップ時にonEditコールバックが呼ばれる', (WidgetTester tester) async {
-      bool wasEditTapped = false;
+    testWidgets('完了トグルボタンタップ時にonToggleCompleteコールバックが呼ばれる', (
+      WidgetTester tester,
+    ) async {
+      bool wasToggleTapped = false;
 
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: RecordItemCard(
               recordItem: testRecordItem,
-              onEdit: () => wasEditTapped = true,
+              isCompleted: false,
+              onToggleComplete: () => wasToggleTapped = true,
             ),
           ),
         ),
       );
 
-      await tester.tap(find.byIcon(Icons.edit));
-      expect(wasEditTapped, isTrue);
-    });
-
-    testWidgets('削除ボタンタップ時にonDeleteコールバックが呼ばれる', (WidgetTester tester) async {
-      bool wasDeleteTapped = false;
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: RecordItemCard(
-              recordItem: testRecordItem,
-              onDelete: () => wasDeleteTapped = true,
-            ),
-          ),
-        ),
-      );
-
-      await tester.tap(find.byIcon(Icons.delete));
-      expect(wasDeleteTapped, isTrue);
+      await tester.tap(find.byIcon(Icons.check_circle_outline));
+      expect(wasToggleTapped, isTrue);
     });
   });
 }

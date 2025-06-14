@@ -18,24 +18,28 @@ import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
     as _i4;
 import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
     as _i5;
+import 'package:widgetbook_workspace/features/_payment/presentation/pages/payment_page.dart'
+    as _i8;
+import 'package:widgetbook_workspace/features/account/presentation/settings_page.dart'
+    as _i11;
 import 'package:widgetbook_workspace/features/authentication/presentation/pages/login_page.dart'
     as _i6;
 import 'package:widgetbook_workspace/features/authentication/presentation/widgets/login_buttons.dart'
     as _i7;
 import 'package:widgetbook_workspace/features/record_items/presentation/pages/record_items_create_page.dart'
-    as _i10;
-import 'package:widgetbook_workspace/features/record_items/presentation/pages/record_items_edit_page.dart'
-    as _i11;
-import 'package:widgetbook_workspace/features/record_items/presentation/pages/record_items_list_page.dart'
     as _i12;
-import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_card.dart'
+import 'package:widgetbook_workspace/features/record_items/presentation/pages/record_items_edit_page.dart'
     as _i13;
-import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_form.dart'
+import 'package:widgetbook_workspace/features/record_items/presentation/pages/record_items_list_page.dart'
     as _i14;
+import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_card.dart'
+    as _i15;
+import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_form.dart'
+    as _i16;
 import 'package:widgetbook_workspace/features/startup/widgets/startup_error_widget.dart'
-    as _i8;
-import 'package:widgetbook_workspace/features/startup/widgets/startup_loading_widget.dart'
     as _i9;
+import 'package:widgetbook_workspace/features/startup/widgets/startup_loading_widget.dart'
+    as _i10;
 
 final directories = <_i1.WidgetbookNode>[
   _i1.WidgetbookFolder(
@@ -90,35 +94,12 @@ final directories = <_i1.WidgetbookNode>[
           _i1.WidgetbookFolder(
             name: 'presentation',
             children: [
-              _i1.WidgetbookComponent(
+              _i1.WidgetbookLeafComponent(
                 name: 'LoginPage',
-                useCases: [
-                  _i1.WidgetbookUseCase(
-                    name: 'Dark Mode',
-                    builder: _i6.darkModeLoginPageUseCase,
-                    designLink: '',
-                  ),
-                  _i1.WidgetbookUseCase(
-                    name: 'Default',
-                    builder: _i6.defaultLoginPageUseCase,
-                    designLink: '',
-                  ),
-                  _i1.WidgetbookUseCase(
-                    name: 'Large Text',
-                    builder: _i6.largeTextLoginPageUseCase,
-                    designLink: '',
-                  ),
-                  _i1.WidgetbookUseCase(
-                    name: 'Loading State',
-                    builder: _i6.loadingLoginPageUseCase,
-                    designLink: '',
-                  ),
-                  _i1.WidgetbookUseCase(
-                    name: 'Tablet Size',
-                    builder: _i6.tabletLoginPageUseCase,
-                    designLink: '',
-                  ),
-                ],
+                useCase: _i1.WidgetbookUseCase(
+                  name: 'Default',
+                  builder: _i6.loginPageUseCase,
+                ),
               ),
               _i1.WidgetbookFolder(
                 name: 'widgets',
@@ -138,6 +119,23 @@ final directories = <_i1.WidgetbookNode>[
         ],
       ),
       _i1.WidgetbookFolder(
+        name: '_payment',
+        children: [
+          _i1.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _i1.WidgetbookLeafComponent(
+                name: 'PaymentPage',
+                useCase: _i1.WidgetbookUseCase(
+                  name: 'Default',
+                  builder: _i8.buildPaymentPageUseCase,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      _i1.WidgetbookFolder(
         name: '_startup',
         children: [
           _i1.WidgetbookFolder(
@@ -150,17 +148,34 @@ final directories = <_i1.WidgetbookNode>[
                     name: 'StartupErrorWidget',
                     useCase: _i1.WidgetbookUseCase(
                       name: 'Default',
-                      builder: _i8.usecaseStartupErrorWidget,
+                      builder: _i9.usecaseStartupErrorWidget,
                     ),
                   ),
                   _i1.WidgetbookLeafComponent(
                     name: 'StartupLoadingWidget',
                     useCase: _i1.WidgetbookUseCase(
                       name: 'Default',
-                      builder: _i9.usecaseStartupLoadingWidget,
+                      builder: _i10.usecaseStartupLoadingWidget,
                     ),
                   ),
                 ],
+              ),
+            ],
+          ),
+        ],
+      ),
+      _i1.WidgetbookFolder(
+        name: 'account',
+        children: [
+          _i1.WidgetbookFolder(
+            name: 'presentation',
+            children: [
+              _i1.WidgetbookLeafComponent(
+                name: 'SettingsPage',
+                useCase: _i1.WidgetbookUseCase(
+                  name: 'Default',
+                  builder: _i11.buildSettingsPageUseCase,
+                ),
               ),
             ],
           ),
@@ -180,23 +195,23 @@ final directories = <_i1.WidgetbookNode>[
                     useCases: [
                       _i1.WidgetbookUseCase(
                         name: 'Default',
-                        builder: _i10.recordItemsCreatePageDefault,
+                        builder: _i12.recordItemsCreatePageDefault,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Empty UserID',
-                        builder: _i10.recordItemsCreatePageEmptyUserId,
+                        builder: _i12.recordItemsCreatePageEmptyUserId,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Long UserID',
-                        builder: _i10.recordItemsCreatePageLongUserId,
+                        builder: _i12.recordItemsCreatePageLongUserId,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'With Error',
-                        builder: _i10.recordItemsCreatePageWithError,
+                        builder: _i12.recordItemsCreatePageWithError,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'With Loading',
-                        builder: _i10.recordItemsCreatePageWithLoading,
+                        builder: _i12.recordItemsCreatePageWithLoading,
                       ),
                     ],
                   ),
@@ -205,50 +220,32 @@ final directories = <_i1.WidgetbookNode>[
                     useCases: [
                       _i1.WidgetbookUseCase(
                         name: 'Default',
-                        builder: _i11.buildRecordItemsEditPageDefault,
+                        builder: _i13.buildRecordItemsEditPageDefault,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Loading State Test',
-                        builder: _i11.buildRecordItemsEditPageLoading,
+                        builder: _i13.buildRecordItemsEditPageLoading,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Update Error',
-                        builder: _i11.buildRecordItemsEditPageError,
+                        builder: _i13.buildRecordItemsEditPageError,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'With Long Text',
-                        builder: _i11.buildRecordItemsEditPageLongText,
+                        builder: _i13.buildRecordItemsEditPageLongText,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'With Minimal Data',
-                        builder: _i11.buildRecordItemsEditPageMinimal,
+                        builder: _i13.buildRecordItemsEditPageMinimal,
                       ),
                     ],
                   ),
-                  _i1.WidgetbookComponent(
+                  _i1.WidgetbookLeafComponent(
                     name: 'RecordItemsListPage',
-                    useCases: [
-                      _i1.WidgetbookUseCase(
-                        name: 'Default',
-                        builder: _i12.recordItemsListPageDefault,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Empty List',
-                        builder: _i12.recordItemsListPageEmpty,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Error State',
-                        builder: _i12.recordItemsListPageError,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Loading State',
-                        builder: _i12.recordItemsListPageLoading,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Many Items',
-                        builder: _i12.recordItemsListPageManyItems,
-                      ),
-                    ],
+                    useCase: _i1.WidgetbookUseCase(
+                      name: 'Default',
+                      builder: _i14.recordItemsListPageDefault,
+                    ),
                   ),
                 ],
               ),
@@ -260,19 +257,19 @@ final directories = <_i1.WidgetbookNode>[
                     useCases: [
                       _i1.WidgetbookUseCase(
                         name: 'Default',
-                        builder: _i13.recordItemCardDefault,
+                        builder: _i15.recordItemCardDefault,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Minimal',
-                        builder: _i13.recordItemCardMinimal,
+                        builder: _i15.recordItemCardMinimal,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Without Description',
-                        builder: _i13.recordItemCardWithoutDescription,
+                        builder: _i15.recordItemCardWithoutDescription,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Without Unit',
-                        builder: _i13.recordItemCardWithoutUnit,
+                        builder: _i15.recordItemCardWithoutUnit,
                       ),
                     ],
                   ),
@@ -281,23 +278,23 @@ final directories = <_i1.WidgetbookNode>[
                     useCases: [
                       _i1.WidgetbookUseCase(
                         name: 'Default',
-                        builder: _i14.recordItemFormDefault,
+                        builder: _i16.recordItemFormDefault,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Prefilled Form',
-                        builder: _i14.recordItemFormPrefilled,
+                        builder: _i16.recordItemFormPrefilled,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'With Delay',
-                        builder: _i14.recordItemFormWithDelay,
+                        builder: _i16.recordItemFormWithDelay,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'With Error',
-                        builder: _i14.recordItemFormWithError,
+                        builder: _i16.recordItemFormWithError,
                       ),
                       _i1.WidgetbookUseCase(
                         name: 'Without Callbacks',
-                        builder: _i14.recordItemFormWithoutCallbacks,
+                        builder: _i16.recordItemFormWithoutCallbacks,
                       ),
                     ],
                   ),

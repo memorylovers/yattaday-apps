@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/features/record_items/data/repository/firebase_record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
 
+import '../../../../test_helpers/record_item_helpers.dart';
+
 void main() {
   late FakeFirebaseFirestore fakeFirestore;
   late FirebaseRecordItemRepository repository;
@@ -11,29 +13,6 @@ void main() {
     fakeFirestore = FakeFirebaseFirestore();
     repository = FirebaseRecordItemRepository(firestore: fakeFirestore);
   });
-
-  RecordItem createTestRecordItem({
-    String id = 'test-id',
-    String userId = 'test-user-id',
-    String title = 'テスト項目',
-    String? description,
-    String? unit,
-    int sortOrder = 0,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) {
-    final now = DateTime.now();
-    return RecordItem(
-      id: id,
-      userId: userId,
-      title: title,
-      description: description,
-      unit: unit,
-      sortOrder: sortOrder,
-      createdAt: createdAt ?? now,
-      updatedAt: updatedAt ?? now,
-    );
-  }
 
   group('FirebaseRecordItemRepository', () {
     group('create', () {
