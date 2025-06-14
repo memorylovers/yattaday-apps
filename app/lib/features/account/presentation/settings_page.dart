@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../_gen/i18n/strings.g.dart';
 import '../../../routing/router_routes.dart';
 import '../../_authentication/application/auth_providers.dart';
 
@@ -16,7 +17,7 @@ class SettingsPage extends HookConsumerWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('設定'),
+        title: Text(i18n.settings.title),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0,
@@ -65,18 +66,18 @@ class SettingsPage extends HookConsumerWidget {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
-                              '田中 太郎',
-                              style: TextStyle(
+                              i18n.settings.userName,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text(
-                              'tanaka@example.com',
-                              style: TextStyle(
+                              i18n.settings.userEmail,
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black54,
                               ),
@@ -91,17 +92,18 @@ class SettingsPage extends HookConsumerWidget {
                 // アカウントセクション
                 _buildSection(
                   context,
-                  title: 'アカウント',
+                  title: i18n.settings.account,
                   children: [
                     _buildListTile(
                       icon: Icons.credit_card,
-                      title: 'プラン管理',
-                      subtitle: '現在のプラン: フリー',
+                      title: i18n.settings.planManagement,
+                      subtitle:
+                          '${i18n.settings.currentPlan}: ${i18n.settings.free}',
                       onTap: () => const PaymentPageRoute().go(context),
                     ),
                     _buildListTile(
                       icon: Icons.person_outline,
-                      title: 'プロフィール編集',
+                      title: i18n.settings.profileEdit,
                       onTap: () {
                         // TODO: プロフィール編集
                       },
@@ -112,28 +114,28 @@ class SettingsPage extends HookConsumerWidget {
                 // アプリ設定セクション
                 _buildSection(
                   context,
-                  title: 'アプリ設定',
+                  title: i18n.settings.appSettings,
                   children: [
                     _buildListTile(
                       icon: Icons.notifications_outlined,
-                      title: '通知設定',
-                      subtitle: 'リマインダー通知などカスタマイズ',
+                      title: i18n.settings.notifications,
+                      subtitle: i18n.settings.notificationsDesc,
                       onTap: () {
                         // TODO: 通知設定
                       },
                     ),
                     _buildListTile(
                       icon: Icons.palette_outlined,
-                      title: 'テーマ',
-                      subtitle: 'ライトモード',
+                      title: i18n.settings.theme,
+                      subtitle: i18n.settings.lightMode,
                       onTap: () {
                         // TODO: テーマ設定
                       },
                     ),
                     _buildListTile(
                       icon: Icons.language,
-                      title: '言語',
-                      subtitle: '日本語',
+                      title: i18n.settings.language,
+                      subtitle: i18n.settings.japanese,
                       onTap: () {
                         // TODO: 言語設定
                       },
@@ -144,32 +146,32 @@ class SettingsPage extends HookConsumerWidget {
                 // サポートセクション
                 _buildSection(
                   context,
-                  title: 'サポート',
+                  title: i18n.settings.support,
                   children: [
                     _buildListTile(
                       icon: Icons.help_outline,
-                      title: 'ヘルプ',
+                      title: i18n.settings.help,
                       onTap: () {
                         // TODO: ヘルプ
                       },
                     ),
                     _buildListTile(
                       icon: Icons.mail_outline,
-                      title: 'お問い合わせ',
+                      title: i18n.settings.contactUs,
                       onTap: () {
                         // TODO: お問い合わせ
                       },
                     ),
                     _buildListTile(
                       icon: Icons.description_outlined,
-                      title: '利用規約',
+                      title: i18n.settings.terms,
                       onTap: () {
                         // TODO: 利用規約
                       },
                     ),
                     _buildListTile(
                       icon: Icons.lock_outline,
-                      title: 'プライバシーポリシー',
+                      title: i18n.settings.privacy,
                       onTap: () {
                         // TODO: プライバシーポリシー
                       },
@@ -202,7 +204,7 @@ class SettingsPage extends HookConsumerWidget {
                             },
                     icon: Icon(Icons.logout, color: Colors.grey[600], size: 20),
                     label: Text(
-                      'ログアウト',
+                      i18n.settings.logout,
                       style: TextStyle(color: Colors.grey[600], fontSize: 16),
                     ),
                     style: TextButton.styleFrom(

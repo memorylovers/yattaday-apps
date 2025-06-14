@@ -22,10 +22,29 @@
     "anonymousSignIn": "ログインなしではじめる"
   },
   "settings": {
-    "title": "Settings",
-    "account": "Account",
+    "title": "設定",
+    "account": "アカウント",
     "payment": "Subscription",
-    "contact": "Contact Us"
+    "contact": "Contact Us",
+    "planManagement": "プラン管理",
+    "currentPlan": "現在のプラン",
+    "free": "フリー",
+    "profileEdit": "プロフィール編集",
+    "appSettings": "アプリ設定",
+    "notifications": "通知設定",
+    "notificationsDesc": "リマインダー通知などカスタマイズ",
+    "theme": "テーマ",
+    "lightMode": "ライトモード",
+    "language": "言語",
+    "japanese": "日本語",
+    "support": "サポート",
+    "help": "ヘルプ",
+    "contactUs": "お問い合わせ",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "logout": "ログアウト",
+    "userName": "田中 太郎",
+    "userEmail": "tanaka@example.com"
   },
   "payment": {
     "title": "プレミアムプラン",
