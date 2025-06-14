@@ -21,7 +21,7 @@ RecordItemHistory _$RecordItemHistoryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RecordItemHistory {
-  /// 日次記録ID（uuid v7）
+  /// 日次記録ID（ULID）
   String get id => throw _privateConstructorUsedError;
 
   /// ユーザーID
@@ -238,7 +238,7 @@ class _$RecordItemHistoryImpl implements _RecordItemHistory {
   factory _$RecordItemHistoryImpl.fromJson(Map<String, dynamic> json) =>
       _$$RecordItemHistoryImplFromJson(json);
 
-  /// 日次記録ID（uuid v7）
+  /// 日次記録ID（ULID）
   @override
   final String id;
 
@@ -334,7 +334,7 @@ abstract class _RecordItemHistory implements RecordItemHistory {
   factory _RecordItemHistory.fromJson(Map<String, dynamic> json) =
       _$RecordItemHistoryImpl.fromJson;
 
-  /// 日次記録ID（uuid v7）
+  /// 日次記録ID（ULID）
   @override
   String get id;
 

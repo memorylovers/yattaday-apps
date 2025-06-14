@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
+import 'package:ulid4d/ulid4d.dart';
 
 import '../../domain/record_item_history.dart';
 import 'record_item_history_repository.dart';
@@ -25,7 +25,7 @@ class FirebaseRecordItemHistoryRepository
   }
 
   /// 新しいIDを生成
-  String generateId() => const Uuid().v7();
+  String generateId() => ULID.randomULID();
 
   @override
   Future<void> create(RecordItemHistory history) async {

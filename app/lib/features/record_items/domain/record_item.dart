@@ -10,7 +10,7 @@ part 'record_item.g.dart';
 @freezed
 class RecordItem with _$RecordItem {
   const factory RecordItem({
-    /// 記録項目ID（uuid v7）
+    /// 記録項目ID（ULID）
     required String id,
 
     /// 所有者のユーザーID

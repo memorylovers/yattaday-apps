@@ -7,6 +7,7 @@ import '../features/_startup/presentation/startup_page.dart';
 import '../features/account/presentation/settings_page.dart';
 import '../features/home/presentation/home_page_layout.dart';
 import '../features/record_items/presentation/pages/record_items_list_page.dart';
+import '../features/record_items/presentation/pages/record_items_detail_page.dart';
 import 'router_provider.dart';
 
 part 'router_routes.g.dart';
@@ -53,6 +54,11 @@ class LoginPageRoute extends GoRouteData {
       routes: [
         TypedGoRoute<RecordItemsListPageRoute>(
           path: RecordItemsListPageRoute.path,
+          routes: [
+            TypedGoRoute<RecordItemsDetailPageRoute>(
+              path: RecordItemsDetailPageRoute.path,
+            ),
+          ],
         ),
       ],
     ),
@@ -98,6 +104,20 @@ class RecordItemsListPageRoute extends GoRouteData {
 class RecordItemsListPageBranch extends StatefulShellBranchData {
   static final GlobalKey<NavigatorState> $navigatorKey = recordItemsTabKey;
   static const String $restorationScopeId = 'restorationScopeId';
+}
+
+/// /record-items/:id: 記録項目詳細画面
+class RecordItemsDetailPageRoute extends GoRouteData {
+  const RecordItemsDetailPageRoute({required this.id});
+
+  static const path = ':id';
+
+  final String id;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return RecordItemsDetailPage(recordItemId: id);
+  }
 }
 
 /// /settings: 設定画面

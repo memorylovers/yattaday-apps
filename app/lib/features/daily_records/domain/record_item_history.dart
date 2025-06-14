@@ -10,7 +10,7 @@ part 'record_item_history.g.dart';
 @freezed
 class RecordItemHistory with _$RecordItemHistory {
   const factory RecordItemHistory({
-    /// 日次記録ID（uuid v7）
+    /// 日次記録ID（ULID）
     required String id,
 
     /// ユーザーID

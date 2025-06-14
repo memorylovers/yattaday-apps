@@ -21,7 +21,7 @@ RecordItem _$RecordItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$RecordItem {
-  /// 記録項目ID（uuid v7）
+  /// 記録項目ID（ULID）
   String get id => throw _privateConstructorUsedError;
 
   /// 所有者のユーザーID
@@ -274,7 +274,7 @@ class _$RecordItemImpl implements _RecordItem {
   factory _$RecordItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$RecordItemImplFromJson(json);
 
-  /// 記録項目ID（uuid v7）
+  /// 記録項目ID（ULID）
   @override
   final String id;
 
@@ -382,7 +382,7 @@ abstract class _RecordItem implements RecordItem {
   factory _RecordItem.fromJson(Map<String, dynamic> json) =
       _$RecordItemImpl.fromJson;
 
-  /// 記録項目ID（uuid v7）
+  /// 記録項目ID（ULID）
   @override
   String get id;
 

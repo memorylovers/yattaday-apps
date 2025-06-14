@@ -70,6 +70,13 @@ RouteBase get $homePageLaytoutRoute => StatefulShellRouteData.$route(
           path: '/record-items',
 
           factory: $RecordItemsListPageRouteExtension._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: ':id',
+
+              factory: $RecordItemsDetailPageRouteExtension._fromState,
+            ),
+          ],
         ),
       ],
     ),
@@ -105,6 +112,23 @@ extension $RecordItemsListPageRouteExtension on RecordItemsListPageRoute {
       const RecordItemsListPageRoute();
 
   String get location => GoRouteData.$location('/record-items');
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $RecordItemsDetailPageRouteExtension on RecordItemsDetailPageRoute {
+  static RecordItemsDetailPageRoute _fromState(GoRouterState state) =>
+      RecordItemsDetailPageRoute(id: state.pathParameters['id']!);
+
+  String get location =>
+      GoRouteData.$location('/record-items/${Uri.encodeComponent(id)}');
 
   void go(BuildContext context) => context.go(location);
 
