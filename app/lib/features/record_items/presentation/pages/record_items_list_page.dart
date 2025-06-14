@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
+import '../../../../routing/router_routes.dart';
 import '../../application/providers/record_items_provider.dart';
 import '../../domain/record_item.dart';
 import '../widgets/record_item_list_view.dart';
@@ -115,14 +116,9 @@ class RecordItemsListPage extends HookConsumerWidget {
     );
   }
 
-  /// 記録項目詳細画面への遷移（現在はモック実装）
+  /// 記録項目詳細画面への遷移
   void _navigateToDetail(BuildContext context, RecordItem item) {
-    // TODO: 詳細画面の実装後に実際のナビゲーションを追加
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(i18n.recordItems.navigateToDetail(title: item.title)),
-      ),
-    );
+    RecordItemsDetailPageRoute(id: item.id).push(context);
   }
 
   /// 記録項目作成画面への遷移（現在はモック実装）
