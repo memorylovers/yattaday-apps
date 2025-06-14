@@ -200,10 +200,10 @@ class SettingsPage extends HookConsumerWidget {
                                 isLoading.value = false;
                               }
                             },
-                    icon: const Icon(Icons.logout, color: Colors.red, size: 20),
-                    label: const Text(
+                    icon: Icon(Icons.logout, color: Colors.grey[600], size: 20),
+                    label: Text(
                       'ログアウト',
-                      style: TextStyle(color: Colors.red, fontSize: 16),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 16),
                     ),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
