@@ -206,6 +206,12 @@ class TranslationsRecordItemsEn {
       'Show delete confirmation for ${title}';
   String get edit => 'Edit';
   String get delete => 'Delete';
+  String get notFound => 'Record item not found';
+  String get deleteTitle => 'Delete Record Item';
+  String get deleteConfirmation =>
+      'Are you sure you want to delete this record item?';
+  String get deleteSuccess => 'Record item deleted successfully';
+  String get deleteError => 'An error occurred while deleting';
 }
 
 // Path: payment.header
@@ -488,6 +494,16 @@ extension on Translations {
         return 'Edit';
       case 'recordItems.delete':
         return 'Delete';
+      case 'recordItems.notFound':
+        return 'Record item not found';
+      case 'recordItems.deleteTitle':
+        return 'Delete Record Item';
+      case 'recordItems.deleteConfirmation':
+        return 'Are you sure you want to delete this record item?';
+      case 'recordItems.deleteSuccess':
+        return 'Record item deleted successfully';
+      case 'recordItems.deleteError':
+        return 'An error occurred while deleting';
       default:
         return null;
     }

@@ -291,6 +291,16 @@ class _TranslationsRecordItemsJa extends TranslationsRecordItemsEn {
   String get edit => '編集';
   @override
   String get delete => '削除';
+  @override
+  String get notFound => '記録項目が見つかりません';
+  @override
+  String get deleteTitle => '記録項目を削除';
+  @override
+  String get deleteConfirmation => 'この記録項目を削除してもよろしいですか？';
+  @override
+  String get deleteSuccess => '記録項目を削除しました';
+  @override
+  String get deleteError => '削除中にエラーが発生しました';
 }
 
 // Path: payment.header
@@ -623,6 +633,16 @@ extension on TranslationsJa {
         return '編集';
       case 'recordItems.delete':
         return '削除';
+      case 'recordItems.notFound':
+        return '記録項目が見つかりません';
+      case 'recordItems.deleteTitle':
+        return '記録項目を削除';
+      case 'recordItems.deleteConfirmation':
+        return 'この記録項目を削除してもよろしいですか？';
+      case 'recordItems.deleteSuccess':
+        return '記録項目を削除しました';
+      case 'recordItems.deleteError':
+        return '削除中にエラーが発生しました';
       default:
         return null;
     }

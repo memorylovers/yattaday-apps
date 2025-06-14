@@ -109,6 +109,11 @@
     "navigateToCreate": "作成画面へ遷移",
     "deleteConfirm": "${title}の削除確認ダイアログ表示",
     "edit": "編集",
-    "delete": "削除"
+    "delete": "削除",
+    "notFound": "記録項目が見つかりません",
+    "deleteTitle": "記録項目を削除",
+    "deleteConfirmation": "この記録項目を削除してもよろしいですか？",
+    "deleteSuccess": "記録項目を削除しました",
+    "deleteError": "削除中にエラーが発生しました"
   }
 }
