@@ -19,6 +19,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$RecordItemFormState {
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
+  String get icon => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError;
   bool get isSubmitting => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
@@ -40,6 +41,7 @@ abstract class $RecordItemFormStateCopyWith<$Res> {
   $Res call({
     String title,
     String description,
+    String icon,
     String unit,
     bool isSubmitting,
     String? errorMessage,
@@ -63,6 +65,7 @@ class _$RecordItemFormStateCopyWithImpl<$Res, $Val extends RecordItemFormState>
   $Res call({
     Object? title = null,
     Object? description = null,
+    Object? icon = null,
     Object? unit = null,
     Object? isSubmitting = null,
     Object? errorMessage = freezed,
@@ -78,6 +81,11 @@ class _$RecordItemFormStateCopyWithImpl<$Res, $Val extends RecordItemFormState>
                 null == description
                     ? _value.description
                     : description // ignore: cast_nullable_to_non_nullable
+                        as String,
+            icon:
+                null == icon
+                    ? _value.icon
+                    : icon // ignore: cast_nullable_to_non_nullable
                         as String,
             unit:
                 null == unit
@@ -112,6 +120,7 @@ abstract class _$$RecordItemFormStateImplCopyWith<$Res>
   $Res call({
     String title,
     String description,
+    String icon,
     String unit,
     bool isSubmitting,
     String? errorMessage,
@@ -134,6 +143,7 @@ class __$$RecordItemFormStateImplCopyWithImpl<$Res>
   $Res call({
     Object? title = null,
     Object? description = null,
+    Object? icon = null,
     Object? unit = null,
     Object? isSubmitting = null,
     Object? errorMessage = freezed,
@@ -149,6 +159,11 @@ class __$$RecordItemFormStateImplCopyWithImpl<$Res>
             null == description
                 ? _value.description
                 : description // ignore: cast_nullable_to_non_nullable
+                    as String,
+        icon:
+            null == icon
+                ? _value.icon
+                : icon // ignore: cast_nullable_to_non_nullable
                     as String,
         unit:
             null == unit
@@ -176,6 +191,7 @@ class _$RecordItemFormStateImpl extends _RecordItemFormState {
   const _$RecordItemFormStateImpl({
     this.title = '',
     this.description = '',
+    this.icon = '📝',
     this.unit = '',
     this.isSubmitting = false,
     this.errorMessage,
@@ -189,6 +205,9 @@ class _$RecordItemFormStateImpl extends _RecordItemFormState {
   final String description;
   @override
   @JsonKey()
+  final String icon;
+  @override
+  @JsonKey()
   final String unit;
   @override
   @JsonKey()
@@ -198,7 +217,7 @@ class _$RecordItemFormStateImpl extends _RecordItemFormState {
 
   @override
   String toString() {
-    return 'RecordItemFormState(title: $title, description: $description, unit: $unit, isSubmitting: $isSubmitting, errorMessage: $errorMessage)';
+    return 'RecordItemFormState(title: $title, description: $description, icon: $icon, unit: $unit, isSubmitting: $isSubmitting, errorMessage: $errorMessage)';
   }
 
   @override
@@ -209,6 +228,7 @@ class _$RecordItemFormStateImpl extends _RecordItemFormState {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.unit, unit) || other.unit == unit) &&
             (identical(other.isSubmitting, isSubmitting) ||
                 other.isSubmitting == isSubmitting) &&
@@ -221,6 +241,7 @@ class _$RecordItemFormStateImpl extends _RecordItemFormState {
     runtimeType,
     title,
     description,
+    icon,
     unit,
     isSubmitting,
     errorMessage,
@@ -242,6 +263,7 @@ abstract class _RecordItemFormState extends RecordItemFormState {
   const factory _RecordItemFormState({
     final String title,
     final String description,
+    final String icon,
     final String unit,
     final bool isSubmitting,
     final String? errorMessage,
@@ -252,6 +274,8 @@ abstract class _RecordItemFormState extends RecordItemFormState {
   String get title;
   @override
   String get description;
+  @override
+  String get icon;
   @override
   String get unit;
   @override

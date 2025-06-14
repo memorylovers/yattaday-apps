@@ -33,6 +33,9 @@ mixin _$RecordItem {
   /// 記録項目の説明（オプション）
   String? get description => throw _privateConstructorUsedError;
 
+  /// 記録項目のアイコン（絵文字）
+  String get icon => throw _privateConstructorUsedError;
+
   /// 単位（例：回、分、ページなど）
   String? get unit => throw _privateConstructorUsedError;
 
@@ -69,6 +72,7 @@ abstract class $RecordItemCopyWith<$Res> {
     String userId,
     String title,
     String? description,
+    String icon,
     String? unit,
     int sortOrder,
     @DateTimeConverter() DateTime createdAt,
@@ -95,6 +99,7 @@ class _$RecordItemCopyWithImpl<$Res, $Val extends RecordItem>
     Object? userId = null,
     Object? title = null,
     Object? description = freezed,
+    Object? icon = null,
     Object? unit = freezed,
     Object? sortOrder = null,
     Object? createdAt = null,
@@ -122,6 +127,11 @@ class _$RecordItemCopyWithImpl<$Res, $Val extends RecordItem>
                     ? _value.description
                     : description // ignore: cast_nullable_to_non_nullable
                         as String?,
+            icon:
+                null == icon
+                    ? _value.icon
+                    : icon // ignore: cast_nullable_to_non_nullable
+                        as String,
             unit:
                 freezed == unit
                     ? _value.unit
@@ -162,6 +172,7 @@ abstract class _$$RecordItemImplCopyWith<$Res>
     String userId,
     String title,
     String? description,
+    String icon,
     String? unit,
     int sortOrder,
     @DateTimeConverter() DateTime createdAt,
@@ -187,6 +198,7 @@ class __$$RecordItemImplCopyWithImpl<$Res>
     Object? userId = null,
     Object? title = null,
     Object? description = freezed,
+    Object? icon = null,
     Object? unit = freezed,
     Object? sortOrder = null,
     Object? createdAt = null,
@@ -214,6 +226,11 @@ class __$$RecordItemImplCopyWithImpl<$Res>
                 ? _value.description
                 : description // ignore: cast_nullable_to_non_nullable
                     as String?,
+        icon:
+            null == icon
+                ? _value.icon
+                : icon // ignore: cast_nullable_to_non_nullable
+                    as String,
         unit:
             freezed == unit
                 ? _value.unit
@@ -247,6 +264,7 @@ class _$RecordItemImpl implements _RecordItem {
     required this.userId,
     required this.title,
     this.description,
+    required this.icon,
     this.unit,
     required this.sortOrder,
     @DateTimeConverter() required this.createdAt,
@@ -272,6 +290,10 @@ class _$RecordItemImpl implements _RecordItem {
   @override
   final String? description;
 
+  /// 記録項目のアイコン（絵文字）
+  @override
+  final String icon;
+
   /// 単位（例：回、分、ページなど）
   @override
   final String? unit;
@@ -292,7 +314,7 @@ class _$RecordItemImpl implements _RecordItem {
 
   @override
   String toString() {
-    return 'RecordItem(id: $id, userId: $userId, title: $title, description: $description, unit: $unit, sortOrder: $sortOrder, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'RecordItem(id: $id, userId: $userId, title: $title, description: $description, icon: $icon, unit: $unit, sortOrder: $sortOrder, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -305,6 +327,7 @@ class _$RecordItemImpl implements _RecordItem {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.description, description) ||
                 other.description == description) &&
+            (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.unit, unit) || other.unit == unit) &&
             (identical(other.sortOrder, sortOrder) ||
                 other.sortOrder == sortOrder) &&
@@ -322,6 +345,7 @@ class _$RecordItemImpl implements _RecordItem {
     userId,
     title,
     description,
+    icon,
     unit,
     sortOrder,
     createdAt,
@@ -348,6 +372,7 @@ abstract class _RecordItem implements RecordItem {
     required final String userId,
     required final String title,
     final String? description,
+    required final String icon,
     final String? unit,
     required final int sortOrder,
     @DateTimeConverter() required final DateTime createdAt,
@@ -372,6 +397,10 @@ abstract class _RecordItem implements RecordItem {
   /// 記録項目の説明（オプション）
   @override
   String? get description;
+
+  /// 記録項目のアイコン（絵文字）
+  @override
+  String get icon;
 
   /// 単位（例：回、分、ページなど）
   @override

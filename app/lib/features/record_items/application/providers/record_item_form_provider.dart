@@ -13,6 +13,7 @@ class RecordItemFormState with _$RecordItemFormState {
   const factory RecordItemFormState({
     @Default('') String title,
     @Default('') String description,
+    @Default('📝') String icon,
     @Default('') String unit,
     @Default(false) bool isSubmitting,
     String? errorMessage,
@@ -71,6 +72,11 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
     state = state.copyWith(unit: unit, errorMessage: null);
   }
 
+  /// アイコンを更新
+  void updateIcon(String icon) {
+    state = state.copyWith(icon: icon, errorMessage: null);
+  }
+
   /// フォームをリセット
   void reset() {
     state = const RecordItemFormState();
@@ -103,6 +109,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
         userId: userId,
         title: state.title,
         description: state.description.isEmpty ? null : state.description,
+        icon: state.icon,
         unit: state.unit.isEmpty ? null : state.unit,
       );
 
@@ -140,6 +147,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
         recordItemId: recordItemId,
         title: state.title,
         description: state.description,
+        icon: state.icon,
         unit: state.unit,
       );
 

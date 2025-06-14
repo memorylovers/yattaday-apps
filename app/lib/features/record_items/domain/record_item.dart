@@ -22,6 +22,9 @@ class RecordItem with _$RecordItem {
     /// 記録項目の説明（オプション）
     String? description,
 
+    /// 記録項目のアイコン（絵文字）
+    required String icon,
+
     /// 単位（例：回、分、ページなど）
     String? unit,
 

@@ -96,5 +96,19 @@
     "title": "更新のお知らせ",
     "desc": "新しいバージョンのアプリが利用可能です。ストアより更新ください",
     "label": "今すぐ更新"
+  },
+  "recordItems": {
+    "title": "記録項目",
+    "empty": "記録項目がありません",
+    "searchPlaceholder": "検索",
+    "searchNotAvailable": "検索機能は準備中です",
+    "errorMessage": "エラーが発生しました",
+    "retry": "再試行",
+    "navigateToDetail": "${title}の詳細画面へ遷移",
+    "navigateToEdit": "${title}の編集画面へ遷移",
+    "navigateToCreate": "作成画面へ遷移",
+    "deleteConfirm": "${title}の削除確認ダイアログ表示",
+    "edit": "編集",
+    "delete": "削除"
   }
 }

@@ -50,6 +50,7 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
               .read(recordItemFormProvider.notifier)
               .updateDescription(initialItem.description!);
         }
+        ref.read(recordItemFormProvider.notifier).updateIcon(initialItem.icon);
         if (initialItem.unit != null) {
           ref
               .read(recordItemFormProvider.notifier)
@@ -101,20 +102,94 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
       }
     });
 
-    return Padding(
+    return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // 絵文字ピッカー
+          const Text(
+            'アイコンを選択',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 180,
+            child: GridView.count(
+              crossAxisCount: 5,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              children:
+                  [
+                    '📝',
+                    '✓',
+                    '🏃',
+                    '💪',
+                    '📖',
+                    '🛍',
+                    '🍴',
+                    '💧',
+                    '💰',
+                    '🎯',
+                    '🎮',
+                    '🎨',
+                    '🎵',
+                    '🌱',
+                    '❤️',
+                  ].map((emoji) {
+                    final isSelected = formState.icon == emoji;
+                    return InkWell(
+                      onTap: () {
+                        ref
+                            .read(recordItemFormProvider.notifier)
+                            .updateIcon(emoji);
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color:
+                              isSelected
+                                  ? Theme.of(
+                                    context,
+                                  ).colorScheme.primaryContainer
+                                  : Theme.of(
+                                    context,
+                                  ).colorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(12),
+                          border:
+                              isSelected
+                                  ? Border.all(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    width: 2,
+                                  )
+                                  : null,
+                        ),
+                        child: Center(
+                          child: Text(
+                            emoji,
+                            style: const TextStyle(fontSize: 28),
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+            ),
+          ),
+          const SizedBox(height: 24),
+
           // タイトル入力フィールド
           TextFormField(
             controller: _titleController,
-            decoration: const InputDecoration(
-              labelText: 'タイトル',
+            decoration: InputDecoration(
+              labelText: 'タイトル *',
               hintText: 'タイトルを入力してください',
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
+              counterText: '${_titleController.text.length}/20',
             ),
+            maxLength: 20,
             onChanged: (value) {
+              setState(() {});
               // エラーメッセージをクリア
               if (formState.errorMessage != null) {
                 ref.read(recordItemFormProvider.notifier).clearError();
@@ -126,13 +201,16 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
           // 説明入力フィールド
           TextFormField(
             controller: _descriptionController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: '説明',
               hintText: '説明を入力してください（任意）',
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
+              counterText: '${_descriptionController.text.length}/200',
             ),
+            maxLength: 200,
             maxLines: 3,
             onChanged: (value) {
+              setState(() {});
               // エラーメッセージをクリア
               if (formState.errorMessage != null) {
                 ref.read(recordItemFormProvider.notifier).clearError();
@@ -144,12 +222,15 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
           // 単位入力フィールド
           TextFormField(
             controller: _unitController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               labelText: '単位',
               hintText: '単位を入力してください（任意）',
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
+              counterText: '${_unitController.text.length}/10',
             ),
+            maxLength: 10,
             onChanged: (value) {
+              setState(() {});
               // エラーメッセージをクリア
               if (formState.errorMessage != null) {
                 ref.read(recordItemFormProvider.notifier).clearError();

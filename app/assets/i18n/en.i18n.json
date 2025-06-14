@@ -96,5 +96,19 @@
     "title": "Please Update",
     "desc": "A new version of the app is available. Please update from the store.",
     "label": "Update Now"
+  },
+  "recordItems": {
+    "title": "Record Items",
+    "empty": "No record items",
+    "searchPlaceholder": "Search",
+    "searchNotAvailable": "Search feature is coming soon",
+    "errorMessage": "An error occurred",
+    "retry": "Retry",
+    "navigateToDetail": "Navigate to ${title} details",
+    "navigateToEdit": "Navigate to edit ${title}",
+    "navigateToCreate": "Navigate to create",
+    "deleteConfirm": "Show delete confirmation for ${title}",
+    "edit": "Edit",
+    "delete": "Delete"
   }
 }

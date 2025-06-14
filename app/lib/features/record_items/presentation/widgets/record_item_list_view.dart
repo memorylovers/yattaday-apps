@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../_gen/i18n/strings.g.dart';
 import '../../domain/record_item.dart';
 import 'record_item_card.dart';
 
@@ -21,8 +22,11 @@ class RecordItemListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (items.isEmpty) {
-      return const Center(
-        child: Text('記録項目がありません', style: TextStyle(fontSize: 16)),
+      return Center(
+        child: Text(
+          i18n.recordItems.empty,
+          style: const TextStyle(fontSize: 16),
+        ),
       );
     }
 

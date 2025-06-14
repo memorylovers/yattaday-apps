@@ -9,6 +9,7 @@ class MockRecordItem {
     required this.userId,
     required this.title,
     this.description,
+    required this.icon,
     this.unit,
     required this.sortOrder,
     required this.createdAt,
@@ -19,6 +20,7 @@ class MockRecordItem {
   final String userId;
   final String title;
   final String? description;
+  final String icon;
   final String? unit;
   final int sortOrder;
   final DateTime createdAt;
@@ -53,6 +55,24 @@ class RecordItemCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
+              // 絵文字アイコン
+              Container(
+                width: 48,
+                height: 48,
+                margin: const EdgeInsets.only(right: 16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primaryContainer.withValues(
+                    alpha: 0.3,
+                  ),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Text(
+                    recordItem.icon,
+                    style: const TextStyle(fontSize: 24),
+                  ),
+                ),
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,6 +147,7 @@ Widget recordItemCardDefault(BuildContext context) {
       userId: 'test-user-id',
       title: '体重測定',
       description: '毎朝起床後に体重を記録',
+      icon: '⚖️',
       unit: 'kg',
       sortOrder: 1,
       createdAt: DateTime.now(),
@@ -146,6 +167,7 @@ Widget recordItemCardWithoutDescription(BuildContext context) {
       userId: 'test-user-id',
       title: '読書記録',
       description: null,
+      icon: '📖',
       unit: 'ページ',
       sortOrder: 2,
       createdAt: DateTime.now(),
@@ -165,6 +187,7 @@ Widget recordItemCardWithoutUnit(BuildContext context) {
       userId: 'test-user-id',
       title: '筋トレ',
       description: '腕立て伏せと腹筋を記録',
+      icon: '💪',
       unit: null,
       sortOrder: 3,
       createdAt: DateTime.now(),
@@ -184,6 +207,7 @@ Widget recordItemCardMinimal(BuildContext context) {
       userId: 'test-user-id',
       title: '散歩',
       description: null,
+      icon: '🚶',
       unit: null,
       sortOrder: 4,
       createdAt: DateTime.now(),
