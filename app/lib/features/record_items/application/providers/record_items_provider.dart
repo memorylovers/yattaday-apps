@@ -38,3 +38,16 @@ final watchRecordItemsProvider = StreamProvider<List<RecordItem>>((ref) async* {
   final useCase = ref.watch(fetchRecordItemsUseCaseProvider);
   yield* useCase.watch(userId);
 });
+
+/// 指定したIDの記録項目を取得するプロバイダ
+final recordItemByIdProvider = FutureProvider.family<RecordItem?, String>((
+  ref,
+  recordItemId,
+) async {
+  final userId = await ref.watch(authUidProvider.future);
+  if (userId == null) {
+    return null;
+  }
+  final repository = ref.watch(recordItemRepositoryProvider);
+  return await repository.getById(userId, recordItemId);
+});
