@@ -66,8 +66,8 @@ void main() {
       );
 
       // ボタンのテキストを確認
-      expect(find.text('Google でログイン'), findsOneWidget);
-      expect(find.text('Apple でログイン'), findsOneWidget);
+      expect(find.text('Googleでログイン'), findsOneWidget);
+      expect(find.text('Appleでログイン'), findsOneWidget);
 
       // Googleボタンのアイコンを確認
       final googleButton = tester.widget<GoogleLoginButton>(
