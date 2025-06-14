@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
 import '../../application/providers/record_items_provider.dart';
@@ -7,28 +9,44 @@ import '../../domain/record_item.dart';
 import '../widgets/record_item_list_view.dart';
 
 /// 記録項目一覧画面
-class RecordItemsListPage extends ConsumerWidget {
+class RecordItemsListPage extends HookConsumerWidget {
   const RecordItemsListPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recordItemsAsync = ref.watch(watchRecordItemsProvider);
+    final selectedDate = useState(DateTime.now());
+
+    // 日付フォーマット（例：2024年6月14日）
+    final dateFormatter = DateFormat('yyyy年M月d日');
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(i18n.recordItems.title),
+        title: Text(
+          dateFormatter.format(selectedDate.value),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+        ),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.chevron_left),
+          onPressed: () {
+            selectedDate.value = selectedDate.value.subtract(
+              const Duration(days: 1),
+            );
+          },
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.chevron_right),
             onPressed: () {
-              // TODO: 検索機能の実装
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(i18n.recordItems.searchNotAvailable)),
-              );
+              // 未来の日付には移動できないようにする
+              final tomorrow = selectedDate.value.add(const Duration(days: 1));
+              if (!tomorrow.isAfter(DateTime.now())) {
+                selectedDate.value = tomorrow;
+              }
             },
           ),
         ],
