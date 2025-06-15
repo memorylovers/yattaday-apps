@@ -4,7 +4,7 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// LoginButtonのWidgetbook設定
-@widgetbook.UseCase(name: 'All Variants', type: LoginButton, designLink: '')
+@widgetbook.UseCase(name: 'All Variants', type: LoginButton, path: 'features/_authentication/', designLink: '')
 Widget loginButtonUseCase(BuildContext context) {
   final isLoading = context.knobs.boolean(
     label: 'Loading',

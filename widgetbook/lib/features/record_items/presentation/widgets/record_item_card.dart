@@ -139,7 +139,7 @@ class RecordItemCard extends StatelessWidget {
   }
 }
 
-@UseCase(name: 'Default', type: RecordItemCard)
+@UseCase(name: 'Default', type: RecordItemCard, path: 'features/record_items/')
 Widget recordItemCardDefault(BuildContext context) {
   return RecordItemCard(
     recordItem: MockRecordItem(
@@ -159,7 +159,7 @@ Widget recordItemCardDefault(BuildContext context) {
   );
 }
 
-@UseCase(name: 'Without Description', type: RecordItemCard)
+@UseCase(name: 'Without Description', type: RecordItemCard, path: 'features/record_items/')
 Widget recordItemCardWithoutDescription(BuildContext context) {
   return RecordItemCard(
     recordItem: MockRecordItem(
@@ -179,7 +179,7 @@ Widget recordItemCardWithoutDescription(BuildContext context) {
   );
 }
 
-@UseCase(name: 'Without Unit', type: RecordItemCard)
+@UseCase(name: 'Without Unit', type: RecordItemCard, path: 'features/record_items/')
 Widget recordItemCardWithoutUnit(BuildContext context) {
   return RecordItemCard(
     recordItem: MockRecordItem(
@@ -199,7 +199,7 @@ Widget recordItemCardWithoutUnit(BuildContext context) {
   );
 }
 
-@UseCase(name: 'Minimal', type: RecordItemCard)
+@UseCase(name: 'Minimal', type: RecordItemCard, path: 'features/record_items/')
 Widget recordItemCardMinimal(BuildContext context) {
   return RecordItemCard(
     recordItem: MockRecordItem(

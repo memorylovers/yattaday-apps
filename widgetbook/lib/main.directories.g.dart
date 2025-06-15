@@ -21,13 +21,13 @@ import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
 import 'package:widgetbook_workspace/features/authentication/presentation/widgets/login_buttons.dart'
     as _i13;
 import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_card.dart'
-    as _i16;
-import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_form.dart'
-    as _i17;
-import 'package:widgetbook_workspace/features/startup/widgets/startup_error_widget.dart'
     as _i14;
-import 'package:widgetbook_workspace/features/startup/widgets/startup_loading_widget.dart'
+import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_form.dart'
     as _i15;
+import 'package:widgetbook_workspace/features/startup/widgets/startup_error_widget.dart'
+    as _i16;
+import 'package:widgetbook_workspace/features/startup/widgets/startup_loading_widget.dart'
+    as _i17;
 import 'package:widgetbook_workspace/pages/login_page.dart' as _i2;
 import 'package:widgetbook_workspace/pages/payment_page.dart' as _i3;
 import 'package:widgetbook_workspace/pages/record_items_create_page.dart'
@@ -142,113 +142,83 @@ final directories = <_i1.WidgetbookNode>[
       _i1.WidgetbookFolder(
         name: '_authentication',
         children: [
-          _i1.WidgetbookFolder(
-            name: 'presentation',
-            children: [
-              _i1.WidgetbookFolder(
-                name: 'widgets',
-                children: [
-                  _i1.WidgetbookLeafComponent(
-                    name: 'LoginButton',
-                    useCase: _i1.WidgetbookUseCase(
-                      name: 'All Variants',
-                      builder: _i13.loginButtonUseCase,
-                      designLink: '',
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-      _i1.WidgetbookFolder(
-        name: '_startup',
-        children: [
-          _i1.WidgetbookFolder(
-            name: 'presentation',
-            children: [
-              _i1.WidgetbookFolder(
-                name: 'widgets',
-                children: [
-                  _i1.WidgetbookLeafComponent(
-                    name: 'StartupErrorWidget',
-                    useCase: _i1.WidgetbookUseCase(
-                      name: 'Default',
-                      builder: _i14.usecaseStartupErrorWidget,
-                    ),
-                  ),
-                  _i1.WidgetbookLeafComponent(
-                    name: 'StartupLoadingWidget',
-                    useCase: _i1.WidgetbookUseCase(
-                      name: 'Default',
-                      builder: _i15.usecaseStartupLoadingWidget,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          _i1.WidgetbookLeafComponent(
+            name: 'LoginButton',
+            useCase: _i1.WidgetbookUseCase(
+              name: 'All Variants',
+              builder: _i13.loginButtonUseCase,
+              designLink: '',
+            ),
           ),
         ],
       ),
       _i1.WidgetbookFolder(
         name: 'record_items',
         children: [
-          _i1.WidgetbookFolder(
-            name: 'presentation',
-            children: [
-              _i1.WidgetbookFolder(
-                name: 'widgets',
-                children: [
-                  _i1.WidgetbookComponent(
-                    name: 'RecordItemCard',
-                    useCases: [
-                      _i1.WidgetbookUseCase(
-                        name: 'Default',
-                        builder: _i16.recordItemCardDefault,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Minimal',
-                        builder: _i16.recordItemCardMinimal,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Without Description',
-                        builder: _i16.recordItemCardWithoutDescription,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Without Unit',
-                        builder: _i16.recordItemCardWithoutUnit,
-                      ),
-                    ],
-                  ),
-                  _i1.WidgetbookComponent(
-                    name: 'RecordItemForm',
-                    useCases: [
-                      _i1.WidgetbookUseCase(
-                        name: 'Default',
-                        builder: _i17.recordItemFormDefault,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Prefilled Form',
-                        builder: _i17.recordItemFormPrefilled,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'With Delay',
-                        builder: _i17.recordItemFormWithDelay,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'With Error',
-                        builder: _i17.recordItemFormWithError,
-                      ),
-                      _i1.WidgetbookUseCase(
-                        name: 'Without Callbacks',
-                        builder: _i17.recordItemFormWithoutCallbacks,
-                      ),
-                    ],
-                  ),
-                ],
+          _i1.WidgetbookComponent(
+            name: 'RecordItemCard',
+            useCases: [
+              _i1.WidgetbookUseCase(
+                name: 'Default',
+                builder: _i14.recordItemCardDefault,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Minimal',
+                builder: _i14.recordItemCardMinimal,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Without Description',
+                builder: _i14.recordItemCardWithoutDescription,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Without Unit',
+                builder: _i14.recordItemCardWithoutUnit,
               ),
             ],
+          ),
+          _i1.WidgetbookComponent(
+            name: 'RecordItemForm',
+            useCases: [
+              _i1.WidgetbookUseCase(
+                name: 'Default',
+                builder: _i15.recordItemFormDefault,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Prefilled Form',
+                builder: _i15.recordItemFormPrefilled,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'With Delay',
+                builder: _i15.recordItemFormWithDelay,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'With Error',
+                builder: _i15.recordItemFormWithError,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Without Callbacks',
+                builder: _i15.recordItemFormWithoutCallbacks,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _i1.WidgetbookFolder(
+        name: 'startup',
+        children: [
+          _i1.WidgetbookLeafComponent(
+            name: 'StartupErrorWidget',
+            useCase: _i1.WidgetbookUseCase(
+              name: 'Default',
+              builder: _i16.usecaseStartupErrorWidget,
+            ),
+          ),
+          _i1.WidgetbookLeafComponent(
+            name: 'StartupLoadingWidget',
+            useCase: _i1.WidgetbookUseCase(
+              name: 'Default',
+              builder: _i17.usecaseStartupLoadingWidget,
+            ),
           ),
         ],
       ),
