@@ -9,31 +9,16 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 /// RecordItemsCreatePage用のモックリポジトリ
 class MockRecordItemRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];
-  final bool _shouldThrowError;
-  final bool _shouldDelay;
 
-  MockRecordItemRepository({
-    bool shouldThrowError = false,
-    bool shouldDelay = false,
-  }) : _shouldThrowError = shouldThrowError,
-       _shouldDelay = shouldDelay;
+  MockRecordItemRepository();
 
   @override
   Future<void> create(RecordItem recordItem) async {
-    if (_shouldDelay) {
-      await Future.delayed(const Duration(seconds: 2));
-    }
-    if (_shouldThrowError) {
-      throw Exception('ネットワークエラーが発生しました');
-    }
     _items.add(recordItem);
   }
 
   @override
   Future<int> getNextSortOrder(String userId) async {
-    if (_shouldThrowError) {
-      throw Exception('ソート順序取得エラー');
-    }
     return _items.where((item) => item.userId == userId).length;
   }
 
@@ -69,71 +54,5 @@ Widget recordItemsCreatePageDefault(BuildContext context) {
       ),
     ],
     child: RecordItemsCreatePage(userId: 'widgetbook-user'),
-  );
-}
-
-@widgetbook.UseCase(
-  name: 'With Error',
-  type: RecordItemsCreatePage,
-  path: '[pages]',
-)
-Widget recordItemsCreatePageWithError(BuildContext context) {
-  return ProviderScope(
-    overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(shouldThrowError: true),
-      ),
-    ],
-    child: RecordItemsCreatePage(userId: 'widgetbook-user'),
-  );
-}
-
-@widgetbook.UseCase(
-  name: 'With Loading',
-  type: RecordItemsCreatePage,
-  path: '[pages]',
-)
-Widget recordItemsCreatePageWithLoading(BuildContext context) {
-  return ProviderScope(
-    overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(shouldDelay: true),
-      ),
-    ],
-    child: RecordItemsCreatePage(userId: 'widgetbook-user'),
-  );
-}
-
-@widgetbook.UseCase(
-  name: 'Empty UserID',
-  type: RecordItemsCreatePage,
-  path: '[pages]',
-)
-Widget recordItemsCreatePageEmptyUserId(BuildContext context) {
-  return ProviderScope(
-    overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(),
-      ),
-    ],
-    child: const RecordItemsCreatePage(userId: ''),
-  );
-}
-
-@widgetbook.UseCase(
-  name: 'Long UserID',
-  type: RecordItemsCreatePage,
-  path: '[pages]',
-)
-Widget recordItemsCreatePageLongUserId(BuildContext context) {
-  return ProviderScope(
-    overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(),
-      ),
-    ],
-    child: const RecordItemsCreatePage(
-      userId: 'very-long-user-id-for-testing-edge-cases-and-ui-behavior',
-    ),
   );
 }

@@ -56,80 +56,26 @@ final directories = <_i1.WidgetbookNode>[
           builder: _i3.buildPaymentPageUseCase,
         ),
       ),
-      _i1.WidgetbookComponent(
+      _i1.WidgetbookLeafComponent(
         name: 'RecordItemsCreatePage',
-        useCases: [
-          _i1.WidgetbookUseCase(
-            name: 'Default',
-            builder: _i4.recordItemsCreatePageDefault,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Empty UserID',
-            builder: _i4.recordItemsCreatePageEmptyUserId,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Long UserID',
-            builder: _i4.recordItemsCreatePageLongUserId,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'With Error',
-            builder: _i4.recordItemsCreatePageWithError,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'With Loading',
-            builder: _i4.recordItemsCreatePageWithLoading,
-          ),
-        ],
+        useCase: _i1.WidgetbookUseCase(
+          name: 'Default',
+          builder: _i4.recordItemsCreatePageDefault,
+        ),
       ),
-      _i1.WidgetbookComponent(
+      _i1.WidgetbookLeafComponent(
         name: 'RecordItemsDetailPage',
-        useCases: [
-          _i1.WidgetbookUseCase(
-            name: 'Default',
-            builder: _i5.recordItemsDetailPageDefault,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Error',
-            builder: _i5.recordItemsDetailPageError,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Loading',
-            builder: _i5.recordItemsDetailPageLoading,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Not Found',
-            builder: _i5.recordItemsDetailPageNotFound,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'With Today Record',
-            builder: _i5.recordItemsDetailPageWithTodayRecord,
-          ),
-        ],
+        useCase: _i1.WidgetbookUseCase(
+          name: 'Default',
+          builder: _i5.recordItemsDetailPageDefault,
+        ),
       ),
-      _i1.WidgetbookComponent(
+      _i1.WidgetbookLeafComponent(
         name: 'RecordItemsEditPage',
-        useCases: [
-          _i1.WidgetbookUseCase(
-            name: 'Default',
-            builder: _i6.buildRecordItemsEditPageDefault,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Loading State Test',
-            builder: _i6.buildRecordItemsEditPageLoading,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Update Error',
-            builder: _i6.buildRecordItemsEditPageError,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'With Long Text',
-            builder: _i6.buildRecordItemsEditPageLongText,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'With Minimal Data',
-            builder: _i6.buildRecordItemsEditPageMinimal,
-          ),
-        ],
+        useCase: _i1.WidgetbookUseCase(
+          name: 'Default',
+          builder: _i6.buildRecordItemsEditPageDefault,
+        ),
       ),
       _i1.WidgetbookLeafComponent(
         name: 'RecordItemsListPage',

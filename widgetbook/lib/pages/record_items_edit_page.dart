@@ -9,15 +9,8 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 /// 記録項目編集ページ用のモックリポジトリ
 class MockRecordItemEditRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];
-  final bool _shouldSucceed;
-  final String? _errorMessage;
 
-  MockRecordItemEditRepository({
-    bool shouldSucceed = true,
-    String? errorMessage,
-    List<RecordItem>? initialItems,
-  }) : _shouldSucceed = shouldSucceed,
-       _errorMessage = errorMessage {
+  MockRecordItemEditRepository({List<RecordItem>? initialItems}) {
     if (initialItems != null) {
       _items.addAll(initialItems);
     }
@@ -25,16 +18,12 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
 
   @override
   Future<List<RecordItem>> getByUserId(String userId) async {
-    if (!_shouldSucceed) throw Exception(_errorMessage ?? 'データ取得エラー');
     return _items.where((item) => item.userId == userId).toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
   }
 
   @override
   Stream<List<RecordItem>> watchByUserId(String userId) {
-    if (!_shouldSucceed) {
-      return Stream.error(Exception(_errorMessage ?? 'データ取得エラー'));
-    }
     return Stream.value(
       _items.where((item) => item.userId == userId).toList()
         ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
@@ -43,14 +32,11 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
 
   @override
   Future<void> create(RecordItem recordItem) async {
-    if (!_shouldSucceed) throw Exception(_errorMessage ?? '作成エラー');
     _items.add(recordItem);
   }
 
   @override
   Future<void> update(RecordItem recordItem) async {
-    if (!_shouldSucceed) throw Exception(_errorMessage ?? '更新エラー');
-
     final index = _items.indexWhere((item) => item.id == recordItem.id);
     if (index != -1) {
       _items[index] = recordItem;
@@ -61,7 +47,6 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
 
   @override
   Future<void> delete(String userId, String recordItemId) async {
-    if (!_shouldSucceed) throw Exception(_errorMessage ?? '削除エラー');
     _items.removeWhere(
       (item) => item.id == recordItemId && item.userId == userId,
     );
@@ -69,7 +54,6 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
 
   @override
   Future<RecordItem?> getById(String userId, String recordItemId) async {
-    if (!_shouldSucceed) throw Exception(_errorMessage ?? 'データ取得エラー');
     try {
       return _items.firstWhere(
         (item) => item.id == recordItemId && item.userId == userId,
@@ -81,7 +65,6 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
 
   @override
   Future<int> getNextSortOrder(String userId) async {
-    if (!_shouldSucceed) throw Exception(_errorMessage ?? 'ソート順取得エラー');
     final userItems = _items.where((item) => item.userId == userId).toList();
     if (userItems.isEmpty) return 0;
     return userItems
@@ -91,11 +74,7 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
   }
 }
 
-@widgetbook.UseCase(
-  name: 'Default',
-  type: RecordItemsEditPage,
-  path: '[pages]',
-)
+@widgetbook.UseCase(name: 'Default', type: RecordItemsEditPage, path: '[pages]')
 Widget buildRecordItemsEditPageDefault(BuildContext context) {
   final recordItem = RecordItem(
     id: 'item1',
@@ -110,123 +89,6 @@ Widget buildRecordItemsEditPageDefault(BuildContext context) {
   );
 
   final mockRepository = MockRecordItemEditRepository(
-    shouldSucceed: true,
-    initialItems: [recordItem],
-  );
-
-  return ProviderScope(
-    overrides: [recordItemRepositoryProvider.overrideWithValue(mockRepository)],
-    child: RecordItemsEditPage(userId: 'user1', recordItem: recordItem),
-  );
-}
-
-@widgetbook.UseCase(
-  name: 'With Minimal Data',
-  type: RecordItemsEditPage,
-  path: '[pages]',
-)
-Widget buildRecordItemsEditPageMinimal(BuildContext context) {
-  final recordItem = RecordItem(
-    id: 'item2',
-    userId: 'user1',
-    title: '運動習慣',
-    icon: '🏃',
-    sortOrder: 1,
-    createdAt: DateTime(2024, 1, 2, 9, 0),
-    updatedAt: DateTime(2024, 1, 2, 9, 0),
-  );
-
-  final mockRepository = MockRecordItemEditRepository(
-    shouldSucceed: true,
-    initialItems: [recordItem],
-  );
-
-  return ProviderScope(
-    overrides: [recordItemRepositoryProvider.overrideWithValue(mockRepository)],
-    child: RecordItemsEditPage(userId: 'user1', recordItem: recordItem),
-  );
-}
-
-@widgetbook.UseCase(
-  name: 'With Long Text',
-  type: RecordItemsEditPage,
-  path: '[pages]',
-)
-Widget buildRecordItemsEditPageLongText(BuildContext context) {
-  final recordItem = RecordItem(
-    id: 'item3',
-    userId: 'user1',
-    title: 'とても長いタイトルの記録項目でテキストの表示を確認するためのサンプル',
-    description:
-        'とても長い説明文のサンプルです。この説明文は複数行にわたって表示されることを想定しており、ユーザーインターフェースが適切に対応できるかどうかをテストするために使用されます。長いテキストでも適切に表示され、編集できることが重要です。',
-    icon: '📝',
-    unit: '非常に長い単位名の例',
-    sortOrder: 2,
-    createdAt: DateTime(2024, 1, 3, 8, 30),
-    updatedAt: DateTime(2024, 1, 20, 16, 45),
-  );
-
-  final mockRepository = MockRecordItemEditRepository(
-    shouldSucceed: true,
-    initialItems: [recordItem],
-  );
-
-  return ProviderScope(
-    overrides: [recordItemRepositoryProvider.overrideWithValue(mockRepository)],
-    child: RecordItemsEditPage(userId: 'user1', recordItem: recordItem),
-  );
-}
-
-@widgetbook.UseCase(
-  name: 'Update Error',
-  type: RecordItemsEditPage,
-  path: '[pages]',
-)
-Widget buildRecordItemsEditPageError(BuildContext context) {
-  final recordItem = RecordItem(
-    id: 'item4',
-    userId: 'user1',
-    title: '更新エラーテスト',
-    description: 'このアイテムは更新時にエラーが発生します',
-    icon: '⚠️',
-    unit: '回',
-    sortOrder: 3,
-    createdAt: DateTime(2024, 1, 4, 12, 0),
-    updatedAt: DateTime(2024, 1, 4, 12, 0),
-  );
-
-  final mockRepository = MockRecordItemEditRepository(
-    shouldSucceed: false,
-    errorMessage: 'ネットワークエラーのため更新に失敗しました',
-    initialItems: [recordItem],
-  );
-
-  return ProviderScope(
-    overrides: [recordItemRepositoryProvider.overrideWithValue(mockRepository)],
-    child: RecordItemsEditPage(userId: 'user1', recordItem: recordItem),
-  );
-}
-
-@widgetbook.UseCase(
-  name: 'Loading State Test',
-  type: RecordItemsEditPage,
-  path: '[pages]',
-)
-Widget buildRecordItemsEditPageLoading(BuildContext context) {
-  final recordItem = RecordItem(
-    id: 'item5',
-    userId: 'user1',
-    title: 'ローディングテスト',
-    description: '更新処理の確認用',
-    icon: '⏱️',
-    unit: '秒',
-    sortOrder: 4,
-    createdAt: DateTime(2024, 1, 5, 15, 30),
-    updatedAt: DateTime(2024, 1, 5, 15, 30),
-  );
-
-  final mockRepository = MockRecordItemEditRepository(
-    shouldSucceed: true,
     initialItems: [recordItem],
   );
 

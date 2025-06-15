@@ -67,6 +67,7 @@ class RecordItemsDetailPage extends HookConsumerWidget {
           ),
         ),
         child: SafeArea(
+          bottom: false,
           child: recordItemAsync.when(
             data: (recordItem) {
               if (recordItem == null) {
@@ -75,7 +76,7 @@ class RecordItemsDetailPage extends HookConsumerWidget {
 
               return SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 80), // FABのためのスペース
+                  padding: const EdgeInsets.only(bottom: 120), // FABのためのスペース
                   child: Column(
                     children: [
                       // ヘッダー部分
