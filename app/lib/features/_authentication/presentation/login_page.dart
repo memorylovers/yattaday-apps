@@ -150,7 +150,6 @@ class LoginPage extends HookConsumerWidget {
                     ],
                   ),
                 ),
-                const Spacer(),
                 // 利用規約
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -185,6 +184,7 @@ class LoginPage extends HookConsumerWidget {
                     ),
                   ),
                 ),
+                const Spacer(),
               ],
             ),
           ),
