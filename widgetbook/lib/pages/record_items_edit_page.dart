@@ -91,7 +91,11 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
   }
 }
 
-@widgetbook.UseCase(name: 'Default', type: RecordItemsEditPage)
+@widgetbook.UseCase(
+  name: 'Default',
+  type: RecordItemsEditPage,
+  path: '[pages]',
+)
 Widget buildRecordItemsEditPageDefault(BuildContext context) {
   final recordItem = RecordItem(
     id: 'item1',
@@ -116,7 +120,11 @@ Widget buildRecordItemsEditPageDefault(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Minimal Data', type: RecordItemsEditPage)
+@widgetbook.UseCase(
+  name: 'With Minimal Data',
+  type: RecordItemsEditPage,
+  path: '[pages]',
+)
 Widget buildRecordItemsEditPageMinimal(BuildContext context) {
   final recordItem = RecordItem(
     id: 'item2',
@@ -139,7 +147,11 @@ Widget buildRecordItemsEditPageMinimal(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Long Text', type: RecordItemsEditPage)
+@widgetbook.UseCase(
+  name: 'With Long Text',
+  type: RecordItemsEditPage,
+  path: '[pages]',
+)
 Widget buildRecordItemsEditPageLongText(BuildContext context) {
   final recordItem = RecordItem(
     id: 'item3',
@@ -165,7 +177,11 @@ Widget buildRecordItemsEditPageLongText(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Update Error', type: RecordItemsEditPage)
+@widgetbook.UseCase(
+  name: 'Update Error',
+  type: RecordItemsEditPage,
+  path: '[pages]',
+)
 Widget buildRecordItemsEditPageError(BuildContext context) {
   final recordItem = RecordItem(
     id: 'item4',
@@ -191,7 +207,11 @@ Widget buildRecordItemsEditPageError(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Loading State Test', type: RecordItemsEditPage)
+@widgetbook.UseCase(
+  name: 'Loading State Test',
+  type: RecordItemsEditPage,
+  path: '[pages]',
+)
 Widget buildRecordItemsEditPageLoading(BuildContext context) {
   final recordItem = RecordItem(
     id: 'item5',

@@ -56,7 +56,11 @@ class MockRecordItemRepository implements IRecordItemRepository {
       throw UnimplementedError();
 }
 
-@widgetbook.UseCase(name: 'Default', type: RecordItemsCreatePage)
+@widgetbook.UseCase(
+  name: 'Default',
+  type: RecordItemsCreatePage,
+  path: '[pages]',
+)
 Widget recordItemsCreatePageDefault(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -68,7 +72,11 @@ Widget recordItemsCreatePageDefault(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Error', type: RecordItemsCreatePage)
+@widgetbook.UseCase(
+  name: 'With Error',
+  type: RecordItemsCreatePage,
+  path: '[pages]',
+)
 Widget recordItemsCreatePageWithError(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -80,7 +88,11 @@ Widget recordItemsCreatePageWithError(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Loading', type: RecordItemsCreatePage)
+@widgetbook.UseCase(
+  name: 'With Loading',
+  type: RecordItemsCreatePage,
+  path: '[pages]',
+)
 Widget recordItemsCreatePageWithLoading(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -92,7 +104,11 @@ Widget recordItemsCreatePageWithLoading(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Empty UserID', type: RecordItemsCreatePage)
+@widgetbook.UseCase(
+  name: 'Empty UserID',
+  type: RecordItemsCreatePage,
+  path: '[pages]',
+)
 Widget recordItemsCreatePageEmptyUserId(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -104,7 +120,11 @@ Widget recordItemsCreatePageEmptyUserId(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Long UserID', type: RecordItemsCreatePage)
+@widgetbook.UseCase(
+  name: 'Long UserID',
+  type: RecordItemsCreatePage,
+  path: '[pages]',
+)
 Widget recordItemsCreatePageLongUserId(BuildContext context) {
   return ProviderScope(
     overrides: [

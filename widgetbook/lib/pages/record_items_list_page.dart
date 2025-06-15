@@ -62,7 +62,11 @@ class MockRecordItemRepository implements IRecordItemRepository {
       throw UnimplementedError();
 }
 
-@widgetbook.UseCase(name: 'Default', type: RecordItemsListPage)
+@widgetbook.UseCase(
+  name: 'Default',
+  type: RecordItemsListPage,
+  path: '[pages]',
+)
 Widget recordItemsListPageDefault(BuildContext context) {
   const userId = 'widgetbook-user';
 

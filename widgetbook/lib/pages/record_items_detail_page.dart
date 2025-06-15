@@ -12,7 +12,11 @@ import 'package:myapp/features/daily_records/application/providers/record_item_h
 import 'package:myapp/features/_authentication/application/auth_providers.dart';
 import 'package:myapp/features/daily_records/application/use_cases/get_record_item_statistics_usecase.dart';
 
-@widgetbook.UseCase(name: 'Default', type: RecordItemsDetailPage)
+@widgetbook.UseCase(
+  name: 'Default',
+  type: RecordItemsDetailPage,
+  path: '[pages]',
+)
 Widget recordItemsDetailPageDefault(BuildContext context) {
   final testRecordItem = RecordItem(
     id: 'test-id',
@@ -72,7 +76,11 @@ Widget recordItemsDetailPageDefault(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Today Record', type: RecordItemsDetailPage)
+@widgetbook.UseCase(
+  name: 'With Today Record',
+  type: RecordItemsDetailPage,
+  path: '[pages]',
+)
 Widget recordItemsDetailPageWithTodayRecord(BuildContext context) {
   final testRecordItem = RecordItem(
     id: 'test-id',
@@ -132,7 +140,11 @@ Widget recordItemsDetailPageWithTodayRecord(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Loading', type: RecordItemsDetailPage)
+@widgetbook.UseCase(
+  name: 'Loading',
+  type: RecordItemsDetailPage,
+  path: '[pages]',
+)
 Widget recordItemsDetailPageLoading(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -180,7 +192,11 @@ Widget recordItemsDetailPageLoading(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Error', type: RecordItemsDetailPage)
+@widgetbook.UseCase(
+  name: 'Error',
+  type: RecordItemsDetailPage,
+  path: '[pages]',
+)
 Widget recordItemsDetailPageError(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -220,7 +236,11 @@ Widget recordItemsDetailPageError(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Not Found', type: RecordItemsDetailPage)
+@widgetbook.UseCase(
+  name: 'Not Found',
+  type: RecordItemsDetailPage,
+  path: '[pages]',
+)
 Widget recordItemsDetailPageNotFound(BuildContext context) {
   return ProviderScope(
     overrides: [
