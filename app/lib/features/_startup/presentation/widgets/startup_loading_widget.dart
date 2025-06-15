@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../../_gen/assets/assets.gen.dart';
 import '../../../../_gen/i18n/strings.g.dart';
 import '../../../../common/theme/app_colors.dart';
+import '../../../../components/logo/app_logo.dart';
 
 /// startup中のローディングWidget
 class StartupLoadingWidget extends StatelessWidget {
@@ -22,13 +22,9 @@ class StartupLoadingWidget extends StatelessWidget {
           children: [
             const Spacer(),
             // アプリロゴ
-            Assets.icons.icon.svg(
-              width: 200,
-              height: 200,
-              colorFilter: const ColorFilter.mode(
-                Colors.white,
-                BlendMode.srcIn,
-              ),
+            const AppLogo(
+              size: 200,
+              color: Colors.white,
             ),
             const SizedBox(height: 8),
             // アプリ名

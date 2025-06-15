@@ -3,9 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../_gen/assets/assets.gen.dart';
 import '../../../common/types/types.dart';
 import '../../../common/utils/snack_bar_handler.dart';
+import '../../../components/logo/app_logo.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
 import '../application/auth_providers.dart';
 import 'widgets/login_buttons.dart';
@@ -48,14 +48,7 @@ class LoginPage extends HookConsumerWidget {
               children: [
                 const Spacer(),
                 // ロゴ
-                Assets.icons.icon.svg(
-                  width: 200,
-                  height: 200,
-                  colorFilter: const ColorFilter.mode(
-                    Colors.white,
-                    BlendMode.srcIn,
-                  ),
-                ),
+                const AppLogo(size: 200, color: Colors.white),
                 const SizedBox(height: 8),
                 // アプリ名
                 Text(

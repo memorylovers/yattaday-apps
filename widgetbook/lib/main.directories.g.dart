@@ -18,18 +18,19 @@ import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
     as _i11;
 import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
     as _i12;
+import 'package:widgetbook_workspace/components/logo/app_logo.dart' as _i13;
 import 'package:widgetbook_workspace/components/scaffold/gradient_scaffold.dart'
-    as _i13;
-import 'package:widgetbook_workspace/features/_authentication/login_buttons.dart'
     as _i14;
-import 'package:widgetbook_workspace/features/record_items/record_item_card.dart'
+import 'package:widgetbook_workspace/features/_authentication/login_buttons.dart'
     as _i15;
-import 'package:widgetbook_workspace/features/record_items/record_item_form.dart'
+import 'package:widgetbook_workspace/features/record_items/record_item_card.dart'
     as _i16;
-import 'package:widgetbook_workspace/features/startup/startup_error_widget.dart'
+import 'package:widgetbook_workspace/features/record_items/record_item_form.dart'
     as _i17;
-import 'package:widgetbook_workspace/features/startup/startup_loading_widget.dart'
+import 'package:widgetbook_workspace/features/startup/startup_error_widget.dart'
     as _i18;
+import 'package:widgetbook_workspace/features/startup/startup_loading_widget.dart'
+    as _i19;
 import 'package:widgetbook_workspace/pages/login_page.dart' as _i2;
 import 'package:widgetbook_workspace/pages/payment_page.dart' as _i3;
 import 'package:widgetbook_workspace/pages/record_items_create_page.dart'
@@ -137,6 +138,40 @@ final directories = <_i1.WidgetbookNode>[
         ],
       ),
       _i1.WidgetbookFolder(
+        name: 'logo',
+        children: [
+          _i1.WidgetbookComponent(
+            name: 'AppLogo',
+            useCases: [
+              _i1.WidgetbookUseCase(
+                name: 'Custom Color',
+                builder: _i13.customColorAppLogo,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Custom Size',
+                builder: _i13.customSizeAppLogo,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Custom Width and Height',
+                builder: _i13.customWidthHeightAppLogo,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Default',
+                builder: _i13.defaultAppLogo,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Different Backgrounds',
+                builder: _i13.differentBackgroundsAppLogo,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Login Page Example',
+                builder: _i13.loginPageExampleAppLogo,
+              ),
+            ],
+          ),
+        ],
+      ),
+      _i1.WidgetbookFolder(
         name: 'scaffold',
         children: [
           _i1.WidgetbookComponent(
@@ -144,27 +179,27 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Complex Example',
-                builder: _i13.complexExampleGradientScaffold,
+                builder: _i14.complexExampleGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i13.defaultGradientScaffold,
+                builder: _i14.defaultGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Actions',
-                builder: _i13.withActionsGradientScaffold,
+                builder: _i14.withActionsGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With FAB',
-                builder: _i13.withFABGradientScaffold,
+                builder: _i14.withFABGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Title',
-                builder: _i13.withTitleGradientScaffold,
+                builder: _i14.withTitleGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With White Container',
-                builder: _i13.withWhiteContainerGradientScaffold,
+                builder: _i14.withWhiteContainerGradientScaffold,
               ),
             ],
           ),
@@ -182,7 +217,7 @@ final directories = <_i1.WidgetbookNode>[
             name: 'LoginButton',
             useCase: _i1.WidgetbookUseCase(
               name: 'All Variants',
-              builder: _i14.loginButtonUseCase,
+              builder: _i15.loginButtonUseCase,
               designLink: '',
             ),
           ),
@@ -196,19 +231,19 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i15.recordItemCardDefault,
+                builder: _i16.recordItemCardDefault,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Minimal',
-                builder: _i15.recordItemCardMinimal,
+                builder: _i16.recordItemCardMinimal,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Without Description',
-                builder: _i15.recordItemCardWithoutDescription,
+                builder: _i16.recordItemCardWithoutDescription,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Without Unit',
-                builder: _i15.recordItemCardWithoutUnit,
+                builder: _i16.recordItemCardWithoutUnit,
               ),
             ],
           ),
@@ -217,23 +252,23 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i16.recordItemFormDefault,
+                builder: _i17.recordItemFormDefault,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Prefilled Form',
-                builder: _i16.recordItemFormPrefilled,
+                builder: _i17.recordItemFormPrefilled,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Delay',
-                builder: _i16.recordItemFormWithDelay,
+                builder: _i17.recordItemFormWithDelay,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Error',
-                builder: _i16.recordItemFormWithError,
+                builder: _i17.recordItemFormWithError,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Without Callbacks',
-                builder: _i16.recordItemFormWithoutCallbacks,
+                builder: _i17.recordItemFormWithoutCallbacks,
               ),
             ],
           ),
@@ -246,14 +281,14 @@ final directories = <_i1.WidgetbookNode>[
             name: 'StartupErrorWidget',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i17.usecaseStartupErrorWidget,
+              builder: _i18.usecaseStartupErrorWidget,
             ),
           ),
           _i1.WidgetbookLeafComponent(
             name: 'StartupLoadingWidget',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i18.usecaseStartupLoadingWidget,
+              builder: _i19.usecaseStartupLoadingWidget,
             ),
           ),
         ],
