@@ -14,9 +14,13 @@ class AppColors {
 final colorSchemeLight = ColorScheme.fromSeed(seedColor: AppColors.primary);
 
 final gradientColor = LinearGradient(
-  colors: [Color(0xFF30C2D8), Color(0xFFF8DC5B)],
-  begin: Alignment.topLeft,
-  end: Alignment.bottomRight,
+  colors: [
+    Color(0xFF5DD3DC), // 水色
+    Color(0xFF7EDBB7), // 緑
+    Color(0xFFF5D563), // 黄色
+  ],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
 );
 
 const ColorScheme lightColorScheme = ColorScheme(

@@ -159,7 +159,11 @@ Widget recordItemCardDefault(BuildContext context) {
   );
 }
 
-@UseCase(name: 'Without Description', type: RecordItemCard, path: 'features/record_items/')
+@UseCase(
+  name: 'Without Description',
+  type: RecordItemCard,
+  path: 'features/record_items/',
+)
 Widget recordItemCardWithoutDescription(BuildContext context) {
   return RecordItemCard(
     recordItem: MockRecordItem(
@@ -179,7 +183,11 @@ Widget recordItemCardWithoutDescription(BuildContext context) {
   );
 }
 
-@UseCase(name: 'Without Unit', type: RecordItemCard, path: 'features/record_items/')
+@UseCase(
+  name: 'Without Unit',
+  type: RecordItemCard,
+  path: 'features/record_items/',
+)
 Widget recordItemCardWithoutUnit(BuildContext context) {
   return RecordItemCard(
     recordItem: MockRecordItem(

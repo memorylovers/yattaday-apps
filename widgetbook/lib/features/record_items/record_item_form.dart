@@ -57,7 +57,11 @@ class MockRecordItemRepository implements IRecordItemRepository {
       throw UnimplementedError();
 }
 
-@widgetbook.UseCase(name: 'Default', type: RecordItemForm, path: 'features/record_items/')
+@widgetbook.UseCase(
+  name: 'Default',
+  type: RecordItemForm,
+  path: 'features/record_items/',
+)
 Widget recordItemFormDefault(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -84,7 +88,11 @@ Widget recordItemFormDefault(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Error', type: RecordItemForm, path: 'features/record_items/')
+@widgetbook.UseCase(
+  name: 'With Error',
+  type: RecordItemForm,
+  path: 'features/record_items/',
+)
 Widget recordItemFormWithError(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -111,7 +119,11 @@ Widget recordItemFormWithError(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Delay', type: RecordItemForm, path: 'features/record_items/')
+@widgetbook.UseCase(
+  name: 'With Delay',
+  type: RecordItemForm,
+  path: 'features/record_items/',
+)
 Widget recordItemFormWithDelay(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -138,7 +150,11 @@ Widget recordItemFormWithDelay(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Without Callbacks', type: RecordItemForm, path: 'features/record_items/')
+@widgetbook.UseCase(
+  name: 'Without Callbacks',
+  type: RecordItemForm,
+  path: 'features/record_items/',
+)
 Widget recordItemFormWithoutCallbacks(BuildContext context) {
   return ProviderScope(
     overrides: [
@@ -156,7 +172,11 @@ Widget recordItemFormWithoutCallbacks(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Prefilled Form', type: RecordItemForm, path: 'features/record_items/')
+@widgetbook.UseCase(
+  name: 'Prefilled Form',
+  type: RecordItemForm,
+  path: 'features/record_items/',
+)
 Widget recordItemFormPrefilled(BuildContext context) {
   return ProviderScope(
     overrides: [
