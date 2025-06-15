@@ -28,7 +28,8 @@
       "Bash(test:*)",
       "WebFetch(domain:github.com)",
       "Bash(fuser:*)",
-      "Bash(./_scripts/fix_record_item_tests.sh:*)"
+      "Bash(./_scripts/fix_record_item_tests.sh:*)",
+      "Bash(tree:*)"
     ],
     "deny": [
       "Read(../**)",

@@ -18,15 +18,15 @@ import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
     as _i11;
 import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
     as _i12;
-import 'package:widgetbook_workspace/features/authentication/presentation/widgets/login_buttons.dart'
+import 'package:widgetbook_workspace/features/_authentication/login_buttons.dart'
     as _i13;
-import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_card.dart'
+import 'package:widgetbook_workspace/features/record_items/record_item_card.dart'
     as _i14;
-import 'package:widgetbook_workspace/features/record_items/presentation/widgets/record_item_form.dart'
+import 'package:widgetbook_workspace/features/record_items/record_item_form.dart'
     as _i15;
-import 'package:widgetbook_workspace/features/startup/widgets/startup_error_widget.dart'
+import 'package:widgetbook_workspace/features/startup/startup_error_widget.dart'
     as _i16;
-import 'package:widgetbook_workspace/features/startup/widgets/startup_loading_widget.dart'
+import 'package:widgetbook_workspace/features/startup/startup_loading_widget.dart'
     as _i17;
 import 'package:widgetbook_workspace/pages/login_page.dart' as _i2;
 import 'package:widgetbook_workspace/pages/payment_page.dart' as _i3;
