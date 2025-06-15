@@ -112,6 +112,10 @@ Widget complexExampleGradientScaffold(BuildContext context) {
     actions: [IconButton(icon: const Icon(Icons.search), onPressed: () {})],
     useWhiteContainer: true,
     bottomPadding: 80,
+    bottomSafeArea: context.knobs.boolean(
+      label: 'Bottom Safe Area',
+      initialValue: false,
+    ),
     body: ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: 5,

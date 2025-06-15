@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../_gen/i18n/strings.g.dart';
+import '../../../components/scaffold/gradient_scaffold.dart';
 
 /// 課金画面
 class PaymentPage extends HookConsumerWidget {
@@ -9,122 +10,101 @@ class PaymentPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              const Color(0xFF5DD3DC),
-              const Color(0xFF7EDBB7),
-              const Color(0xFFF5D563),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: ListView(
-            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-            children: [
-              // ヘッダー
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24),
-                child: Column(
-                  children: [
-                    Text(
-                      i18n.payment.header.title,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      i18n.payment.header.subtitle,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Text(
-                        i18n.payment.currentPlan(
-                          plan: i18n.payment.plans.free.name,
-                        ),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
+    return GradientScaffold(
+      showBackButton: true,
+      bottomSafeArea: true,
+      body: ListView(
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        children: [
+          // ヘッダー
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: Column(
+              children: [
+                Text(
+                  i18n.payment.header.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 8),
+                Text(
+                  i18n.payment.header.subtitle,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white.withValues(alpha: 0.9),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.3),
+                    ),
+                  ),
+                  child: Text(
+                    i18n.payment.currentPlan(
+                      plan: i18n.payment.plans.free.name,
+                    ),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
 
-              // プラン一覧
-              _buildPlanCard(
-                context,
-                title: i18n.payment.plans.free.name,
-                price: '¥0',
-                priceUnit: i18n.payment.price.perMonth,
-                features: [
-                  i18n.payment.plans.free.features.items,
-                  i18n.payment.plans.free.features.basicRecording,
-                  i18n.payment.plans.free.features.simpleStats,
-                ],
-                isSelected: true,
-              ),
-              const SizedBox(height: 16),
-              _buildPlanCard(
-                context,
-                title: i18n.payment.plans.standard.name,
-                price: '¥480',
-                priceUnit: i18n.payment.price.perMonth,
-                features: [
-                  i18n.payment.plans.standard.features.items,
-                  i18n.payment.plans.standard.features.detailedStats,
-                  i18n.payment.plans.standard.features.dataExport,
-                  i18n.payment.plans.standard.features.reminder,
-                ],
-                isRecommended: true,
-              ),
-              const SizedBox(height: 16),
-              _buildPlanCard(
-                context,
-                title: i18n.payment.plans.premium.name,
-                price: '¥980',
-                priceUnit: i18n.payment.price.perMonth,
-                features: [
-                  i18n.payment.plans.premium.features.allStandard,
-                  i18n.payment.plans.premium.features.aiAnalysis,
-                  i18n.payment.plans.premium.features.teamShare,
-                  i18n.payment.plans.premium.features.prioritySupport,
-                ],
-              ),
+          // プラン一覧
+          _buildPlanCard(
+            context,
+            title: i18n.payment.plans.free.name,
+            price: '¥0',
+            priceUnit: i18n.payment.price.perMonth,
+            features: [
+              i18n.payment.plans.free.features.items,
+              i18n.payment.plans.free.features.basicRecording,
+              i18n.payment.plans.free.features.simpleStats,
+            ],
+            isSelected: true,
+          ),
+          const SizedBox(height: 16),
+          _buildPlanCard(
+            context,
+            title: i18n.payment.plans.standard.name,
+            price: '¥480',
+            priceUnit: i18n.payment.price.perMonth,
+            features: [
+              i18n.payment.plans.standard.features.items,
+              i18n.payment.plans.standard.features.detailedStats,
+              i18n.payment.plans.standard.features.dataExport,
+              i18n.payment.plans.standard.features.reminder,
+            ],
+            isRecommended: true,
+          ),
+          const SizedBox(height: 16),
+          _buildPlanCard(
+            context,
+            title: i18n.payment.plans.premium.name,
+            price: '¥980',
+            priceUnit: i18n.payment.price.perMonth,
+            features: [
+              i18n.payment.plans.premium.features.allStandard,
+              i18n.payment.plans.premium.features.aiAnalysis,
+              i18n.payment.plans.premium.features.teamShare,
+              i18n.payment.plans.premium.features.prioritySupport,
             ],
           ),
-        ),
+        ],
       ),
     );
   }

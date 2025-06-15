@@ -133,5 +133,29 @@ void main() {
       final paddingFinder = find.byType(Padding);
       expect(paddingFinder, findsWidgets);
     });
+
+    testWidgets('bottomSafeAreaが正しく適用される', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          home: GradientScaffold(body: Text('Content'), bottomSafeArea: true),
+        ),
+      );
+
+      // SafeAreaが存在することを確認
+      expect(find.byType(SafeArea), findsOneWidget);
+    });
+
+    testWidgets('デフォルトではbottomSafeAreaがfalse', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(home: GradientScaffold(body: Text('Content'))),
+      );
+
+      // SafeAreaウィジェットを取得して、bottomがfalseであることを確認
+      final safeAreaFinder = find.byType(SafeArea);
+      expect(safeAreaFinder, findsOneWidget);
+
+      final SafeArea safeArea = tester.widget(safeAreaFinder);
+      expect(safeArea.bottom, false);
+    });
   });
 }

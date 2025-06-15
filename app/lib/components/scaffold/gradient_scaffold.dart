@@ -17,6 +17,7 @@ class GradientScaffold extends StatelessWidget {
     this.extendBodyBehindAppBar = true,
     this.useWhiteContainer = false,
     this.bottomPadding,
+    this.bottomSafeArea = false,
   });
 
   /// AppBarのタイトル
@@ -45,6 +46,9 @@ class GradientScaffold extends StatelessWidget {
 
   /// 下部のパディング（FABなどのための余白）
   final double? bottomPadding;
+
+  /// SafeAreaの下部を適用するか
+  final bool bottomSafeArea;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +83,7 @@ class GradientScaffold extends StatelessWidget {
               : null,
       body: Container(
         decoration: BoxDecoration(gradient: gradientColor),
-        child: SafeArea(bottom: false, child: bodyContent),
+        child: SafeArea(bottom: bottomSafeArea, child: bodyContent),
       ),
       floatingActionButton: floatingActionButton,
     );

@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
+import '../../../../components/scaffold/gradient_scaffold.dart';
 import '../../../../routing/router_routes.dart';
 import '../../application/providers/record_items_provider.dart';
 import '../../domain/record_item.dart';
@@ -22,91 +23,62 @@ class RecordItemsListPage extends HookConsumerWidget {
     // 日付フォーマット（例：2024年6月14日）
     final dateFormatter = DateFormat('yyyy年M月d日');
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(
-          dateFormatter.format(selectedDate.value),
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.chevron_left),
+    return GradientScaffold(
+      title: dateFormatter.format(selectedDate.value),
+      leading: IconButton(
+        icon: const Icon(Icons.chevron_left),
+        onPressed: () {
+          selectedDate.value = selectedDate.value.subtract(
+            const Duration(days: 1),
+          );
+        },
+      ),
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.chevron_right),
           onPressed: () {
-            selectedDate.value = selectedDate.value.subtract(
-              const Duration(days: 1),
-            );
+            // 未来の日付には移動できないようにする
+            final tomorrow = selectedDate.value.add(const Duration(days: 1));
+            if (!tomorrow.isAfter(DateTime.now())) {
+              selectedDate.value = tomorrow;
+            }
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.chevron_right),
-            onPressed: () {
-              // 未来の日付には移動できないようにする
-              final tomorrow = selectedDate.value.add(const Duration(days: 1));
-              if (!tomorrow.isAfter(DateTime.now())) {
-                selectedDate.value = tomorrow;
-              }
-            },
-          ),
-        ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              const Color(0xFF5DD3DC),
-              const Color(0xFF7EDBB7),
-              const Color(0xFFF5D563),
-            ],
-          ),
-        ),
-        child: SafeArea(
-          bottom: false,
-          child: Container(
-            // color: Colors.white,
-            child: recordItemsAsync.when(
-              data:
-                  (items) => RecordItemListView(
-                    items: items,
-                    completedItemIds: completedItemIds.value,
-                    onItemTap: (item) => _navigateToDetail(context, item),
-                    onItemToggleComplete: (item) {
-                      final newSet = Set<String>.from(completedItemIds.value);
-                      if (newSet.contains(item.id)) {
-                        newSet.remove(item.id);
-                      } else {
-                        newSet.add(item.id);
-                      }
-                      completedItemIds.value = newSet;
-                    },
-                  ),
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error:
-                  (error, stackTrace) => Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          i18n.recordItems.errorMessage,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed:
-                              () => ref.refresh(watchRecordItemsProvider),
-                          child: Text(i18n.common.retry),
-                        ),
-                      ],
-                    ),
-                  ),
+      ],
+      body: recordItemsAsync.when(
+        data:
+            (items) => RecordItemListView(
+              items: items,
+              completedItemIds: completedItemIds.value,
+              onItemTap: (item) => _navigateToDetail(context, item),
+              onItemToggleComplete: (item) {
+                final newSet = Set<String>.from(completedItemIds.value);
+                if (newSet.contains(item.id)) {
+                  newSet.remove(item.id);
+                } else {
+                  newSet.add(item.id);
+                }
+                completedItemIds.value = newSet;
+              },
             ),
-          ),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error:
+            (error, stackTrace) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    i18n.recordItems.errorMessage,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => ref.refresh(watchRecordItemsProvider),
+                    child: Text(i18n.common.retry),
+                  ),
+                ],
+              ),
+            ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToCreate(context),

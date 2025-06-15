@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
+import '../../../../components/scaffold/gradient_scaffold.dart';
 import '../../../_authentication/application/auth_providers.dart';
 import '../../../daily_records/application/providers/record_item_histories_provider.dart';
 import '../../../daily_records/application/providers/record_item_statistics_provider.dart';
@@ -37,108 +38,81 @@ class RecordItemsDetailPage extends HookConsumerWidget {
       watchTodayRecordExistsProvider(recordItemId: recordItemId),
     );
 
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => _navigateToEdit(context),
-          ),
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () => _showDeleteConfirmDialog(context, ref),
-          ),
-        ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              const Color(0xFF5DD3DC),
-              const Color(0xFF7EDBB7),
-              const Color(0xFFF5D563),
-            ],
-          ),
+    return GradientScaffold(
+      showBackButton: true,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.edit),
+          onPressed: () => _navigateToEdit(context),
         ),
-        child: SafeArea(
-          bottom: false,
-          child: recordItemAsync.when(
-            data: (recordItem) {
-              if (recordItem == null) {
-                return Center(child: Text(i18n.recordItems.notFound));
-              }
-
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 120), // FABのためのスペース
-                  child: Column(
-                    children: [
-                      // ヘッダー部分
-                      RecordItemDetailHeader(recordItem: recordItem),
-
-                      // 統計情報
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: statisticsAsync.when(
-                          data:
-                              (statistics) => RecordItemStatisticsCard(
-                                statistics: statistics,
-                              ),
-                          loading:
-                              () => const SizedBox(
-                                height: 100,
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              ),
-                          error: (_, __) => const SizedBox.shrink(),
-                        ),
-                      ),
-
-                      // カレンダー
-                      Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: RecordItemCalendar(
-                          recordItemId: recordItemId,
-                          selectedMonth: selectedMonth.value,
-                          onMonthChanged:
-                              (month) => selectedMonth.value = month,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error:
-                (error, stackTrace) => Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        i18n.recordItems.errorMessage,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed:
-                            () => ref.refresh(
-                              recordItemByIdProvider(recordItemId),
-                            ),
-                        child: Text(i18n.common.retry),
-                      ),
-                    ],
-                  ),
-                ),
-          ),
+        IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () => _showDeleteConfirmDialog(context, ref),
         ),
+      ],
+      body: recordItemAsync.when(
+        data: (recordItem) {
+          if (recordItem == null) {
+            return Center(child: Text(i18n.recordItems.notFound));
+          }
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 120), // FABのためのスペース
+              child: Column(
+                children: [
+                  // ヘッダー部分
+                  RecordItemDetailHeader(recordItem: recordItem),
+
+                  // 統計情報
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: statisticsAsync.when(
+                      data:
+                          (statistics) =>
+                              RecordItemStatisticsCard(statistics: statistics),
+                      loading:
+                          () => const SizedBox(
+                            height: 100,
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
+                      error: (_, __) => const SizedBox.shrink(),
+                    ),
+                  ),
+
+                  // カレンダー
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: RecordItemCalendar(
+                      recordItemId: recordItemId,
+                      selectedMonth: selectedMonth.value,
+                      onMonthChanged: (month) => selectedMonth.value = month,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error:
+            (error, stackTrace) => Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    i18n.recordItems.errorMessage,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed:
+                        () => ref.refresh(recordItemByIdProvider(recordItemId)),
+                    child: Text(i18n.common.retry),
+                  ),
+                ],
+              ),
+            ),
       ),
       floatingActionButton: todayRecordExistsAsync.when(
         data:
