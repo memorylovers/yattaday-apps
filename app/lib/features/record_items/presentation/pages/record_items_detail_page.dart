@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
 import '../../../../components/scaffold/gradient_scaffold.dart';
-import '../../../_authentication/application/auth_providers.dart';
-import '../../../daily_records/application/providers/record_item_histories_provider.dart';
-import '../../../daily_records/application/providers/record_item_statistics_provider.dart';
-import '../../application/providers/record_item_crud_provider.dart';
-import '../../application/providers/record_items_provider.dart';
+import '../view_models/record_item_detail_view_model.dart';
 import '../widgets/record_item_calendar.dart';
 import '../widgets/record_item_detail_header.dart';
 import '../widgets/record_item_statistics_card.dart';
@@ -22,20 +17,11 @@ class RecordItemsDetailPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 記録項目の詳細を取得
-    final recordItemAsync = ref.watch(recordItemByIdProvider(recordItemId));
-
-    // 統計情報を取得
-    final statisticsAsync = ref.watch(
-      recordItemStatisticsProvider(recordItemId: recordItemId),
+    final viewModelState = ref.watch(
+      recordItemDetailViewModelProvider(recordItemId),
     );
-
-    // 選択中の月（カレンダー表示用）
-    final selectedMonth = useState(DateTime.now());
-
-    // 今日の記録があるかどうか
-    final todayRecordExistsAsync = ref.watch(
-      watchTodayRecordExistsProvider(recordItemId: recordItemId),
+    final viewModel = ref.read(
+      recordItemDetailViewModelProvider(recordItemId).notifier,
     );
 
     return GradientScaffold(
@@ -47,10 +33,10 @@ class RecordItemsDetailPage extends HookConsumerWidget {
         ),
         IconButton(
           icon: const Icon(Icons.delete),
-          onPressed: () => _showDeleteConfirmDialog(context, ref),
+          onPressed: () => _showDeleteConfirmDialog(context, ref, viewModel),
         ),
       ],
-      body: recordItemAsync.when(
+      body: viewModelState.recordItem.when(
         data: (recordItem) {
           if (recordItem == null) {
             return Center(child: Text(i18n.recordItems.notFound));
@@ -67,7 +53,7 @@ class RecordItemsDetailPage extends HookConsumerWidget {
                   // 統計情報
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: statisticsAsync.when(
+                    child: viewModelState.statistics.when(
                       data:
                           (statistics) =>
                               RecordItemStatisticsCard(statistics: statistics),
@@ -85,8 +71,8 @@ class RecordItemsDetailPage extends HookConsumerWidget {
                     padding: const EdgeInsets.all(16),
                     child: RecordItemCalendar(
                       recordItemId: recordItemId,
-                      selectedMonth: selectedMonth.value,
-                      onMonthChanged: (month) => selectedMonth.value = month,
+                      selectedMonth: viewModelState.selectedMonth,
+                      onMonthChanged: viewModel.setSelectedMonth,
                     ),
                   ),
                 ],
@@ -107,17 +93,26 @@ class RecordItemsDetailPage extends HookConsumerWidget {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed:
-                        () => ref.refresh(recordItemByIdProvider(recordItemId)),
+                        () => ref.invalidate(
+                          recordItemDetailViewModelProvider(recordItemId),
+                        ),
                     child: Text(i18n.common.retry),
                   ),
                 ],
               ),
             ),
       ),
-      floatingActionButton: todayRecordExistsAsync.when(
+      floatingActionButton: viewModelState.todayRecordExists.when(
         data:
             (exists) => FloatingActionButton.extended(
-              onPressed: () => _toggleTodayRecord(context, ref, exists),
+              onPressed: () async {
+                await viewModel.toggleTodayRecord(exists);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(exists ? '記録を削除しました' : '記録を追加しました')),
+                  );
+                }
+              },
               backgroundColor: exists ? Colors.red : const Color(0xFF5DD3DC),
               icon: Icon(
                 exists ? Icons.check_circle : Icons.add_circle,
@@ -146,6 +141,7 @@ class RecordItemsDetailPage extends HookConsumerWidget {
   Future<void> _showDeleteConfirmDialog(
     BuildContext context,
     WidgetRef ref,
+    RecordItemDetailViewModel viewModel,
   ) async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -170,20 +166,15 @@ class RecordItemsDetailPage extends HookConsumerWidget {
     );
 
     if (confirmed == true && context.mounted) {
-      await _deleteRecordItem(context, ref);
-    }
-  }
-
-  /// 記録項目を削除
-  Future<void> _deleteRecordItem(BuildContext context, WidgetRef ref) async {
-    try {
-      final userId = await ref.read(authUidProvider.future);
-      final success = await ref
-          .read(recordItemCrudProvider.notifier)
-          .deleteRecordItem(userId: userId!, recordItemId: recordItemId);
+      await viewModel.deleteRecordItem();
 
       if (context.mounted) {
-        if (success) {
+        final deleteError =
+            ref
+                .read(recordItemDetailViewModelProvider(recordItemId))
+                .deleteError;
+
+        if (deleteError == null) {
           // 削除成功したら一覧画面に戻る
           context.pop();
           ScaffoldMessenger.of(context).showSnackBar(
@@ -191,74 +182,13 @@ class RecordItemsDetailPage extends HookConsumerWidget {
           );
         } else {
           // エラーメッセージを表示
-          final errorMessage = ref.read(recordItemCrudProvider).errorMessage;
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(errorMessage ?? i18n.recordItems.deleteError),
+              content: Text(deleteError),
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(i18n.recordItems.deleteError),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
-        );
-      }
-    }
-  }
-
-  /// 今日の記録をトグル
-  Future<void> _toggleTodayRecord(
-    BuildContext context,
-    WidgetRef ref,
-    bool exists,
-  ) async {
-    try {
-      if (exists) {
-        // 削除
-        final userId = await ref.read(authUidProvider.future);
-        await ref
-            .read(deleteRecordItemHistoryUseCaseProvider)
-            .executeByDate(
-              userId: userId!,
-              recordItemId: recordItemId,
-              date: DateTime.now(),
-            );
-        if (context.mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('記録を削除しました')));
-        }
-      } else {
-        // 作成
-        final userId = await ref.read(authUidProvider.future);
-        await ref
-            .read(createRecordItemHistoryUseCaseProvider)
-            .execute(
-              userId: userId!,
-              recordItemId: recordItemId,
-              date: DateTime.now(),
-            );
-        if (context.mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('記録を追加しました')));
-        }
-      }
-
-      // プロバイダーをリフレッシュ
-      ref.invalidate(recordItemStatisticsProvider(recordItemId: recordItemId));
-      ref.invalidate(recordedDatesProvider(recordItemId: recordItemId));
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('エラーが発生しました: $e')));
       }
     }
   }
