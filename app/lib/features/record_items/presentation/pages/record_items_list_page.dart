@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
 import '../../../../components/scaffold/gradient_scaffold.dart';
 import '../../../../routing/router_routes.dart';
-import '../../application/providers/record_items_provider.dart';
 import '../../domain/record_item.dart';
+import '../view_models/record_items_list_view_model.dart';
 import '../widgets/record_item_list_view.dart';
 
 /// 記録項目一覧画面
@@ -16,50 +15,32 @@ class RecordItemsListPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recordItemsAsync = ref.watch(watchRecordItemsProvider);
-    final selectedDate = useState(DateTime.now());
-    final completedItemIds = useState<Set<String>>({});
+    final viewModelState = ref.watch(recordItemsListViewModelProvider);
+    final viewModel = ref.read(recordItemsListViewModelProvider.notifier);
 
     // 日付フォーマット（例：2024年6月14日）
     final dateFormatter = DateFormat('yyyy年M月d日');
 
     return GradientScaffold(
-      title: dateFormatter.format(selectedDate.value),
+      title: dateFormatter.format(viewModelState.selectedDate),
       leading: IconButton(
         icon: const Icon(Icons.chevron_left),
-        onPressed: () {
-          selectedDate.value = selectedDate.value.subtract(
-            const Duration(days: 1),
-          );
-        },
+        onPressed: viewModel.goToPreviousDay,
       ),
       actions: [
         IconButton(
           icon: const Icon(Icons.chevron_right),
-          onPressed: () {
-            // 未来の日付には移動できないようにする
-            final tomorrow = selectedDate.value.add(const Duration(days: 1));
-            if (!tomorrow.isAfter(DateTime.now())) {
-              selectedDate.value = tomorrow;
-            }
-          },
+          onPressed: viewModel.goToNextDay,
         ),
       ],
-      body: recordItemsAsync.when(
+      body: viewModelState.recordItemsAsync.when(
         data:
             (items) => RecordItemListView(
               items: items,
-              completedItemIds: completedItemIds.value,
+              completedItemIds: viewModelState.completedItemIds,
               onItemTap: (item) => _navigateToDetail(context, item),
-              onItemToggleComplete: (item) {
-                final newSet = Set<String>.from(completedItemIds.value);
-                if (newSet.contains(item.id)) {
-                  newSet.remove(item.id);
-                } else {
-                  newSet.add(item.id);
-                }
-                completedItemIds.value = newSet;
-              },
+              onItemToggleComplete:
+                  (item) => viewModel.toggleItemComplete(item.id),
             ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error:
@@ -73,7 +54,7 @@ class RecordItemsListPage extends HookConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => ref.refresh(watchRecordItemsProvider),
+                    onPressed: viewModel.refresh,
                     child: Text(i18n.common.retry),
                   ),
                 ],
