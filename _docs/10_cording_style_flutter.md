@@ -140,6 +140,13 @@ app/
 └── main.dart                  # 🚀 エントリーポイント
 ```
 
+### **features配下での重要事項**
+
+- presentaionから直接applicationを参照を禁止
+- applicationは、以下を満たさない場合、作成を禁止
+  - 複数のpage/view_modelが同一の状態を参照する場合
+- 状態を持つのは、view_modelとapplicationのみ
+
 ## 利用ライブラリ
 
 - 状態管理:

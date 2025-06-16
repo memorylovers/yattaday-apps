@@ -22,10 +22,7 @@ class StartupLoadingWidget extends StatelessWidget {
           children: [
             const Spacer(),
             // アプリロゴ
-            const AppLogo(
-              size: 200,
-              color: Colors.white,
-            ),
+            const AppLogo(size: 200, color: Colors.white),
             const SizedBox(height: 8),
             // アプリ名
             Text(

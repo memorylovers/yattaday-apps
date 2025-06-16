@@ -7,7 +7,7 @@ import '../../../common/types/types.dart';
 import '../../../common/utils/snack_bar_handler.dart';
 import '../../../components/logo/app_logo.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
-import '../application/auth_providers.dart';
+import 'view_models/login_view_model.dart';
 import 'widgets/login_buttons.dart';
 
 /// ログイン画面
@@ -16,25 +16,24 @@ class LoginPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = useState(false);
+    final loginState = ref.watch(loginViewModelProvider);
+    final loginViewModel = ref.read(loginViewModelProvider.notifier);
 
-    /// ログイン押下時の処理
-    onClickLogin(AuthType authType) async {
-      try {
-        isLoading.value = true;
-
-        // await Future.delayed(3.seconds);
-
-        // throw AppException();
-        await ref.read(authStoreProvider.notifier).signIn(authType);
-      } catch (e) {
-        if (!context.mounted) return;
-
-        // TODO: エラーメッセージをいい感じにする
-        SnackBarHandler.showError(context, message: "$e");
-        isLoading.value = false;
+    // エラーメッセージの監視
+    useEffect(() {
+      if (loginState.errorMessage != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (context.mounted) {
+            // TODO: エラーメッセージをいい感じにする
+            SnackBarHandler.showError(
+              context,
+              message: loginState.errorMessage!,
+            );
+          }
+        });
       }
-    }
+      return null;
+    }, [loginState.errorMessage]);
 
     return GradientScaffold(
       body: SingleChildScrollView(
@@ -76,7 +75,7 @@ class LoginPage extends HookConsumerWidget {
                   child: Stack(
                     children: [
                       Visibility(
-                        visible: !isLoading.value,
+                        visible: !loginState.isLoading,
                         maintainSize: true,
                         maintainAnimation: true,
                         maintainState: true,
@@ -85,13 +84,15 @@ class LoginPage extends HookConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             GoogleLoginButton(
-                              isLoading: isLoading.value,
-                              onPressed: () => onClickLogin(AuthType.google),
+                              isLoading: loginState.isLoading,
+                              onPressed:
+                                  () => loginViewModel.signIn(AuthType.google),
                             ),
                             const Gap(12),
                             AppleLoginButton(
-                              isLoading: isLoading.value,
-                              onPressed: () => onClickLogin(AuthType.apple),
+                              isLoading: loginState.isLoading,
+                              onPressed:
+                                  () => loginViewModel.signIn(AuthType.apple),
                             ),
                             const Gap(16),
                             // 区切り線
@@ -125,13 +126,15 @@ class LoginPage extends HookConsumerWidget {
                             const Gap(16),
                             // 匿名ログインボタン
                             AnonymousLoginButton(
-                              isLoading: isLoading.value,
-                              onPressed: () => onClickLogin(AuthType.anonymous),
+                              isLoading: loginState.isLoading,
+                              onPressed:
+                                  () =>
+                                      loginViewModel.signIn(AuthType.anonymous),
                             ),
                           ],
                         ),
                       ),
-                      if (isLoading.value)
+                      if (loginState.isLoading)
                         Positioned.fill(
                           child: Align(
                             alignment: Alignment.center,
