@@ -92,7 +92,11 @@ void main() {
 
       // 匿名認証
       await viewModel.signIn(AuthType.anonymous);
-      expect(mockAuthStore.signInCalls, [AuthType.google, AuthType.apple, AuthType.anonymous]);
+      expect(mockAuthStore.signInCalls, [
+        AuthType.google,
+        AuthType.apple,
+        AuthType.anonymous,
+      ]);
     });
   });
 }

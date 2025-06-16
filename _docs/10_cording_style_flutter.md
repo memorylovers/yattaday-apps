@@ -142,10 +142,21 @@ app/
 
 ### **features配下での重要事項**
 
-- presentaionから直接applicationを参照を禁止
+- presentaionのpage/widgetから直接applicationを参照を禁止
 - applicationは、以下を満たさない場合、作成を禁止
   - 複数のpage/view_modelが同一の状態を参照する場合
 - 状態を持つのは、view_modelとapplicationのみ
+
+```
+features/feature_name/
+     ├── presentation/
+     │   ├── pages/        # applicationを参照しない
+     │   ├── widgets/      # applicationを参照しない
+     │   └── view_models/  # applicationを参照可能
+     ├── application/      # 複数のview_modelから参照される場合のみ存在
+     ├── domain/
+     └── data/
+```
 
 ## 利用ライブラリ
 

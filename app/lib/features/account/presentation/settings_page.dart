@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../_gen/i18n/strings.g.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
 import '../../../routing/router_routes.dart';
-import '../../_authentication/application/auth_providers.dart';
+import 'view_models/settings_view_model.dart';
 
 /// 設定画面
 class SettingsPage extends HookConsumerWidget {
@@ -13,7 +12,8 @@ class SettingsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = useState(false);
+    final settingsState = ref.watch(settingsViewModelProvider);
+    final settingsViewModel = ref.read(settingsViewModelProvider.notifier);
 
     return GradientScaffold(
       title: i18n.settings.title,
@@ -165,19 +165,7 @@ class SettingsPage extends HookConsumerWidget {
             margin: const EdgeInsets.symmetric(horizontal: 16),
             child: TextButton.icon(
               onPressed:
-                  isLoading.value
-                      ? null
-                      : () async {
-                        try {
-                          isLoading.value = true;
-                          await Future.delayed(const Duration(seconds: 2));
-                          await ref.read(authStoreProvider.notifier).signOut();
-                        } catch (e) {
-                          // TODO: エラー処理
-                        } finally {
-                          isLoading.value = false;
-                        }
-                      },
+                  settingsState.isLoading ? null : settingsViewModel.signOut,
               icon: Icon(Icons.logout, color: Colors.grey[600], size: 20),
               label: Text(
                 i18n.settings.logout,
