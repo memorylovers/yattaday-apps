@@ -33,7 +33,7 @@
   - [x] 記録項目の監視処理をViewModelに移行
   - [x] pageはViewModelの状態を監視するように変更
 
-#### ❌ record_items_detail_page.dart
+#### ✅ record_items_detail_page.dart
 
 - **違反内容**: pageから複数のapplication providerを直接参照
 - **参照しているProvider一覧**:
@@ -46,33 +46,33 @@
   - `createRecordItemHistoryUseCaseProvider` (241行目)
   - `recordedDatesProvider` (256行目)
 - **修正方法**:
-  - [ ] RecordItemDetailViewModelを作成
-  - [ ] すべての状態管理とビジネスロジックをViewModelに移行
-  - [ ] pageはViewModelのメソッドと状態のみを使用
+  - [x] RecordItemDetailViewModelを作成
+  - [x] すべての状態管理とビジネスロジックをViewModelに移行
+  - [x] pageはViewModelのメソッドと状態のみを使用
 
-#### ❌ record_item_calendar.dart (widget)
+#### ✅ record_item_calendar.dart (widget)
 
 - **違反内容**: widgetから`recordedDatesProvider`を直接参照
 - **該当行**: 24行目
 - **修正方法**:
-  - [ ] 親ページのViewModelから必要なデータを引数で受け取る
-  - [ ] widgetを純粋なUIコンポーネントに変更
+  - [x] 親ページのViewModelから必要なデータを引数で受け取る
+  - [x] widgetを純粋なUIコンポーネントに変更
 
-#### ❌ record_item_form.dart (widget)
-
-- **違反内容**: widgetから`recordItemFormProvider`を直接参照
-- **該当行**: 複数箇所
-- **修正方法**:
-  - [ ] 親ページのViewModelから必要なデータとコールバックを引数で受け取る
-  - [ ] widgetを純粋なUIコンポーネントに変更
-
-#### ❌ record_item_form_with_semantics.dart (widget)
+#### ✅ record_item_form.dart (widget)
 
 - **違反内容**: widgetから`recordItemFormProvider`を直接参照
 - **該当行**: 複数箇所
 - **修正方法**:
-  - [ ] 親ページのViewModelから必要なデータとコールバックを引数で受け取る
-  - [ ] widgetを純粋なUIコンポーネントに変更
+  - [x] 親ページのViewModelから必要なデータとコールバックを引数で受け取る
+  - [x] widgetを純粋なUIコンポーネントに変更
+
+#### ✅ record_item_form_with_semantics.dart (widget)
+
+- **違反内容**: widgetから`recordItemFormProvider`を直接参照
+- **該当行**: 複数箇所
+- **修正方法**:
+  - [x] 親ページのViewModelから必要なデータとコールバックを引数で受け取る
+  - [x] widgetを純粋なUIコンポーネントに変更
 
 ### 3. **Feature間の依存関係の整理**
 
@@ -91,8 +91,8 @@
 #### ⚠️ record_item_form_provider
 
 - **確認事項**:
-  - [ ] 複数のview_modelから参照されているか確認
-  - [ ] 単一のview_modelからのみ参照の場合は、view_model内に統合を検討
+  - [x] 複数のview_modelから参照されているか確認
+  - [ ] RecordItemsCreatePageとRecordItemsEditPageで共有されているため、ViewModelを作成して移行
 
 ### 5. **テストファイルの修正**
 

@@ -57,6 +57,44 @@ class MockRecordItemRepository implements IRecordItemRepository {
       throw UnimplementedError();
 }
 
+/// RecordItemFormをラップして新しいパラメータに対応
+class _MockRecordItemFormWrapper extends ConsumerWidget {
+  const _MockRecordItemFormWrapper({
+    required this.userId,
+    this.onSuccess,
+    this.onCancel,
+  });
+
+  final String userId;
+  final VoidCallback? onSuccess;
+  final VoidCallback? onCancel;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formState = ref.watch(recordItemFormProvider);
+    final notifier = ref.read(recordItemFormProvider.notifier);
+
+    return RecordItemForm(
+      userId: userId,
+      formState: formState,
+      onTitleChanged: notifier.updateTitle,
+      onDescriptionChanged: notifier.updateDescription,
+      onIconChanged: notifier.updateIcon,
+      onUnitChanged: notifier.updateUnit,
+      onErrorCleared: notifier.clearError,
+      onSubmit: () async {
+        final success = await notifier.submit(userId);
+        if (success && onSuccess != null) {
+          onSuccess!();
+        }
+        return success;
+      },
+      onSuccess: onSuccess,
+      onCancel: onCancel,
+    );
+  }
+}
+
 @widgetbook.UseCase(
   name: 'Default',
   type: RecordItemForm,
@@ -71,7 +109,7 @@ Widget recordItemFormDefault(BuildContext context) {
     ],
     child: Scaffold(
       appBar: AppBar(title: const Text('記録項目作成')),
-      body: RecordItemForm(
+      body: _MockRecordItemFormWrapper(
         userId: 'widgetbook-user',
         onSuccess: () {
           ScaffoldMessenger.of(
@@ -102,7 +140,7 @@ Widget recordItemFormWithError(BuildContext context) {
     ],
     child: Scaffold(
       appBar: AppBar(title: const Text('記録項目作成（エラーテスト）')),
-      body: RecordItemForm(
+      body: _MockRecordItemFormWrapper(
         userId: 'widgetbook-user',
         onSuccess: () {
           ScaffoldMessenger.of(
@@ -133,7 +171,7 @@ Widget recordItemFormWithDelay(BuildContext context) {
     ],
     child: Scaffold(
       appBar: AppBar(title: const Text('記録項目作成（ローディングテスト）')),
-      body: RecordItemForm(
+      body: _MockRecordItemFormWrapper(
         userId: 'widgetbook-user',
         onSuccess: () {
           ScaffoldMessenger.of(
@@ -164,7 +202,7 @@ Widget recordItemFormWithoutCallbacks(BuildContext context) {
     ],
     child: Scaffold(
       appBar: AppBar(title: const Text('記録項目作成（コールバックなし）')),
-      body: const RecordItemForm(
+      body: const _MockRecordItemFormWrapper(
         userId: 'widgetbook-user',
         // onSuccess・onCancelを指定しない
       ),
@@ -178,45 +216,45 @@ Widget recordItemFormWithoutCallbacks(BuildContext context) {
   path: 'features/record_items/',
 )
 Widget recordItemFormPrefilled(BuildContext context) {
-  return ProviderScope(
-    overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(),
-      ),
-    ],
-    child: Scaffold(
-      appBar: AppBar(title: const Text('記録項目作成（入力済み）')),
-      body: const _PrefilledFormWrapper(),
-    ),
+  return Scaffold(
+    appBar: AppBar(title: const Text('記録項目作成（入力済み）')),
+    body: const _PrefilledFormWrapper(),
   );
 }
 
 /// 事前入力済みフォームのラッパー
-class _PrefilledFormWrapper extends ConsumerStatefulWidget {
+class _PrefilledFormWrapper extends StatelessWidget {
   const _PrefilledFormWrapper();
 
   @override
-  ConsumerState<_PrefilledFormWrapper> createState() =>
-      _PrefilledFormWrapperState();
-}
-
-class _PrefilledFormWrapperState extends ConsumerState<_PrefilledFormWrapper> {
-  @override
-  void initState() {
-    super.initState();
-    // フォームに初期値を設定
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final notifier = ref.read(recordItemFormProvider.notifier);
-      notifier.updateTitle('読書記録');
-      notifier.updateDescription('毎日30分以上本を読んで知識を身につける');
-      notifier.updateUnit('ページ');
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    // 初期値を持つモックフォーム状態を作成
+    const prefilledFormState = RecordItemFormState(
+      title: '読書記録',
+      description: '毎日30分以上本を読んで知識を身につける',
+      icon: '📖',
+      unit: 'ページ',
+      isSubmitting: false,
+      errorMessage: null,
+    );
+
     return RecordItemForm(
       userId: 'widgetbook-user',
+      formState: prefilledFormState,
+      onTitleChanged: (_) {},
+      onDescriptionChanged: (_) {},
+      onIconChanged: (_) {},
+      onUnitChanged: (_) {},
+      onErrorCleared: () {},
+      onSubmit: () async {
+        await Future.delayed(const Duration(seconds: 1));
+        if (context.mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('作成が完了しました！')));
+        }
+        return true;
+      },
       onSuccess: () {
         ScaffoldMessenger.of(
           context,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:myapp/features/record_items/application/providers/record_item_form_provider.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
@@ -96,6 +97,13 @@ void main() {
 
     Widget createTestWidget({
       String userId = 'test-user-id',
+      RecordItemFormState? formState,
+      void Function(String)? onTitleChanged,
+      void Function(String)? onDescriptionChanged,
+      void Function(String)? onIconChanged,
+      void Function(String)? onUnitChanged,
+      void Function()? onErrorCleared,
+      Future<bool> Function()? onSubmit,
       void Function()? onSuccess,
       void Function()? onCancel,
     }) {
@@ -107,6 +115,13 @@ void main() {
           home: Scaffold(
             body: RecordItemForm(
               userId: userId,
+              formState: formState ?? const RecordItemFormState(),
+              onTitleChanged: onTitleChanged ?? (_) {},
+              onDescriptionChanged: onDescriptionChanged ?? (_) {},
+              onIconChanged: onIconChanged ?? (_) {},
+              onUnitChanged: onUnitChanged ?? (_) {},
+              onErrorCleared: onErrorCleared ?? () {},
+              onSubmit: onSubmit ?? () async => true,
               onSuccess: onSuccess,
               onCancel: onCancel,
             ),
@@ -145,16 +160,14 @@ void main() {
       });
 
       testWidgets('タイトルを入力すると作成ボタンが有効になる', (tester) async {
-        await tester.pumpWidget(createTestWidget());
+        await tester.pumpWidget(
+          createTestWidget(
+            formState: const RecordItemFormState(title: '読書', icon: '📝'),
+          ),
+        );
 
-        // まず絵文字を選択
-        await tester.tap(find.text('📝'));
-        await tester.pumpAndSettle();
-
-        // タイトルフィールドに入力
-        final titleField = find.byType(TextFormField).first;
-        await tester.enterText(titleField, '読書');
-        await tester.pumpAndSettle();
+        // タイトルの入力が反映されていることを確認
+        expect(find.text('読書'), findsOneWidget);
 
         final createButton = tester.widget<ElevatedButton>(
           find.widgetWithText(ElevatedButton, '作成'),

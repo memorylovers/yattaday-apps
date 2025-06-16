@@ -1,29 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../application/providers/record_item_form_provider.dart';
 import '../../domain/record_item.dart';
 
 /// 記録項目作成・編集フォームウィジェット
-class RecordItemForm extends ConsumerStatefulWidget {
+class RecordItemForm extends StatefulWidget {
   const RecordItemForm({
     super.key,
     required this.userId,
+    required this.formState,
+    required this.onTitleChanged,
+    required this.onDescriptionChanged,
+    required this.onIconChanged,
+    required this.onUnitChanged,
+    required this.onErrorCleared,
+    required this.onSubmit,
     this.initialItem,
     this.onSuccess,
     this.onCancel,
   });
 
   final String userId;
+  final RecordItemFormState formState;
+  final ValueChanged<String> onTitleChanged;
+  final ValueChanged<String> onDescriptionChanged;
+  final ValueChanged<String> onIconChanged;
+  final ValueChanged<String> onUnitChanged;
+  final VoidCallback onErrorCleared;
+  final Future<bool> Function() onSubmit;
   final RecordItem? initialItem;
   final VoidCallback? onSuccess;
   final VoidCallback? onCancel;
 
   @override
-  ConsumerState<RecordItemForm> createState() => _RecordItemFormState();
+  State<RecordItemForm> createState() => _RecordItemFormState();
 }
 
-class _RecordItemFormState extends ConsumerState<RecordItemForm> {
+class _RecordItemFormState extends State<RecordItemForm> {
   late final TextEditingController _titleController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _unitController;
@@ -39,41 +52,18 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
     );
     _unitController = TextEditingController(text: initialItem?.unit ?? '');
 
-    // 編集モードの場合は初期値をProviderに設定
-    if (initialItem != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref
-            .read(recordItemFormProvider.notifier)
-            .updateTitle(initialItem.title);
-        if (initialItem.description != null) {
-          ref
-              .read(recordItemFormProvider.notifier)
-              .updateDescription(initialItem.description!);
-        }
-        ref.read(recordItemFormProvider.notifier).updateIcon(initialItem.icon);
-        if (initialItem.unit != null) {
-          ref
-              .read(recordItemFormProvider.notifier)
-              .updateUnit(initialItem.unit!);
-        }
-      });
-    }
+    // 編集モードの場合、TextEditingControllerはinitialItemから初期値を設定済み
+    // formStateの更新はViewModelまたは親ウィジェットの責任とする
 
-    // TextEditingControllerの変更をProviderに同期
+    // TextEditingControllerの変更をコールバックに同期
     _titleController.addListener(() {
-      ref
-          .read(recordItemFormProvider.notifier)
-          .updateTitle(_titleController.text);
+      widget.onTitleChanged(_titleController.text);
     });
     _descriptionController.addListener(() {
-      ref
-          .read(recordItemFormProvider.notifier)
-          .updateDescription(_descriptionController.text);
+      widget.onDescriptionChanged(_descriptionController.text);
     });
     _unitController.addListener(() {
-      ref
-          .read(recordItemFormProvider.notifier)
-          .updateUnit(_unitController.text);
+      widget.onUnitChanged(_unitController.text);
     });
   }
 
@@ -87,20 +77,7 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
 
   @override
   Widget build(BuildContext context) {
-    final formState = ref.watch(recordItemFormProvider);
-
-    // フォームがリセットされた場合、TextEditingControllerもクリア
-    ref.listen(recordItemFormProvider, (previous, next) {
-      if (previous != null &&
-          previous.title.isNotEmpty &&
-          next.title.isEmpty &&
-          next.description.isEmpty &&
-          next.unit.isEmpty) {
-        _titleController.clear();
-        _descriptionController.clear();
-        _unitController.clear();
-      }
-    });
+    final formState = widget.formState;
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -140,9 +117,7 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
                     final isSelected = formState.icon == emoji;
                     return InkWell(
                       onTap: () {
-                        ref
-                            .read(recordItemFormProvider.notifier)
-                            .updateIcon(emoji);
+                        widget.onIconChanged(emoji);
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
@@ -192,7 +167,7 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
               setState(() {});
               // エラーメッセージをクリア
               if (formState.errorMessage != null) {
-                ref.read(recordItemFormProvider.notifier).clearError();
+                widget.onErrorCleared();
               }
             },
           ),
@@ -213,7 +188,7 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
               setState(() {});
               // エラーメッセージをクリア
               if (formState.errorMessage != null) {
-                ref.read(recordItemFormProvider.notifier).clearError();
+                widget.onErrorCleared();
               }
             },
           ),
@@ -233,7 +208,7 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
               setState(() {});
               // エラーメッセージをクリア
               if (formState.errorMessage != null) {
-                ref.read(recordItemFormProvider.notifier).clearError();
+                widget.onErrorCleared();
               }
             },
           ),
@@ -295,17 +270,7 @@ class _RecordItemFormState extends ConsumerState<RecordItemForm> {
 
   /// フォーム送信処理
   Future<void> _onSubmit() async {
-    final success =
-        widget.initialItem != null
-            ? await ref
-                .read(recordItemFormProvider.notifier)
-                .update(
-                  userId: widget.userId,
-                  recordItemId: widget.initialItem!.id,
-                )
-            : await ref
-                .read(recordItemFormProvider.notifier)
-                .submit(widget.userId);
+    final success = await widget.onSubmit();
 
     if (success && widget.onSuccess != null) {
       widget.onSuccess!();

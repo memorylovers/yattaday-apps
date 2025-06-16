@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:myapp/features/record_items/application/providers/record_item_form_provider.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
@@ -111,6 +112,13 @@ void main() {
     Widget createTestWidget({
       String userId = 'test-user-id',
       RecordItem? initialItem,
+      RecordItemFormState? formState,
+      void Function(String)? onTitleChanged,
+      void Function(String)? onDescriptionChanged,
+      void Function(String)? onIconChanged,
+      void Function(String)? onUnitChanged,
+      void Function()? onErrorCleared,
+      Future<bool> Function()? onSubmit,
       VoidCallback? onSuccess,
       VoidCallback? onCancel,
     }) {
@@ -123,6 +131,13 @@ void main() {
             body: RecordItemForm(
               userId: userId,
               initialItem: initialItem,
+              formState: formState ?? const RecordItemFormState(),
+              onTitleChanged: onTitleChanged ?? (_) {},
+              onDescriptionChanged: onDescriptionChanged ?? (_) {},
+              onIconChanged: onIconChanged ?? (_) {},
+              onUnitChanged: onUnitChanged ?? (_) {},
+              onErrorCleared: onErrorCleared ?? () {},
+              onSubmit: onSubmit ?? () async => true,
               onSuccess: onSuccess,
               onCancel: onCancel,
             ),

@@ -58,6 +58,7 @@ class RecordItemsListViewModel extends _$RecordItemsListViewModel {
   }
 
   void refresh() {
+    // ignore: unused_result
     ref.refresh(watchRecordItemsProvider);
   }
 }

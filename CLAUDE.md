@@ -182,6 +182,56 @@ git branch -d feature/issue-123
 
 実装例とベストプラクティスは [コーディングスタイル](_docs/10_cording_style_flutter.md) で詳しく説明しています。
 
+### **🚨 アーキテクチャ厳守ルール（絶対に違反しないこと）**
+
+#### **Presentation層のルール**
+
+1. **Page/Widgetから直接Application層を参照禁止**
+   - ❌ NG: `ref.watch(recordItemFormProvider)` をPageやWidgetで直接使用
+   - ✅ OK: ViewModelを経由してアクセス
+
+2. **ViewModelパターンの徹底**
+   - 各Pageには対応するViewModelを必ず作成
+   - ViewModelがApplication層とのやり取りを仲介
+   - WidgetはViewModelから受け取ったデータとコールバックのみを使用
+
+3. **Widget実装時の必須事項**
+   - Widgetは純粋なUIコンポーネントとして実装
+   - 必要なデータは引数で受け取る
+   - 状態管理はViewModelに委譲
+
+#### **実装例**
+
+```dart
+// ❌ NG: WidgetからApplicationを直接参照
+class MyWidget extends ConsumerWidget {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formState = ref.watch(recordItemFormProvider); // 違反！
+  }
+}
+
+// ✅ OK: ViewModelを経由
+class MyPage extends ConsumerWidget {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.read(myViewModelProvider.notifier);
+    final viewModelState = ref.watch(myViewModelProvider);
+    
+    return MyWidget(
+      data: viewModelState.data,
+      onChanged: viewModel.updateData,
+    );
+  }
+}
+```
+
+#### **変更時の必須確認事項**
+
+- [ ] Page/WidgetからApplication Providerを直接参照していないか
+- [ ] ViewModelが適切に実装されているか
+- [ ] Widgetが純粋なUIコンポーネントになっているか
+- [ ] テストがViewModelベースで書かれているか
+- [ ] Widgetbookが新しいパラメータに対応しているか
+
 ### コミットメッセージ
 
 ```
