@@ -7,7 +7,7 @@ part of 'record_item_detail_view_model.dart';
 // **************************************************************************
 
 String _$recordItemDetailViewModelHash() =>
-    r'4d96a5c534427db7d1f0b8708b1f70c20470ba43';
+    r'ad0f3f2c3dea7dc4323279ee71af114542b82568';
 
 /// Copied from Dart SDK
 class _SystemHash {

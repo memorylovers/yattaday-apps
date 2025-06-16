@@ -69,10 +69,27 @@ class RecordItemsDetailPage extends HookConsumerWidget {
                   // カレンダー
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: RecordItemCalendar(
-                      recordItemId: recordItemId,
-                      selectedMonth: viewModelState.selectedMonth,
-                      onMonthChanged: viewModel.setSelectedMonth,
+                    child: viewModelState.recordedDates.when(
+                      data:
+                          (recordedDates) => RecordItemCalendar(
+                            recordedDates: recordedDates,
+                            selectedMonth: viewModelState.selectedMonth,
+                            onMonthChanged: viewModel.setSelectedMonth,
+                          ),
+                      loading:
+                          () => RecordItemCalendar(
+                            recordedDates: const [],
+                            selectedMonth: viewModelState.selectedMonth,
+                            onMonthChanged: viewModel.setSelectedMonth,
+                            isLoading: true,
+                          ),
+                      error:
+                          (error, _) => RecordItemCalendar(
+                            recordedDates: const [],
+                            selectedMonth: viewModelState.selectedMonth,
+                            onMonthChanged: viewModel.setSelectedMonth,
+                            error: error.toString(),
+                          ),
                     ),
                   ),
                 ],

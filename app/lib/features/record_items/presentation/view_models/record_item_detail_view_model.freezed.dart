@@ -22,6 +22,8 @@ mixin _$RecordItemDetailPageState {
   AsyncValue<RecordItemStatistics> get statistics =>
       throw _privateConstructorUsedError;
   AsyncValue<bool> get todayRecordExists => throw _privateConstructorUsedError;
+  AsyncValue<List<String>> get recordedDates =>
+      throw _privateConstructorUsedError;
   bool get isDeleting => throw _privateConstructorUsedError;
   String? get deleteError => throw _privateConstructorUsedError;
 
@@ -44,6 +46,7 @@ abstract class $RecordItemDetailPageStateCopyWith<$Res> {
     AsyncValue<RecordItem?> recordItem,
     AsyncValue<RecordItemStatistics> statistics,
     AsyncValue<bool> todayRecordExists,
+    AsyncValue<List<String>> recordedDates,
     bool isDeleting,
     String? deleteError,
   });
@@ -71,6 +74,7 @@ class _$RecordItemDetailPageStateCopyWithImpl<
     Object? recordItem = null,
     Object? statistics = null,
     Object? todayRecordExists = null,
+    Object? recordedDates = null,
     Object? isDeleting = null,
     Object? deleteError = freezed,
   }) {
@@ -96,6 +100,11 @@ class _$RecordItemDetailPageStateCopyWithImpl<
                     ? _value.todayRecordExists
                     : todayRecordExists // ignore: cast_nullable_to_non_nullable
                         as AsyncValue<bool>,
+            recordedDates:
+                null == recordedDates
+                    ? _value.recordedDates
+                    : recordedDates // ignore: cast_nullable_to_non_nullable
+                        as AsyncValue<List<String>>,
             isDeleting:
                 null == isDeleting
                     ? _value.isDeleting
@@ -126,6 +135,7 @@ abstract class _$$RecordItemDetailPageStateImplCopyWith<$Res>
     AsyncValue<RecordItem?> recordItem,
     AsyncValue<RecordItemStatistics> statistics,
     AsyncValue<bool> todayRecordExists,
+    AsyncValue<List<String>> recordedDates,
     bool isDeleting,
     String? deleteError,
   });
@@ -153,6 +163,7 @@ class __$$RecordItemDetailPageStateImplCopyWithImpl<$Res>
     Object? recordItem = null,
     Object? statistics = null,
     Object? todayRecordExists = null,
+    Object? recordedDates = null,
     Object? isDeleting = null,
     Object? deleteError = freezed,
   }) {
@@ -178,6 +189,11 @@ class __$$RecordItemDetailPageStateImplCopyWithImpl<$Res>
                 ? _value.todayRecordExists
                 : todayRecordExists // ignore: cast_nullable_to_non_nullable
                     as AsyncValue<bool>,
+        recordedDates:
+            null == recordedDates
+                ? _value.recordedDates
+                : recordedDates // ignore: cast_nullable_to_non_nullable
+                    as AsyncValue<List<String>>,
         isDeleting:
             null == isDeleting
                 ? _value.isDeleting
@@ -201,6 +217,7 @@ class _$RecordItemDetailPageStateImpl implements _RecordItemDetailPageState {
     required this.recordItem,
     required this.statistics,
     required this.todayRecordExists,
+    required this.recordedDates,
     this.isDeleting = false,
     this.deleteError,
   });
@@ -214,6 +231,8 @@ class _$RecordItemDetailPageStateImpl implements _RecordItemDetailPageState {
   @override
   final AsyncValue<bool> todayRecordExists;
   @override
+  final AsyncValue<List<String>> recordedDates;
+  @override
   @JsonKey()
   final bool isDeleting;
   @override
@@ -221,7 +240,7 @@ class _$RecordItemDetailPageStateImpl implements _RecordItemDetailPageState {
 
   @override
   String toString() {
-    return 'RecordItemDetailPageState(selectedMonth: $selectedMonth, recordItem: $recordItem, statistics: $statistics, todayRecordExists: $todayRecordExists, isDeleting: $isDeleting, deleteError: $deleteError)';
+    return 'RecordItemDetailPageState(selectedMonth: $selectedMonth, recordItem: $recordItem, statistics: $statistics, todayRecordExists: $todayRecordExists, recordedDates: $recordedDates, isDeleting: $isDeleting, deleteError: $deleteError)';
   }
 
   @override
@@ -237,6 +256,8 @@ class _$RecordItemDetailPageStateImpl implements _RecordItemDetailPageState {
                 other.statistics == statistics) &&
             (identical(other.todayRecordExists, todayRecordExists) ||
                 other.todayRecordExists == todayRecordExists) &&
+            (identical(other.recordedDates, recordedDates) ||
+                other.recordedDates == recordedDates) &&
             (identical(other.isDeleting, isDeleting) ||
                 other.isDeleting == isDeleting) &&
             (identical(other.deleteError, deleteError) ||
@@ -250,6 +271,7 @@ class _$RecordItemDetailPageStateImpl implements _RecordItemDetailPageState {
     recordItem,
     statistics,
     todayRecordExists,
+    recordedDates,
     isDeleting,
     deleteError,
   );
@@ -271,6 +293,7 @@ abstract class _RecordItemDetailPageState implements RecordItemDetailPageState {
     required final AsyncValue<RecordItem?> recordItem,
     required final AsyncValue<RecordItemStatistics> statistics,
     required final AsyncValue<bool> todayRecordExists,
+    required final AsyncValue<List<String>> recordedDates,
     final bool isDeleting,
     final String? deleteError,
   }) = _$RecordItemDetailPageStateImpl;
@@ -283,6 +306,8 @@ abstract class _RecordItemDetailPageState implements RecordItemDetailPageState {
   AsyncValue<RecordItemStatistics> get statistics;
   @override
   AsyncValue<bool> get todayRecordExists;
+  @override
+  AsyncValue<List<String>> get recordedDates;
   @override
   bool get isDeleting;
   @override

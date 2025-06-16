@@ -93,7 +93,5 @@ void main() {
       );
       expect(state.selectedMonth, newMonth);
     });
-
   });
 }
-

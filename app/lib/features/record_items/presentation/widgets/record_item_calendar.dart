@@ -1,29 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../../daily_records/application/providers/record_item_histories_provider.dart';
-
 /// 記録項目のカレンダー表示
-class RecordItemCalendar extends ConsumerWidget {
+class RecordItemCalendar extends StatelessWidget {
   const RecordItemCalendar({
     super.key,
-    required this.recordItemId,
+    required this.recordedDates,
     required this.selectedMonth,
     required this.onMonthChanged,
+    this.isLoading = false,
+    this.error,
   });
 
-  final String recordItemId;
+  final List<String> recordedDates;
   final DateTime selectedMonth;
   final ValueChanged<DateTime> onMonthChanged;
+  final bool isLoading;
+  final String? error;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // 記録がある日付を取得
-    final recordedDatesAsync = ref.watch(
-      recordedDatesProvider(recordItemId: recordItemId),
-    );
-
+  Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -37,34 +33,40 @@ class RecordItemCalendar extends ConsumerWidget {
           ),
         ],
       ),
-      child: recordedDatesAsync.when(
-        data: (recordedDates) {
-          // 日付文字列をDateTimeのSetに変換
-          final recordedDateSet =
-              recordedDates.map((dateStr) {
-                final date = DateTime.parse(dateStr);
-                return DateTime(date.year, date.month, date.day);
-              }).toSet();
+      child: _buildContent(),
+    );
+  }
 
-          return Column(
-            children: [
-              // カレンダーヘッダー
-              _CalendarHeader(
-                selectedMonth: selectedMonth,
-                onMonthChanged: onMonthChanged,
-              ),
-              const SizedBox(height: 16),
-              // カレンダーグリッド
-              _CalendarGrid(
-                selectedMonth: selectedMonth,
-                recordedDateSet: recordedDateSet,
-              ),
-            ],
-          );
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => const Center(child: Text('カレンダーの読み込みに失敗しました')),
-      ),
+  Widget _buildContent() {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (error != null) {
+      return const Center(child: Text('カレンダーの読み込みに失敗しました'));
+    }
+
+    // 日付文字列をDateTimeのSetに変換
+    final recordedDateSet =
+        recordedDates.map((dateStr) {
+          final date = DateTime.parse(dateStr);
+          return DateTime(date.year, date.month, date.day);
+        }).toSet();
+
+    return Column(
+      children: [
+        // カレンダーヘッダー
+        _CalendarHeader(
+          selectedMonth: selectedMonth,
+          onMonthChanged: onMonthChanged,
+        ),
+        const SizedBox(height: 16),
+        // カレンダーグリッド
+        _CalendarGrid(
+          selectedMonth: selectedMonth,
+          recordedDateSet: recordedDateSet,
+        ),
+      ],
     );
   }
 }

@@ -19,6 +19,7 @@ class RecordItemDetailPageState with _$RecordItemDetailPageState {
     required AsyncValue<RecordItem?> recordItem,
     required AsyncValue<RecordItemStatistics> statistics,
     required AsyncValue<bool> todayRecordExists,
+    required AsyncValue<List<String>> recordedDates,
     @Default(false) bool isDeleting,
     String? deleteError,
   }) = _RecordItemDetailPageState;
@@ -35,12 +36,16 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
     final todayRecordExists = ref.watch(
       watchTodayRecordExistsProvider(recordItemId: recordItemId),
     );
+    final recordedDates = ref.watch(
+      recordedDatesProvider(recordItemId: recordItemId),
+    );
 
     return RecordItemDetailPageState(
       selectedMonth: DateTime.now(),
       recordItem: recordItem,
       statistics: statistics,
       todayRecordExists: todayRecordExists,
+      recordedDates: recordedDates,
     );
   }
 
