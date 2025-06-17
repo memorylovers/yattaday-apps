@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../_authentication/application/auth_providers.dart';
+import '../../../../common/firebase/firebase_providers.dart';
 import '../../application/providers/record_item_form_provider.dart';
 import '../../domain/record_item.dart';
 
@@ -22,7 +22,7 @@ class RecordItemsEditViewModel extends _$RecordItemsEditViewModel {
   @override
   RecordItemsEditPageState build(RecordItem recordItem) {
     final formState = ref.watch(recordItemFormProvider);
-    final userId = ref.watch(authUidProvider).valueOrNull;
+    final userId = ref.watch(firebaseUserUidProvider).valueOrNull;
 
     return RecordItemsEditPageState(
       formState: formState,

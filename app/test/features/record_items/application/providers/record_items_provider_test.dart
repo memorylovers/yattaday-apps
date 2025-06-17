@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/_authentication/application/auth_providers.dart';
+import 'package:myapp/common/firebase/firebase_providers.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
 
@@ -139,11 +139,12 @@ void main() {
 
         fakeRepository.setItems(initialItems);
 
-        // authUidProviderをオーバーライド
+        // Firebase関連のプロバイダーをオーバーライド
         container = ProviderContainer(
           overrides: [
             recordItemRepositoryProvider.overrideWithValue(fakeRepository),
-            authUidProvider.overrideWith((ref) async => userId),
+            firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
+            firebaseUserUidProvider.overrideWith((ref) async => userId),
           ],
         );
 
@@ -159,11 +160,12 @@ void main() {
         const userId = 'user123';
         fakeRepository.setItems(<RecordItem>[]);
 
-        // authUidProviderをオーバーライド
+        // Firebase関連のプロバイダーをオーバーライド
         container = ProviderContainer(
           overrides: [
             recordItemRepositoryProvider.overrideWithValue(fakeRepository),
-            authUidProvider.overrideWith((ref) async => userId),
+            firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
+            firebaseUserUidProvider.overrideWith((ref) async => userId),
           ],
         );
 
@@ -179,11 +181,12 @@ void main() {
         const userId = 'user123';
         fakeRepository.setException(Exception('Network error'));
 
-        // authUidProviderをオーバーライド
+        // Firebase関連のプロバイダーをオーバーライド
         container = ProviderContainer(
           overrides: [
             recordItemRepositoryProvider.overrideWithValue(fakeRepository),
-            authUidProvider.overrideWith((ref) async => userId),
+            firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
+            firebaseUserUidProvider.overrideWith((ref) async => userId),
           ],
         );
 
@@ -196,11 +199,12 @@ void main() {
 
       test('未認証の場合は空のリストを返す', () async {
         // Arrange
-        // authUidProviderがnullを返すようにオーバーライド
+        // Firebase関連のプロバイダーがnullを返すようにオーバーライド
         container = ProviderContainer(
           overrides: [
             recordItemRepositoryProvider.overrideWithValue(fakeRepository),
-            authUidProvider.overrideWith((ref) async => null),
+            firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
+            firebaseUserUidProvider.overrideWith((ref) async => null),
           ],
         );
 

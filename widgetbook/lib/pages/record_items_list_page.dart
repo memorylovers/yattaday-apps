@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/_gen/i18n/strings.g.dart';
 import 'package:myapp/features/_authentication/application/auth_providers.dart';
+import 'package:myapp/common/firebase/firebase_providers.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
@@ -132,8 +133,13 @@ Widget recordItemsListPageDefault(BuildContext context) {
       ),
       // 認証状態のモック
       authStoreProvider.overrideWith(() => MockAuthStore(userId)),
-      // authUidProviderのモック
-      authUidProvider.overrideWith((ref) async => userId),
+      // Firebase関連プロバイダーのモック
+      firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
+      firebaseUserUidProvider.overrideWith((ref) async => userId),
+      // watchRecordItemsProviderを直接オーバーライド
+      watchRecordItemsProvider.overrideWith((ref) {
+        return Stream.value(mockItems);
+      }),
     ],
     child: TranslationProvider(
       child: const MaterialApp(home: RecordItemsListPage()),

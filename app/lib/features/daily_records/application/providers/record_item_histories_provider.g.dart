@@ -99,7 +99,7 @@ final deleteRecordItemHistoryUseCaseProvider =
 typedef DeleteRecordItemHistoryUseCaseRef =
     AutoDisposeProviderRef<DeleteRecordItemHistoryUseCase>;
 String _$watchRecordItemHistoriesHash() =>
-    r'f19e28674a446fde7ef661897263c3a88b8b6db3';
+    r'1e288fc6f05f207a2dc93d59ed4d01d6dfc995f2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -443,7 +443,7 @@ class _WatchTodayRecordExistsProviderElement
       (origin as WatchTodayRecordExistsProvider).recordItemId;
 }
 
-String _$recordedDatesHash() => r'297d7b6857cdd7d69f7607aceaeb0e72f6e555f8';
+String _$recordedDatesHash() => r'0fa50b6d9d4197c373ee1b9ee7523962a99d5518';
 
 /// 記録がある日付のリストを取得するプロバイダー
 ///

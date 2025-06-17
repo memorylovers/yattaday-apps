@@ -9,7 +9,7 @@ import 'package:myapp/features/record_items/presentation/pages/record_items_deta
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/daily_records/application/providers/record_item_statistics_provider.dart';
 import 'package:myapp/features/daily_records/application/providers/record_item_histories_provider.dart';
-import 'package:myapp/features/_authentication/application/auth_providers.dart';
+import 'package:myapp/common/firebase/firebase_providers.dart';
 import 'package:myapp/features/daily_records/application/use_cases/get_record_item_statistics_usecase.dart';
 
 @widgetbook.UseCase(
@@ -53,7 +53,8 @@ Widget recordItemsDetailPageDefault(BuildContext context) {
       ) {
         return Stream.value(false);
       }),
-      authUidProvider.overrideWith((ref) async {
+      firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
+      firebaseUserUidProvider.overrideWith((ref) async {
         return 'test-user-id';
       }),
       recordedDatesProvider(recordItemId: 'test-id').overrideWith((ref) async {

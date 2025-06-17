@@ -30,7 +30,7 @@ final getRecordItemStatisticsUseCaseProvider =
 typedef GetRecordItemStatisticsUseCaseRef =
     AutoDisposeProviderRef<GetRecordItemStatisticsUseCase>;
 String _$recordItemStatisticsHash() =>
-    r'ff4e52d9b7c142168439f597a0c2f2db3e6e23bb';
+    r'276ad93557d53ec897232cf980c9c97c47308684';
 
 /// Copied from Dart SDK
 class _SystemHash {

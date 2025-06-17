@@ -76,15 +76,15 @@
 
 ### 3. **Feature間の依存関係の整理**
 
-#### ⚠️ authUidProviderの共有問題
+#### ✅ authUidProviderの共有問題
 
 - **問題**: 複数のfeatureから_authenticationのproviderを参照
 - **影響範囲**:
   - record_items feature
   - daily_records feature
 - **修正方法**:
-  - [ ] Option 1: 共通のauth状態をcommonレイヤーに移動
-  - [ ] Option 2: 各featureで必要な認証情報を引数として受け取る設計に変更
+  - [x] 既存の`firebaseUserUidProvider`を使用して統一
+  - [x] すべての`authUidProvider`参照を`firebaseUserUidProvider`に置き換え
 
 ### 4. **不要なApplicationレイヤーの確認**
 

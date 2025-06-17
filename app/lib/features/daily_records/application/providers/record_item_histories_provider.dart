@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../_authentication/application/auth_providers.dart';
+import '../../../../common/firebase/firebase_providers.dart';
 import '../../data/repository/firebase_record_item_history_repository.dart';
 import '../../data/repository/record_item_history_repository.dart';
 import '../../domain/record_item_history.dart';
@@ -50,7 +50,7 @@ Stream<List<RecordItemHistory>> watchRecordItemHistories(
   required DateTime startDate,
   required DateTime endDate,
 }) async* {
-  final userId = await ref.watch(authUidProvider.future);
+  final userId = await ref.watch(firebaseUserUidProvider.future);
   if (userId == null) {
     yield [];
     return;
@@ -92,7 +92,7 @@ Future<List<String>> recordedDates(
   Ref ref, {
   required String recordItemId,
 }) async {
-  final userId = await ref.watch(authUidProvider.future);
+  final userId = await ref.watch(firebaseUserUidProvider.future);
   if (userId == null) {
     return [];
   }

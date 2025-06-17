@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../_authentication/application/auth_providers.dart';
+import '../../../../common/firebase/firebase_providers.dart';
 import '../../../daily_records/application/providers/record_item_histories_provider.dart';
 import '../../../daily_records/application/providers/record_item_statistics_provider.dart';
 import '../../../daily_records/application/use_cases/get_record_item_statistics_usecase.dart';
@@ -57,7 +57,7 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
     state = state.copyWith(isDeleting: true, deleteError: null);
 
     try {
-      final userId = await ref.read(authUidProvider.future);
+      final userId = await ref.read(firebaseUserUidProvider.future);
       final success = await ref
           .read(recordItemCrudProvider.notifier)
           .deleteRecordItem(userId: userId!, recordItemId: recordItemId);
@@ -81,7 +81,7 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
 
   Future<void> toggleTodayRecord(bool exists) async {
     try {
-      final userId = await ref.read(authUidProvider.future);
+      final userId = await ref.read(firebaseUserUidProvider.future);
 
       if (exists) {
         // 削除

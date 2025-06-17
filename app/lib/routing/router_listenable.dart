@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../common/firebase/firebase_providers.dart';
-import '../features/_authentication/application/auth_providers.dart';
 import '../features/_startup/application/startup_provider.dart';
 
 part 'router_listenable.freezed.dart';
@@ -33,12 +32,12 @@ Raw<ValueNotifier<RouterListenable>> refreshListenable(Ref ref) {
   });
 
   // ログインアカウントのuidが取得できるまで待つ
-  ref.listen(authUidProvider.select((e) => e.value), (_, uid) {
+  ref.listen(firebaseUserUidProvider.select((e) => e.value), (_, uid) {
     listenable.value = listenable.value.copyWith(signedIn: uid != null);
   });
 
   // Crashlyticsにuidを設定
-  ref.listen(authUidProvider.select((e) => e.value), (_, uid) async {
+  ref.listen(firebaseUserUidProvider.select((e) => e.value), (_, uid) async {
     // Webの場合はなにもしない
     if (kIsWeb) return;
 

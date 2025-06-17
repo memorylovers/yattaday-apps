@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../_authentication/application/auth_providers.dart';
+import '../../../../common/firebase/firebase_providers.dart';
 import '../use_cases/get_record_item_statistics_usecase.dart';
 import 'record_item_histories_provider.dart';
 
@@ -21,7 +21,7 @@ Future<RecordItemStatistics> recordItemStatistics(
   Ref ref, {
   required String recordItemId,
 }) async {
-  final userId = await ref.watch(authUidProvider.future);
+  final userId = await ref.watch(firebaseUserUidProvider.future);
   if (userId == null) {
     return const RecordItemStatistics(
       totalCount: 0,
