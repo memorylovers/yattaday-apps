@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/_authentication/application/auth_providers.dart';
+import 'package:myapp/common/firebase/firebase_providers.dart';
 import 'package:myapp/features/daily_records/application/providers/record_item_histories_provider.dart';
 import 'package:myapp/features/daily_records/application/providers/record_item_statistics_provider.dart';
 import 'package:myapp/features/daily_records/application/use_cases/get_record_item_statistics_usecase.dart';
@@ -52,7 +52,8 @@ void main() {
           ).overrideWith((ref) {
             return Stream.value(false);
           }),
-          authUidProvider.overrideWith((ref) async {
+          firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
+          firebaseUserUidProvider.overrideWith((ref) async {
             return 'test-user-id';
           }),
         ],

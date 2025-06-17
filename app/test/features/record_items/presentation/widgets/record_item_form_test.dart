@@ -160,14 +160,25 @@ void main() {
       });
 
       testWidgets('タイトルを入力すると作成ボタンが有効になる', (tester) async {
+        String? titleValue;
         await tester.pumpWidget(
           createTestWidget(
+            onTitleChanged: (value) {
+              titleValue = value;
+            },
             formState: const RecordItemFormState(title: '読書', icon: '📝'),
           ),
         );
 
-        // タイトルの入力が反映されていることを確認
-        expect(find.text('読書'), findsOneWidget);
+        // タイトルを入力
+        await tester.enterText(
+          find.widgetWithText(TextFormField, 'タイトルを入力してください'),
+          '読書',
+        );
+        await tester.pump();
+
+        // onTitleChangedが呼ばれたことを確認
+        expect(titleValue, '読書');
 
         final createButton = tester.widget<ElevatedButton>(
           find.widgetWithText(ElevatedButton, '作成'),
@@ -184,26 +195,15 @@ void main() {
       });
 
       testWidgets('エラーメッセージが表示される', (tester) async {
-        fakeRepository.setException(Exception('Network error'));
-
-        await tester.pumpWidget(createTestWidget());
-
-        // まず絵文字を選択
-        await tester.tap(find.text('📝'));
-        await tester.pumpAndSettle();
-
-        // タイトルを入力
-        final titleField = find.byType(TextFormField).first;
-        await tester.enterText(titleField, '読書');
-        await tester.pumpAndSettle();
-
-        // ボタンを表示領域にスクロール
-        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
-        await tester.pumpAndSettle();
-
-        // 作成ボタンをタップ
-        await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
-        await tester.pumpAndSettle();
+        await tester.pumpWidget(
+          createTestWidget(
+            formState: const RecordItemFormState(
+              title: '読書',
+              icon: '📝',
+              errorMessage: 'Network error',
+            ),
+          ),
+        );
 
         // エラーメッセージが表示される
         expect(find.textContaining('Network error'), findsOneWidget);
@@ -430,34 +430,32 @@ void main() {
 
     group('エラーハンドリング', () {
       testWidgets('エラーメッセージの表示と非表示', (tester) async {
-        fakeRepository.setException(Exception('Network error'));
+        bool errorCleared = false;
 
-        await tester.pumpWidget(createTestWidget());
-
-        // まず絵文字を選択
-        await tester.tap(find.text('📝'));
-        await tester.pumpAndSettle();
-
-        // タイトルを入力して作成ボタンをタップ（エラー発生）
-        final titleField = find.byType(TextFormField).first;
-        await tester.enterText(titleField, '読書');
-        await tester.pumpAndSettle();
-
-        // ボタンを表示領域にスクロール
-        await tester.ensureVisible(find.widgetWithText(ElevatedButton, '作成'));
-        await tester.pumpAndSettle();
-
-        await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
-        await tester.pumpAndSettle();
+        // エラーメッセージを表示
+        await tester.pumpWidget(
+          createTestWidget(
+            formState: const RecordItemFormState(
+              title: '読書',
+              icon: '📝',
+              errorMessage: 'Network error',
+            ),
+            onErrorCleared: () {
+              errorCleared = true;
+            },
+          ),
+        );
 
         // エラーメッセージが表示される
         expect(find.textContaining('Network error'), findsOneWidget);
 
-        // フィールドを編集するとエラーメッセージが消える
+        // フィールドを編集
+        final titleField = find.byType(TextFormField).first;
         await tester.enterText(titleField, '読書記録');
         await tester.pumpAndSettle();
 
-        expect(find.textContaining('Network error'), findsNothing);
+        // onErrorClearedが呼び出されたか確認
+        expect(errorCleared, isTrue);
       });
 
       testWidgets('空のタイトルでの作成はエラーになる', (tester) async {
@@ -480,14 +478,20 @@ void main() {
 
     group('コールバック', () {
       testWidgets('onSuccessコールバックがnullでも動作する', (tester) async {
-        fakeRepository.setNextSortOrder(0);
+        bool onSubmitCalled = false;
 
-        await tester.pumpWidget(createTestWidget(onSuccess: null));
+        await tester.pumpWidget(
+          createTestWidget(
+            formState: const RecordItemFormState(title: '読書', icon: '📝'),
+            onSubmit: () async {
+              onSubmitCalled = true;
+              return true;
+            },
+            onSuccess: null,
+          ),
+        );
 
-        // まず絵文字を選択
-        await tester.tap(find.text('📝'));
-        await tester.pumpAndSettle();
-
+        // タイトルを入力
         final titleField = find.byType(TextFormField).first;
         await tester.enterText(titleField, '読書');
         await tester.pumpAndSettle();
@@ -500,7 +504,7 @@ void main() {
         await tester.tap(find.widgetWithText(ElevatedButton, '作成'));
         await tester.pumpAndSettle();
 
-        expect(fakeRepository.items.length, equals(1));
+        expect(onSubmitCalled, isTrue);
       });
 
       testWidgets('onCancelコールバックがnullでも動作する', (tester) async {

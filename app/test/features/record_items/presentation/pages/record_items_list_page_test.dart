@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/_gen/i18n/strings.g.dart';
-import 'package:myapp/features/_authentication/application/auth_providers.dart';
+import 'package:myapp/common/firebase/firebase_providers.dart';
 import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/domain/record_item.dart';
@@ -128,7 +128,11 @@ void main() {
         overrides: [
           recordItemRepositoryProvider.overrideWithValue(fakeRepository),
           // ignore: scoped_providers_should_specify_dependencies
-          authUidProvider.overrideWith((ref) async => userId),
+          firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
+          firebaseUserUidProvider.overrideWith((ref) async => userId),
+          watchRecordItemsProvider.overrideWith((ref) {
+            return fakeRepository.watchByUserId(userId);
+          }),
         ],
         child: MaterialApp(
           locale: const Locale('ja'),
