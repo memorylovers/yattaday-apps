@@ -16,24 +16,6 @@ Map<String, dynamic> _$$AuthStateImplToJson(_$AuthStateImpl instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authUidHash() => r'98f80398b2e05179f138ade3dc2a0fa8cddb48fa';
-
-/// UIDの取得
-///
-/// Copied from [authUid].
-@ProviderFor(authUid)
-final authUidProvider = AutoDisposeFutureProvider<String?>.internal(
-  authUid,
-  name: r'authUidProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$authUidHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AuthUidRef = AutoDisposeFutureProviderRef<String?>;
 String _$authSignOutWhenFirstRunHash() =>
     r'4a410d91777a74d0efa024bb26be5fa69c910534';
 

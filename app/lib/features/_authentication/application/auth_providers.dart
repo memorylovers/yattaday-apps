@@ -55,11 +55,6 @@ class AuthStore extends _$AuthStore {
   }
 }
 
-/// UIDの取得
-@riverpod
-Future<String?> authUid(Ref ref) {
-  return ref.watch(authStoreProvider.selectAsync((value) => value?.uid));
-}
 
 // アプリが初回起動かチェックして、初回起動の場合はサインアウトする
 @riverpod
