@@ -150,7 +150,7 @@ features/
 
 ```
 3_application/
-├── <name>_store.dart   # Global Stateを持つStore。StateProviderを利用
+├── <name>_store.dart   # Global Stateを持つStore。StateNotifierProviderを利用
 └── <name>_usecase.dart # 状態を持たない関数
 ```
 
@@ -162,7 +162,7 @@ features/
 
 ```
 4_view_model/
-└── <name>_view_model.dart # UI Stateを持つViewModel。StateProviderを利用
+└── <name>_view_model.dart # UI Stateを持つViewModel。StateNotifierProviderを利用
 ```
 
 - 5_presentation内のpageやcomponentと、1対1のViewModel
