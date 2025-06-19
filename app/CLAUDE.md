@@ -42,7 +42,7 @@ TDDを用いて開発を行う
 ### コーディング規約
 
 - **アーキテクチャ**: 6層構造を厳守
-  - domain (1_domain)
+  - models (1_models)
   - repository (2_repository)
   - application (3_application)
   - view_model (4_view_model)
@@ -65,6 +65,7 @@ app/
 │   ├── _gen/        # 自動生成ファイル。編集禁止
 │   ├── common/      # 共通ユーティリティ
 │   ├── components/  # アプリ全体で使用する共通UIコンポーネント
+│   ├── services/    # 外部ライブラリのラッパー（Firebase、AdMob等）
 │   ├── features/    # 機能別モジュール
 │   └── routing/     # ルーティング
 └── test/            # テストファイル
@@ -100,12 +101,33 @@ app/lib/common/
 
 - アプリ全体で共通的に利用する処理や定義など
 
+### app/lib/services/配下の構成
+
+```
+app/lib/services/
+├── firebase/           # Firebase関連サービス
+│   ├── auth_service.dart
+│   ├── firestore_service.dart
+│   └── analytics_service.dart
+├── admob/             # AdMob関連サービス
+│   └── admob_service.dart
+├── revenue_cat/       # RevenueCat関連サービス
+│   └── purchase_service.dart
+└── shared_preferences/ # SharedPreferences関連サービス
+    └── storage_service.dart
+```
+
+- 外部ライブラリ（3rd party）のラッパー層
+- ライブラリ固有の実装詳細を隠蔽
+- エラーハンドリングを統一的に処理
+- Repository層から参照される
+
 ### app/lib/features配下の構成
 
 ```
 features/
 └── <feature_name>/
-    ├── 1_domain/         # モデル、エンティティ
+    ├── 1_models/         # モデル、エンティティ
     ├── 2_repository/     # Repository。永続化・データアクセス層
     ├── 3_application/    # 外部のfeatureに公開
     ├── 4_view_model/     # コントローラー。UIと1対1
@@ -117,7 +139,7 @@ features/
 
 **目的**: ディレクトリ名でソートした際に、クリーンアーキテクチャの層順序と一致させる
 
-- **1_domain**: 最内層（ビジネスロジック）
+- **1_models**: 最内層（ビジネスモデル）
 - **2_repository**: データアクセス層
 - **3_application**: アプリケーション層
 - **4_view_model**: プレゼンテーション層（ロジック）
@@ -130,24 +152,25 @@ features/
 - 新しい開発者がアーキテクチャを理解しやすい
 - ディレクトリの並び順が設計意図を表現
 
-- `* -> domain`: domainはどこからでも参照できる
+- `* -> models`: modelsはどこからでも参照できる
 - `page -> component`: pageは、componentを使って構築する
 - `page -> view_model`: UI Stateを持つpageは、view_modelと1対1で対応する
 - `component -> view_model`: UI Stateを持つcomponentは、view_modelと1対1で対応する
 - `view_model -> application or repository`: view_modelは、application or repositoryのみ参照できる
 - `application -> repository`: applicationは、repositoryのみ参照できる
-- `repository -> domain`: repositoryは、domainのみ参照できる
+- `repository -> models, services`: repositoryは、modelsとservicesのみ参照できる
 - 別のfeatureからは、`application`のみが参照できる
 
-### Domain: ドメインモデル
+### Models: ビジネスモデル
 
 ```
-1_domain/
+1_models/
 └── <name>.dart
 ```
 
 - モデル、エンティティ、データクラスの配置場所
 - freezedを利用したimutableなclassやenum
+- ビジネスロジックを持たないデータ構造
 
 ### Repository: データアクセス層(Repositoryパターン)
 
@@ -160,8 +183,9 @@ features/
 
 - API、DB、SharedPreferenceなどの外部のデータにアクセスする永続化層
 - riverpodの使用禁止。状態を持たない
-- repositoryの返り値は、primitiveな型か、1_domainのモデルのみ
+- repositoryの返り値は、primitiveな型か、1_modelsのモデルのみ
 - repositoryの引数は、dto配下に配置
+- 外部ライブラリへのアクセスは、services層を経由
 
 ### Application: 共通のUI Stateや処理。外部featureへの公開ポイント
 
@@ -228,7 +252,7 @@ app/test/
 ├── components/          # 共通コンポーネントのテスト
 ├── features/           # 機能別モジュールのテスト
 │   └── <feature_name>/ # lib/features/<feature_name>と対応
-│       ├── domain/     # ドメインモデルのテスト
+│       ├── models/     # モデルのテスト
 │       ├── repository/ # Repositoryのテスト
 │       ├── application/# Application層のテスト
 │       ├── view_model/ # ViewModelのテスト
@@ -246,7 +270,7 @@ app/test/
 
 #### テストの種類と方針
 
-- **Domain層**: 純粋な単体テスト（外部依存なし、カバレッジ100%目標）
+- **Models層**: 純粋な単体テスト（外部依存なし、カバレッジ100%目標）
 - **Repository層**: モック/フェイクを使用（カバレッジ90%以上）
 - **Application/ViewModel層**: 状態管理のテスト（カバレッジ80%以上）
 - **Component/Page層**: Widgetテスト（カバレッジ70%以上）
@@ -319,9 +343,10 @@ app/test/
 
 #### 例外変換の必須化
 
+- **Service層**: 外部ライブラリの例外を`AppException`に変換
 - **Repository層**: `try-catch`で`handleError()`を**必ず**呼び出す
 - **Application層**: ビジネスエラーは`throw AppException()`で発生
-- **外部ライブラリ**: すべての例外を`AppException`にラップ
+- **外部ライブラリ**: Service層ですべての例外を`AppException`にラップ
 - **直接的なthrow**: `AppException`以外の例外は**禁止**
 
 #### エラーコードの管理
@@ -340,15 +365,44 @@ enum AppErrorCode {
 }
 ```
 
+#### Service層での例外処理
+
+```dart
+class FirestoreService {
+  Future<void> addDocument(String collection, Map<String, dynamic> data) async {
+    try {
+      await _firestore.collection(collection).add(data);
+    } catch (error) {
+      // FirebaseExceptionをAppExceptionに変換
+      if (error is FirebaseException) {
+        throw AppException(
+          code: AppErrorCode.networkError,
+          message: 'データの保存に失敗しました',
+        );
+      }
+      throw AppException(
+        code: AppErrorCode.unknown,
+        message: '予期しないエラーが発生しました',
+      );
+    }
+  }
+}
+```
+
 #### Repository層での例外処理
 
 ```dart
-@override
-Future<void> create(RecordItem item) async {
-  try {
-    await _firestore.collection('items').add(item.toJson());
-  } catch (error) {
-    handleError(error); // AppExceptionに変換して再throw
+class RecordItemRepository {
+  final FirestoreService _firestoreService;
+  
+  RecordItemRepository(this._firestoreService);
+  
+  Future<void> create(RecordItem item) async {
+    try {
+      await _firestoreService.addDocument('items', item.toJson());
+    } catch (error) {
+      handleError(error); // AppExceptionに変換して再throw
+    }
   }
 }
 ```
