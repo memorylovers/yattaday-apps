@@ -221,3 +221,126 @@ app/test/
 - **Repository層**: モック/フェイクを使用（カバレッジ90%以上）
 - **Application/ViewModel層**: 状態管理のテスト（カバレッジ80%以上）
 - **Component/Page層**: Widgetテスト（カバレッジ70%以上）
+
+### app/e2e/配下の構成
+
+```
+app/e2e/
+├── config.yaml         # Maestro設定ファイル
+├── flows/             # E2Eテストフロー
+│   ├── 01_login_flow.yaml
+│   ├── 02_record_item_create_flow.yaml
+│   ├── 03_record_item_edit_delete_flow.yaml
+│   └── 04_end_to_end_flow.yaml
+└── ci/                # CI/CD関連スクリプト
+```
+
+- **E2Eテストフレームワーク**: Maestro
+- **実行コマンド**: `make e2e` (app/e2e/配下を実行)
+- **テストスコープ**: app/の機能のみ（widgetbook/は対象外）
+- **CI/CD**: GitHub Actionsで自動実行
+
+### テストデータ管理
+
+```
+app/test/
+├── fixtures/                    # 静的テストデータ
+│   ├── record_items/
+│   │   ├── valid_items.json     # 正常データセット
+│   │   ├── invalid_items.json   # 異常データセット
+│   │   └── edge_cases.json      # エッジケース
+│   └── users/
+│       └── test_users.json
+├── test_helpers/                # 共通ヘルパー
+│   ├── factories/               # ファクトリパターン
+│   │   ├── record_item_factory.dart
+│   │   ├── user_factory.dart
+│   │   └── test_data_factory.dart
+│   ├── mocks/                   # モック・フェイク実装
+│   │   ├── fake_record_item_repository.dart
+│   │   └── fake_auth_repository.dart
+│   └── builders/                # テストデータビルダー
+│       └── record_item_builder.dart
+└── test_utils/                  # テストユーティリティ
+    ├── fixture_loader.dart      # JSONローダー
+    └── test_data_matcher.dart   # カスタムマッチャー
+```
+
+#### テストデータ作成パターン
+
+- **ファクトリパターン**: `RecordItemFactory.create()` で一般的なテストデータ生成
+- **ビルダーパターン**: 複雑な条件のテストデータを段階的に構築
+- **JSON Fixtures**: 大量データや複雑なデータセットをJSONで管理
+- **共通フェイク実装**: 重複を避け、test_helpers/mocks/に統一配置
+
+## エラーハンドリング
+
+### 例外処理の方針
+
+#### 基本原則
+
+**🚨 重要**: アプリ内で発生するすべての例外は**必ず`AppException`に変換**すること
+
+#### 各層での責任分担
+
+- **Repository層**: 外部APIの例外を`handleError()`で**必ず**AppExceptionに変換
+- **Application層**: ビジネスロジックの例外を**必ず**AppExceptionとして発生
+- **ViewModel層**: **AppExceptionのみ**をキャッチしてUI状態（loading/error）に変換
+- **Page/Component層**: エラー状態の表示のみ（例外処理は行わない）
+
+#### 例外変換の必須化
+
+- **Repository層**: `try-catch`で`handleError()`を**必ず**呼び出す
+- **Application層**: ビジネスエラーは`throw AppException()`で発生
+- **外部ライブラリ**: すべての例外を`AppException`にラップ
+- **直接的なthrow**: `AppException`以外の例外は**禁止**
+
+#### エラーコードの管理
+
+```dart
+// common/exception/app_error_code.dart
+enum AppErrorCode {
+  // 認証関連
+  noAuth,              // ログインが必要
+  authAlreadyLinked,   // 別アカウントに連携済み
+  
+  // 共通エラー
+  networkError,        // ネットワークエラー
+  notFound,           // データが見つからない
+  unknown,            // 予期しないエラー
+}
+```
+
+#### Repository層での例外処理
+
+```dart
+@override
+Future<void> create(RecordItem item) async {
+  try {
+    await _firestore.collection('items').add(item.toJson());
+  } catch (error) {
+    handleError(error); // AppExceptionに変換して再throw
+  }
+}
+```
+
+#### ViewModel層での例外処理
+
+```dart
+Future<void> createItem() async {
+  state = state.copyWith(isLoading: true, error: null);
+  try {
+    await _repository.create(item);
+    state = state.copyWith(isLoading: false);
+  } on AppException catch (e) {
+    state = state.copyWith(isLoading: false, error: e);
+  }
+}
+```
+
+#### ユーザーへのエラー表示
+
+- **AppException**: ユーザーフレンドリーなメッセージを表示
+- **ネットワークエラー**: 再試行を促すメッセージ
+- **認証エラー**: ログイン画面への誘導
+- **予期しないエラー**: 技術的詳細を隠した汎用メッセージ
