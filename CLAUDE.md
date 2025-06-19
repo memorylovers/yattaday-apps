@@ -5,10 +5,9 @@
 ## **重要事項**
 
 - 日本語でのコミュニケーションとドキュメント記載を推奨
-- タスク完了時は `npx ccusage@latest` でコストを表示
 - **TDD（テスト駆動開発）で実装すること**
 
-## クイックスタート
+## コマンド一覧
 
 ```bash
 # 初期セットアップ
@@ -19,76 +18,52 @@ make test    # テスト実行
 make gen     # コード生成
 make format  # フォーマット
 make lint    # 静的解析
-
-# アプリ実行（app/ディレクトリで）
-fvm flutter run --flavor dev
+make run     # アプリ実行
 ```
 
-## アーキテクチャ概要
+## プロジェクト構造
 
-**Feature-Firstアーキテクチャ** + クリーンアーキテクチャ
-
-### プロジェクト構造
+本プロジェクトは、melosを利用したmonorepo構成
 
 ```
 yattaday-apps/
-├── app/                    # メインアプリ（Melosモノレポ）
-│   ├── lib/
-│   │   ├── features/       # 機能別モジュール
-│   │   ├── common/         # 共通ユーティリティ
-│   │   └── components/     # 再利用可能UIコンポーネント
-│   └── test/              # テストファイル
-└── widgetbook/            # UIカタログ
+├── app/          # メインアプリ
+│   └── CLAUDE.md # メインアプリのCLAUDE.md
+├── widgetbook/   # UIカタログ(Widgetbook)
+│   └── CLAUDE.md # UIカタログのCLAUDE.md
+└── CLAUDE.md     # このファイル
 ```
 
-### フィーチャー構成
+## 開発ガイドライン
+
+### ブランチルール
 
 ```
-features/feature_name/
-├── data/           # Repository実装
-├── domain/         # モデル、エンティティ  
-├── application/    # ビジネスロジック
-└── presentation/   # UI（ページ、ウィジェット）
+**main**: 本番環境用（常にデプロイ可能）
+**feature/issue-[number]**: 機能追加
+**bugfix/issue-[number]**: バグ修正
+**hotfix/issue-[number]**: 緊急修正
 ```
 
-詳細な実装例やコード規約は [コーディングスタイル](_docs/10_cording_style_flutter.md) を参照してください。
+- GitHub Flowを採用
+- 各機能を実装する際、`feature`ブランチを作成する
+- GitHub上でPRをマージする
 
-### 技術スタック
+### コミットメッセージ
 
-- **状態管理**: Riverpod + hooks_riverpod
-- **バックエンド**: Firebase (Auth, Firestore, Analytics)
-- **決済**: RevenueCat
-- **広告**: AdMob
-- **国際化**: slang
-- **コード生成**: freezed, json_serializable, go_router_builder
+- [Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/)を採用
+- 以下に従い、シンプルな1行のコミットメッセージにする
 
-## TDD開発フロー
+```
+feat: 新機能追加
+fix: バグ修正
+test: テスト追加・修正
+refactor: リファクタリング
+docs: ドキュメント更新
+chore: その他の変更
+```
 
-**Red → Green → Refactor サイクル**
-
-1. **Red**: 失敗するテストを書く → `make test`
-2. **Green**: テストを通す最小限の実装 → `make test`  
-3. **Refactor**: コード改善 → `make format` → `make lint`
-
-具体的なテスト実装方法は [コーディングスタイル - TDD](_docs/10_cording_style_flutter.md#tddテスト駆動開発) を参照してください。
-
-### **🔥 コード実装時の必須チェックリスト**
-
-**すべてのコード実装（UseCase・Provider・Widget・Page）で必須**
-
-#### **実装完了後の必須実行コマンド（絶対忘れるな！）**
-
-1. **フォーマット**: `make format` - コードスタイル統一
-2. **コード生成**: `make gen` - Freezed・build_runner実行
-3. **リント**: `make lint` - 静的解析チェック
-4. **テスト**: `make test` - 全テスト実行
-
-#### **⚠️ 絶対ルール**
-
-- **実装完了後、必ず4つのコマンドを順番通り実行**
-- **コミット前に必ず実行確認**
-- **エラーが出た場合は必ず修正してからコミット**
-- **忘れた場合は即座に実行してコミット修正**
+---
 
 ### **🔥 Widget/Page実装時の必須チェックリスト**
 
@@ -120,127 +95,3 @@ features/feature_name/
 - **Widgetbookを忘れた場合は即座に作成**
 - **コミット前にWidgetbook確認必須**
 - **レビュー時にWidgetbook動作確認**
-
-## 開発ガイドライン
-
-### Issue駆動開発フロー
-
-**全ての作業はIssueから開始**
-
-1. **Issue作成・分析**
-   - 機能要求・バグレポート・改善提案をIssueとして作成
-   - Issueテンプレートを使用して必要な情報を記載
-   - ラベル・マイルストーン・担当者を設定
-
-2. **ブランチ作成（git worktree使用）**
-   - Issueに基づいてworktreeを作成
-   - ブランチ名: `[type]/issue-[number]` (例: `feature/issue-123`)
-
-```bash
-# Issue #123 の場合（機能追加）
-./_scripts/create_worktree_feature.sh 123
-
-# Issue #456 の場合（バグ修正）
-./_scripts/create_worktree_bugfix.sh 456
-
-# Issue #789 の場合（緊急修正）
-./_scripts/create_worktree_hotfix.sh 789
-
-# 作業完了後のクリーンアップ
-git worktree remove ../yattaday-apps-feature-123
-git branch -d feature/issue-123
-```
-
-3. **TDD開発サイクル**
-   - **Red**: Issueの受け入れ条件に基づくテストを書く
-   - **Green**: テストを通す最小限の実装
-   - **Refactor**: コード品質向上
-
-4. **Pull Request作成**
-   - PRタイトル: `fix #123: ユーザー認証機能を追加`
-   - 自動的にIssueとリンク（`fix #123`, `close #123`を使用）
-   - レビュー依頼・テスト結果を記載
-
-5. **レビュー・マージ**
-   - コードレビュー実施
-   - CI/CDチェック通過確認
-   - mainブランチへマージ（Issueが自動クローズ）
-
-### ブランチ戦略
-
-- **main**: 本番環境用（常にデプロイ可能）
-- **feature/issue-[number]**: 機能追加
-- **bugfix/issue-[number]**: バグ修正
-- **hotfix/issue-[number]**: 緊急修正
-
-### コーディング規約
-
-- **アーキテクチャ**: 4層構造（presentation/application/domain/data）を厳守
-- **状態管理**: Riverpodパターンに準拠
-- **ドキュメント**: 日本語で記載
-- **命名規則**: snake_case（ファイル）、PascalCase（クラス）
-
-実装例とベストプラクティスは [コーディングスタイル](_docs/10_cording_style_flutter.md) で詳しく説明しています。
-
-### **🚨 アーキテクチャ厳守ルール（絶対に違反しないこと）**
-
-#### **Presentation層のルール**
-
-1. **Page/Widgetから直接Application層を参照禁止**
-   - ❌ NG: `ref.watch(recordItemFormProvider)` をPageやWidgetで直接使用
-   - ✅ OK: ViewModelを経由してアクセス
-
-2. **ViewModelパターンの徹底**
-   - 各Pageには対応するViewModelを必ず作成
-   - ViewModelがApplication層とのやり取りを仲介
-   - WidgetはViewModelから受け取ったデータとコールバックのみを使用
-
-3. **Widget実装時の必須事項**
-   - Widgetは純粋なUIコンポーネントとして実装
-   - 必要なデータは引数で受け取る
-   - 状態管理はViewModelに委譲
-
-#### **実装例**
-
-```dart
-// ❌ NG: WidgetからApplicationを直接参照
-class MyWidget extends ConsumerWidget {
-  Widget build(BuildContext context, WidgetRef ref) {
-    final formState = ref.watch(recordItemFormProvider); // 違反！
-  }
-}
-
-// ✅ OK: ViewModelを経由
-class MyPage extends ConsumerWidget {
-  Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.read(myViewModelProvider.notifier);
-    final viewModelState = ref.watch(myViewModelProvider);
-    
-    return MyWidget(
-      data: viewModelState.data,
-      onChanged: viewModel.updateData,
-    );
-  }
-}
-```
-
-#### **変更時の必須確認事項**
-
-- [ ] Page/WidgetからApplication Providerを直接参照していないか
-- [ ] ViewModelが適切に実装されているか
-- [ ] Widgetが純粋なUIコンポーネントになっているか
-- [ ] テストがViewModelベースで書かれているか
-- [ ] Widgetbookが新しいパラメータに対応しているか
-
-### コミットメッセージ
-
-```
-feat: 新機能追加
-fix: バグ修正
-test: テスト追加・修正
-refactor: リファクタリング
-docs: ドキュメント更新
-chore: その他の変更
-```
-
-詳細は [コーディングスタイル](_docs/10_cording_style_flutter.md) を参照

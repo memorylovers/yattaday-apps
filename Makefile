@@ -36,6 +36,9 @@ lint-md:
 test:
 	melos run test
 
+run:
+	cd app && fvm flutter run lib/main.dart --flavor=stag
+
 book:
 	cd widgetbook && fvm flutter run lib/main.dart --device-id=chrome
 

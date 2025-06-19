@@ -55,7 +55,6 @@ class AuthStore extends _$AuthStore {
   }
 }
 
-
 // アプリが初回起動かチェックして、初回起動の場合はサインアウトする
 @riverpod
 Future<void> authSignOutWhenFirstRun(Ref ref) async {
