@@ -1,5 +1,6 @@
 {
-  "cleanupPeriodDays": 60,
+  "model": "opus",
+  "cleanupPeriodDays": 365,
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
