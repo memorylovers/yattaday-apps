@@ -42,12 +42,12 @@ TDDを用いて開発を行う
 ### コーディング規約
 
 - **アーキテクチャ**: 6層構造を厳守
-  - page
-  - component
-  - view_model
-  - application
-  - repository
-  - domain
+  - domain (1_domain)
+  - repository (2_repository)
+  - application (3_application)
+  - view_model (4_view_model)
+  - component (5_component)
+  - page (6_page)
 - **状態管理**: Riverpodパターンに準拠
 - **ドキュメント**: 日本語で記載
 - **命名規則**: snake_case（ファイル）、PascalCase（クラス）
@@ -64,7 +64,7 @@ app/
 ├── lib/
 │   ├── _gen/        # 自動生成ファイル。編集禁止
 │   ├── common/      # 共通ユーティリティ
-│   ├── components/  # 再利用可能UIコンポーネント
+│   ├── components/  # アプリ全体で使用する共通UIコンポーネント
 │   ├── features/    # 機能別モジュール
 │   └── routing/     # ルーティング
 └── test/            # テストファイル
@@ -89,7 +89,7 @@ app/assets/
 ```
 app/lib/common/
 ├── exception/       # 例外関連
-├── extentions/      # Extensions関連
+├── extensions/      # Extensions関連
 ├── firebase/        # firebase関連
 ├── json_converter/  # json_converter関連
 ├── logger/          # ロギング(talker)
@@ -181,7 +181,7 @@ features/
 └── <name>_view_model.dart # UI Stateを持つViewModel。StateNotifierProviderを利用
 ```
 
-- 5_presentation内のpageやcomponentと、1対1のViewModel
+- 5_component/6_page内のpageやcomponentと、1対1のViewModel
 - 対応するpageやcomponentのUI StateやEvent Actionを管理
 
 ### Component: UIコンポーネント
@@ -193,6 +193,18 @@ features/
 
 - UIコンポーネントの配置場所
 - routingのgo_routerからpushしない対象
+
+### コンポーネントの使い分け
+
+- **lib/components/**: アプリ全体で使用する汎用的なUIコンポーネント
+  - 例: PrimaryButton、LoadingIndicator、CustomTextField
+  - 特定のfeatureに依存しない
+  - 複数のfeatureから参照される
+
+- **features/<feature_name>/5_component/**: feature固有のUIコンポーネント
+  - 例: RecordItemCard、UserProfileHeader
+  - 特定のfeatureのドメインモデルに依存
+  - 他のfeatureからは参照されない
 
 ### Page: 画面/ダイアログ
 
