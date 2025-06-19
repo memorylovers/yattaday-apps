@@ -77,14 +77,15 @@ app/
 ```
 app/assets/
 ├── google_fonts/     # google_fontsのfontファイルの配置場所
-├── i18n              # slangの言語ファイルの配置場所
-│   ├── en.i18n.json
-│   └── ja.i18n.json
+├── i18n/             # slangの言語ファイルの配置場所
+│   ├── en.i18n.json  # 英語（デフォルト）
+│   └── ja.i18n.json  # 日本語
 └── icons/            # icon画像の配置場所
 ```
 
 - リソース/assetsの配置場所
 - ライブラリなどからdartを生成するため、直接参照はしない
+- i18nファイルは`make gen`で`_gen/i18n/strings.g.dart`を生成
 
 ### app/lib/common/配下の構成
 
