@@ -24,7 +24,7 @@ Claude Code (claude.ai/code) への指針を提供する
 TDDを用いて開発を行う
 
 1. **テスト作成**: Red フェーズ
-1. **コードの実装実装**: Green フェーズ
+1. **コードの実装**: Green フェーズ
 1. **Widgetbook実装**: Page/Componentがあれば、UIカタログ追加
 1. **フォーマット**: `make format` - コードスタイル統一
 1. **コード生成**: `make gen` - Freezed・build_runner実行
@@ -100,7 +100,7 @@ app/lib/common/
 
 - アプリ全体で共通的に利用する処理や定義など
 
-### app/lib/featrues配下の構成
+### app/lib/features配下の構成
 
 ```
 features/
@@ -118,7 +118,7 @@ features/
 - `page -> view_model`: UI Stateを持つpageは、view_modelと1対1で対応する
 - `component -> view_model`: UI Stateを持つcomponentは、view_modelと1対1で対応する
 - `view_model -> application or repository`: view_modelは、application or repositoryのみ参照できる
-- `application -> repository`: applicationは、　repositoryのみ参照できる
+- `application -> repository`: applicationは、repositoryのみ参照できる
 - `repository -> domain`: repositoryは、domainのみ参照できる
 - 別のfeatureからは、`application`のみが参照できる
 
@@ -158,7 +158,7 @@ features/
 - 別featureのview_modelから参照したい状態(store)や処理(usecase)
 - 別featureは、3_applicationのみ参照可能
 
-### ViewModel: UIに対応ずくUI Stateと処理
+### ViewModel: UIに対応づくUI Stateと処理
 
 ```
 4_view_model/
