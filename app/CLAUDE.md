@@ -189,3 +189,35 @@ features/
 - UIコンポーネントの配置場所
 - ページ、ダイアログなど、種類を示すsuffixを付与
 - routingのgo_routerからpushする対象
+
+## テスト方針
+
+### app/test/配下の構成
+
+```
+app/test/
+├── components/          # 共通コンポーネントのテスト
+├── features/           # 機能別モジュールのテスト
+│   └── <feature_name>/ # lib/features/<feature_name>と対応
+│       ├── domain/     # ドメインモデルのテスト
+│       ├── repository/ # Repositoryのテスト
+│       ├── application/# Application層のテスト
+│       ├── view_model/ # ViewModelのテスト
+│       ├── component/  # Componentのテスト
+│       └── page/       # Pageのテスト
+├── test_helpers/       # テスト用ヘルパー
+│   ├── fake_*.dart     # フェイク実装
+│   └── *_helpers.dart  # テストヘルパー関数
+└── test_utils/         # テストユーティリティ
+```
+
+- **テストファイルの命名規則**: `<対象ファイル名>_test.dart`
+- **テストファイルの配置**: 本体コードと同じディレクトリ構造をtest/配下に再現
+- **Riverpodのテスト**: ProviderContainerとoverrideを活用
+
+#### テストの種類と方針
+
+- **Domain層**: 純粋な単体テスト（外部依存なし、カバレッジ100%目標）
+- **Repository層**: モック/フェイクを使用（カバレッジ90%以上）
+- **Application/ViewModel層**: 状態管理のテスト（カバレッジ80%以上）
+- **Component/Page層**: Widgetテスト（カバレッジ70%以上）
