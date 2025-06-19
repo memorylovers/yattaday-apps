@@ -74,3 +74,18 @@ maestro:
 
 cc:
 	npx ccusage@latest
+
+# Planning file management
+plan-new:
+	@mkdir -p _planning
+	@filename=$$(date +"%y%m%d_%H%M")_$${name:-task}.md; \
+	touch _planning/$$filename && \
+	echo "# $${name:-task}" > _planning/$$filename && \
+	echo "" >> _planning/$$filename && \
+	echo "作成日時: $$(date +"%Y-%m-%d %H:%M")" >> _planning/$$filename && \
+	echo "" >> _planning/$$filename && \
+	echo "## 概要" >> _planning/$$filename && \
+	echo "" >> _planning/$$filename && \
+	echo "## タスク" >> _planning/$$filename && \
+	echo "" >> _planning/$$filename && \
+	echo "Created: _planning/$$filename"
