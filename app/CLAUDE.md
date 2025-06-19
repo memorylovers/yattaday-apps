@@ -10,12 +10,13 @@ Claude Code (claude.ai/code) への指針を提供する
 
 ## 技術スタック
 
-- **状態管理**: Riverpod + hooks_riverpod
-- **バックエンド**: Firebase (Auth, Firestore, Analytics)
-- **決済**: RevenueCat
-- **広告**: AdMob
-- **国際化**: slang
-- **コード生成**: freezed, json_serializable, go_router_builder
+- **状態管理**: [Riverpod](https://riverpod.dev/) v2 + [hooks_riverpod](https://pub.dev/packages/hooks_riverpod)
+- **ルーティング**: [go_router](https://pub.dev/packages/go_router) v15 + [go_router_builder](https://pub.dev/packages/go_router_builder)
+- **バックエンド**: [Firebase](https://firebase.google.com/docs/flutter/setup) (Auth, Firestore, Analytics)
+- **決済**: [RevenueCat](https://pub.dev/packages/purchases_flutter)
+- **広告**: [AdMob](https://pub.dev/packages/google_mobile_ads)
+- **国際化**: [slang](https://pub.dev/packages/slang) v4
+- **コード生成**: [freezed](https://pub.dev/packages/freezed) v2, [json_serializable](https://pub.dev/packages/json_serializable)
 
 ## 開発ガイドライン
 
@@ -121,6 +122,22 @@ app/lib/services/
 - ライブラリ固有の実装詳細を隠蔽
 - エラーハンドリングを統一的に処理
 - Repository層から参照される
+
+### app/lib/routing/配下の構成
+
+```
+app/lib/routing/
+├── router_routes.dart      # ルート定義（@TypedGoRoute）
+├── router_provider.dart    # GoRouterのProvider定義
+├── router_redirect.dart    # リダイレクトロジック（認証ガード等）
+├── router_listenable.dart  # ルート変更の監視
+└── my_navigator_observer.dart  # ナビゲーション監視
+```
+
+- go_router_builderを使用したタイプセーフなルーティング
+- 命名規則: `<PageName>Route` (例: `SettingsPageRoute`)
+- 各Pageは対応するRouteクラスから呼び出される
+- `make gen`でルート定義を自動生成
 
 ### app/lib/features配下の構成
 
