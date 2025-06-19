@@ -143,7 +143,7 @@ features/
 - API、DB、SharedPreferenceなどの外部のデータにアクセスする永続化層
 - riverpodの使用禁止。状態を持たない
 - repositoryの返り値は、primitiveな型か、1_domainのモデルのみ
-- repositoryの引数は、
+- repositoryの引数は、dto配下に配置
 
 ### Application: 共通のUI Stateや処理。外部featureへの公開ポイント
 
