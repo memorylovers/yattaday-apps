@@ -1,8 +1,4 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-part 'local_storage_service.g.dart';
 
 class LocalStorageService {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -76,9 +72,4 @@ class LocalStorageService {
     final prefs = await _prefs;
     return prefs.getKeys();
   }
-}
-
-@riverpod
-LocalStorageService localStorageService(Ref ref) {
-  return LocalStorageService();
 }

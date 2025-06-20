@@ -1,9 +1,5 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'crashlytics_service.g.dart';
 
 class CrashlyticsService {
   final FirebaseCrashlytics _crashlytics;
@@ -48,9 +44,4 @@ class CrashlyticsService {
   Future<void> setCrashlyticsCollectionEnabled(bool enabled) async {
     await _crashlytics.setCrashlyticsCollectionEnabled(enabled);
   }
-}
-
-@riverpod
-CrashlyticsService crashlyticsService(Ref ref) {
-  return CrashlyticsService();
 }

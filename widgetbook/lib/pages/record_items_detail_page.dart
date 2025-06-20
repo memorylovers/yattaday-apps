@@ -9,7 +9,7 @@ import 'package:myapp/features/record_items/6_page/record_items_detail_page.dart
 import 'package:myapp/features/record_items/3_application/providers/record_items_provider.dart';
 import 'package:myapp/features/daily_records/3_application/providers/record_item_statistics_provider.dart';
 import 'package:myapp/features/daily_records/3_application/providers/record_item_histories_provider.dart';
-import 'package:myapp/services/firebase/auth_service.dart';
+import 'package:myapp/common/providers/service_providers.dart';
 import 'package:myapp/features/daily_records/3_application/use_cases/get_record_item_statistics_usecase.dart';
 
 @widgetbook.UseCase(

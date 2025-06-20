@@ -1,9 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'firebase_service.g.dart';
 
 class FirebaseService {
   bool _isInitialized = false;
@@ -22,9 +18,4 @@ class FirebaseService {
   }
 
   bool get isInitialized => _isInitialized;
-}
-
-@riverpod
-FirebaseService firebaseService(Ref ref) {
-  return FirebaseService();
 }

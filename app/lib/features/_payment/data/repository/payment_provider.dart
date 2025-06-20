@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../common/exception/handling_error.dart';
-import '../../../../services/firebase/auth_service.dart';
+import '../../../../common/providers/service_providers.dart';
 import '../../../../common/logger/logger.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

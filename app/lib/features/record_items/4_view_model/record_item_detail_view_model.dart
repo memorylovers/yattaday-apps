@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../services/firebase/auth_service.dart';
+import '../../../../common/providers/service_providers.dart';
 import '../../daily_records/3_application/providers/record_item_histories_provider.dart';
 import '../../daily_records/3_application/providers/record_item_statistics_provider.dart';
 import '../../daily_records/3_application/use_cases/get_record_item_statistics_usecase.dart';

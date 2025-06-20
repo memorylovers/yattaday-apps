@@ -1,8 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'firestore_service.g.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore;
@@ -25,9 +21,4 @@ class FirestoreService {
   Future<T> runTransaction<T>(TransactionHandler<T> transactionHandler) {
     return _firestore.runTransaction(transactionHandler);
   }
-}
-
-@riverpod
-FirestoreService firestoreService(Ref ref) {
-  return FirestoreService();
 }

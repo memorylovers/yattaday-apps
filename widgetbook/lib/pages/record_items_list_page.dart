@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/_gen/i18n/strings.g.dart';
 import 'package:myapp/features/_authentication/application/auth_providers.dart';
-import 'package:myapp/services/firebase/auth_service.dart';
+import 'package:myapp/common/providers/service_providers.dart';
 import 'package:myapp/features/record_items/3_application/providers/record_items_provider.dart';
 import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';

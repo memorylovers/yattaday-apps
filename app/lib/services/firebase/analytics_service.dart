@@ -1,8 +1,4 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'analytics_service.g.dart';
 
 class AnalyticsService {
   final FirebaseAnalytics _analytics;
@@ -46,9 +42,4 @@ class AnalyticsService {
   Future<void> setAnalyticsCollectionEnabled(bool enabled) async {
     await _analytics.setAnalyticsCollectionEnabled(enabled);
   }
-}
-
-@riverpod
-AnalyticsService analyticsService(Ref ref) {
-  return AnalyticsService();
 }

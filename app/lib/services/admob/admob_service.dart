@@ -1,9 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'admob_service.g.dart';
 
 class AdMobService {
   BannerAd? _bannerAd;
@@ -60,11 +56,4 @@ class AdMobService {
     _bannerAd?.dispose();
     _rewardedAd?.dispose();
   }
-}
-
-@riverpod
-AdMobService adMobService(Ref ref) {
-  final service = AdMobService();
-  ref.onDispose(service.dispose);
-  return service;
 }

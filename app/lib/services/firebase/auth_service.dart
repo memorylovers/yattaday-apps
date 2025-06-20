@@ -4,12 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../common/types/types.dart';
-
-part 'auth_service.g.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
@@ -223,39 +219,6 @@ class AuthService {
       await currentUser.reauthenticateWithProvider(provider);
     }
   }
-}
-
-@riverpod
-AuthService authService(Ref ref) {
-  return AuthService();
-}
-
-/// Firebase Authのインスタンス
-@Riverpod(keepAlive: true)
-FirebaseAuth firebaseAuth(Ref ref) => FirebaseAuth.instance;
-
-/// Firebase User Stream
-/// 
-/// 機密情報が含まれるため、本番環境ではログを抑制する
-/// Providerの名称を変える場合は、talkerRiverpodObserver も変更すること
-@riverpod
-Stream<User?> firebaseUser(Ref ref) {
-  return ref.watch(authServiceProvider).userChanges;
-}
-
-/// UIDを取得する
-/// 
-/// サインインしていない場合はnullを返す
-@riverpod
-Future<String?> firebaseUserUid(Ref ref) {
-  return ref.watch(firebaseUserProvider.selectAsync((User? value) => value?.uid));
-}
-
-/// idTokenの取得
-@Riverpod(keepAlive: true)
-Future<String?> firebaseIdToken(Ref ref) async {
-  final user = await ref.watch(firebaseUserProvider.future);
-  return await user?.getIdToken();
 }
 
 /// FirebaseAuthUserのextensions

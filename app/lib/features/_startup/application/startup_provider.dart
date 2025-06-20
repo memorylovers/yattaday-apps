@@ -8,9 +8,7 @@ import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 
 import '../../../_gen/i18n/strings.g.dart';
-import '../../../services/firebase/auth_service.dart';
-import '../../../services/firebase/crashlytics_service.dart';
-import '../../../services/firebase/analytics_service.dart';
+import '../../../common/providers/service_providers.dart';
 import '../../../common/utils/system_providers.dart';
 import '../../../constants.dart';
 import '../../../flavors.dart';

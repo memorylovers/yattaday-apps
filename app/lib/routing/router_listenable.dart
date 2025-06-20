@@ -5,8 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../services/firebase/auth_service.dart';
-import '../services/firebase/crashlytics_service.dart';
+import '../common/providers/service_providers.dart';
 import '../features/_startup/application/startup_provider.dart';
 
 part 'router_listenable.freezed.dart';

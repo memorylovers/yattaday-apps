@@ -1,6 +1,6 @@
 import '../../../../common/exception/handling_error.dart';
 import '../../../../common/types/types.dart';
-import '../../../../services/firebase/auth_service.dart';
+import '../../../../common/providers/service_providers.dart';
 import 'auth_repository.dart';
 
 /// AuthRepositoryのFirebase Auth実装

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/services/firebase/auth_service.dart';
+import 'package:myapp/common/providers/service_providers.dart';
 import 'package:myapp/features/daily_records/3_application/providers/record_item_histories_provider.dart';
 import 'package:myapp/features/daily_records/3_application/providers/record_item_statistics_provider.dart';
 import 'package:myapp/features/daily_records/3_application/use_cases/get_record_item_statistics_usecase.dart';

@@ -1,8 +1,4 @@
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'revenuecat_service.g.dart';
 
 class RevenueCatService {
   bool _isConfigured = false;
@@ -72,9 +68,4 @@ class RevenueCatService {
   }
 
   bool get isConfigured => _isConfigured;
-}
-
-@riverpod
-RevenueCatService revenueCatService(Ref ref) {
-  return RevenueCatService();
 }

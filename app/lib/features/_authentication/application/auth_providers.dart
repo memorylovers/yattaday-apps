@@ -4,7 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../common/types/types.dart';
 import '../../../common/utils/system_providers.dart';
-import '../../../services/firebase/auth_service.dart';
+import '../../../common/providers/service_providers.dart';
 import '../data/repository/auth_repository.dart';
 import '../data/repository/firebase_auth_repository.dart';
 
@@ -22,11 +22,12 @@ class AuthState with _$AuthState {
 }
 
 // repositories
-@riverpod
-IAuthRepository authRepository(Ref ref) {
-  final authService = ref.watch(authServiceProvider);
-  return FirebaseAuthRepository(authService);
-}
+final authRepositoryProvider = Provider<IAuthRepository>(
+  (ref) {
+    final authService = ref.watch(authServiceProvider);
+    return FirebaseAuthRepository(authService);
+  },
+);
 
 /// 認証状態
 @Riverpod(keepAlive: true)

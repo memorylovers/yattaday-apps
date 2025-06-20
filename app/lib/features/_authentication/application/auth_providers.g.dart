@@ -16,24 +16,6 @@ Map<String, dynamic> _$$AuthStateImplToJson(_$AuthStateImpl instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
-String _$authRepositoryHash() => r'7205b031eaa737476a8bd164665c070d6db3e177';
-
-/// See also [authRepository].
-@ProviderFor(authRepository)
-final authRepositoryProvider = AutoDisposeProvider<IAuthRepository>.internal(
-  authRepository,
-  name: r'authRepositoryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$authRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef AuthRepositoryRef = AutoDisposeProviderRef<IAuthRepository>;
 String _$authSignOutWhenFirstRunHash() =>
     r'4a410d91777a74d0efa024bb26be5fa69c910534';
 

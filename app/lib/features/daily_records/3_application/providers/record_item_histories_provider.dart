@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../services/firebase/auth_service.dart';
+import '../../../../common/providers/service_providers.dart';
 import '../../2_repository/firebase_record_item_history_repository.dart';
 import '../../2_repository/record_item_history_repository.dart';
 import '../../1_models/record_item_history.dart';

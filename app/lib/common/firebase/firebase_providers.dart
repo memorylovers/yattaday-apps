@@ -2,11 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../services/services.dart';
-
-part 'firebase_providers.g.dart';
+import '../providers/service_providers.dart';
 
 // ********************************************************
 // * 注意: Auth関連のプロバイダーはservices/firebase/auth_service.dartに移動しました
@@ -15,32 +12,38 @@ part 'firebase_providers.g.dart';
 // ********************************************************
 // * Firestore
 // ********************************************************
-@Riverpod(keepAlive: true)
-FirestoreService firebaseFirestore(Ref ref) => ref.read(firestoreServiceProvider);
+final firebaseFirestoreProvider = Provider<FirestoreService>(
+  (ref) => ref.read(firestoreServiceProvider),
+);
 
 // Raw Firebase Firestore instance for backward compatibility
-@Riverpod(keepAlive: true)
-FirebaseFirestore firebaseFirestoreInstance(Ref ref) => FirebaseFirestore.instance;
+final firebaseFirestoreInstanceProvider = Provider<FirebaseFirestore>(
+  (ref) => FirebaseFirestore.instance,
+);
 
 // ********************************************************
 // * Crashlytics
 // ********************************************************
-@Riverpod(keepAlive: true)
-CrashlyticsService firebaseCrashlytics(Ref ref) => ref.read(crashlyticsServiceProvider);
+final firebaseCrashlyticsProvider = Provider<CrashlyticsService>(
+  (ref) => ref.read(crashlyticsServiceProvider),
+);
 
 // Raw Firebase Crashlytics instance for backward compatibility
-@Riverpod(keepAlive: true)
-FirebaseCrashlytics firebaseCrashlyticsInstance(Ref ref) => FirebaseCrashlytics.instance;
+final firebaseCrashlyticsInstanceProvider = Provider<FirebaseCrashlytics>(
+  (ref) => FirebaseCrashlytics.instance,
+);
 
 // ********************************************************
 // * Analytics
 // ********************************************************
-@riverpod
-AnalyticsService firebaseAnalytics(Ref ref) => ref.read(analyticsServiceProvider);
+final firebaseAnalyticsProvider = Provider.autoDispose<AnalyticsService>(
+  (ref) => ref.read(analyticsServiceProvider),
+);
 
 // Raw Firebase Analytics instance for backward compatibility
-@riverpod
-FirebaseAnalytics firebaseAnalyticsInstance(Ref ref) => FirebaseAnalytics.instance;
+final firebaseAnalyticsInstanceProvider = Provider.autoDispose<FirebaseAnalytics>(
+  (ref) => FirebaseAnalytics.instance,
+);
 
 // ********************************************************
 // * Functions
