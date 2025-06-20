@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 
-import '../../common/extentions/widget_extension.dart';
+import '../../common/extensions/widget_extension.dart';
 import '../buttons/primary_button.dart';
 import '../buttons/scondary_button.dart';
 
