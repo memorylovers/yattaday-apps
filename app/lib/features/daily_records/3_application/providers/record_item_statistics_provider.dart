@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../common/firebase/firebase_providers.dart';
+import '../../../../services/firebase/auth_service.dart';
 import '../use_cases/get_record_item_statistics_usecase.dart';
 import 'record_item_histories_provider.dart';
 

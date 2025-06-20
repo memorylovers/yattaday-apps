@@ -16,6 +16,24 @@ Map<String, dynamic> _$$AuthStateImplToJson(_$AuthStateImpl instance) =>
 // RiverpodGenerator
 // **************************************************************************
 
+String _$authRepositoryHash() => r'7205b031eaa737476a8bd164665c070d6db3e177';
+
+/// See also [authRepository].
+@ProviderFor(authRepository)
+final authRepositoryProvider = AutoDisposeProvider<IAuthRepository>.internal(
+  authRepository,
+  name: r'authRepositoryProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$authRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AuthRepositoryRef = AutoDisposeProviderRef<IAuthRepository>;
 String _$authSignOutWhenFirstRunHash() =>
     r'4a410d91777a74d0efa024bb26be5fa69c910534';
 
@@ -36,7 +54,7 @@ final authSignOutWhenFirstRunProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AuthSignOutWhenFirstRunRef = AutoDisposeFutureProviderRef<void>;
-String _$authStoreHash() => r'6b4dd723e1313b704cceb445a09cd9ff2f195860';
+String _$authStoreHash() => r'b98b852700c7a860545083e76f9db033e34b45c3';
 
 /// 認証状態
 ///

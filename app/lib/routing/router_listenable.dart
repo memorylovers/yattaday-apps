@@ -5,7 +5,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../common/firebase/firebase_providers.dart';
+import '../services/firebase/auth_service.dart';
+import '../services/firebase/crashlytics_service.dart';
 import '../features/_startup/application/startup_provider.dart';
 
 part 'router_listenable.freezed.dart';
@@ -41,7 +42,7 @@ Raw<ValueNotifier<RouterListenable>> refreshListenable(Ref ref) {
     // Webの場合はなにもしない
     if (kIsWeb) return;
 
-    await ref.watch(firebaseCrashlyticsProvider).setUserIdentifier(uid ?? '');
+    await ref.watch(crashlyticsServiceProvider).setUserId(uid ?? '');
   });
 
   return listenable;

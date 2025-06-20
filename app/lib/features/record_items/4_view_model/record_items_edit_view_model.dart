@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../common/firebase/firebase_providers.dart';
+import '../../../../services/firebase/auth_service.dart';
 import '../3_application/providers/record_item_form_provider.dart';
 import '../1_models/record_item.dart';
 

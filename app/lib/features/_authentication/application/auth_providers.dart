@@ -2,9 +2,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../common/firebase/firebase_providers.dart';
 import '../../../common/types/types.dart';
 import '../../../common/utils/system_providers.dart';
+import '../../../services/firebase/auth_service.dart';
 import '../data/repository/auth_repository.dart';
 import '../data/repository/firebase_auth_repository.dart';
 
@@ -22,7 +22,11 @@ class AuthState with _$AuthState {
 }
 
 // repositories
-final IAuthRepository authRepository = FirebaseAuthRepository();
+@riverpod
+IAuthRepository authRepository(Ref ref) {
+  final authService = ref.watch(authServiceProvider);
+  return FirebaseAuthRepository(authService);
+}
 
 /// 認証状態
 @Riverpod(keepAlive: true)
@@ -36,22 +40,22 @@ class AuthStore extends _$AuthStore {
 
   /// ログイン
   Future<void> signIn(AuthType type) async {
-    await authRepository.signIn(type);
+    await ref.read(authRepositoryProvider).signIn(type);
   }
 
   /// ログアウト
   Future<void> signOut() async {
-    await authRepository.signOut();
+    await ref.read(authRepositoryProvider).signOut();
   }
 
   /// 退会
   Future<void> delete() async {
-    await authRepository.delete();
+    await ref.read(authRepositoryProvider).delete();
   }
 
   /// アカウントの連携
   Future<void> linkAccount(AuthType type) async {
-    await authRepository.linkAccount(type);
+    await ref.read(authRepositoryProvider).linkAccount(type);
   }
 }
 

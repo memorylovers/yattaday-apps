@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../common/firebase/firebase_providers.dart';
+import '../../../../services/firebase/auth_service.dart';
 import '../../2_repository/firebase_record_item_repository.dart';
 import '../../2_repository/record_item_repository.dart';
 import '../../1_models/record_item.dart';

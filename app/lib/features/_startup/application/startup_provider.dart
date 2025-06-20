@@ -8,7 +8,9 @@ import 'package:timezone/data/latest.dart';
 import 'package:timezone/timezone.dart';
 
 import '../../../_gen/i18n/strings.g.dart';
-import '../../../common/firebase/firebase_providers.dart';
+import '../../../services/firebase/auth_service.dart';
+import '../../../services/firebase/crashlytics_service.dart';
+import '../../../services/firebase/analytics_service.dart';
 import '../../../common/utils/system_providers.dart';
 import '../../../constants.dart';
 import '../../../flavors.dart';
@@ -31,11 +33,16 @@ Future<void> startup(Ref ref) async {
     // DO NOTHING
   } else {
     // モバイルの場合はCrashlyticsに送る
-    FlutterError.onError =
-        ref.watch(firebaseCrashlyticsProvider).recordFlutterFatalError;
+    FlutterError.onError = (details) {
+      ref.watch(crashlyticsServiceProvider).recordError(
+        details.exception,
+        details.stack,
+        fatal: true,
+      );
+    };
     PlatformDispatcher.instance.onError = (error, stack) {
       ref
-          .watch(firebaseCrashlyticsProvider)
+          .watch(crashlyticsServiceProvider)
           .recordError(error, stack, fatal: true);
       return true;
     };
@@ -75,11 +82,11 @@ Future<void> startup(Ref ref) async {
     // Crashlytics: web以外、かつ、releaseモードのみ
     if (!kIsWeb)
       ref
-          .watch(firebaseCrashlyticsProvider)
+          .watch(crashlyticsServiceProvider)
           .setCrashlyticsCollectionEnabled(kReleaseMode),
     // Analytics: releaseモードのみ
     ref
-        .watch(firebaseAnalyticsProvider)
+        .watch(analyticsServiceProvider)
         .setAnalyticsCollectionEnabled(kReleaseMode),
 
     // SystemInfo関連

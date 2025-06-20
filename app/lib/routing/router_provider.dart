@@ -47,9 +47,9 @@ GoRouter router(Ref ref) {
     redirect: ref.watch(routerRedirectProvider),
     debugLogDiagnostics: kDebugMode,
     observers: [
-      MyNavigatorObserver(ref.watch(firebaseCrashlyticsProvider)),
+      MyNavigatorObserver(ref.watch(firebaseCrashlyticsInstanceProvider)),
       FirebaseAnalyticsObserver(
-        analytics: ref.watch(firebaseAnalyticsProvider),
+        analytics: ref.watch(firebaseAnalyticsInstanceProvider),
       ),
     ],
   );

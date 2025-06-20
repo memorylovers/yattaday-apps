@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../common/firebase/firebase_providers.dart';
+import '../../../../services/firebase/auth_service.dart';
 import '../../daily_records/3_application/providers/record_item_histories_provider.dart';
 import '../../daily_records/3_application/providers/record_item_statistics_provider.dart';
 import '../../daily_records/3_application/use_cases/get_record_item_statistics_usecase.dart';
@@ -57,10 +57,18 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
     state = state.copyWith(isDeleting: true, deleteError: null);
 
     try {
-      final userId = await ref.read(firebaseUserUidProvider.future);
+      final userIdNullable = await ref.read(firebaseUserUidProvider.future);
+      if (userIdNullable == null) {
+        state = state.copyWith(
+          isDeleting: false,
+          deleteError: 'ユーザーがログインしていません',
+        );
+        return;
+      }
+      final userId = userIdNullable;
       final success = await ref
           .read(recordItemCrudProvider.notifier)
-          .deleteRecordItem(userId: userId!, recordItemId: recordItemId);
+          .deleteRecordItem(userId: userId, recordItemId: recordItemId);
 
       if (!success) {
         final errorMessage = ref.read(recordItemCrudProvider).errorMessage;
@@ -81,14 +89,18 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
 
   Future<void> toggleTodayRecord(bool exists) async {
     try {
-      final userId = await ref.read(firebaseUserUidProvider.future);
+      final userIdNullable = await ref.read(firebaseUserUidProvider.future);
+      if (userIdNullable == null) {
+        throw Exception('ユーザーがログインしていません');
+      }
+      final userId = userIdNullable;
 
       if (exists) {
         // 削除
         await ref
             .read(deleteRecordItemHistoryUseCaseProvider)
             .executeByDate(
-              userId: userId!,
+              userId: userId,
               recordItemId: recordItemId,
               date: DateTime.now(),
             );
@@ -97,7 +109,7 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
         await ref
             .read(createRecordItemHistoryUseCaseProvider)
             .execute(
-              userId: userId!,
+              userId: userId,
               recordItemId: recordItemId,
               date: DateTime.now(),
             );

@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../common/firebase/firebase_providers.dart';
+import '../../../../services/firebase/auth_service.dart';
 import '../../../../common/types/types.dart';
 import '../../domain/account.dart';
 

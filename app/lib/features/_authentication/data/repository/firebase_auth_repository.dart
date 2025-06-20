@@ -1,14 +1,18 @@
 import '../../../../common/exception/handling_error.dart';
-import '../../../../common/firebase/firebase_auth/firebase_auth_usecase.dart';
 import '../../../../common/types/types.dart';
+import '../../../../services/firebase/auth_service.dart';
 import 'auth_repository.dart';
 
 /// AuthRepositoryのFirebase Auth実装
 class FirebaseAuthRepository implements IAuthRepository {
+  final AuthService _authService;
+  
+  FirebaseAuthRepository(this._authService);
+  
   @override
   Future<void> signIn(AuthType type) async {
     try {
-      await getFirebaseAuthUseCase(type).signIn();
+      await _authService.signIn(type);
     } catch (error) {
       handleError(error);
     }
@@ -17,7 +21,7 @@ class FirebaseAuthRepository implements IAuthRepository {
   @override
   Future<void> signOut() async {
     try {
-      await getFirebaseAuthUseCase(AuthType.anonymous).signOut();
+      await _authService.signOut();
     } catch (error) {
       handleError(error);
     }
@@ -26,7 +30,7 @@ class FirebaseAuthRepository implements IAuthRepository {
   @override
   Future<void> linkAccount(AuthType type) async {
     try {
-      await getFirebaseAuthUseCase(type).linkAccount();
+      await _authService.linkAccount(type);
     } catch (error) {
       handleError(error);
     }
@@ -35,7 +39,7 @@ class FirebaseAuthRepository implements IAuthRepository {
   @override
   Future<void> delete() async {
     try {
-      await getFirebaseAuthUseCase(AuthType.anonymous).delete();
+      await _authService.deleteAccount();
     } catch (error) {
       handleError(error);
     }
