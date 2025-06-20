@@ -1,5 +1,5 @@
-import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
-import 'package:myapp/features/record_items/domain/record_item.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
+import 'package:myapp/features/record_items/1_models/record_item.dart';
 
 class FakeRecordItemRepository implements IRecordItemRepository {
   final List<RecordItem> _items = [];

@@ -6,8 +6,8 @@ import '../features/_payment/presentation/payment_page.dart';
 import '../features/_startup/presentation/startup_page.dart';
 import '../features/account/presentation/settings_page.dart';
 import '../features/home/presentation/home_page_layout.dart';
-import '../features/record_items/presentation/pages/record_items_list_page.dart';
-import '../features/record_items/presentation/pages/record_items_detail_page.dart';
+import '../features/record_items/6_page/record_items_list_page.dart';
+import '../features/record_items/6_page/record_items_detail_page.dart';
 import 'router_provider.dart';
 
 part 'router_routes.g.dart';

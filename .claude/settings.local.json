@@ -1,5 +1,4 @@
 {
-  "model": "opus",
   "cleanupPeriodDays": 365,
   "includeCoAuthoredBy": false,
   "permissions": {
@@ -31,7 +30,11 @@
       "Bash(fuser:*)",
       "Bash(./_scripts/fix_record_item_tests.sh:*)",
       "Bash(tree:*)",
-      "Bash(say:*)"
+      "Bash(say:*)",
+      "Bash(chmod:*)",
+      "Bash(./replace_imports.sh)",
+      "Bash(-e \"s|''../../data/repository/|''../../2_repository/|g\" )",
+      "Bash({} ;)"
     ],
     "deny": [
       "Read(../**)",
@@ -39,5 +42,6 @@
       "Bash(flutter:*)",
       "Bash(dart:*)"
     ]
-  }
+  },
+  "model": "opus"
 }

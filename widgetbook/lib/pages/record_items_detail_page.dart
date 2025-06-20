@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
-import 'package:myapp/features/record_items/domain/record_item.dart';
-import 'package:myapp/features/record_items/presentation/pages/record_items_detail_page.dart';
-import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
-import 'package:myapp/features/daily_records/application/providers/record_item_statistics_provider.dart';
-import 'package:myapp/features/daily_records/application/providers/record_item_histories_provider.dart';
+import 'package:myapp/features/record_items/1_models/record_item.dart';
+import 'package:myapp/features/record_items/6_page/record_items_detail_page.dart';
+import 'package:myapp/features/record_items/3_application/providers/record_items_provider.dart';
+import 'package:myapp/features/daily_records/3_application/providers/record_item_statistics_provider.dart';
+import 'package:myapp/features/daily_records/3_application/providers/record_item_histories_provider.dart';
 import 'package:myapp/common/firebase/firebase_providers.dart';
-import 'package:myapp/features/daily_records/application/use_cases/get_record_item_statistics_usecase.dart';
+import 'package:myapp/features/daily_records/3_application/use_cases/get_record_item_statistics_usecase.dart';
 
 @widgetbook.UseCase(
   name: 'Default',

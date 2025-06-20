@@ -1,4 +1,4 @@
-import 'package:myapp/features/record_items/domain/record_item.dart';
+import 'package:myapp/features/record_items/1_models/record_item.dart';
 
 /// テスト用のRecordItemを作成するヘルパー関数
 RecordItem createTestRecordItem({

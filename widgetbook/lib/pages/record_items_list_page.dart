@@ -3,10 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/_gen/i18n/strings.g.dart';
 import 'package:myapp/features/_authentication/application/auth_providers.dart';
 import 'package:myapp/common/firebase/firebase_providers.dart';
-import 'package:myapp/features/record_items/application/providers/record_items_provider.dart';
-import 'package:myapp/features/record_items/data/repository/record_item_repository.dart';
-import 'package:myapp/features/record_items/domain/record_item.dart';
-import 'package:myapp/features/record_items/presentation/pages/record_items_list_page.dart';
+import 'package:myapp/features/record_items/3_application/providers/record_items_provider.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
+import 'package:myapp/features/record_items/1_models/record_item.dart';
+import 'package:myapp/features/record_items/6_page/record_items_list_page.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// モック用のAuthStore
