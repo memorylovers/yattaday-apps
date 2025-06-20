@@ -118,14 +118,8 @@ WidgetbookではViewModelのモックを作成し、ProviderScopeで差し替え
 - **Error**: 任意（エラー状態がある場合）
 - **Empty**: 任意（空状態がある場合）
 
-### 2. データ設計のガイドライン
+### 2. 命名規則
 
-- モックデータは現実的な内容にする
-- 日本語・英語の両方を含める（i18nテスト用）
-- エッジケース（長いテキスト、特殊文字など）も考慮
-
-### 3. 命名規則
-
-- UseCase関数名: `build<ComponentName><State>UseCase`
+- UseCase関数名: `build<ComponentName>DefaultUseCase`（他の状態がある場合は`build<ComponentName><State>UseCase`）
 - モッククラス名: `Mock<OriginalClassName>`
 - ファイル名: メインアプリと同じ名前を使用
