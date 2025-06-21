@@ -7,7 +7,7 @@ part of 'account_providers.dart';
 // **************************************************************************
 
 String _$accountCollectionReferenceHash() =>
-    r'21b6586200088249c4082ba5fb8cb70cfa41a20c';
+    r'88b8638b4e013b894ca211031fd8c66e817025f8';
 
 /// Account: collectionのreference
 ///

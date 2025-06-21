@@ -1,4 +1,5 @@
-import 'package:firebase_analytics/observer.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -6,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../common/logger/logger.dart';
-import '../common/providers/service_providers.dart';
 import '../features/_startup/presentation/widgets/startup_loading_widget.dart';
 import 'my_navigator_observer.dart';
 import 'router_listenable.dart';
@@ -47,9 +47,9 @@ GoRouter router(Ref ref) {
     redirect: ref.watch(routerRedirectProvider),
     debugLogDiagnostics: kDebugMode,
     observers: [
-      MyNavigatorObserver(ref.watch(firebaseCrashlyticsInstanceProvider)),
+      MyNavigatorObserver(FirebaseCrashlytics.instance),
       FirebaseAnalyticsObserver(
-        analytics: ref.watch(firebaseAnalyticsInstanceProvider),
+        analytics: FirebaseAnalytics.instance,
       ),
     ],
   );

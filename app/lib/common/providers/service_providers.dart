@@ -1,7 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../services/services.dart';
@@ -75,19 +72,3 @@ final localStorageServiceProvider = Provider.autoDispose<LocalStorageService>(
   (ref) => LocalStorageService(),
 );
 
-// ********************************************************
-// * Raw Firebase SDK instances (for backward compatibility)
-// ********************************************************
-
-final firebaseFirestoreProvider = Provider<FirebaseFirestore>(
-  (ref) => FirebaseFirestore.instance,
-);
-
-final firebaseAnalyticsInstanceProvider =
-    Provider.autoDispose<FirebaseAnalytics>(
-      (ref) => FirebaseAnalytics.instance,
-    );
-
-final firebaseCrashlyticsInstanceProvider = Provider<FirebaseCrashlytics>(
-  (ref) => FirebaseCrashlytics.instance,
-);

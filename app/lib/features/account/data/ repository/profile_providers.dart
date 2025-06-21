@@ -11,8 +11,7 @@ part 'profile_providers.g.dart';
 /// AccountProfile: collectionのreference
 @Riverpod(keepAlive: true)
 CollectionReference<AccountProfile> accountProfileCollectionReference(Ref ref) {
-  return ref
-      .watch(firebaseFirestoreProvider)
+  return FirebaseFirestore.instance
       .collection(AccountProfile.collectionPath)
       .withConverter(
         fromFirestore: AccountProfile.fromFirestore,
