@@ -30,12 +30,41 @@ class $AssetsIconsGen {
   List<dynamic> get values => [icon, iconCircle512, iconSquare512];
 }
 
+class $AssetsLogosGen {
+  const $AssetsLogosGen();
+
+  /// File path: assets/logos/apple_logo_black.svg
+  SvgGenImage get appleLogoBlack =>
+      const SvgGenImage('assets/logos/apple_logo_black.svg');
+
+  /// File path: assets/logos/apple_logo_grey.svg
+  SvgGenImage get appleLogoGrey =>
+      const SvgGenImage('assets/logos/apple_logo_grey.svg');
+
+  /// File path: assets/logos/apple_logo_white.svg
+  SvgGenImage get appleLogoWhite =>
+      const SvgGenImage('assets/logos/apple_logo_white.svg');
+
+  /// File path: assets/logos/google_logo.svg
+  SvgGenImage get googleLogo =>
+      const SvgGenImage('assets/logos/google_logo.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [
+    appleLogoBlack,
+    appleLogoGrey,
+    appleLogoWhite,
+    googleLogo,
+  ];
+}
+
 class Assets {
   const Assets._();
 
   static const String package = 'common_widget';
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsLogosGen logos = $AssetsLogosGen();
 }
 
 class AssetGenImage {
