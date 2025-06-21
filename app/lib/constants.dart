@@ -1,3 +1,5 @@
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 import 'flavors.dart';
 
 /// Firebase Remote Configの強制アップロードversionのkey
@@ -31,3 +33,9 @@ const kLoggerTargetProviders = {"startupProvider", "routerRedirectProvider"};
 const kTestDeviceIdentifiers = <String>[
   // TODO: setup test deviceIds
 ];
+
+/// AdMob用の同意デバッグ設定
+final kConsentDebugSettings = ConsentDebugSettings(
+  debugGeography: DebugGeography.debugGeographyEea,
+  testIdentifiers: kTestDeviceIdentifiers,
+);
