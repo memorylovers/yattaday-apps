@@ -26,6 +26,7 @@ Claude Code (claude.ai/code) への指針を提供する
 
 - **単一責任の原則(Single responsibility principle)**
 - **一方向のデータフロー(Unidirectional data flow / UDF)**
+- **コロケーション (co-location)**
 - **テスト駆動開発(TDD)**
 
 ### 開発の流れ

@@ -6,6 +6,10 @@ import '../../services/services.dart';
 // Re-export service types for convenience
 export '../../services/services.dart';
 
+// Re-export service providers
+export '../../services/admob/admob_service.dart' show adMobServiceProvider;
+export '../../services/admob/ad_consent_service.dart' show adConsentServiceProvider;
+
 // ********************************************************
 // * Auth related providers
 // ********************************************************

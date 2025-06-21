@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,9 +14,15 @@ import 'common/logger/logger.dart';
 import 'common/theme/app_theme.dart';
 import 'common/utils/system_providers.dart';
 import 'components/debug/flavor_banner.dart';
-import 'features/_ advertisement/3_application/ad_consent_helper.dart';
+import 'constants.dart';
 import 'flavors.dart';
 import 'routing/router_provider.dart';
+import 'services/admob/ad_consent_service.dart';
+
+final consentDebugSettings = ConsentDebugSettings(
+  debugGeography: DebugGeography.debugGeographyEea,
+  testIdentifiers: kTestDeviceIdentifiers,
+);
 
 FutureOr<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,9 +53,16 @@ class MainApp extends HookConsumerWidget {
     // GDPR/ATTのチェック
     useEffect(() {
       // GDPR/ATTのチェック
-      checkAndRequestAdConsent(
-        debugSettings: kIsDev ? consentDebugSettings : null,
-      );
+      Future.microtask(() async {
+        try {
+          final adConsentService = ref.read(adConsentServiceProvider);
+          await adConsentService.checkAndRequestAdConsent(
+            debugSettings: kIsDev ? consentDebugSettings : null,
+          );
+        } catch (error) {
+          logger.error('Failed to check ad consent', error);
+        }
+      });
       return null;
     }, const []);
 
