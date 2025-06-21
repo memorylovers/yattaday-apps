@@ -19,18 +19,28 @@ import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
 import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
     as _i12;
 import 'package:widgetbook_workspace/components/logo/app_logo.dart' as _i13;
-import 'package:widgetbook_workspace/components/scaffold/gradient_scaffold.dart'
+import 'package:widgetbook_workspace/components/logo/apple_auth_button.dart'
     as _i14;
-import 'package:widgetbook_workspace/features/_authentication/login_buttons.dart'
+import 'package:widgetbook_workspace/components/logo/bubble_border.dart'
     as _i15;
-import 'package:widgetbook_workspace/features/record_items/record_item_card.dart'
+import 'package:widgetbook_workspace/components/logo/dismissible_background.dart'
     as _i16;
-import 'package:widgetbook_workspace/features/record_items/record_item_form.dart'
+import 'package:widgetbook_workspace/components/logo/google_auth_button.dart'
     as _i17;
-import 'package:widgetbook_workspace/features/startup/startup_error_widget.dart'
+import 'package:widgetbook_workspace/components/logo/unfocus_on_tap.dart'
     as _i18;
-import 'package:widgetbook_workspace/features/startup/startup_loading_widget.dart'
+import 'package:widgetbook_workspace/components/scaffold/gradient_scaffold.dart'
     as _i19;
+import 'package:widgetbook_workspace/features/_authentication/login_buttons.dart'
+    as _i20;
+import 'package:widgetbook_workspace/features/record_items/record_item_card.dart'
+    as _i21;
+import 'package:widgetbook_workspace/features/record_items/record_item_form.dart'
+    as _i22;
+import 'package:widgetbook_workspace/features/startup/startup_error_widget.dart'
+    as _i23;
+import 'package:widgetbook_workspace/features/startup/startup_loading_widget.dart'
+    as _i24;
 import 'package:widgetbook_workspace/pages/login_page.dart' as _i2;
 import 'package:widgetbook_workspace/pages/payment_page.dart' as _i3;
 import 'package:widgetbook_workspace/pages/record_items_create_page.dart'
@@ -169,6 +179,131 @@ final directories = <_i1.WidgetbookNode>[
               ),
             ],
           ),
+          _i1.WidgetbookComponent(
+            name: 'AppleAuthButton',
+            useCases: [
+              _i1.WidgetbookUseCase(
+                name: 'Custom Label',
+                builder: _i14.customLabelAppleAuthButton,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Dark Theme',
+                builder: _i14.darkThemeAppleAuthButton,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Default',
+                builder: _i14.defaultAppleAuthButton,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Disabled',
+                builder: _i14.disabledAppleAuthButton,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Multiple Sizes',
+                builder: _i14.multipleSizesAppleAuthButton,
+              ),
+            ],
+          ),
+          _i1.WidgetbookComponent(
+            name: 'BubbleBorder',
+            useCases: [
+              _i1.WidgetbookUseCase(
+                name: 'All Directions',
+                builder: _i15.allDirectionsBubbleBorder,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Chat Message Example',
+                builder: _i15.chatMessageBubbleBorder,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Default',
+                builder: _i15.defaultBubbleBorder,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Interactive Direction',
+                builder: _i15.interactiveBubbleBorder,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'With and Without Padding',
+                builder: _i15.paddingBubbleBorder,
+              ),
+            ],
+          ),
+          _i1.WidgetbookComponent(
+            name: 'DismissibleBackground',
+            useCases: [
+              _i1.WidgetbookUseCase(
+                name: 'Custom Colors',
+                builder: _i16.customColorsDismissibleBackground,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Default',
+                builder: _i16.defaultDismissibleBackground,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Different Alignments',
+                builder: _i16.differentAlignmentsDismissibleBackground,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Interactive Example',
+                builder: _i16.interactiveDismissibleBackground,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'List Item Example',
+                builder: _i16.listItemDismissibleBackground,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'With Border Radius',
+                builder: _i16.borderRadiusDismissibleBackground,
+              ),
+            ],
+          ),
+          _i1.WidgetbookComponent(
+            name: 'GoogleAuthButton',
+            useCases: [
+              _i1.WidgetbookUseCase(
+                name: 'Custom Label',
+                builder: _i17.customLabelGoogleAuthButton,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Dark Theme',
+                builder: _i17.darkThemeGoogleAuthButton,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Default',
+                builder: _i17.defaultGoogleAuthButton,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Disabled',
+                builder: _i17.disabledGoogleAuthButton,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Multiple Sizes',
+                builder: _i17.multipleSizesGoogleAuthButton,
+              ),
+            ],
+          ),
+          _i1.WidgetbookComponent(
+            name: 'UnfocusOnTap',
+            useCases: [
+              _i1.WidgetbookUseCase(
+                name: 'Default',
+                builder: _i18.defaultUnfocusOnTap,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Form Example',
+                builder: _i18.formExampleUnfocusOnTap,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'Multiple Input Types',
+                builder: _i18.multipleInputTypesUnfocusOnTap,
+              ),
+              _i1.WidgetbookUseCase(
+                name: 'With Background Color',
+                builder: _i18.backgroundColorUnfocusOnTap,
+              ),
+            ],
+          ),
         ],
       ),
       _i1.WidgetbookFolder(
@@ -179,27 +314,27 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Complex Example',
-                builder: _i14.complexExampleGradientScaffold,
+                builder: _i19.complexExampleGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i14.defaultGradientScaffold,
+                builder: _i19.defaultGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Actions',
-                builder: _i14.withActionsGradientScaffold,
+                builder: _i19.withActionsGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With FAB',
-                builder: _i14.withFABGradientScaffold,
+                builder: _i19.withFABGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Title',
-                builder: _i14.withTitleGradientScaffold,
+                builder: _i19.withTitleGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With White Container',
-                builder: _i14.withWhiteContainerGradientScaffold,
+                builder: _i19.withWhiteContainerGradientScaffold,
               ),
             ],
           ),
@@ -217,7 +352,7 @@ final directories = <_i1.WidgetbookNode>[
             name: 'LoginButton',
             useCase: _i1.WidgetbookUseCase(
               name: 'All Variants',
-              builder: _i15.loginButtonUseCase,
+              builder: _i20.loginButtonUseCase,
               designLink: '',
             ),
           ),
@@ -231,19 +366,19 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i16.recordItemCardDefault,
+                builder: _i21.recordItemCardDefault,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Minimal',
-                builder: _i16.recordItemCardMinimal,
+                builder: _i21.recordItemCardMinimal,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Without Description',
-                builder: _i16.recordItemCardWithoutDescription,
+                builder: _i21.recordItemCardWithoutDescription,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Without Unit',
-                builder: _i16.recordItemCardWithoutUnit,
+                builder: _i21.recordItemCardWithoutUnit,
               ),
             ],
           ),
@@ -252,23 +387,23 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i17.recordItemFormDefault,
+                builder: _i22.recordItemFormDefault,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Prefilled Form',
-                builder: _i17.recordItemFormPrefilled,
+                builder: _i22.recordItemFormPrefilled,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Delay',
-                builder: _i17.recordItemFormWithDelay,
+                builder: _i22.recordItemFormWithDelay,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Error',
-                builder: _i17.recordItemFormWithError,
+                builder: _i22.recordItemFormWithError,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Without Callbacks',
-                builder: _i17.recordItemFormWithoutCallbacks,
+                builder: _i22.recordItemFormWithoutCallbacks,
               ),
             ],
           ),
@@ -281,14 +416,14 @@ final directories = <_i1.WidgetbookNode>[
             name: 'StartupErrorWidget',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i18.usecaseStartupErrorWidget,
+              builder: _i23.usecaseStartupErrorWidget,
             ),
           ),
           _i1.WidgetbookLeafComponent(
             name: 'StartupLoadingWidget',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i19.usecaseStartupLoadingWidget,
+              builder: _i24.usecaseStartupLoadingWidget,
             ),
           ),
         ],
