@@ -64,7 +64,7 @@ final revenueCatServiceProvider = Provider.autoDispose<RevenueCatService>(
 // * Storage Service
 // ********************************************************
 
-final localStorageServiceProvider = Provider.autoDispose<LocalStorageService>(
-  (ref) => LocalStorageService(),
+final sharedPreferencesServiceProvider = Provider.autoDispose<SharedPreferencesService>(
+  (ref) => SharedPreferencesService(),
 );
 

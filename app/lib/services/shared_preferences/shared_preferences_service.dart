@@ -4,11 +4,11 @@ import '../../common/exception/app_error_code.dart';
 import '../../common/exception/app_exception.dart';
 import '../../common/logger/logger.dart';
 
-/// ローカルストレージサービス
+/// SharedPreferencesサービス
 /// 
 /// SharedPreferencesの機能をラップし、アプリのローカルデータ保存を提供します。
 /// エラーハンドリングとロギング機能を含みます。
-class LocalStorageService {
+class SharedPreferencesService {
   SharedPreferences? _preferences;
 
   /// SharedPreferencesのインスタンスを取得します
@@ -33,7 +33,7 @@ class LocalStorageService {
       if (!success) {
         throw Exception('Failed to set string value');
       }
-      logger.debug('LocalStorage: setString key=$key');
+      logger.debug('SharedPreferences: setString key=$key');
     } catch (error) {
       logger.error('Failed to set string value', error);
       throw AppException(
@@ -65,7 +65,7 @@ class LocalStorageService {
       if (!success) {
         throw Exception('Failed to set int value');
       }
-      logger.debug('LocalStorage: setInt key=$key, value=$value');
+      logger.debug('SharedPreferences: setInt key=$key, value=$value');
     } catch (error) {
       logger.error('Failed to set int value', error);
       throw AppException(
@@ -97,7 +97,7 @@ class LocalStorageService {
       if (!success) {
         throw Exception('Failed to set bool value');
       }
-      logger.debug('LocalStorage: setBool key=$key, value=$value');
+      logger.debug('SharedPreferences: setBool key=$key, value=$value');
     } catch (error) {
       logger.error('Failed to set bool value', error);
       throw AppException(
@@ -129,7 +129,7 @@ class LocalStorageService {
       if (!success) {
         throw Exception('Failed to set double value');
       }
-      logger.debug('LocalStorage: setDouble key=$key, value=$value');
+      logger.debug('SharedPreferences: setDouble key=$key, value=$value');
     } catch (error) {
       logger.error('Failed to set double value', error);
       throw AppException(
@@ -161,7 +161,7 @@ class LocalStorageService {
       if (!success) {
         throw Exception('Failed to set string list');
       }
-      logger.debug('LocalStorage: setStringList key=$key, count=${value.length}');
+      logger.debug('SharedPreferences: setStringList key=$key, count=${value.length}');
     } catch (error) {
       logger.error('Failed to set string list', error);
       throw AppException(
@@ -190,7 +190,7 @@ class LocalStorageService {
     try {
       final prefs = await _prefs;
       final success = await prefs.remove(key);
-      logger.debug('LocalStorage: remove key=$key, success=$success');
+      logger.debug('SharedPreferences: remove key=$key, success=$success');
       return success;
     } catch (error) {
       logger.error('Failed to remove value', error);
@@ -206,7 +206,7 @@ class LocalStorageService {
     try {
       final prefs = await _prefs;
       final success = await prefs.clear();
-      logger.info('LocalStorage: cleared all data');
+      logger.info('SharedPreferences: cleared all data');
       return success;
     } catch (error) {
       logger.error('Failed to clear storage', error);

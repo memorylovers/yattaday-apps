@@ -11,4 +11,4 @@ export 'admob/ad_consent_service.dart';
 export 'revenuecat/revenuecat_service.dart';
 
 // Storage services
-export 'shared_preferences/local_storage_service.dart';
+export 'shared_preferences/shared_preferences_service.dart';
