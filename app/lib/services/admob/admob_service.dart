@@ -32,9 +32,7 @@ class AdMobService {
     return _bannerAd;
   }
 
-  Future<RewardedAd?> loadRewardedAd({
-    required String adUnitId,
-  }) async {
+  Future<RewardedAd?> loadRewardedAd({required String adUnitId}) async {
     await RewardedAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),

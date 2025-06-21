@@ -6,9 +6,9 @@ import 'auth_repository.dart';
 /// AuthRepositoryのFirebase Auth実装
 class FirebaseAuthRepository implements IAuthRepository {
   final AuthService _authService;
-  
+
   FirebaseAuthRepository(this._authService);
-  
+
   @override
   Future<void> signIn(AuthType type) async {
     try {

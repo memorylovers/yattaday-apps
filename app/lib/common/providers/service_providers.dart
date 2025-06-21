@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../services/services.dart';
@@ -10,17 +13,7 @@ export '../../services/services.dart';
 // * Firebase Services
 // ********************************************************
 
-final firebaseServiceProvider = Provider<FirebaseService>(
-  (ref) => FirebaseService(),
-);
-
-final authServiceProvider = Provider<AuthService>(
-  (ref) => AuthService(),
-);
-
-final firestoreServiceProvider = Provider<FirestoreService>(
-  (ref) => FirestoreService(),
-);
+final authServiceProvider = Provider<AuthService>((ref) => AuthService());
 
 final analyticsServiceProvider = Provider.autoDispose<AnalyticsService>(
   (ref) => AnalyticsService(),
@@ -43,27 +36,24 @@ final firebaseUserProvider = StreamProvider<User?>(
 );
 
 final firebaseUserUidProvider = FutureProvider<String?>(
-  (ref) => ref.watch(firebaseUserProvider.selectAsync((User? value) => value?.uid)),
+  (ref) =>
+      ref.watch(firebaseUserProvider.selectAsync((User? value) => value?.uid)),
 );
 
-final firebaseIdTokenProvider = FutureProvider<String?>(
-  (ref) async {
-    final user = await ref.watch(firebaseUserProvider.future);
-    return await user?.getIdToken();
-  },
-);
+final firebaseIdTokenProvider = FutureProvider<String?>((ref) async {
+  final user = await ref.watch(firebaseUserProvider.future);
+  return await user?.getIdToken();
+});
 
 // ********************************************************
 // * AdMob Services
 // ********************************************************
 
-final adMobServiceProvider = Provider.autoDispose<AdMobService>(
-  (ref) {
-    final service = AdMobService();
-    ref.onDispose(service.dispose);
-    return service;
-  },
-);
+final adMobServiceProvider = Provider.autoDispose<AdMobService>((ref) {
+  final service = AdMobService();
+  ref.onDispose(service.dispose);
+  return service;
+});
 
 final adConsentServiceProvider = Provider.autoDispose(
   (ref) => AdConsentService(),
@@ -83,4 +73,21 @@ final revenueCatServiceProvider = Provider.autoDispose<RevenueCatService>(
 
 final localStorageServiceProvider = Provider.autoDispose<LocalStorageService>(
   (ref) => LocalStorageService(),
+);
+
+// ********************************************************
+// * Raw Firebase SDK instances (for backward compatibility)
+// ********************************************************
+
+final firebaseFirestoreProvider = Provider<FirebaseFirestore>(
+  (ref) => FirebaseFirestore.instance,
+);
+
+final firebaseAnalyticsInstanceProvider =
+    Provider.autoDispose<FirebaseAnalytics>(
+      (ref) => FirebaseAnalytics.instance,
+    );
+
+final firebaseCrashlyticsInstanceProvider = Provider<FirebaseCrashlytics>(
+  (ref) => FirebaseCrashlytics.instance,
 );

@@ -6,9 +6,7 @@ class RevenueCatService {
   Future<void> initialize(String apiKey) async {
     if (_isConfigured) return;
 
-    await Purchases.configure(
-      PurchasesConfiguration(apiKey),
-    );
+    await Purchases.configure(PurchasesConfiguration(apiKey));
     _isConfigured = true;
   }
 
@@ -23,14 +21,14 @@ class RevenueCatService {
     if (!_isConfigured) {
       throw StateError('RevenueCat not configured. Call initialize() first.');
     }
-    
+
     final offerings = await Purchases.getOfferings();
     final current = offerings.current;
-    
+
     if (current == null) {
       return [];
     }
-    
+
     return current.availablePackages;
   }
 
@@ -38,7 +36,7 @@ class RevenueCatService {
     if (!_isConfigured) {
       throw StateError('RevenueCat not configured. Call initialize() first.');
     }
-    
+
     final purchaseResult = await Purchases.purchasePackage(package);
     return purchaseResult;
   }
@@ -47,7 +45,7 @@ class RevenueCatService {
     if (!_isConfigured) {
       throw StateError('RevenueCat not configured. Call initialize() first.');
     }
-    
+
     return await Purchases.restorePurchases();
   }
 
@@ -55,7 +53,7 @@ class RevenueCatService {
     if (!_isConfigured) {
       throw StateError('RevenueCat not configured. Call initialize() first.');
     }
-    
+
     await Purchases.logIn(userId);
   }
 
@@ -63,7 +61,7 @@ class RevenueCatService {
     if (!_isConfigured) {
       throw StateError('RevenueCat not configured. Call initialize() first.');
     }
-    
+
     await Purchases.logOut();
   }
 

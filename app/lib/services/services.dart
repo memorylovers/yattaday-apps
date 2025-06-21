@@ -1,7 +1,5 @@
 // Firebase services
-export 'firebase/firebase_service.dart';
 export 'firebase/auth_service.dart';
-export 'firebase/firestore_service.dart';
 export 'firebase/analytics_service.dart';
 export 'firebase/crashlytics_service.dart';
 

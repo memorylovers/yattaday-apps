@@ -5,7 +5,7 @@ class CrashlyticsService {
   final FirebaseCrashlytics _crashlytics;
 
   CrashlyticsService({FirebaseCrashlytics? crashlytics})
-      : _crashlytics = crashlytics ?? FirebaseCrashlytics.instance;
+    : _crashlytics = crashlytics ?? FirebaseCrashlytics.instance;
   Future<void> recordError(
     dynamic exception,
     StackTrace? stack, {

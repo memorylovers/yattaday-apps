@@ -32,11 +32,9 @@ Future<void> startup(Ref ref) async {
   } else {
     // モバイルの場合はCrashlyticsに送る
     FlutterError.onError = (details) {
-      ref.watch(crashlyticsServiceProvider).recordError(
-        details.exception,
-        details.stack,
-        fatal: true,
-      );
+      ref
+          .watch(crashlyticsServiceProvider)
+          .recordError(details.exception, details.stack, fatal: true);
     };
     PlatformDispatcher.instance.onError = (error, stack) {
       ref

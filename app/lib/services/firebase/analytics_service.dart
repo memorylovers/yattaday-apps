@@ -4,7 +4,7 @@ class AnalyticsService {
   final FirebaseAnalytics _analytics;
 
   AnalyticsService({FirebaseAnalytics? analytics})
-      : _analytics = analytics ?? FirebaseAnalytics.instance;
+    : _analytics = analytics ?? FirebaseAnalytics.instance;
   Future<void> logEvent({
     required String name,
     Map<String, Object?>? parameters,
@@ -33,10 +33,7 @@ class AnalyticsService {
     required String name,
     required String? value,
   }) async {
-    await _analytics.setUserProperty(
-      name: name,
-      value: value,
-    );
+    await _analytics.setUserProperty(name: name, value: value);
   }
 
   Future<void> setAnalyticsCollectionEnabled(bool enabled) async {

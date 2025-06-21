@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../common/firebase/firebase_providers.dart';
 import '../common/logger/logger.dart';
+import '../common/providers/service_providers.dart';
 import '../features/_startup/presentation/widgets/startup_loading_widget.dart';
 import 'my_navigator_observer.dart';
 import 'router_listenable.dart';

@@ -22,12 +22,10 @@ class AuthState with _$AuthState {
 }
 
 // repositories
-final authRepositoryProvider = Provider<IAuthRepository>(
-  (ref) {
-    final authService = ref.watch(authServiceProvider);
-    return FirebaseAuthRepository(authService);
-  },
-);
+final authRepositoryProvider = Provider<IAuthRepository>((ref) {
+  final authService = ref.watch(authServiceProvider);
+  return FirebaseAuthRepository(authService);
+});
 
 /// 認証状態
 @Riverpod(keepAlive: true)

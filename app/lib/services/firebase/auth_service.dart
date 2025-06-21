@@ -11,7 +11,7 @@ class AuthService {
   final FirebaseAuth _firebaseAuth;
 
   AuthService({FirebaseAuth? firebaseAuth})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+    : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
@@ -41,13 +41,17 @@ class AuthService {
   Future<User?> signInWithGoogle() async {
     if (kIsWeb) {
       final googleProvider = GoogleAuthProvider();
-      final userCredential = await _firebaseAuth.signInWithPopup(googleProvider);
+      final userCredential = await _firebaseAuth.signInWithPopup(
+        googleProvider,
+      );
       return userCredential.user;
     } else if (Platform.isAndroid || Platform.isIOS) {
       final credential = await _googleOAuth();
       if (credential == null) return null;
-      
-      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+
+      final userCredential = await _firebaseAuth.signInWithCredential(
+        credential,
+      );
       return userCredential.user;
     } else {
       throw Exception('Not supported platform');
@@ -56,9 +60,10 @@ class AuthService {
 
   /// Appleでサインイン
   Future<User?> signInWithApple() async {
-    final provider = AppleAuthProvider()
-      ..addScope('email')
-      ..addScope('name');
+    final provider =
+        AppleAuthProvider()
+          ..addScope('email')
+          ..addScope('name');
 
     if (kIsWeb) {
       final userCredential = await _firebaseAuth.signInWithPopup(provider);
@@ -161,7 +166,7 @@ class AuthService {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    
+
     await googleSignIn.signOut();
     return credential;
   }
@@ -182,9 +187,10 @@ class AuthService {
 
   /// Appleアカウントをリンク
   Future<void> _linkAppleAccount(User currentUser) async {
-    final provider = AppleAuthProvider()
-      ..addScope('email')
-      ..addScope('name');
+    final provider =
+        AppleAuthProvider()
+          ..addScope('email')
+          ..addScope('name');
 
     if (kIsWeb) {
       await currentUser.linkWithPopup(provider);
@@ -209,9 +215,10 @@ class AuthService {
 
   /// Appleで再認証
   Future<void> _reauthenticateWithApple(User currentUser) async {
-    final provider = AppleAuthProvider()
-      ..addScope('email')
-      ..addScope('name');
+    final provider =
+        AppleAuthProvider()
+          ..addScope('email')
+          ..addScope('name');
 
     if (kIsWeb) {
       await currentUser.reauthenticateWithPopup(provider);
