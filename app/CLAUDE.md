@@ -86,11 +86,12 @@ app/
 ```
 app/assets/
 ├── google_fonts/     # google_fontsのfontファイルの配置場所
-├── i18n/             # slangの言語ファイルの配置場所
-│   ├── en.i18n.json  # 英語（デフォルト）
-│   └── ja.i18n.json  # 日本語
-└── icons/            # icon画像の配置場所
+└── i18n/             # slangの言語ファイルの配置場所
+    ├── en.i18n.json  # 英語（デフォルト）
+    └── ja.i18n.json  # 日本語
 ```
+
+**注**: アイコンアセットは`common_widget`パッケージで管理されています
 
 - リソース/assetsの配置場所
 - ライブラリなどからdartを生成するため、直接参照はしない
@@ -247,6 +248,12 @@ features/
 - routingのgo_routerからpushしない対象
 
 ### コンポーネントの使い分け
+
+- **common_widget/lib/components/**: appとwidgetbook共通のUIコンポーネント
+  - 例: AppLogo
+  - アセット（アイコン等）を含むコンポーネント
+  - appとwidgetbookの両方から参照される
+  - インポート: `import 'package:common_widget/common_widget.dart';`
 
 - **lib/components/**: アプリ全体で使用する汎用的なUIコンポーネント
   - 例: PrimaryButton、LoadingIndicator、CustomTextField

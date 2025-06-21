@@ -51,9 +51,11 @@ widgetbook/
 
 | Widgetbook | メインアプリ (app/) | 説明 |
 |------------|-------------------|------|
-| `lib/components/` | `lib/components/` | 共通UIコンポーネント |
+| `lib/components/` | `lib/components/` と `common_widget/lib/components/` | 共通UIコンポーネント |
 | `lib/features/<name>/` | `lib/features/<name>/5_component/` | 機能固有のコンポーネント |
 | `lib/pages/` | `lib/features/<name>/6_page/` | 機能固有のページ |
+
+**注**: `common_widget`パッケージのコンポーネント（例: AppLogo）もWidgetbookに含まれます
 
 ### ディレクトリの使い分け
 

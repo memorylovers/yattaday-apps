@@ -34,8 +34,18 @@ yattaday-apps/
 │   └── CLAUDE.md # メインアプリのCLAUDE.md
 ├── widgetbook/   # UIカタログ(Widgetbook)
 │   └── CLAUDE.md # UIカタログのCLAUDE.md
+├── common_widget/ # 共通UIコンポーネントパッケージ
+│   └── README.md # パッケージの説明
 └── CLAUDE.md     # このファイル
 ```
+
+### common_widgetパッケージ
+
+appとwidgetbookで共有する共通UIコンポーネントとアセットを管理するパッケージです。
+
+- **アセット管理**: アイコンなどの共通アセット
+- **共通コンポーネント**: AppLogoなど、両方のプロジェクトで使用するUI部品
+- **依存関係**: app/pubspec.yamlとwidgetbook/pubspec.yamlから参照
 
 ## 開発ガイドライン
 

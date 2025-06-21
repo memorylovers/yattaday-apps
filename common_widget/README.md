@@ -20,7 +20,7 @@ lib/
 ```yaml
 dependencies:
   common_widget:
-    path: ../packages/common_widget
+    path: ../common_widget
 ```
 
 ### インポート
