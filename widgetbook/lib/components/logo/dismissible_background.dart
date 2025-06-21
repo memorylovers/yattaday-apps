@@ -3,7 +3,11 @@ import 'package:common_widget/common_widget.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'Default', type: DismissibleBackground, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Default',
+  type: DismissibleBackground,
+  path: 'components/logo',
+)
 Widget defaultDismissibleBackground(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -12,18 +16,18 @@ Widget defaultDismissibleBackground(BuildContext context) {
         width: 350,
         height: 100,
         child: DismissibleBackground(
-          child: Icon(
-            Icons.delete,
-            color: Colors.white,
-            size: 32,
-          ),
+          child: Icon(Icons.delete, color: Colors.white, size: 32),
         ),
       ),
     ),
   );
 }
 
-@widgetbook.UseCase(name: 'Custom Colors', type: DismissibleBackground, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Custom Colors',
+  type: DismissibleBackground,
+  path: 'components/logo',
+)
 Widget customColorsDismissibleBackground(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -84,7 +88,11 @@ Widget customColorsDismissibleBackground(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Different Alignments', type: DismissibleBackground, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Different Alignments',
+  type: DismissibleBackground,
+  path: 'components/logo',
+)
 Widget differentAlignmentsDismissibleBackground(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -92,7 +100,7 @@ Widget differentAlignmentsDismissibleBackground(BuildContext context) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             width: 350,
             height: 80,
             child: DismissibleBackground(
@@ -104,7 +112,7 @@ Widget differentAlignmentsDismissibleBackground(BuildContext context) {
             ),
           ),
           SizedBox(height: 16),
-          Container(
+          SizedBox(
             width: 350,
             height: 80,
             child: DismissibleBackground(
@@ -116,7 +124,7 @@ Widget differentAlignmentsDismissibleBackground(BuildContext context) {
             ),
           ),
           SizedBox(height: 16),
-          Container(
+          SizedBox(
             width: 350,
             height: 80,
             child: DismissibleBackground(
@@ -133,7 +141,11 @@ Widget differentAlignmentsDismissibleBackground(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Border Radius', type: DismissibleBackground, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'With Border Radius',
+  type: DismissibleBackground,
+  path: 'components/logo',
+)
 Widget borderRadiusDismissibleBackground(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -175,7 +187,11 @@ Widget borderRadiusDismissibleBackground(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Interactive Example', type: DismissibleBackground, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Interactive Example',
+  type: DismissibleBackground,
+  path: 'components/logo',
+)
 Widget interactiveDismissibleBackground(BuildContext context) {
   final colorOptions = {
     'Red': Colors.red,
@@ -235,7 +251,10 @@ Widget interactiveDismissibleBackground(BuildContext context) {
               SizedBox(width: 8),
               Text(
                 'スワイプで削除',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -245,7 +264,11 @@ Widget interactiveDismissibleBackground(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'List Item Example', type: DismissibleBackground, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'List Item Example',
+  type: DismissibleBackground,
+  path: 'components/logo',
+)
 Widget listItemDismissibleBackground(BuildContext context) {
   return Container(
     color: Colors.grey[200],

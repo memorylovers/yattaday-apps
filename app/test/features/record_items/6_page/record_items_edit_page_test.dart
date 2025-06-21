@@ -452,7 +452,7 @@ void main() {
     //     // 既存のタイトルをクリアしてから入力
     //     await tester.enterText(titleField, '');
     //     await tester.pumpAndSettle();
-        
+
     //     // 1回目の更新
     //     await tester.enterText(titleField, '更新1');
     //     await tester.pumpAndSettle();
@@ -461,13 +461,13 @@ void main() {
     //     final updateButton = find.widgetWithText(ElevatedButton, '更新');
     //     await tester.ensureVisible(updateButton);
     //     await tester.pumpAndSettle();
-        
+
     //     // デバッグ: updateCallCountを確認
     //     debugPrint('Before tap: updateCallCount = ${fakeRepository.updateCallCount}');
-        
+
     //     await tester.tap(updateButton);
     //     await tester.pumpAndSettle();
-        
+
     //     debugPrint('After tap: updateCallCount = ${fakeRepository.updateCallCount}');
 
     //     expect(fakeRepository.updateCallCount, equals(1));

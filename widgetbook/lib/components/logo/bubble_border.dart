@@ -3,7 +3,11 @@ import 'package:common_widget/common_widget.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'Default', type: BubbleBorder, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Default',
+  type: BubbleBorder,
+  path: 'components/logo',
+)
 Widget defaultBubbleBorder(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -26,7 +30,11 @@ Widget defaultBubbleBorder(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'All Directions', type: BubbleBorder, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'All Directions',
+  type: BubbleBorder,
+  path: 'components/logo',
+)
 Widget allDirectionsBubbleBorder(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -92,7 +100,11 @@ Widget allDirectionsBubbleBorder(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With and Without Padding', type: BubbleBorder, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'With and Without Padding',
+  type: BubbleBorder,
+  path: 'components/logo',
+)
 Widget paddingBubbleBorder(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -135,7 +147,11 @@ Widget paddingBubbleBorder(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Chat Message Example', type: BubbleBorder, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Chat Message Example',
+  type: BubbleBorder,
+  path: 'components/logo',
+)
 Widget chatMessageBubbleBorder(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -182,7 +198,11 @@ Widget chatMessageBubbleBorder(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Interactive Direction', type: BubbleBorder, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Interactive Direction',
+  type: BubbleBorder,
+  path: 'components/logo',
+)
 Widget interactiveBubbleBorder(BuildContext context) {
   final destinationOptions = {
     'Left': Destination.left,

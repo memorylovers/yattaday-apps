@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:common_widget/_gen/assets/assets.gen.dart';
 import '../../../../_gen/i18n/strings.g.dart';
 
 class LoginButton extends StatelessWidget {
@@ -12,7 +13,7 @@ class LoginButton extends StatelessWidget {
   });
 
   final bool isLoading;
-  final IconData icon;
+  final Widget icon;
   final String label;
   final VoidCallback? onPressed;
   final String? semanticsId;
@@ -23,7 +24,7 @@ class LoginButton extends StatelessWidget {
       identifier: semanticsId,
       child: OutlinedButton.icon(
         onPressed: isLoading ? null : onPressed,
-        icon: Icon(icon, size: 20),
+        icon: SizedBox(width: 20, height: 20, child: icon),
         label: Text(label),
         style: OutlinedButton.styleFrom(
           foregroundColor: Colors.black87,
@@ -49,7 +50,7 @@ class GoogleLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoginButton(
       isLoading: isLoading,
-      icon: Icons.g_mobiledata,
+      icon: Assets.logos.googleLogo.svg(),
       label: i18n.login.googleSignIn,
       onPressed: onPressed,
       semanticsId: 'google_login_button',
@@ -67,7 +68,7 @@ class AppleLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoginButton(
       isLoading: isLoading,
-      icon: Icons.apple,
+      icon: Assets.logos.appleLogoBlack.svg(),
       label: i18n.login.appleSignIn,
       onPressed: onPressed,
       semanticsId: 'apple_login_button',
@@ -89,7 +90,7 @@ class AnonymousLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoginButton(
       isLoading: isLoading,
-      icon: Icons.person,
+      icon: const Icon(Icons.person, size: 20),
       label: i18n.login.anonymousSignIn,
       onPressed: onPressed,
       semanticsId: 'anonymous_login_button',

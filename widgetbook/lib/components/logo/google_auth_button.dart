@@ -3,7 +3,11 @@ import 'package:common_widget/common_widget.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'Default', type: GoogleAuthButton, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Default',
+  type: GoogleAuthButton,
+  path: 'components/logo',
+)
 Widget defaultGoogleAuthButton(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -12,7 +16,7 @@ Widget defaultGoogleAuthButton(BuildContext context) {
         width: 300,
         child: GoogleAuthButton(
           onPressed: () {
-            print('Google sign in button pressed');
+            // Google sign in button pressed
           },
         ),
       ),
@@ -20,22 +24,25 @@ Widget defaultGoogleAuthButton(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Disabled', type: GoogleAuthButton, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Disabled',
+  type: GoogleAuthButton,
+  path: 'components/logo',
+)
 Widget disabledGoogleAuthButton(BuildContext context) {
   return Container(
     color: Colors.grey[200],
     child: Center(
-      child: SizedBox(
-        width: 300,
-        child: GoogleAuthButton(
-          onPressed: null,
-        ),
-      ),
+      child: SizedBox(width: 300, child: GoogleAuthButton(onPressed: null)),
     ),
   );
 }
 
-@widgetbook.UseCase(name: 'Custom Label', type: GoogleAuthButton, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Custom Label',
+  type: GoogleAuthButton,
+  path: 'components/logo',
+)
 Widget customLabelGoogleAuthButton(BuildContext context) {
   final labelText = context.knobs.string(
     label: 'Label Text',
@@ -50,7 +57,7 @@ Widget customLabelGoogleAuthButton(BuildContext context) {
         child: GoogleAuthButton(
           labelText: labelText,
           onPressed: () {
-            print('Google sign in button pressed');
+            // Google sign in button pressed
           },
         ),
       ),
@@ -58,7 +65,11 @@ Widget customLabelGoogleAuthButton(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Dark Theme', type: GoogleAuthButton, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Dark Theme',
+  type: GoogleAuthButton,
+  path: 'components/logo',
+)
 Widget darkThemeGoogleAuthButton(BuildContext context) {
   return Theme(
     data: ThemeData.dark(),
@@ -69,7 +80,7 @@ Widget darkThemeGoogleAuthButton(BuildContext context) {
           width: 300,
           child: GoogleAuthButton(
             onPressed: () {
-              print('Google sign in button pressed');
+              // Google sign in button pressed
             },
           ),
         ),
@@ -78,7 +89,11 @@ Widget darkThemeGoogleAuthButton(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Multiple Sizes', type: GoogleAuthButton, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Multiple Sizes',
+  type: GoogleAuthButton,
+  path: 'components/logo',
+)
 Widget multipleSizesGoogleAuthButton(BuildContext context) {
   return Container(
     color: Colors.grey[200],
@@ -88,26 +103,17 @@ Widget multipleSizesGoogleAuthButton(BuildContext context) {
         children: [
           SizedBox(
             width: 250,
-            child: GoogleAuthButton(
-              onPressed: () {},
-              labelText: 'Small',
-            ),
+            child: GoogleAuthButton(onPressed: () {}, labelText: 'Small'),
           ),
           const SizedBox(height: 16),
           SizedBox(
             width: 300,
-            child: GoogleAuthButton(
-              onPressed: () {},
-              labelText: 'Medium',
-            ),
+            child: GoogleAuthButton(onPressed: () {}, labelText: 'Medium'),
           ),
           const SizedBox(height: 16),
           SizedBox(
             width: 350,
-            child: GoogleAuthButton(
-              onPressed: () {},
-              labelText: 'Large',
-            ),
+            child: GoogleAuthButton(onPressed: () {}, labelText: 'Large'),
           ),
         ],
       ),

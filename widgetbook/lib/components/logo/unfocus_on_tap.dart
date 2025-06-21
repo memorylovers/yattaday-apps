@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:common_widget/common_widget.dart';
-import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-@widgetbook.UseCase(name: 'Default', type: UnfocusOnTap, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Default',
+  type: UnfocusOnTap,
+  path: 'components/logo',
+)
 Widget defaultUnfocusOnTap(BuildContext context) {
   return UnfocusOnTap(
     child: Scaffold(
@@ -47,10 +50,7 @@ Widget defaultUnfocusOnTap(BuildContext context) {
                 ),
               ),
               SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text('送信'),
-              ),
+              ElevatedButton(onPressed: () {}, child: Text('送信')),
             ],
           ),
         ),
@@ -59,15 +59,16 @@ Widget defaultUnfocusOnTap(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Form Example', type: UnfocusOnTap, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Form Example',
+  type: UnfocusOnTap,
+  path: 'components/logo',
+)
 Widget formExampleUnfocusOnTap(BuildContext context) {
   return UnfocusOnTap(
     child: Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('登録フォーム'),
-        backgroundColor: Colors.blue,
-      ),
+      appBar: AppBar(title: Text('登録フォーム'), backgroundColor: Colors.blue),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -82,7 +83,10 @@ Widget formExampleUnfocusOnTap(BuildContext context) {
                   children: [
                     Text(
                       '基本情報',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 16),
                     TextField(
@@ -123,7 +127,10 @@ Widget formExampleUnfocusOnTap(BuildContext context) {
                   children: [
                     Text(
                       'その他の情報',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 16),
                     TextField(
@@ -153,7 +160,11 @@ Widget formExampleUnfocusOnTap(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'With Background Color', type: UnfocusOnTap, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'With Background Color',
+  type: UnfocusOnTap,
+  path: 'components/logo',
+)
 Widget backgroundColorUnfocusOnTap(BuildContext context) {
   return UnfocusOnTap(
     child: Container(
@@ -161,10 +172,7 @@ Widget backgroundColorUnfocusOnTap(BuildContext context) {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            Colors.blue[300]!,
-            Colors.purple[300]!,
-          ],
+          colors: [Colors.blue[300]!, Colors.purple[300]!],
         ),
       ),
       child: Center(
@@ -222,7 +230,11 @@ Widget backgroundColorUnfocusOnTap(BuildContext context) {
   );
 }
 
-@widgetbook.UseCase(name: 'Multiple Input Types', type: UnfocusOnTap, path: 'components/logo')
+@widgetbook.UseCase(
+  name: 'Multiple Input Types',
+  type: UnfocusOnTap,
+  path: 'components/logo',
+)
 Widget multipleInputTypesUnfocusOnTap(BuildContext context) {
   return UnfocusOnTap(
     child: Scaffold(
@@ -293,12 +305,13 @@ Widget multipleInputTypesUnfocusOnTap(BuildContext context) {
                   filled: true,
                   fillColor: Colors.white,
                 ),
-                items: ['選択肢1', '選択肢2', '選択肢3']
-                    .map((item) => DropdownMenuItem(
-                          value: item,
-                          child: Text(item),
-                        ))
-                    .toList(),
+                items:
+                    ['選択肢1', '選択肢2', '選択肢3']
+                        .map(
+                          (item) =>
+                              DropdownMenuItem(value: item, child: Text(item)),
+                        )
+                        .toList(),
                 onChanged: (value) {},
               ),
               SizedBox(height: 24),
@@ -307,15 +320,12 @@ Widget multipleInputTypesUnfocusOnTap(BuildContext context) {
                 children: [
                   ElevatedButton(
                     onPressed: () {},
-                    child: Text('キャンセル'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey,
                     ),
+                    child: Text('キャンセル'),
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('保存'),
-                  ),
+                  ElevatedButton(onPressed: () {}, child: Text('保存')),
                 ],
               ),
             ],
