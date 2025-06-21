@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '_gen/i18n/strings.g.dart';
 import 'common/logger/logger.dart';
 import 'common/theme/app_theme.dart';
+import 'common/utils/system_providers.dart';
 import 'components/debug/flavor_banner.dart';
 import 'features/_ advertisement/ad_consent_helper.dart';
 import 'flavors.dart';
@@ -21,9 +23,15 @@ FutureOr<void> main() async {
   // Firebaseの初期化
   await Firebase.initializeApp(options: kFirebaseConfig);
 
+  final preferences = await SharedPreferences.getInstance();
+
   // runApp
   runApp(
-    ProviderScope(observers: [talkerRiverpodObserver], child: const MainApp()),
+    ProviderScope(
+      overrides: [sharedPreferencesProvider.overrideWithValue(preferences)],
+      observers: [talkerRiverpodObserver],
+      child: const MainApp(),
+    ),
   );
   return null;
 }

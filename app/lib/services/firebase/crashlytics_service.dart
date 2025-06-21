@@ -1,5 +1,10 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final crashlyticsServiceProvider = Provider<CrashlyticsService>(
+  (ref) => CrashlyticsService(),
+);
 
 class CrashlyticsService {
   final FirebaseCrashlytics _crashlytics;

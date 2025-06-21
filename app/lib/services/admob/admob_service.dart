@@ -1,11 +1,18 @@
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../common/exception/app_error_code.dart';
 import '../../common/exception/app_exception.dart';
 import '../../common/logger/logger.dart';
 
+final adMobServiceProvider = Provider.autoDispose<AdMobService>((ref) {
+  final service = AdMobService();
+  ref.onDispose(service.dispose);
+  return service;
+});
+
 /// AdMobサービス
-/// 
+///
 /// Google Mobile Adsの機能をラップし、バナー広告とリワード広告の管理を提供します。
 /// エラーハンドリングとロギング機能を含みます。
 class AdMobService {
@@ -19,14 +26,12 @@ class AdMobService {
       logger.info('AdMob initialized successfully');
     } catch (error) {
       logger.error('Failed to initialize AdMob', error);
-      throw const AppException(
-        code: AppErrorCode.adLoadFailed,
-      );
+      throw const AppException(code: AppErrorCode.adLoadFailed);
     }
   }
 
   /// バナー広告を作成します（ロードはしません）
-  /// 
+  ///
   /// [adUnitId] 広告ユニットID
   /// [adSize] 広告サイズ
   /// [label] ログ用のラベル
@@ -94,7 +99,7 @@ class AdMobService {
   }
 
   /// リワード広告をロードします
-  /// 
+  ///
   /// [adUnitId] 広告ユニットID
   /// [label] ログ用のラベル
   /// [onAdLoaded] 広告ロード成功時のコールバック
@@ -121,9 +126,11 @@ class AdMobService {
           onAdLoaded: (ad) {
             logger.debug('$label@onAdLoaded: ad=${ad.adUnitId}');
             _rewardedAds[adUnitId] = ad;
-            
+
             // フルスクリーンコンテンツのコールバック設定
-            ad.fullScreenContentCallback = FullScreenContentCallback<RewardedAd>(
+            ad.fullScreenContentCallback = FullScreenContentCallback<
+              RewardedAd
+            >(
               onAdShowedFullScreenContent: (ad) {
                 logger.debug(
                   '$label@onAdShowedFullScreenContent: ad=${ad.adUnitId}',
@@ -143,7 +150,7 @@ class AdMobService {
                 onAdDismissedFullScreenContent?.call(ad);
               },
             );
-            
+
             onAdLoaded?.call(ad);
           },
           onAdFailedToLoad: (error) {
@@ -154,9 +161,7 @@ class AdMobService {
       );
     } catch (error) {
       logger.error('Failed to load rewarded ad', error);
-      throw const AppException(
-        code: AppErrorCode.adLoadFailed,
-      );
+      throw const AppException(code: AppErrorCode.adLoadFailed);
     }
   }
 

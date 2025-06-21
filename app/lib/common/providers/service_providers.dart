@@ -7,23 +7,8 @@ import '../../services/services.dart';
 export '../../services/services.dart';
 
 // ********************************************************
-// * Firebase Services
-// ********************************************************
-
-final authServiceProvider = Provider<AuthService>((ref) => AuthService());
-
-final analyticsServiceProvider = Provider.autoDispose<AnalyticsService>(
-  (ref) => AnalyticsService(),
-);
-
-final crashlyticsServiceProvider = Provider<CrashlyticsService>(
-  (ref) => CrashlyticsService(),
-);
-
-// ********************************************************
 // * Auth related providers
 // ********************************************************
-
 final firebaseUserProvider = StreamProvider<User?>(
   (ref) => ref.watch(authServiceProvider).userChanges,
 );
@@ -37,34 +22,3 @@ final firebaseIdTokenProvider = FutureProvider<String?>((ref) async {
   final user = await ref.watch(firebaseUserProvider.future);
   return await user?.getIdToken();
 });
-
-// ********************************************************
-// * AdMob Services
-// ********************************************************
-
-final adMobServiceProvider = Provider.autoDispose<AdMobService>((ref) {
-  final service = AdMobService();
-  ref.onDispose(service.dispose);
-  return service;
-});
-
-final adConsentServiceProvider = Provider.autoDispose(
-  (ref) => AdConsentService(),
-);
-
-// ********************************************************
-// * RevenueCat Service
-// ********************************************************
-
-final revenueCatServiceProvider = Provider.autoDispose<RevenueCatService>(
-  (ref) => RevenueCatService(),
-);
-
-// ********************************************************
-// * Storage Service
-// ********************************************************
-
-final sharedPreferencesServiceProvider = Provider.autoDispose<SharedPreferencesService>(
-  (ref) => SharedPreferencesService(),
-);
-

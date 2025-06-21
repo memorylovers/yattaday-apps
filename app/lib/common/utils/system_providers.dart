@@ -83,5 +83,5 @@ String packageInfoVersion(Ref ref) =>
 String packageInfoAppName(Ref ref) =>
     ref.watch(packageInfoProvider).requireValue.appName;
 
-@Riverpod(keepAlive: true)
-SharedPreferencesAsync sharedPreferences(Ref ref) => SharedPreferencesAsync();
+@riverpod
+SharedPreferences sharedPreferences(Ref ref) => throw UnimplementedError();

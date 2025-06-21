@@ -1,11 +1,16 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../common/exception/app_error_code.dart';
 import '../../common/exception/app_exception.dart';
 import '../../common/logger/logger.dart';
 
+final revenueCatServiceProvider = Provider.autoDispose<RevenueCatService>(
+  (ref) => RevenueCatService(),
+);
+
 /// RevenueCatサービス
-/// 
+///
 /// RevenueCat SDKの機能をラップし、アプリ内課金の管理を提供します。
 /// エラーハンドリングとロギング機能を含みます。
 class RevenueCatService {
@@ -13,7 +18,7 @@ class RevenueCatService {
   String? _currentUserId;
 
   /// RevenueCatを初期化します
-  /// 
+  ///
   /// [apiKey] RevenueCat APIキー
   /// [appUserId] アプリユーザーID（オプション）
   Future<void> initialize(String apiKey, {String? appUserId}) async {
@@ -28,27 +33,24 @@ class RevenueCatService {
         configuration.appUserID = appUserId;
         _currentUserId = appUserId;
       }
-      
+
       await Purchases.configure(configuration);
       _isConfigured = true;
       logger.info('RevenueCat initialized successfully');
     } catch (error) {
       logger.error('Failed to initialize RevenueCat', error);
-      throw AppException(
-        code: AppErrorCode.purchaseError,
-        cause: error,
-      );
+      throw AppException(code: AppErrorCode.purchaseError, cause: error);
     }
   }
 
   /// ユーザーIDを設定・更新します
-  /// 
+  ///
   /// [userId] ユーザーID
   /// [email] メールアドレス（オプション）
   Future<LogInResult> setUserId(String userId, {String? email}) async {
     try {
       _ensureConfigured();
-      
+
       // 現在のユーザーIDと同じ場合は何もしない
       if (_currentUserId == userId) {
         logger.debug('User ID already set: $userId');
@@ -57,22 +59,19 @@ class RevenueCatService {
           created: false,
         );
       }
-      
+
       final result = await Purchases.logIn(userId);
       _currentUserId = userId;
-      
+
       if (email != null && email.isNotEmpty) {
         await Purchases.setEmail(email);
       }
-      
+
       logger.debug('User logged in: $userId');
       return result;
     } catch (error) {
       logger.error('Failed to set user ID', error);
-      throw AppException(
-        code: AppErrorCode.purchaseError,
-        cause: error,
-      );
+      throw AppException(code: AppErrorCode.purchaseError, cause: error);
     }
   }
 
@@ -83,10 +82,7 @@ class RevenueCatService {
       return await Purchases.getCustomerInfo();
     } catch (error) {
       logger.error('Failed to get customer info', error);
-      throw AppException(
-        code: AppErrorCode.purchaseError,
-        cause: error,
-      );
+      throw AppException(code: AppErrorCode.purchaseError, cause: error);
     }
   }
 
@@ -97,10 +93,7 @@ class RevenueCatService {
       return await Purchases.getOfferings();
     } catch (error) {
       logger.error('Failed to get offerings', error);
-      throw AppException(
-        code: AppErrorCode.purchaseError,
-        cause: error,
-      );
+      throw AppException(code: AppErrorCode.purchaseError, cause: error);
     }
   }
 
@@ -113,10 +106,7 @@ class RevenueCatService {
       return customerInfo;
     } catch (error) {
       logger.error('Failed to purchase package', error);
-      throw AppException(
-        code: AppErrorCode.purchaseError,
-        cause: error,
-      );
+      throw AppException(code: AppErrorCode.purchaseError, cause: error);
     }
   }
 
@@ -129,10 +119,7 @@ class RevenueCatService {
       return customerInfo;
     } catch (error) {
       logger.error('Failed to restore purchases', error);
-      throw AppException(
-        code: AppErrorCode.purchaseError,
-        cause: error,
-      );
+      throw AppException(code: AppErrorCode.purchaseError, cause: error);
     }
   }
 
@@ -146,10 +133,7 @@ class RevenueCatService {
       return customerInfo;
     } catch (error) {
       logger.error('Failed to log out', error);
-      throw AppException(
-        code: AppErrorCode.purchaseError,
-        cause: error,
-      );
+      throw AppException(code: AppErrorCode.purchaseError, cause: error);
     }
   }
 
@@ -187,9 +171,7 @@ class RevenueCatService {
 
   void _ensureConfigured() {
     if (!_isConfigured) {
-      throw const AppException(
-        code: AppErrorCode.purchaseNotConfigured,
-      );
+      throw const AppException(code: AppErrorCode.purchaseNotConfigured);
     }
   }
 }

@@ -3,9 +3,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../common/providers/service_providers.dart';
 import '../../../common/types/types.dart';
 import '../../../common/utils/system_providers.dart';
-import '../../../common/providers/service_providers.dart';
 import '../data/repository/auth_repository.dart';
 import '../data/repository/firebase_auth_repository.dart';
 
@@ -65,7 +65,7 @@ Future<void> authSignOutWhenFirstRun(Ref ref) async {
   final preferences = ref.watch(sharedPreferencesProvider);
   const key = 'isFirstRun';
 
-  final firstRun = await preferences.getBool(key).then((e) => e ?? true);
+  final firstRun = preferences.getBool(key) ?? true;
 
   if (firstRun) {
     await FirebaseAuth.instance.signOut();

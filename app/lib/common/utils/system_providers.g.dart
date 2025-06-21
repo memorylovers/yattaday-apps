@@ -153,24 +153,25 @@ final packageInfoAppNameProvider = AutoDisposeProvider<String>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef PackageInfoAppNameRef = AutoDisposeProviderRef<String>;
-String _$sharedPreferencesHash() => r'4e2baac92647a5914c46b38ec3c662805cada4cb';
+String _$sharedPreferencesHash() => r'91d3d8d16af3d747cec711b8a095a63e20df9b7c';
 
 /// See also [sharedPreferences].
 @ProviderFor(sharedPreferences)
-final sharedPreferencesProvider = Provider<SharedPreferencesAsync>.internal(
-  sharedPreferences,
-  name: r'sharedPreferencesProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$sharedPreferencesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final sharedPreferencesProvider =
+    AutoDisposeProvider<SharedPreferences>.internal(
+      sharedPreferences,
+      name: r'sharedPreferencesProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$sharedPreferencesHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SharedPreferencesRef = ProviderRef<SharedPreferencesAsync>;
+typedef SharedPreferencesRef = AutoDisposeProviderRef<SharedPreferences>;
 String _$appLifecycleHash() => r'035e6ec92055ed4ee12f1b24312072cf01012390';
 
 /// See also [AppLifecycle].

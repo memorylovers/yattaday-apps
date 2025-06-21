@@ -17,7 +17,7 @@ Map<String, dynamic> _$$AuthStateImplToJson(_$AuthStateImpl instance) =>
 // **************************************************************************
 
 String _$authSignOutWhenFirstRunHash() =>
-    r'f588357e89e527a8fe50d9076fde64c86bb3dc5c';
+    r'1eee397e252d3a1f2ece5778cd22aef9e6b5e856';
 
 /// See also [authSignOutWhenFirstRun].
 @ProviderFor(authSignOutWhenFirstRun)

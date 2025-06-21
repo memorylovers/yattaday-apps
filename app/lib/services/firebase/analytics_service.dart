@@ -1,4 +1,9 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+final analyticsServiceProvider = Provider.autoDispose<AnalyticsService>(
+  (ref) => AnalyticsService(),
+);
 
 class AnalyticsService {
   final FirebaseAnalytics _analytics;
