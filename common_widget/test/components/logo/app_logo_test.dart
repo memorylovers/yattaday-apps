@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myapp/components/logo/app_logo.dart';
+import 'package:common_widget/common_widget.dart';
 
 void main() {
   group('AppLogo', () {

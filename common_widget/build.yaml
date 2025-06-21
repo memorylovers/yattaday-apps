@@ -1,0 +1,15 @@
+global_options:
+  # freezed:
+  #   runs_before:
+  #     - json_serializable
+  # json_serializable:
+  #   runs_before:
+  #     - retrofit_generator
+
+targets:
+  $default:
+    builders:
+      # https://pub.dev/packages/flutter_gen_runner
+      flutter_gen:
+        options:
+          output: lib/_gen/assets

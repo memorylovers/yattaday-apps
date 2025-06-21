@@ -20,6 +20,8 @@ dependencies:
   slang_flutter:
   myapp:
     path: ../app
+  common_widget:
+    path: ../common_widget
 
 dev_dependencies:
   flutter_test:

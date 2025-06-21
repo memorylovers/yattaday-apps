@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
 import '../../../../common/theme/app_colors.dart';
-import '../../../../components/logo/app_logo.dart';
+import 'package:common_widget/common_widget.dart';
 
 /// startup中のローディングWidget
 class StartupLoadingWidget extends StatelessWidget {
