@@ -13,7 +13,7 @@ import 'common/logger/logger.dart';
 import 'common/theme/app_theme.dart';
 import 'common/utils/system_providers.dart';
 import 'components/debug/flavor_banner.dart';
-import 'features/_ advertisement/ad_consent_helper.dart';
+import 'features/_ advertisement/3_application/ad_consent_helper.dart';
 import 'flavors.dart';
 import 'routing/router_provider.dart';
 

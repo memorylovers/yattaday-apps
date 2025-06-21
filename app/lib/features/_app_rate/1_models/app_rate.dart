@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../common/logger/logger.dart';
+import '../../../common/logger/logger.dart';
 
 const String prefKeyInstallDate = "android_rate_install_date";
 const String prefKeyLaunchTimes = "android_rate_launch_times";

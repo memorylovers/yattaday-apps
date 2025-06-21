@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-import '../../common/logger/logger.dart';
-import '../../constants.dart';
+import '../../../common/logger/logger.dart';
+import '../../../constants.dart';
 
 const logTag = "adconsent";
 

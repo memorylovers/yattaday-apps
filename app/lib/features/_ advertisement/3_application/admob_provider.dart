@@ -5,7 +5,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../flavors.dart';
-import '../../common/providers/service_providers.dart';
+import '../../../common/providers/service_providers.dart';
 
 part 'admob_provider.freezed.dart';
 part 'admob_provider.g.dart';

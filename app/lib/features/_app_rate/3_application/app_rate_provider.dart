@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'app_rate.dart';
+import '../1_models/app_rate.dart';
 
 part "app_rate_provider.g.dart";
 
