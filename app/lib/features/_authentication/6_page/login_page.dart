@@ -1,3 +1,4 @@
+import 'package:common_widget/common_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -5,10 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/types/types.dart';
 import '../../../common/utils/snack_bar_handler.dart';
-import 'package:common_widget/common_widget.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
 import '../4_view_model/login_view_model.dart';
 import '../5_component/login_buttons.dart';
+import '../5_component/terms_of_service_text.dart';
 
 /// ログイン画面
 class LoginPage extends HookConsumerWidget {
@@ -48,7 +49,6 @@ class LoginPage extends HookConsumerWidget {
                 const Spacer(),
                 // ロゴ
                 const AppLogo(size: 200, color: Colors.white),
-                const SizedBox(height: 8),
                 // アプリ名
                 Text(
                   'YattaDay',
@@ -111,7 +111,7 @@ class LoginPage extends HookConsumerWidget {
                                   child: Text(
                                     'または',
                                     style: TextStyle(
-                                      color: Colors.grey.shade600,
+                                      color: Colors.grey.shade500,
                                     ),
                                   ),
                                 ),
@@ -152,33 +152,7 @@ class LoginPage extends HookConsumerWidget {
                     horizontal: 40,
                     vertical: 20,
                   ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white.withValues(alpha: 0.7),
-                        height: 1.5,
-                      ),
-                      children: [
-                        TextSpan(text: 'ログインすることで、'),
-                        TextSpan(
-                          text: '利用規約',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                        TextSpan(text: 'と'),
-                        TextSpan(
-                          text: 'プライバシーポリシー',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                        TextSpan(text: 'に同意したものとみなされます'),
-                      ],
-                    ),
-                  ),
+                  child: const TermsOfServiceText(),
                 ),
                 const Spacer(),
               ],
