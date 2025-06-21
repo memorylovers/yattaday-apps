@@ -24,10 +24,6 @@ final crashlyticsServiceProvider = Provider<CrashlyticsService>(
 // * Auth related providers
 // ********************************************************
 
-final firebaseAuthProvider = Provider<FirebaseAuth>(
-  (ref) => FirebaseAuth.instance,
-);
-
 final firebaseUserProvider = StreamProvider<User?>(
   (ref) => ref.watch(authServiceProvider).userChanges,
 );

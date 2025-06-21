@@ -1,4 +1,5 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -90,7 +91,7 @@ Future<void> startup(Ref ref) async {
     ref.watch(deviceInfoProvider.future),
 
     // Firebase Auth
-    ref.read(firebaseAuthProvider).setSettings(userAccessGroup: kKeychainGroup),
+    FirebaseAuth.instance.setSettings(userAccessGroup: kKeychainGroup),
 
     // ステータスバー/ナビゲーションバーを非表示
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),

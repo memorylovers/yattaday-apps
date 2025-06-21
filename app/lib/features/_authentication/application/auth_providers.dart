@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -67,7 +68,7 @@ Future<void> authSignOutWhenFirstRun(Ref ref) async {
   final firstRun = await preferences.getBool(key).then((e) => e ?? true);
 
   if (firstRun) {
-    await ref.watch(firebaseAuthProvider).signOut();
+    await FirebaseAuth.instance.signOut();
     await preferences.setBool(key, false);
   }
 }
