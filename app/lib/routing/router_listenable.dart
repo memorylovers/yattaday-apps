@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../common/providers/service_providers.dart';
-import '../features/_startup/3_application/startup_provider.dart';
+import '../features/_startup/3_application/startup_store.dart';
 
 part 'router_listenable.freezed.dart';
 part 'router_listenable.g.dart';

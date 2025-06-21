@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/common/types/types.dart';
-import 'package:myapp/features/_authentication/3_application/auth_providers.dart';
+import 'package:myapp/features/_authentication/3_application/auth_store.dart';
 import 'package:myapp/features/_authentication/4_view_model/login_view_model.dart';
 
 class MockAuthStore extends AuthStore {

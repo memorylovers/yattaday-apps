@@ -157,7 +157,7 @@ class AdConsentService {
       // 広告リクエストが可能かチェック
       final canRequest = await canRequestAds();
       logger.debug('Can request ads: $canRequest');
-      
+
       if (canRequest) {
         // AdMobの初期化
         await MobileAds.instance.initialize();

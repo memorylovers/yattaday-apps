@@ -14,6 +14,14 @@ class DeleteRecordItemUseCase {
     required String userId,
     required String recordItemId,
   }) async {
+    // バリデーション
+    if (userId.trim().isEmpty) {
+      throw ArgumentError('userIdは必須です');
+    }
+    if (recordItemId.trim().isEmpty) {
+      throw ArgumentError('recordItemIdは必須です');
+    }
+
     await _repository.delete(userId, recordItemId);
   }
 }

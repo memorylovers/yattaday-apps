@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../common/logger/logger.dart';
 
-import '../3_application/startup_provider.dart';
+import '../3_application/startup_store.dart';
 import '../5_component/startup_error_widget.dart';
 import '../5_component/startup_loading_widget.dart';
 

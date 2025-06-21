@@ -1,0 +1,12 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../1_models/app_rate.dart';
+
+part "app_rate_store.g.dart";
+
+@Riverpod(keepAlive: true)
+AppRate appRate(Ref ref) {
+  // TODO: [startupProvider]に追加する
+  throw UnimplementedError();
+}

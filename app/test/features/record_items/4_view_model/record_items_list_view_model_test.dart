@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/record_items/3_application/providers/record_items_provider.dart';
+import 'package:myapp/features/record_items/3_application/record_items_store.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 import 'package:myapp/features/record_items/4_view_model/record_items_list_view_model.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../3_application/providers/record_item_form_provider.dart';
+import '../3_application/record_item_form_store.dart';
 import '../1_models/record_item.dart';
 
 /// 記録項目作成・編集フォームウィジェット

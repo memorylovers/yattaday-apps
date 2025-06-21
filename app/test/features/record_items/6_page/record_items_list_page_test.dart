@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:myapp/_gen/i18n/strings.g.dart';
 import 'package:myapp/common/providers/service_providers.dart';
-import 'package:myapp/features/record_items/3_application/providers/record_items_provider.dart';
+import 'package:myapp/features/record_items/3_application/record_items_store.dart';
 import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 import 'package:myapp/features/record_items/6_page/record_items_list_page.dart';
@@ -102,7 +102,7 @@ void main() {
       await LocaleSettings.setLocale(AppLocale.ja);
     });
 
-    RecordItem createTestcreateTestRecordItem({
+    RecordItem createLocalTestRecordItem({
       String id = 'test-id',
       String userId = 'test-user-id',
       String title = 'テスト項目',
@@ -180,14 +180,14 @@ void main() {
       testWidgets('記録項目一覧が正しく表示される', (tester) async {
         const userId = 'test-user-id';
         final items = [
-          createTestcreateTestRecordItem(
+          createLocalTestRecordItem(
             id: 'item1',
             userId: userId,
             title: '読書',
             description: '本を読む',
             sortOrder: 0,
           ),
-          createTestcreateTestRecordItem(
+          createLocalTestRecordItem(
             id: 'item2',
             userId: userId,
             title: '運動',
@@ -311,7 +311,7 @@ void main() {
 
       testWidgets('記録項目をタップすると詳細画面に遷移する', (tester) async {
         const userId = 'test-user-id';
-        final item = createTestcreateTestRecordItem(
+        final item = createLocalTestRecordItem(
           id: 'item1',
           userId: userId,
           title: 'テスト項目',
@@ -334,7 +334,7 @@ void main() {
 
       testWidgets('完了ボタンをタップすると完了状態がトグルされる', (tester) async {
         const userId = 'test-user-id';
-        final item = createTestcreateTestRecordItem(
+        final item = createLocalTestRecordItem(
           id: 'item1',
           userId: userId,
           title: 'テスト項目',

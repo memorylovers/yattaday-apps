@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/record_items/3_application/providers/record_items_provider.dart';
+import 'package:myapp/features/record_items/3_application/record_items_store.dart';
 import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 import 'package:myapp/features/record_items/6_page/record_items_create_page.dart';

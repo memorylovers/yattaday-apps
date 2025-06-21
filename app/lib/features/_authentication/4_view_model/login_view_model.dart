@@ -2,7 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../common/types/types.dart';
-import '../3_application/auth_providers.dart';
+import '../3_application/auth_store.dart';
 
 part 'login_view_model.freezed.dart';
 part 'login_view_model.g.dart';

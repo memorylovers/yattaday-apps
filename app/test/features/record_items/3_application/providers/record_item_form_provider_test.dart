@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/record_items/3_application/providers/record_item_form_provider.dart';
-import 'package:myapp/features/record_items/3_application/providers/record_items_provider.dart';
+import 'package:myapp/features/record_items/3_application/record_item_form_store.dart';
+import 'package:myapp/features/record_items/3_application/record_items_store.dart';
 import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 
