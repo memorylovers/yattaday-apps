@@ -7,8 +7,8 @@ import '../../../common/types/types.dart';
 import '../../../common/utils/snack_bar_handler.dart';
 import '../../../components/logo/app_logo.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
-import 'view_models/login_view_model.dart';
-import 'widgets/login_buttons.dart';
+import '../4_view_model/login_view_model.dart';
+import '../5_component/login_buttons.dart';
 
 /// ログイン画面
 class LoginPage extends HookConsumerWidget {

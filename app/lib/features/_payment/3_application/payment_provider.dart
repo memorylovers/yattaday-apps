@@ -122,7 +122,9 @@ class Payment extends _$Payment {
   /// 購入
   Future<void> purchasePlan(Package package) async {
     await _withLoading("purchasePlan", () async {
-      CustomerInfo customerInfo = await _revenueCatService.purchasePackage(package);
+      CustomerInfo customerInfo = await _revenueCatService.purchasePackage(
+        package,
+      );
       logger.debug(
         "** $logTag:purchasePlan: uid=${customerInfo.originalAppUserId}, isPremium=${customerInfo.entitlements.active.isNotEmpty}",
       );
@@ -173,10 +175,7 @@ class Payment extends _$Payment {
   Future<void> _configure(String uid, String? email) async {
     await _withLoading("_configure", () async {
       // 初期化
-      await _revenueCatService.initialize(
-        kRevenueCatApiKey,
-        appUserId: uid,
-      );
+      await _revenueCatService.initialize(kRevenueCatApiKey, appUserId: uid);
       state = state.copyWith(isConfigured: true);
       if (email != null && email.isNotEmpty) {
         await _revenueCatService.setUserId(uid, email: email);

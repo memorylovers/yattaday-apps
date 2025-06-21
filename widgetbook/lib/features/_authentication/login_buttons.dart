@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/features/_authentication/presentation/widgets/login_buttons.dart';
+import 'package:myapp/features/_authentication/5_component/login_buttons.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 

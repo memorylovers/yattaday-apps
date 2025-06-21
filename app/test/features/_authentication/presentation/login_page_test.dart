@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/_authentication/presentation/login_page.dart';
-import 'package:myapp/features/_authentication/presentation/widgets/login_buttons.dart';
+import 'package:myapp/features/_authentication/6_page/login_page.dart';
+import 'package:myapp/features/_authentication/5_component/login_buttons.dart';
 import 'package:myapp/_gen/i18n/strings.g.dart';
 
 void main() {

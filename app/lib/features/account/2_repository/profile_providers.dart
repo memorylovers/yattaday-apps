@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../common/providers/service_providers.dart';
-import '../../../../common/types/types.dart';
-import '../../domain/profile.dart';
+import '../../../common/providers/service_providers.dart';
+import '../../../common/types/types.dart';
+import '../1_models/profile.dart';
 
 part 'profile_providers.g.dart';
 

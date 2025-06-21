@@ -13,8 +13,8 @@ import '../../../common/providers/service_providers.dart';
 import '../../../common/utils/system_providers.dart';
 import '../../../constants.dart';
 import '../../../flavors.dart';
-import '../../_authentication/application/auth_providers.dart';
-import '../../_force_update/force_update_provider.dart';
+import '../../_authentication/3_application/auth_providers.dart';
+import '../../_force_update/3_application/force_update_provider.dart';
 
 part 'startup_provider.g.dart';
 

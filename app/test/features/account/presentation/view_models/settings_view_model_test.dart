@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/_authentication/application/auth_providers.dart';
-import 'package:myapp/features/account/presentation/view_models/settings_view_model.dart';
+import 'package:myapp/features/_authentication/3_application/auth_providers.dart';
+import 'package:myapp/features/account/4_view_model/settings_view_model.dart';
 
 class MockAuthStore extends AuthStore {
   int signOutCallCount = 0;

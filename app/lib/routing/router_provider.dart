@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../common/logger/logger.dart';
-import '../features/_startup/presentation/widgets/startup_loading_widget.dart';
+import '../features/_startup/5_component/startup_loading_widget.dart';
 import 'my_navigator_observer.dart';
 import 'router_listenable.dart';
 import 'router_redirect.dart';
@@ -48,9 +48,7 @@ GoRouter router(Ref ref) {
     debugLogDiagnostics: kDebugMode,
     observers: [
       MyNavigatorObserver(FirebaseCrashlytics.instance),
-      FirebaseAnalyticsObserver(
-        analytics: FirebaseAnalytics.instance,
-      ),
+      FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
     ],
   );
 }

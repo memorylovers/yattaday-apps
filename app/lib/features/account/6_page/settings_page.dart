@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../_gen/i18n/strings.g.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
 import '../../../routing/router_routes.dart';
-import 'view_models/settings_view_model.dart';
+import '../4_view_model/settings_view_model.dart';
 
 /// 設定画面
 class SettingsPage extends HookConsumerWidget {

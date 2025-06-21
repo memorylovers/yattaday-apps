@@ -20,6 +20,14 @@ Claude Code (claude.ai/code) への指針を提供する
 
 ## 開発ガイドライン
 
+### **開発・設計の原則**
+
+本プロジェクトでは以下の手法・原則に従う
+
+- **単一責任の原則(Single responsibility principle)**
+- **一方向のデータフロー(Unidirectional data flow / UDF)**
+- **テスト駆動開発(TDD)**
+
 ### 開発の流れ
 
 TDDを用いて開発を行う
