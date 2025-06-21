@@ -6,7 +6,7 @@ part of 'admob_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$adBannerStoreHash() => r'e2f0357ca9efdb85cd40a7864875b1d0cebea0ba';
+String _$adBannerStoreHash() => r'5574d4b8944e51e88100fe67b5fb0ef0015c38f4';
 
 /// See also [AdBannerStore].
 @ProviderFor(AdBannerStore)

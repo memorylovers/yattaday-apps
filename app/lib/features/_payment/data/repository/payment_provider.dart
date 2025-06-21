@@ -53,17 +53,21 @@ class PaymentState with _$PaymentState {
 // ********************************************************
 @Riverpod(keepAlive: true)
 class Payment extends _$Payment {
+  late final RevenueCatService _revenueCatService;
+
   @override
   PaymentState build() {
+    _revenueCatService = ref.watch(revenueCatServiceProvider);
+
     updateCustomer(CustomerInfo customer) {
       logger.debug("** $logTag:updateCustomer: ${customer.toJson()}");
       state = state.copyWith(customer: customer);
     }
 
     // set listener
-    Purchases.addCustomerInfoUpdateListener(updateCustomer);
+    _revenueCatService.addCustomerInfoUpdateListener(updateCustomer);
     ref.onDispose(() {
-      Purchases.removeCustomerInfoUpdateListener(updateCustomer);
+      _revenueCatService.removeCustomerInfoUpdateListener(updateCustomer);
     });
 
     // ログイン状態を監視
@@ -97,14 +101,14 @@ class Payment extends _$Payment {
     }
     // fetch Customer Info
     logger.debug("** $logTag:refresh: getCustomerInfo: START");
-    final customerInfo = await Purchases.getCustomerInfo();
+    final customerInfo = await _revenueCatService.getCustomerInfo();
     state = state.copyWith(customer: customerInfo, error: null);
     logger.debug("** $logTag:refresh: getCustomerInfo: DONE");
   }
 
   /// ユーザIDの設定
   Future<void> setAppUserId(String uid, String? email) async {
-    final isConfigured = await Purchases.isConfigured;
+    final isConfigured = await _revenueCatService.checkIfConfigured();
     logger.debug(
       "** $logTag:setAppUserId: uid=$uid isConfigured=$isConfigured",
     );
@@ -118,7 +122,7 @@ class Payment extends _$Payment {
   /// 購入
   Future<void> purchasePlan(Package package) async {
     await _withLoading("purchasePlan", () async {
-      CustomerInfo customerInfo = await Purchases.purchasePackage(package);
+      CustomerInfo customerInfo = await _revenueCatService.purchasePackage(package);
       logger.debug(
         "** $logTag:purchasePlan: uid=${customerInfo.originalAppUserId}, isPremium=${customerInfo.entitlements.active.isNotEmpty}",
       );
@@ -129,7 +133,7 @@ class Payment extends _$Payment {
   /// 復元
   Future<void> restorePlan() async {
     await _withLoading("restorePlan", () async {
-      CustomerInfo customerInfo = await Purchases.restorePurchases();
+      CustomerInfo customerInfo = await _revenueCatService.restorePurchases();
       logger.debug("** $logTag:restorePlan: customerInfo=$customerInfo");
       state = state.copyWith(customer: customerInfo);
     });
@@ -144,7 +148,7 @@ class Payment extends _$Payment {
       try {
         // check isConfigured
         if (!state.isConfigured) {
-          final isConfigured = await Purchases.isConfigured;
+          final isConfigured = await _revenueCatService.checkIfConfigured();
           state = state.copyWith(isConfigured: isConfigured);
           // 未初期化の場合は何もしない
           if (!isConfigured) return;
@@ -152,12 +156,12 @@ class Payment extends _$Payment {
 
         // fetch Offerings
         if (state.planItems.isEmpty) {
-          final offerings = await Purchases.getOfferings();
+          final offerings = await _revenueCatService.getOfferings();
           state = state.copyWith(offerings: offerings);
         }
 
         // fetch Customer Info
-        final customerInfo = await Purchases.getCustomerInfo();
+        final customerInfo = await _revenueCatService.getCustomerInfo();
         state = state.copyWith(customer: customerInfo);
       } catch (error) {
         state = state.copyWith(error: error);
@@ -169,12 +173,13 @@ class Payment extends _$Payment {
   Future<void> _configure(String uid, String? email) async {
     await _withLoading("_configure", () async {
       // 初期化
-      final configuration = PurchasesConfiguration(kRevenueCatApiKey);
-      configuration.appUserID = uid;
-      await Purchases.configure(configuration);
+      await _revenueCatService.initialize(
+        kRevenueCatApiKey,
+        appUserId: uid,
+      );
       state = state.copyWith(isConfigured: true);
       if (email != null && email.isNotEmpty) {
-        await Purchases.setEmail(email);
+        await _revenueCatService.setUserId(uid, email: email);
       }
 
       // ステートの初期化
@@ -186,13 +191,7 @@ class Payment extends _$Payment {
   Future<void> _login(String uid, String? email) async {
     await _withLoading("_login", () async {
       // ログイン
-      final current = await Purchases.getCustomerInfo();
-      // appUserIdが同じなら何もしない
-      if (current.originalAppUserId == uid) return;
-      final result = await Purchases.logIn(uid);
-      if (email != null && email.isNotEmpty) {
-        await Purchases.setEmail(email);
-      }
+      final result = await _revenueCatService.setUserId(uid, email: email);
       logger.debug("** $logTag:_login: result=$result");
 
       // ステートの初期化
@@ -203,7 +202,7 @@ class Payment extends _$Payment {
   /// ログアウト
   Future<void> logout() async {
     await _withLoading("_logout", () async {
-      final result = await Purchases.logOut();
+      final result = await _revenueCatService.logOut();
       logger.debug("** $logTag:_logout: result=$result");
     });
   }

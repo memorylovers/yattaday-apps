@@ -7,6 +7,13 @@ enum AppErrorCode {
   nicknameDuplicate, // すでに利用されています
   // ** Auth | Link
   authAlreadyLinked, // 別のアカウントに連携済みです
+  // ** AdMob
+  adLoadFailed, // 広告の読み込みに失敗しました
+  // ** Purchase
+  purchaseError, // 購入エラーが発生しました
+  purchaseNotConfigured, // 購入機能が初期化されていません
+  // ** Storage
+  storageError, // ストレージエラーが発生しました
   // ** Common
   networkError, // Network Error
   notFound, // Not Found
