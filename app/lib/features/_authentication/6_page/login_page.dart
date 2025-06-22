@@ -24,45 +24,52 @@ class LoginPage extends HookConsumerWidget {
     // エラーメッセージの監視
     useErrorMessage(loginState.errorMessage, context);
 
-    return GradientScaffold(
-      body: SingleChildScrollView(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height,
-          ),
-          child: IntrinsicHeight(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Spacer(),
-                // アプリブランディングセクション
-                const AppBrandingSection(),
-                const SizedBox(height: 48),
+    // ユーザイベントハンドラ
+    void onPressSignInGoogle() {
+      loginViewModel.signIn(AuthType.google);
+    }
 
-                // ボタン
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                  child: Stack(
-                    children: [
-                      Visibility(
-                        visible: !loginState.isLoading,
-                        maintainSize: true,
-                        maintainAnimation: true,
-                        maintainState: true,
-                        maintainInteractivity: false,
-                        child: Column(
+    void onPressSignInApple() {
+      loginViewModel.signIn(AuthType.apple);
+    }
+
+    void onPressSignInAnonymous() {
+      loginViewModel.signIn(AuthType.anonymous);
+    }
+
+    return GradientScaffold(
+      body: Column(
+        children: [
+          // アプリブランディングセクション（50%）
+          const Expanded(
+            child: Center(child: AppBrandingSection()),
+          ),
+
+          // ボタンと利用規約セクション（50%）
+          Expanded(
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                        const Gap(20),
+                        // ボタン
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             GoogleLoginButton(
                               isLoading: loginState.isLoading,
-                              onPressed:
-                                  () => loginViewModel.signIn(AuthType.google),
+                              onPressed: onPressSignInGoogle,
                             ),
                             const Gap(12),
                             AppleLoginButton(
                               isLoading: loginState.isLoading,
-                              onPressed:
-                                  () => loginViewModel.signIn(AuthType.apple),
+                              onPressed: onPressSignInApple,
                             ),
                             const Gap(16),
                             // 区切り線
@@ -71,30 +78,24 @@ class LoginPage extends HookConsumerWidget {
                             // 匿名ログインボタン
                             AnonymousLoginButton(
                               isLoading: loginState.isLoading,
-                              onPressed:
-                                  () =>
-                                      loginViewModel.signIn(AuthType.anonymous),
+                              onPressed: onPressSignInAnonymous,
                             ),
                           ],
                         ),
-                      ),
-                      if (loginState.isLoading) const LoadingOverlay(),
-                    ],
+                        const Gap(20),
+                        // 利用規約
+                        const TermsOfServiceText(),
+                        const Gap(20),
+                      ],
+                    ),
                   ),
                 ),
-                // 利用規約
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 20,
-                  ),
-                  child: const TermsOfServiceText(),
                 ),
-                const Spacer(),
+                if (loginState.isLoading) const LoadingOverlay(),
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }

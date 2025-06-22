@@ -46,6 +46,7 @@ class AppBrandingSection extends StatelessWidget {
         subtitleColor ?? Colors.white.withValues(alpha: 0.8);
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         // ロゴ
         AppLogo(size: logoSize, color: logoColor),
