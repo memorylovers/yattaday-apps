@@ -19,6 +19,12 @@ class FirebaseAuthRepository implements IAuthRepository {
   FirebaseAuthRepository(this._authService);
 
   @override
+  Future<void> me() {
+    // TODO: implement me
+    throw UnimplementedError();
+  }
+
+  @override
   Future<void> signIn(AuthType type) async {
     try {
       await _authService.signIn(type);

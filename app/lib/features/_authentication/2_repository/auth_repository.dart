@@ -2,6 +2,9 @@ import '../../../../common/types/types.dart';
 
 /// 認証関連のリポジトリのインターフェース
 abstract class IAuthRepository {
+  /// 現在のログイン情報の取得
+  Future<void> me();
+
   /// サインイン
   Future<void> signIn(AuthType type);
 
