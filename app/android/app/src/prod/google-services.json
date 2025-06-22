@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "965620404751",
+    "project_id": "yattaday-prod",
+    "storage_bucket": "yattaday-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965620404751:android:eae3aec51d5f919443097a",
+        "android_client_info": {
+          "package_name": "com.memorylovers.yattaday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965620404751-8fhimoirt4sgn793phkjee6jpcc08rem.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAI5vg9E_FTrgU2om867G-w1Rsuom5Lg5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965620404751-8fhimoirt4sgn793phkjee6jpcc08rem.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

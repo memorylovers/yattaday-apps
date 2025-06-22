@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "764704445887",
+    "project_id": "yattaday-stag",
+    "storage_bucket": "yattaday-stag.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764704445887:android:98ead9aad69d5fff827d0a",
+        "android_client_info": {
+          "package_name": "com.memorylovers.yattaday.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764704445887-4r2ib5kbrcv4nhpfb27i16endqjcbqfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBqBAbIftvbLXi09W5wNXLMXZQf8JW16g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764704445887-4r2ib5kbrcv4nhpfb27i16endqjcbqfl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "764704445887-u0prk3g8hl9c7hbnoddr156jl0tdhd6l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.memorylovers.yattaday.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764704445887:android:9aa3870da493c796827d0a",
+        "android_client_info": {
+          "package_name": "com.memorylovers.yattaday.stag"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764704445887-4r2ib5kbrcv4nhpfb27i16endqjcbqfl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBqBAbIftvbLXi09W5wNXLMXZQf8JW16g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764704445887-4r2ib5kbrcv4nhpfb27i16endqjcbqfl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "764704445887-u0prk3g8hl9c7hbnoddr156jl0tdhd6l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.memorylovers.yattaday.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
