@@ -82,6 +82,7 @@ class LoginPage extends HookConsumerWidget {
           ),
         ),
 
+        // TODO: ローディングをオーバーレイではなく、AppBrandingSectionの位置を維持したまま、ボタンなどを非表示にし、代わりにローディングを表示したい
         if (loginState.isLoading) LoadingOverlay(),
       ],
     );

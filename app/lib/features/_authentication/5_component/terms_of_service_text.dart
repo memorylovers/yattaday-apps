@@ -5,6 +5,8 @@ class TermsOfServiceText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: 分割されているため、i18n対応した際、不適切な文になってしまう
+    // TODO: 利用規約とプライバシーポリシーのURLをブラウザで開くようにする
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
