@@ -41,9 +41,7 @@ class LoginPage extends HookConsumerWidget {
       body: Column(
         children: [
           // アプリブランディングセクション（50%）
-          const Expanded(
-            child: Center(child: AppBrandingSection()),
-          ),
+          const Expanded(child: Center(child: AppBrandingSection())),
 
           // ボタンと利用規約セクション（50%）
           Expanded(
@@ -57,39 +55,39 @@ class LoginPage extends HookConsumerWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                        const Gap(20),
-                        // ボタン
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            GoogleLoginButton(
-                              isLoading: loginState.isLoading,
-                              onPressed: onPressSignInGoogle,
-                            ),
-                            const Gap(12),
-                            AppleLoginButton(
-                              isLoading: loginState.isLoading,
-                              onPressed: onPressSignInApple,
-                            ),
-                            const Gap(16),
-                            // 区切り線
-                            const OrDivider(),
-                            const Gap(16),
-                            // 匿名ログインボタン
-                            AnonymousLoginButton(
-                              isLoading: loginState.isLoading,
-                              onPressed: onPressSignInAnonymous,
-                            ),
-                          ],
-                        ),
-                        const Gap(20),
-                        // 利用規約
-                        const TermsOfServiceText(),
-                        const Gap(20),
-                      ],
+                          const Gap(20),
+                          // ボタン
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              GoogleLoginButton(
+                                isLoading: loginState.isLoading,
+                                onPressed: onPressSignInGoogle,
+                              ),
+                              const Gap(12),
+                              AppleLoginButton(
+                                isLoading: loginState.isLoading,
+                                onPressed: onPressSignInApple,
+                              ),
+                              const Gap(16),
+                              // 区切り線
+                              const OrDivider(),
+                              const Gap(16),
+                              // 匿名ログインボタン
+                              AnonymousLoginButton(
+                                isLoading: loginState.isLoading,
+                                onPressed: onPressSignInAnonymous,
+                              ),
+                            ],
+                          ),
+                          const Gap(20),
+                          // 利用規約
+                          const TermsOfServiceText(),
+                          const Gap(20),
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 ),
                 if (loginState.isLoading) const LoadingOverlay(),
               ],
