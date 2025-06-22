@@ -2,12 +2,9 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../common/providers/service_providers.dart';
-import '../../daily_records/3_application/record_item_histories_store.dart';
-import '../../daily_records/3_application/record_item_statistics_store.dart';
 import '../1_models/record_item.dart';
 import '../1_models/record_item_statistics.dart';
 import '../3_application/record_item_crud_store.dart';
-import '../3_application/record_items_store.dart';
 
 part 'record_item_detail_view_model.freezed.dart';
 part 'record_item_detail_view_model.g.dart';
@@ -29,23 +26,14 @@ class RecordItemDetailPageState with _$RecordItemDetailPageState {
 class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
   @override
   RecordItemDetailPageState build(String recordItemId) {
-    final recordItem = ref.watch(recordItemByIdProvider(recordItemId));
-    final statistics = ref.watch(
-      recordItemStatisticsProvider(recordItemId: recordItemId),
-    );
-    final todayRecordExists = ref.watch(
-      watchTodayRecordExistsProvider(recordItemId: recordItemId),
-    );
-    final recordedDates = ref.watch(
-      recordedDatesProvider(recordItemId: recordItemId),
-    );
+    // TODO: Repositoryからデータを取得する
 
     return RecordItemDetailPageState(
       selectedMonth: DateTime.now(),
-      recordItem: recordItem,
-      statistics: statistics,
-      todayRecordExists: todayRecordExists,
-      recordedDates: recordedDates,
+      recordItem: AsyncValue.loading(),
+      statistics: AsyncValue.loading(),
+      todayRecordExists: AsyncValue.loading(),
+      recordedDates: AsyncValue.loading(),
     );
   }
 
@@ -88,39 +76,6 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
   }
 
   Future<void> toggleTodayRecord(bool exists) async {
-    try {
-      final userIdNullable = await ref.read(firebaseUserUidProvider.future);
-      if (userIdNullable == null) {
-        throw Exception('ユーザーがログインしていません');
-      }
-      final userId = userIdNullable;
-
-      if (exists) {
-        // 削除
-        await ref
-            .read(deleteRecordItemHistoryUseCaseProvider)
-            .executeByDate(
-              userId: userId,
-              recordItemId: recordItemId,
-              date: DateTime.now(),
-            );
-      } else {
-        // 作成
-        await ref
-            .read(createRecordItemHistoryUseCaseProvider)
-            .execute(
-              userId: userId,
-              recordItemId: recordItemId,
-              date: DateTime.now(),
-            );
-      }
-
-      // プロバイダーをリフレッシュ
-      ref.invalidate(recordItemStatisticsProvider(recordItemId: recordItemId));
-      ref.invalidate(recordedDatesProvider(recordItemId: recordItemId));
-    } catch (e) {
-      // エラーハンドリングは必要に応じて実装
-      rethrow;
-    }
+    // TODO: 実装する
   }
 }
