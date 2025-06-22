@@ -37,64 +37,53 @@ class LoginPage extends HookConsumerWidget {
       loginViewModel.signIn(AuthType.anonymous);
     }
 
-    return GradientScaffold(
-      body: Column(
-        children: [
-          // アプリブランディングセクション（50%）
-          const Expanded(child: Center(child: AppBrandingSection())),
-
-          // ボタンと利用規約セクション（50%）
-          Expanded(
-            child: Stack(
+    return Stack(
+      children: [
+        GradientScaffold(
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Gap(20),
-                          // ボタン
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              GoogleLoginButton(
-                                isLoading: loginState.isLoading,
-                                onPressed: onPressSignInGoogle,
-                              ),
-                              const Gap(12),
-                              AppleLoginButton(
-                                isLoading: loginState.isLoading,
-                                onPressed: onPressSignInApple,
-                              ),
-                              const Gap(16),
-                              // 区切り線
-                              const OrDivider(),
-                              const Gap(16),
-                              // 匿名ログインボタン
-                              AnonymousLoginButton(
-                                isLoading: loginState.isLoading,
-                                onPressed: onPressSignInAnonymous,
-                              ),
-                            ],
-                          ),
-                          const Gap(20),
-                          // 利用規約
-                          const TermsOfServiceText(),
-                          const Gap(20),
-                        ],
-                      ),
-                    ),
-                  ),
+                // アプリブランディングセクション（50%）
+                Center(child: AppBrandingSection()),
+                const Gap(20),
+
+                // ログインボタン
+                GoogleLoginButton(
+                  isLoading: loginState.isLoading,
+                  onPressed: onPressSignInGoogle,
                 ),
-                if (loginState.isLoading) const LoadingOverlay(),
+                const Gap(12),
+
+                AppleLoginButton(
+                  isLoading: loginState.isLoading,
+                  onPressed: onPressSignInApple,
+                ),
+
+                // 区切り線
+                const Gap(16),
+                const OrDivider(),
+                const Gap(16),
+
+                // 匿名ログインボタン
+                AnonymousLoginButton(
+                  isLoading: loginState.isLoading,
+                  onPressed: onPressSignInAnonymous,
+                ),
+
+                // 利用規約
+                const Gap(20),
+                const TermsOfServiceText(),
+                const Gap(20),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+
+        if (loginState.isLoading) LoadingOverlay(),
+      ],
     );
   }
 }
