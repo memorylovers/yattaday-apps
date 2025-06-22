@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// 記録項目追加用のFloatingActionButton
-/// 
+///
 /// 記録項目一覧画面で新規項目を追加するためのFAB
 class RecordItemsFAB extends StatelessWidget {
   const RecordItemsFAB({

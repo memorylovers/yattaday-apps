@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../_gen/i18n/strings.g.dart';
+import '../../../../components/buttons/icon_button_arrow_left.dart';
+import '../../../../components/buttons/icon_button_arrow_right.dart';
 import '../../../../components/scaffold/gradient_scaffold.dart';
 import '../../../../routing/router_routes.dart';
 import '../1_models/record_item.dart';
@@ -25,18 +27,8 @@ class RecordItemsListPage extends HookConsumerWidget {
 
     return GradientScaffold(
       title: dateFormatter.format(viewModelState.selectedDate),
-      leading: IconButton(
-        iconSize: 36,
-        icon: const Icon(Icons.chevron_left),
-        onPressed: viewModel.goToPreviousDay,
-      ),
-      actions: [
-        IconButton(
-          iconSize: 36,
-          icon: const Icon(Icons.chevron_right),
-          onPressed: viewModel.goToNextDay,
-        ),
-      ],
+      leading: IconButtonArrowLeft(onPressed: viewModel.goToPreviousDay),
+      actions: [IconButtonArrowRight(onPressed: viewModel.goToNextDay)],
       body: viewModelState.recordItemsAsync.when(
         data:
             (items) => RecordItemListView(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// エラー状態表示ウィジェット
-/// 
+///
 /// データ取得エラー時にエラーメッセージとリトライボタンを表示
 class ErrorStateWidget extends StatelessWidget {
   const ErrorStateWidget({
@@ -38,10 +38,7 @@ class ErrorStateWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: onRetry,
-            child: Text(retryButtonText),
-          ),
+          ElevatedButton(onPressed: onRetry, child: Text(retryButtonText)),
         ],
       ),
     );
