@@ -19,16 +19,18 @@ class RecordItemsListPage extends HookConsumerWidget {
     final viewModel = ref.read(recordItemsListViewModelProvider.notifier);
 
     // 日付フォーマット（例：2024年6月14日）
-    final dateFormatter = DateFormat('yyyy年M月d日');
+    final dateFormatter = DateFormat('yyyy/MM/dd(E)');
 
     return GradientScaffold(
       title: dateFormatter.format(viewModelState.selectedDate),
       leading: IconButton(
+        iconSize: 36,
         icon: const Icon(Icons.chevron_left),
         onPressed: viewModel.goToPreviousDay,
       ),
       actions: [
         IconButton(
+          iconSize: 36,
           icon: const Icon(Icons.chevron_right),
           onPressed: viewModel.goToNextDay,
         ),

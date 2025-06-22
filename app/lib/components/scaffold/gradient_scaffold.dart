@@ -73,6 +73,8 @@ class GradientScaffold extends StatelessWidget {
           title != null || actions != null || showBackButton || leading != null
               ? AppBar(
                 title: title != null ? Text(title!) : null,
+                centerTitle: true,
+                titleTextStyle: TextStyle(fontSize: 16, height: 1.1),
                 backgroundColor: Colors.transparent,
                 foregroundColor: Colors.white,
                 elevation: 0,
