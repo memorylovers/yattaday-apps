@@ -5,7 +5,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../common/providers/service_providers.dart';
 import '../../../common/types/types.dart';
-import '../2_repository/auth_repository.dart';
 import '../2_repository/firebase_auth_repository.dart';
 
 part 'auth_store.freezed.dart';
@@ -20,12 +19,6 @@ class AuthState with _$AuthState {
   factory AuthState.fromJson(Map<String, dynamic> json) =>
       _$AuthStateFromJson(json);
 }
-
-// repositories
-final authRepositoryProvider = Provider<IAuthRepository>((ref) {
-  final authService = ref.watch(authServiceProvider);
-  return FirebaseAuthRepository(authService);
-});
 
 /// 認証状態
 @Riverpod(keepAlive: true)

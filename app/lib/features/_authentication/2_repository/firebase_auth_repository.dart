@@ -1,8 +1,16 @@
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
 import '../../../common/exception/handling_error.dart';
 import '../../../common/providers/service_providers.dart';
 import '../../../common/types/types.dart';
 import '../../../services/firebase/auth_service.dart';
 import 'auth_repository.dart';
+
+// repositories
+final authRepositoryProvider = Provider<IAuthRepository>((ref) {
+  final authService = ref.watch(authServiceProvider);
+  return FirebaseAuthRepository(authService);
+});
 
 /// AuthRepositoryのFirebase Auth実装
 class FirebaseAuthRepository implements IAuthRepository {
