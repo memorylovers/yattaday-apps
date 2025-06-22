@@ -1,8 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../3_application/record_items_store.dart';
 import '../1_models/record_item.dart';
+import '../3_application/record_items_store.dart';
 
 part 'record_items_list_view_model.freezed.dart';
 part 'record_items_list_view_model.g.dart';

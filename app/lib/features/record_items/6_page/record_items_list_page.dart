@@ -7,7 +7,9 @@ import '../../../../components/scaffold/gradient_scaffold.dart';
 import '../../../../routing/router_routes.dart';
 import '../1_models/record_item.dart';
 import '../4_view_model/record_items_list_view_model.dart';
+import '../5_component/error_state_widget.dart';
 import '../5_component/record_item_list_view.dart';
+import '../5_component/record_items_fab.dart';
 
 /// 記録項目一覧画面
 class RecordItemsListPage extends HookConsumerWidget {
@@ -46,27 +48,14 @@ class RecordItemsListPage extends HookConsumerWidget {
             ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error:
-            (error, stackTrace) => Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    i18n.recordItems.errorMessage,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: viewModel.refresh,
-                    child: Text(i18n.common.retry),
-                  ),
-                ],
-              ),
+            (error, stackTrace) => ErrorStateWidget(
+              errorMessage: i18n.recordItems.errorMessage,
+              onRetry: viewModel.refresh,
+              retryButtonText: i18n.common.retry,
             ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: RecordItemsFAB(
         onPressed: () => _navigateToCreate(context),
-        backgroundColor: const Color(0xFF5DD3DC),
-        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
