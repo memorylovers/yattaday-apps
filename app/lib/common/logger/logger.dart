@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import '../../constants.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:talker_riverpod_logger/talker_riverpod_logger.dart';
 
@@ -28,9 +27,10 @@ final talkerRiverpodObserver = TalkerRiverpodObserver(
   settings: TalkerRiverpodLoggerSettings(
     providerFilter: (provider) {
       if (kIsProd) return false;
+      return true;
 
       // 対象のProviderのみ表示
-      return kLoggerTargetProviders.contains(provider.name);
+      // return kLoggerTargetProviders.contains(provider.name);
     },
   ),
 );
