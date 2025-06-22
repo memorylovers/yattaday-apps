@@ -1,8 +1,8 @@
 import '../../../common/exception/handling_error.dart';
-import '../../../common/types/types.dart';
 import '../../../common/providers/service_providers.dart';
+import '../../../common/types/types.dart';
 import '../../../services/firebase/auth_service.dart';
-import '../1_models/auth_repository.dart';
+import 'auth_repository.dart';
 
 /// AuthRepositoryのFirebase Auth実装
 class FirebaseAuthRepository implements IAuthRepository {

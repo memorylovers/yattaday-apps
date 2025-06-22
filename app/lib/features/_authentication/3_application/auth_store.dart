@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../common/providers/service_providers.dart';
 import '../../../common/types/types.dart';
-import '../1_models/auth_repository.dart';
+import '../2_repository/auth_repository.dart';
 import '../2_repository/firebase_auth_repository.dart';
 
 part 'auth_store.freezed.dart';
@@ -62,7 +62,7 @@ class AuthStore extends _$AuthStore {
 @riverpod
 Future<void> authSignOutWhenFirstRun(Ref ref) async {
   final service = ref.watch(sharedPreferencesServiceProvider);
-  
+
   if (service.isFirstRun) {
     await FirebaseAuth.instance.signOut();
     await service.setIsFirstRun(false);
