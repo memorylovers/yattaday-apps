@@ -34,7 +34,8 @@
       "Bash(chmod:*)",
       "Bash(./replace_imports.sh)",
       "Bash(-e \"s|''../../data/repository/|''../../2_repository/|g\" )",
-      "Bash({} ;)"
+      "Bash({} ;)",
+      "Bash(/Users/fujiuray/workspace_memoryloves/workspace_apps/yattaday-apps/app/run_test_v2.sh:*)"
     ],
     "deny": [
       "Read(../**)",

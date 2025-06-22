@@ -5,7 +5,6 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../common/providers/service_providers.dart';
 import '../../../common/types/types.dart';
-import '../../../common/utils/system_providers.dart';
 import '../1_models/auth_repository.dart';
 import '../2_repository/firebase_auth_repository.dart';
 
@@ -62,13 +61,10 @@ class AuthStore extends _$AuthStore {
 // アプリが初回起動かチェックして、初回起動の場合はサインアウトする
 @riverpod
 Future<void> authSignOutWhenFirstRun(Ref ref) async {
-  final preferences = ref.watch(sharedPreferencesProvider);
-  const key = 'isFirstRun';
-
-  final firstRun = preferences.getBool(key) ?? true;
-
-  if (firstRun) {
+  final service = ref.watch(sharedPreferencesServiceProvider);
+  
+  if (service.isFirstRun) {
     await FirebaseAuth.instance.signOut();
-    await preferences.setBool(key, false);
+    await service.setIsFirstRun(false);
   }
 }
