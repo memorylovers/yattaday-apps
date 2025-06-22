@@ -1,13 +1,14 @@
-import 'package:common_widget/common_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../../common/hooks/use_error_message.dart';
 import '../../../common/types/types.dart';
-import '../../../common/utils/snack_bar_handler.dart';
+import '../../../components/loading_overlay.dart';
+import '../../../components/or_divider.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
 import '../4_view_model/login_view_model.dart';
+import '../5_component/app_branding_section.dart';
 import '../5_component/login_buttons.dart';
 import '../5_component/terms_of_service_text.dart';
 
@@ -21,20 +22,7 @@ class LoginPage extends HookConsumerWidget {
     final loginViewModel = ref.read(loginViewModelProvider.notifier);
 
     // エラーメッセージの監視
-    useEffect(() {
-      if (loginState.errorMessage != null) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (context.mounted) {
-            // TODO: エラーメッセージをいい感じにする
-            SnackBarHandler.showError(
-              context,
-              message: loginState.errorMessage!,
-            );
-          }
-        });
-      }
-      return null;
-    }, [loginState.errorMessage]);
+    useErrorMessage(loginState.errorMessage, context);
 
     return GradientScaffold(
       body: SingleChildScrollView(
@@ -47,26 +35,8 @@ class LoginPage extends HookConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Spacer(),
-                // ロゴ
-                const AppLogo(size: 200, color: Colors.white),
-                // アプリ名
-                Text(
-                  'YattaDay',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                // サブタイトル
-                Text(
-                  '毎日の記録を簡単に',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white.withValues(alpha: 0.8),
-                  ),
-                ),
+                // アプリブランディングセクション
+                const AppBrandingSection(),
                 const SizedBox(height: 48),
 
                 // ボタン
@@ -96,33 +66,7 @@ class LoginPage extends HookConsumerWidget {
                             ),
                             const Gap(16),
                             // 区切り線
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 1,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                  ),
-                                  child: Text(
-                                    'または',
-                                    style: TextStyle(
-                                      color: Colors.grey.shade500,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 1,
-                                    color: Colors.grey.shade400,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            const OrDivider(),
                             const Gap(16),
                             // 匿名ログインボタン
                             AnonymousLoginButton(
@@ -134,15 +78,7 @@ class LoginPage extends HookConsumerWidget {
                           ],
                         ),
                       ),
-                      if (loginState.isLoading)
-                        Positioned.fill(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                      if (loginState.isLoading) const LoadingOverlay(),
                     ],
                   ),
                 ),

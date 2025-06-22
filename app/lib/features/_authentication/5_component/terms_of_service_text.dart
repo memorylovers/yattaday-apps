@@ -11,22 +11,20 @@ class TermsOfServiceText extends StatelessWidget {
         style: TextStyle(
           fontSize: 12,
           height: 1.5,
-          color: Theme.of(context).textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
+          color: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
         ),
         children: [
           TextSpan(text: 'ログインすることで、'),
           TextSpan(
             text: '利用規約',
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-            ),
+            style: TextStyle(decoration: TextDecoration.underline),
           ),
           TextSpan(text: 'と'),
           TextSpan(
             text: 'プライバシーポリシー',
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-            ),
+            style: TextStyle(decoration: TextDecoration.underline),
           ),
           TextSpan(text: 'に同意したものとみなされます'),
         ],
