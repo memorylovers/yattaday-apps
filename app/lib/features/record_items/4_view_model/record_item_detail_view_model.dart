@@ -4,10 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../common/providers/service_providers.dart';
 import '../../daily_records/3_application/record_item_histories_store.dart';
 import '../../daily_records/3_application/record_item_statistics_store.dart';
-import '../../daily_records/3_application/use_cases/get_record_item_statistics_usecase.dart';
+import '../1_models/record_item.dart';
+import '../1_models/record_item_statistics.dart';
 import '../3_application/record_item_crud_store.dart';
 import '../3_application/record_items_store.dart';
-import '../1_models/record_item.dart';
 
 part 'record_item_detail_view_model.freezed.dart';
 part 'record_item_detail_view_model.g.dart';

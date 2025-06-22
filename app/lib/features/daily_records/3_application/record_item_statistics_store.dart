@@ -2,8 +2,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../common/providers/service_providers.dart';
-import 'use_cases/get_record_item_statistics_usecase.dart';
+import '../../record_items/1_models/record_item_statistics.dart';
 import 'record_item_histories_store.dart';
+import 'use_cases/get_record_item_statistics_usecase.dart';
 
 part 'record_item_statistics_store.g.dart';
 

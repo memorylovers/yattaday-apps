@@ -3,9 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/common/providers/service_providers.dart';
 import 'package:myapp/features/daily_records/3_application/record_item_histories_store.dart';
 import 'package:myapp/features/daily_records/3_application/record_item_statistics_store.dart';
-import 'package:myapp/features/daily_records/3_application/use_cases/get_record_item_statistics_usecase.dart';
-import 'package:myapp/features/record_items/3_application/record_items_store.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
+import 'package:myapp/features/record_items/1_models/record_item_statistics.dart';
+import 'package:myapp/features/record_items/3_application/record_items_store.dart';
 import 'package:myapp/features/record_items/4_view_model/record_item_detail_view_model.dart';
 
 // Mock data

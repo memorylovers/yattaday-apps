@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../daily_records/3_application/use_cases/get_record_item_statistics_usecase.dart';
+import '../1_models/record_item_statistics.dart';
 
 /// 記録項目の統計情報カード
 class RecordItemStatisticsCard extends StatelessWidget {
