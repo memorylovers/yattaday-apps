@@ -32,4 +32,16 @@ class LoginViewModel extends _$LoginViewModel {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
+
+  Future<void> signInGoogle() async {
+    await signIn(AuthType.google);
+  }
+
+  Future<void> signInApple() async {
+    await signIn(AuthType.apple);
+  }
+
+  Future<void> signInAnonymous() async {
+    await signIn(AuthType.anonymous);
+  }
 }

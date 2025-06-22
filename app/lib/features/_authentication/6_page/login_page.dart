@@ -3,7 +3,6 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/hooks/use_error_message.dart';
-import '../../../common/types/types.dart';
 import '../../../components/loading_overlay.dart';
 import '../../../components/or_divider.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
@@ -24,19 +23,6 @@ class LoginPage extends HookConsumerWidget {
     // エラーメッセージの監視
     useErrorMessage(loginState.errorMessage, context);
 
-    // ユーザイベントハンドラ
-    void onPressSignInGoogle() {
-      loginViewModel.signIn(AuthType.google);
-    }
-
-    void onPressSignInApple() {
-      loginViewModel.signIn(AuthType.apple);
-    }
-
-    void onPressSignInAnonymous() {
-      loginViewModel.signIn(AuthType.anonymous);
-    }
-
     return Stack(
       children: [
         GradientScaffold(
@@ -53,13 +39,13 @@ class LoginPage extends HookConsumerWidget {
                 // ログインボタン
                 GoogleLoginButton(
                   isLoading: loginState.isLoading,
-                  onPressed: onPressSignInGoogle,
+                  onPressed: loginViewModel.signInGoogle,
                 ),
                 const Gap(12),
 
                 AppleLoginButton(
                   isLoading: loginState.isLoading,
-                  onPressed: onPressSignInApple,
+                  onPressed: loginViewModel.signInApple,
                 ),
 
                 // 区切り線
@@ -70,7 +56,7 @@ class LoginPage extends HookConsumerWidget {
                 // 匿名ログインボタン
                 AnonymousLoginButton(
                   isLoading: loginState.isLoading,
-                  onPressed: onPressSignInAnonymous,
+                  onPressed: loginViewModel.signInAnonymous,
                 ),
 
                 // 利用規約
