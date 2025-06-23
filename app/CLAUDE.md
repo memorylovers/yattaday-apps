@@ -28,18 +28,46 @@ Claude Code (claude.ai/code) への指針を提供する
 - **一方向のデータフロー(Unidirectional data flow / UDF)**
 - **コロケーション (co-location)**
 - **テスト駆動開発(TDD)**
+- **CQRS (Command Query Responsibility Segregation)**
 
 ### 開発の流れ
 
-TDDを用いて開発を行う
+#### 軽量化TDD戦略
 
-1. **テスト作成**: Red フェーズ
-1. **コードの実装**: Green フェーズ
-1. **Widgetbook実装**: Page/Componentがあれば、UIカタログ追加
-1. **フォーマット**: `make format` - コードスタイル統一
-1. **コード生成**: `make gen` - Freezed・build_runner実行
-1. **リント**: `make lint` - 静的解析チェック
-1. **テスト**: `make test` - 全テスト実行
+層によってテスト手法を使い分けることで、効率的な品質保証を実現します。
+
+**TDD必須層**（ビジネスロジック中心）:
+
+- **1_models、2_repository、3_store、4_flow**: 先にテストを書いてから実装
+
+**柔軟なアプローチ層**:
+
+- **5_view_model**: 複雑なロジックがある場合のみTDD
+
+**Widgetbook代替層**（UI中心）:
+
+- **6_component、7_page**: Widgetbookでビジュアル確認
+
+#### 複雑なロジックの判断基準
+
+以下のいずれかに該当する場合は「複雑なロジック」としてTDDを適用:
+
+- 条件分岐が3つ以上
+- 非同期処理の組み合わせ（複数のawait）
+- エラーハンドリングが必要
+- 状態遷移が複雑（3つ以上の状態）
+- ビジネスルールの実装
+
+#### 実装手順
+
+1. **テスト作成**: Red フェーズ（TDD対象層のみ）
+2. **コードの実装**: Green フェーズ
+3. **リファクタリング**: Refactor フェーズ
+4. **Widgetbook実装**: Page/Componentがあれば、UIカタログ追加
+5. **フォーマット**: `make format` - コードスタイル統一
+6. **コード生成**: `make gen` - Freezed・build_runner実行
+7. **リント**: `make lint` - 静的解析チェック
+8. **テスト**: `make test` - 全テスト実行
 
 ### **完了条件**
 
@@ -51,13 +79,14 @@ TDDを用いて開発を行う
 
 ### コーディング規約
 
-- **アーキテクチャ**: 6層構造を厳守
+- **アーキテクチャ**: 7層構造を厳守
   - models (1_models)
   - repository (2_repository)
-  - application (3_application)
-  - view_model (4_view_model)
-  - component (5_component)
-  - page (6_page)
+  - store (3_store)
+  - flow (4_flow)
+  - view_model (5_view_model)
+  - component (6_component)
+  - page (7_page)
 - **状態管理**: Riverpodパターンに準拠
 - **ドキュメント**: 日本語で記載
 - **命名規則**: snake_case（ファイル）、PascalCase（クラス）
@@ -130,8 +159,10 @@ app/lib/services/
 ```
 
 - 外部ライブラリ（3rd party）のラッパー層
+- **単なる薄いラッパーではなく、プロジェクトで必要な機能を集約した専用インターフェース**
+- 必要な機能のみを型安全な形で公開し、不要な複雑さを隠蔽
 - ライブラリ固有の実装詳細を隠蔽
-- エラーハンドリングを統一的に処理
+- エラーハンドリングを統一的に処理（AppExceptionへの変換）
 - Repository層から参照される
 
 ### app/lib/routing/配下の構成
@@ -155,24 +186,26 @@ app/lib/routing/
 ```
 features/
 └── <feature_name>/
-    ├── 1_models/         # モデル、エンティティ
-    ├── 2_repository/     # Repository。永続化・データアクセス層
-    ├── 3_application/    # 外部のfeatureに公開
-    ├── 4_view_model/     # コントローラー。UIと1対1
-    ├── 5_component/      # UI コンポーネント
-    └── 6_page/           # UI ページ
+    ├── 1_models/         # モデル、エンティティ、ドメインロジック
+    ├── 2_repository/     # Repository。永続化・データアクセス層（CQRS）
+    ├── 3_store/          # グローバル状態管理。外部のfeatureに公開
+    ├── 4_flow/           # 複数画面間の一時的な状態管理
+    ├── 5_view_model/     # 画面固有の状態管理。UIと1対1
+    ├── 6_component/      # UI コンポーネント
+    └── 7_page/           # UI ページ
 ```
 
 #### ディレクトリ番号の意味
 
 **目的**: ディレクトリ名でソートした際に、クリーンアーキテクチャの層順序と一致させる
 
-- **1_models**: 最内層（ビジネスモデル）
-- **2_repository**: データアクセス層
-- **3_application**: アプリケーション層
-- **4_view_model**: プレゼンテーション層（ロジック）
-- **5_component**: プレゼンテーション層（UI部品）
-- **6_page**: プレゼンテーション層（画面）
+- **1_models**: 最内層（ドメインモデル、ビジネスロジック）
+- **2_repository**: データアクセス層（CQRS: Query/Command分離）
+- **3_store**: グローバル状態管理層
+- **4_flow**: フロー状態管理層（複数画面の調整）
+- **5_view_model**: プレゼンテーション層（画面固有のロジック）
+- **6_component**: プレゼンテーション層（UI部品）
+- **7_page**: プレゼンテーション層（画面）
 
 **効果**:
 
@@ -184,10 +217,11 @@ features/
 - `page -> component`: pageは、componentを使って構築する
 - `page -> view_model`: UI Stateを持つpageは、view_modelと1対1で対応する
 - `component -> view_model`: UI Stateを持つcomponentは、view_modelと1対1で対応する
-- `view_model -> application or repository`: view_modelは、application or repositoryのみ参照できる
-- `application -> repository`: applicationは、repositoryのみ参照できる
+- `view_model -> store, flow, repository`: view_modelは、store、flow、repositoryを参照できる
+- `flow -> store, repository`: flowは、storeとrepositoryを参照できる
+- `store -> repository`: storeは、repositoryのみ参照できる
 - `repository -> models, services`: repositoryは、modelsとservicesのみ参照できる
-- 別のfeatureからは、`application`のみが参照できる
+- 別のfeatureからは、`store`のみが参照できる
 
 ### Models: ビジネスモデル
 
@@ -198,49 +232,68 @@ features/
 
 - モデル、エンティティ、データクラスの配置場所
 - freezedを利用したimutableなclassやenum
-- ビジネスロジックを持たないデータ構造
+- **基本的な計算ロジックやビジネスロジックを含むことができる**
+- 例：価格計算、割引計算、在庫判定などのドメイン固有のロジック
 
 ### Repository: データアクセス層(Repositoryパターン)
 
 ```
 2_repository/
 ├── dto/
-│   └── <name>_param.dart  # 引数パラメタのDTO
-└── <name>_repository.dart
+│   └── <name>_param.dart        # 引数パラメタのDTO
+├── <name>_query_repository.dart  # 参照用（読み取り専用）
+└── <name>_command_repository.dart # 更新用（作成・更新・削除）
 ```
 
 - API、DB、SharedPreferenceなどの外部のデータにアクセスする永続化層
+- **CQRSパターン**: Query（参照）とCommand（更新）を分離
 - riverpodの使用禁止。状態を持たない
 - repositoryの返り値は、primitiveな型か、1_modelsのモデルのみ
 - repositoryの引数は、dto配下に配置
 - 外部ライブラリへのアクセスは、services層を経由
+- **データ中心の純粋なビジネスロジック**（データ変換、検証、計算）を含む
 
-### Application: 共通のUI Stateや処理。外部featureへの公開ポイント
-
-```
-3_application/
-├── <name>_store.dart   # Global Stateを持つStore。StateNotifierProviderを利用
-└── <name>_usecase.dart # 状態を持たない関数
-```
-
-- 同一featureの複数view_modelで共有したい状態(store)
-- 別featureのview_modelから参照したい状態(store)や処理(usecase)
-- 別featureは、3_applicationのみ参照可能
-
-### ViewModel: UIに対応づくUI Stateと処理
+### Store: グローバル状態管理。外部featureへの公開ポイント
 
 ```
-4_view_model/
+3_store/
+└── <name>_store.dart   # Global Stateを持つStore。StateNotifierProviderを利用
+```
+
+- アプリ全体で共有されるグローバルな状態を管理
+- 同一featureの複数view_modelで共有したい状態
+- 別featureのview_modelから参照したい状態
+- 別featureは、3_storeのみ参照可能
+- **状態管理とアプリケーション固有のビジネスルール**を含む
+- Store間の依存は`ref.watch`と`select`で必要な値のみを監視（パフォーマンス最適化）
+
+### Flow: 複数画面間の一時的な状態管理
+
+```
+4_flow/
+└── <name>_flow.dart # フロー状態を持つFlow。StateNotifierProviderを利用
+```
+
+- 特定の画面群でのみ共有される一時的な状態を管理
+- 例：チェックアウトフロー、オンボーディングフロー、マルチステップフォーム
+- フローの進行状態や画面間で受け渡すデータを保持
+- フロー完了時に状態をクリア
+
+### ViewModel: 画面固有の状態管理
+
+```
+5_view_model/
 └── <name>_view_model.dart # UI Stateを持つViewModel。StateNotifierProviderを利用
 ```
 
-- 5_component/6_page内のpageやcomponentと、1対1のViewModel
+- 6_component/7_page内のpageやcomponentと、1対1のViewModel
 - 対応するpageやcomponentのUI StateやEvent Actionを管理
+- **UI表示に関するロジックのみ**（フィルタリング、ソート、フォーマット）
 
 ### Component: UIコンポーネント
 
 ```
-5_component/
+6_component/
 └── <name>.dart # UI Component
 ```
 
@@ -260,7 +313,7 @@ features/
   - 特定のfeatureに依存しない
   - 複数のfeatureから参照される
 
-- **features/<feature_name>/5_component/**: feature固有のUIコンポーネント
+- **features/<feature_name>/6_component/**: feature固有のUIコンポーネント
   - 例: RecordItemCard、UserProfileHeader
   - 特定のfeatureのドメインモデルに依存
   - 他のfeatureからは参照されない
@@ -268,7 +321,7 @@ features/
 ### Page: 画面/ダイアログ
 
 ```
-6_page/
+7_page/
 ├── <name>_page.dart         # UI: ページ
 └── <name>_dialog.dart       # UI: ダイアログ
 ```
@@ -288,10 +341,11 @@ app/test/
 │   └── <feature_name>/ # lib/features/<feature_name>と対応
 │       ├── models/     # モデルのテスト
 │       ├── repository/ # Repositoryのテスト
-│       ├── application/# Application層のテスト
+│       ├── store/      # Store層のテスト
+│       ├── flow/       # Flow層のテスト
 │       ├── view_model/ # ViewModelのテスト
-│       ├── component/  # Componentのテスト
-│       └── page/       # Pageのテスト
+│       ├── component/  # Componentのテスト（Widgetbook対応）
+│       └── page/       # Pageのテスト（Widgetbook対応）
 ├── test_helpers/       # テスト用ヘルパー
 │   ├── fake_*.dart     # フェイク実装
 │   └── *_helpers.dart  # テストヘルパー関数
@@ -304,10 +358,21 @@ app/test/
 
 #### テストの種類と方針
 
+**TDD必須層（高カバレッジ）**:
+
 - **Models層**: 純粋な単体テスト（外部依存なし、カバレッジ100%目標）
 - **Repository層**: モック/フェイクを使用（カバレッジ90%以上）
-- **Application/ViewModel層**: 状態管理のテスト（カバレッジ80%以上）
-- **Component/Page層**: Widgetテスト（カバレッジ70%以上）
+- **Store層**: 状態管理のテスト（カバレッジ90%以上）
+- **Flow層**: フロー遷移のテスト（カバレッジ85%以上）
+
+**柔軟層（中カバレッジ）**:
+
+- **ViewModel層**: 複雑なロジックのテスト（カバレッジ70%以上）
+
+**Widgetbook層（カバレッジ測定対象外）**:
+
+- **Component層**: Widgetbookでビジュアル確認
+- **Page層**: Widgetbookで統合的な画面確認
 
 ### app/e2e/配下の構成
 
@@ -370,8 +435,10 @@ app/test/
 
 #### 各層での責任分担
 
+- **Service層**: 外部ライブラリの例外を**必ず**AppExceptionに変換
 - **Repository層**: 外部APIの例外を`handleError()`で**必ず**AppExceptionに変換
-- **Application層**: ビジネスロジックの例外を**必ず**AppExceptionとして発生
+- **Store層**: ビジネスロジックの例外を**必ず**AppExceptionとして発生
+- **Flow層**: フロー制御の例外を**必ず**AppExceptionとして発生
 - **ViewModel層**: **AppExceptionのみ**をキャッチしてUI状態（loading/error）に変換
 - **Page/Component層**: エラー状態の表示のみ（例外処理は行わない）
 
@@ -379,7 +446,7 @@ app/test/
 
 - **Service層**: 外部ライブラリの例外を`AppException`に変換
 - **Repository層**: `try-catch`で`handleError()`を**必ず**呼び出す
-- **Application層**: ビジネスエラーは`throw AppException()`で発生
+- **Store/Flow層**: ビジネスエラーは`throw AppException()`で発生
 - **外部ライブラリ**: Service層ですべての例外を`AppException`にラップ
 - **直接的なthrow**: `AppException`以外の例外は**禁止**
 
@@ -391,6 +458,10 @@ enum AppErrorCode {
   // 認証関連
   noAuth,              // ログインが必要
   authAlreadyLinked,   // 別アカウントに連携済み
+  
+  // データ操作関連
+  concurrentUpdate,    // 同時更新エラー
+  validationError,     // バリデーションエラー
   
   // 共通エラー
   networkError,        // ネットワークエラー
@@ -435,7 +506,7 @@ class RecordItemRepository {
     try {
       await _firestoreService.addDocument('items', item.toJson());
     } catch (error) {
-      handleError(error); // AppExceptionに変換して再throw
+      handleError(error); // common/exception/error_handler.dartの共通ヘルパー
     }
   }
 }
@@ -461,3 +532,62 @@ Future<void> createItem() async {
 - **ネットワークエラー**: 再試行を促すメッセージ
 - **認証エラー**: ログイン画面への誘導
 - **予期しないエラー**: 技術的詳細を隠した汎用メッセージ
+
+## ビジネスロジックの配置戦略
+
+### ビジネスロジックの分類と配置原則
+
+#### 1. Repository層のビジネスロジック
+
+**データ中心の純粋なビジネスロジック**をRepositoryに配置します。
+
+- データ変換・正規化
+- 価格計算（純粋関数）
+- データの整合性チェック
+- 複数データソースの統合
+
+#### 2. Store層のビジネスロジック
+
+**状態管理とアプリケーション固有のビジネスルール**をStoreに配置します。
+
+- グローバル状態に関連するビジネスルール
+- 複数エンティティの調整
+- アプリケーション固有の計算（送料、割引など）
+- ビジネスルールによる状態遷移
+
+#### 3. ViewModel層のビジネスロジック
+
+**UI表示に関するロジックのみ**をViewModelに配置します。
+
+- 表示用のフィルタリング
+- ソート処理
+- フォーマット変換
+- 画面遷移制御
+
+#### 4. Domain Modelの活用
+
+**基本的な計算ロジック**はドメインモデルに配置することも推奨されます。
+
+- エンティティ固有の計算
+- 値の検証
+- 状態判定
+
+### ビジネスロジック配置の判断フロー
+
+```
+1. このロジックは純粋関数か？
+   Yes → Repository or Domain Model
+   No  → 次へ
+
+2. 特定のエンティティに固有か？
+   Yes → Domain Model
+   No  → 次へ
+
+3. アプリケーションの状態に依存するか？
+   Yes → Store
+   No  → 次へ
+
+4. UI表示のためのロジックか？
+   Yes → ViewModel
+   No  → Repository
+```

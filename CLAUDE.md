@@ -5,7 +5,9 @@
 ## **重要事項**
 
 - 日本語でのコミュニケーションとドキュメント記載を推奨
-- **TDD（テスト駆動開発）で実装すること**
+- **軽量化TDD（テスト駆動開発）で実装すること**
+  - ビジネスロジック層（models、repository、store、flow）はTDD必須
+  - UI層（component、page）はWidgetbookでビジュアル確認
 - **`_planning/`ディレクトリに計画ドキュメントを統一配置**
   - 命名規則: `YYMMDD_HHMM_<説明>.md`
   - 作成コマンド: `make plan-new name=<説明>`
