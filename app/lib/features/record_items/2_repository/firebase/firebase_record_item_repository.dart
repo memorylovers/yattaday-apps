@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ulid4d/ulid4d.dart';
 
 import '../../../../common/exception/handling_error.dart';
-import '../1_models/record_item.dart';
-import 'record_item_query_repository.dart';
+import '../../1_models/record_item.dart';
+import '../interfaces/record_item_repository.dart';
 
-/// RecordItemQueryRepositoryのFirestore実装
-class FirebaseRecordItemQueryRepository implements IRecordItemQueryRepository {
+/// RecordItemRepositoryのFirestore実装
+class FirebaseRecordItemRepository implements IRecordItemRepository {
   final FirebaseFirestore _firestore;
 
-  FirebaseRecordItemQueryRepository({FirebaseFirestore? firestore})
+  FirebaseRecordItemRepository({FirebaseFirestore? firestore})
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
   CollectionReference<RecordItem> _col(String userId) => _firestore
@@ -17,6 +18,37 @@ class FirebaseRecordItemQueryRepository implements IRecordItemQueryRepository {
         fromFirestore: RecordItem.fromFirestore,
         toFirestore: RecordItem.toFirestore,
       );
+
+  @override
+  Future<void> create(RecordItem recordItem) async {
+    try {
+      final docRef = _col(recordItem.userId).doc(recordItem.id);
+      await docRef.set(recordItem, SetOptions(merge: false));
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  @override
+  Future<void> update(RecordItem recordItem) async {
+    try {
+      final docRef = _col(recordItem.userId).doc(recordItem.id);
+
+      await docRef.set(recordItem, SetOptions(merge: true));
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  @override
+  Future<void> delete(String userId, String recordItemId) async {
+    try {
+      final docRef = _col(userId).doc(recordItemId);
+      await docRef.delete();
+    } catch (error) {
+      handleError(error);
+    }
+  }
 
   @override
   Future<RecordItem?> getById(String userId, String recordItemId) async {
@@ -73,4 +105,7 @@ class FirebaseRecordItemQueryRepository implements IRecordItemQueryRepository {
       return 0;
     }
   }
+
+  /// 新しいIDを生成（ULIDを使用）
+  String generateId() => ULID.randomULID();
 }

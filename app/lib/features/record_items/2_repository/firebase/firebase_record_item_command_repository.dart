@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ulid4d/ulid4d.dart';
 
 import '../../../../common/exception/handling_error.dart';
-import '../1_models/record_item.dart';
-import 'record_item_command_repository.dart';
+import '../../1_models/record_item.dart';
+import '../interfaces/record_item_command_repository.dart';
 
 /// RecordItemCommandRepositoryのFirestore実装
 class FirebaseRecordItemCommandRepository

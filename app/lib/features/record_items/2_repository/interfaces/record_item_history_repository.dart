@@ -1,4 +1,4 @@
-import '../1_models/record_item_history.dart';
+import '../../1_models/record_item_history.dart';
 
 /// 記録項目履歴のリポジトリインターフェース
 abstract class IRecordItemHistoryRepository {

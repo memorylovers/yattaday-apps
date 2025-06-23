@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ulid4d/ulid4d.dart';
 
 import '../1_models/record_item.dart';
-import '../2_repository/record_item_query_repository.dart';
-import '../2_repository/record_item_command_repository.dart';
+import '../2_repository/interfaces/record_item_query_repository.dart';
+import '../2_repository/interfaces/record_item_command_repository.dart';
 import 'record_items_store.dart';
 import 'record_item_crud_store.dart';
 

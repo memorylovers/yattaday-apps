@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ulid4d/ulid4d.dart';
 
-import '../1_models/record_item_history.dart';
-import 'record_item_history_repository.dart';
+import '../../1_models/record_item_history.dart';
+import '../interfaces/record_item_history_repository.dart';
 
 /// Firebase実装の記録項目履歴リポジトリ
 class FirebaseRecordItemHistoryRepository

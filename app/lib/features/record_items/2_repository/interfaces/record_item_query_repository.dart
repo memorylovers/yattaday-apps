@@ -1,4 +1,4 @@
-import '../1_models/record_item.dart';
+import '../../1_models/record_item.dart';
 
 /// 記録項目の参照用リポジトリのインターフェース
 abstract class IRecordItemQueryRepository {

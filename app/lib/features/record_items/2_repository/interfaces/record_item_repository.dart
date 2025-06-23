@@ -1,4 +1,4 @@
-import '../1_models/record_item.dart';
+import '../../1_models/record_item.dart';
 
 /// 記録項目関連のリポジトリのインターフェース
 abstract class IRecordItemRepository {

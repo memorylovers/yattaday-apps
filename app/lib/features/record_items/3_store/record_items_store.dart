@@ -1,8 +1,8 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../common/providers/service_providers.dart';
-import '../2_repository/firebase_record_item_query_repository.dart';
-import '../2_repository/record_item_query_repository.dart';
+import '../2_repository/firebase/firebase_record_item_query_repository.dart';
+import '../2_repository/interfaces/record_item_query_repository.dart';
 import '../1_models/record_item.dart';
 
 /// RecordItemQueryRepositoryのプロバイダ

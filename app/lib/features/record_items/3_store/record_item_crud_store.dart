@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../2_repository/record_item_query_repository.dart';
-import '../2_repository/record_item_command_repository.dart';
-import '../2_repository/firebase_record_item_command_repository.dart';
+import '../2_repository/interfaces/record_item_query_repository.dart';
+import '../2_repository/interfaces/record_item_command_repository.dart';
+import '../2_repository/firebase/firebase_record_item_command_repository.dart';
 import 'record_items_store.dart';
 
 part 'record_item_crud_store.freezed.dart';

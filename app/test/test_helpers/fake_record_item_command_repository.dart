@@ -1,4 +1,4 @@
-import 'package:myapp/features/record_items/2_repository/record_item_command_repository.dart';
+import 'package:myapp/features/record_items/2_repository/interfaces/record_item_command_repository.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 
 class FakeRecordItemCommandRepository implements IRecordItemCommandRepository {

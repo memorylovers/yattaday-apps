@@ -1,10 +1,10 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../common/exception/handling_error.dart';
-import '../../../common/providers/service_providers.dart';
-import '../../../common/types/types.dart';
-import '../../../services/firebase/auth_service.dart';
-import 'auth_repository.dart';
+import '../../../../common/exception/handling_error.dart';
+import '../../../../common/providers/service_providers.dart';
+import '../../../../common/types/types.dart';
+import '../../../../services/firebase/auth_service.dart';
+import '../interfaces/auth_repository.dart';
 
 // repositories
 final authRepositoryProvider = Provider<IAuthRepository>((ref) {

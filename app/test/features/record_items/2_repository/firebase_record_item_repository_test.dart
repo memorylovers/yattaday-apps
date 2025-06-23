@@ -1,6 +1,6 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myapp/features/record_items/2_repository/firebase_record_item_repository.dart';
+import 'package:myapp/features/record_items/2_repository/firebase/firebase_record_item_repository.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 
 import '../../../test_helpers/record_item_helpers.dart';

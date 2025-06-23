@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../common/providers/service_providers.dart';
 import '../../../common/types/types.dart';
-import '../2_repository/firebase_auth_repository.dart';
+import '../2_repository/firebase/firebase_auth_repository.dart';
 
 part 'auth_store.freezed.dart';
 part 'auth_store.g.dart';
