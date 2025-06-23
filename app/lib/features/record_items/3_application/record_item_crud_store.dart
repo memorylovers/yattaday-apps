@@ -1,9 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'record_items_store.dart';
 import 'use_cases/delete_record_item_usecase.dart';
 import 'use_cases/update_record_item_usecase.dart';
-import 'record_items_store.dart';
 
 part 'record_item_crud_store.freezed.dart';
 
