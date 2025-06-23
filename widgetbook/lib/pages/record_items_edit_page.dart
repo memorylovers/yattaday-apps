@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/record_items/3_application/record_items_store.dart';
-import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
+import 'package:myapp/features/record_items/3_store/record_items_store.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_query_repository.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_command_repository.dart';
+import 'package:myapp/features/record_items/3_store/record_item_crud_store.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
-import 'package:myapp/features/record_items/6_page/record_items_edit_page.dart';
+import 'package:myapp/features/record_items/7_page/record_items_edit_page.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-/// 記録項目編集ページ用のモックリポジトリ
-class MockRecordItemEditRepository implements IRecordItemRepository {
+/// 記録項目編集ページ用のモッククエリリポジトリ
+class MockRecordItemQueryRepository implements IRecordItemQueryRepository {
   final List<RecordItem> _items = [];
 
-  MockRecordItemEditRepository({List<RecordItem>? initialItems}) {
+  MockRecordItemQueryRepository({List<RecordItem>? initialItems}) {
     if (initialItems != null) {
       _items.addAll(initialItems);
     }
@@ -30,27 +32,6 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
     );
   }
 
-  @override
-  Future<void> create(RecordItem recordItem) async {
-    _items.add(recordItem);
-  }
-
-  @override
-  Future<void> update(RecordItem recordItem) async {
-    final index = _items.indexWhere((item) => item.id == recordItem.id);
-    if (index != -1) {
-      _items[index] = recordItem;
-    } else {
-      throw Exception('記録項目が見つかりません');
-    }
-  }
-
-  @override
-  Future<void> delete(String userId, String recordItemId) async {
-    _items.removeWhere(
-      (item) => item.id == recordItemId && item.userId == userId,
-    );
-  }
 
   @override
   Future<RecordItem?> getById(String userId, String recordItemId) async {
@@ -74,6 +55,35 @@ class MockRecordItemEditRepository implements IRecordItemRepository {
   }
 }
 
+/// 記録項目編集ページ用のモックコマンドリポジトリ
+class MockRecordItemCommandRepository implements IRecordItemCommandRepository {
+  final List<RecordItem> _items;
+
+  MockRecordItemCommandRepository(this._items);
+
+  @override
+  Future<void> create(RecordItem recordItem) async {
+    _items.add(recordItem);
+  }
+
+  @override
+  Future<void> update(RecordItem recordItem) async {
+    final index = _items.indexWhere((item) => item.id == recordItem.id);
+    if (index != -1) {
+      _items[index] = recordItem;
+    } else {
+      throw Exception('記録項目が見つかりません');
+    }
+  }
+
+  @override
+  Future<void> delete(String userId, String recordItemId) async {
+    _items.removeWhere(
+      (item) => item.id == recordItemId && item.userId == userId,
+    );
+  }
+}
+
 @widgetbook.UseCase(name: 'Default', type: RecordItemsEditPage, path: '[pages]')
 Widget buildRecordItemsEditPageDefault(BuildContext context) {
   final recordItem = RecordItem(
@@ -88,12 +98,17 @@ Widget buildRecordItemsEditPageDefault(BuildContext context) {
     updatedAt: DateTime(2024, 1, 15, 14, 30),
   );
 
-  final mockRepository = MockRecordItemEditRepository(
-    initialItems: [recordItem],
+  final mockItems = [recordItem];
+  final mockQueryRepository = MockRecordItemQueryRepository(
+    initialItems: mockItems,
   );
+  final mockCommandRepository = MockRecordItemCommandRepository(mockItems);
 
   return ProviderScope(
-    overrides: [recordItemRepositoryProvider.overrideWithValue(mockRepository)],
+    overrides: [
+      recordItemQueryRepositoryProvider.overrideWithValue(mockQueryRepository),
+      recordItemCommandRepositoryProvider.overrideWithValue(mockCommandRepository),
+    ],
     child: RecordItemsEditPage(userId: 'user1', recordItem: recordItem),
   );
 }

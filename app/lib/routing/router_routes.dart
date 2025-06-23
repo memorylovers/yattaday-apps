@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/_authentication/6_page/login_page.dart';
-import '../features/_payment/6_page/payment_page.dart';
-import '../features/_startup/6_page/startup_page.dart';
-import '../features/account/6_page/settings_page.dart';
-import '../features/home/6_page/home_page_layout.dart';
-import '../features/record_items/6_page/record_items_list_page.dart';
-import '../features/record_items/6_page/record_items_detail_page.dart';
+import '../features/_authentication/7_page/login_page.dart';
+import '../features/_payment/7_page/payment_page.dart';
+import '../features/_startup/7_page/startup_page.dart';
+import '../features/account/7_page/settings_page.dart';
+import '../features/home/7_page/home_page_layout.dart';
+import '../features/record_items/7_page/record_items_list_page.dart';
+import '../features/record_items/7_page/record_items_detail_page.dart';
 import 'router_provider.dart';
 
 part 'router_routes.g.dart';

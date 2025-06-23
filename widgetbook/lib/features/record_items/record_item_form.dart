@@ -1,19 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/record_items/3_application/record_item_form_store.dart';
-import 'package:myapp/features/record_items/3_application/record_items_store.dart';
-import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
+import 'package:myapp/features/record_items/3_store/record_item_form_store.dart';
+import 'package:myapp/features/record_items/3_store/record_items_store.dart';
+import 'package:myapp/features/record_items/3_store/record_item_crud_store.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_query_repository.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_command_repository.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
-import 'package:myapp/features/record_items/5_component/record_item_form.dart';
+import 'package:myapp/features/record_items/6_component/record_item_form.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-/// RecordItemForm用のモックリポジトリ
-class MockRecordItemRepository implements IRecordItemRepository {
+/// RecordItemForm用のモッククエリリポジトリ
+class MockRecordItemQueryRepository implements IRecordItemQueryRepository {
+  final List<RecordItem> _items = [];
+  final bool _shouldThrowError;
+
+  MockRecordItemQueryRepository({
+    bool shouldThrowError = false,
+    bool shouldDelay = false,
+  }) : _shouldThrowError = shouldThrowError;
+
+  @override
+  Future<int> getNextSortOrder(String userId) async {
+    if (_shouldThrowError) {
+      throw Exception('ソート順序取得エラー');
+    }
+    return _items.where((item) => item.userId == userId).length;
+  }
+
+  @override
+  Future<List<RecordItem>> getByUserId(String userId) async => [];
+
+  @override
+  Stream<List<RecordItem>> watchByUserId(String userId) => Stream.value([]);
+
+  @override
+  Future<RecordItem?> getById(String userId, String recordItemId) async {
+    if (_shouldThrowError) {
+      throw Exception('記録項目取得エラー');
+    }
+    try {
+      return _items.firstWhere(
+        (item) => item.id == recordItemId && item.userId == userId,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+}
+
+/// RecordItemForm用のモックコマンドリポジトリ
+class MockRecordItemCommandRepository implements IRecordItemCommandRepository {
   final List<RecordItem> _items = [];
   final bool _shouldThrowError;
   final bool _shouldDelay;
 
-  MockRecordItemRepository({
+  MockRecordItemCommandRepository({
     bool shouldThrowError = false,
     bool shouldDelay = false,
   }) : _shouldThrowError = shouldThrowError,
@@ -31,240 +72,216 @@ class MockRecordItemRepository implements IRecordItemRepository {
   }
 
   @override
-  Future<int> getNextSortOrder(String userId) async {
+  Future<void> update(RecordItem recordItem) async {
     if (_shouldThrowError) {
-      throw Exception('ソート順序取得エラー');
+      throw Exception('更新エラー');
     }
-    return _items.where((item) => item.userId == userId).length;
+    final index = _items.indexWhere((item) => item.id == recordItem.id);
+    if (index != -1) {
+      _items[index] = recordItem;
+    }
   }
 
   @override
-  Future<List<RecordItem>> getByUserId(String userId) async => [];
-
-  @override
-  Stream<List<RecordItem>> watchByUserId(String userId) => Stream.value([]);
-
-  @override
-  Future<void> update(RecordItem recordItem) async =>
-      throw UnimplementedError();
-
-  @override
-  Future<void> delete(String userId, String recordItemId) async =>
-      throw UnimplementedError();
-
-  @override
-  Future<RecordItem?> getById(String userId, String recordItemId) async =>
-      throw UnimplementedError();
+  Future<void> delete(String userId, String recordItemId) async {
+    if (_shouldThrowError) {
+      throw Exception('削除エラー');
+    }
+    _items.removeWhere(
+      (item) => item.id == recordItemId && item.userId == userId,
+    );
+  }
 }
 
-/// RecordItemFormをラップして新しいパラメータに対応
 class _MockRecordItemFormWrapper extends ConsumerWidget {
-  const _MockRecordItemFormWrapper({
-    required this.userId,
-    this.onSuccess,
-    this.onCancel,
-  });
+  final RecordItemFormState formState;
 
-  final String userId;
-  final VoidCallback? onSuccess;
-  final VoidCallback? onCancel;
+  const _MockRecordItemFormWrapper({required this.formState});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final formState = ref.watch(recordItemFormProvider);
     final notifier = ref.read(recordItemFormProvider.notifier);
-
+    
     return RecordItemForm(
-      userId: userId,
+      userId: 'test-user-id',
       formState: formState,
       onTitleChanged: notifier.updateTitle,
       onDescriptionChanged: notifier.updateDescription,
       onIconChanged: notifier.updateIcon,
       onUnitChanged: notifier.updateUnit,
       onErrorCleared: notifier.clearError,
-      onSubmit: () async {
-        final success = await notifier.submit(userId);
-        if (success && onSuccess != null) {
-          onSuccess!();
-        }
-        return success;
-      },
-      onSuccess: onSuccess,
-      onCancel: onCancel,
+      onSubmit: () => notifier.submit('test-user-id'),
+      onSuccess: () => debugPrint('フォーム送信成功'),
+      onCancel: () => debugPrint('フォームキャンセル'),
     );
   }
 }
 
+// Default State
 @widgetbook.UseCase(
-  name: 'Default',
+  name: '基本表示',
   type: RecordItemForm,
-  path: 'features/record_items/',
+  path: 'features/record_item',
 )
-Widget recordItemFormDefault(BuildContext context) {
+Widget buildRecordItemFormDefaultUseCase(BuildContext context) {
   return ProviderScope(
     overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(),
+      recordItemQueryRepositoryProvider.overrideWithValue(
+        MockRecordItemQueryRepository(),
+      ),
+      recordItemCommandRepositoryProvider.overrideWithValue(
+        MockRecordItemCommandRepository(),
       ),
     ],
-    child: Scaffold(
-      appBar: AppBar(title: const Text('記録項目作成')),
-      body: _MockRecordItemFormWrapper(
-        userId: 'widgetbook-user',
-        onSuccess: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('作成が完了しました！')));
-        },
-        onCancel: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('キャンセルしました')));
-        },
+    child: _MockRecordItemFormWrapper(
+      formState: const RecordItemFormState(),
+    ),
+  );
+}
+
+// Filled State
+@widgetbook.UseCase(
+  name: '入力済み',
+  type: RecordItemForm,
+  path: 'features/record_item',
+)
+Widget buildRecordItemFormFilledUseCase(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      recordItemQueryRepositoryProvider.overrideWithValue(
+        MockRecordItemQueryRepository(),
+      ),
+      recordItemCommandRepositoryProvider.overrideWithValue(
+        MockRecordItemCommandRepository(),
+      ),
+    ],
+    child: _MockRecordItemFormWrapper(
+      formState: const RecordItemFormState(
+        title: '読書',
+        description: '毎日読んだ本のページ数を記録',
+        icon: '📚',
+        unit: 'ページ',
       ),
     ),
   );
 }
 
+// Submitting State
 @widgetbook.UseCase(
-  name: 'With Error',
+  name: '送信中',
   type: RecordItemForm,
-  path: 'features/record_items/',
+  path: 'features/record_item',
 )
-Widget recordItemFormWithError(BuildContext context) {
+Widget buildRecordItemFormSubmittingUseCase(BuildContext context) {
   return ProviderScope(
     overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(shouldThrowError: true),
+      recordItemQueryRepositoryProvider.overrideWithValue(
+        MockRecordItemQueryRepository(shouldDelay: true),
+      ),
+      recordItemCommandRepositoryProvider.overrideWithValue(
+        MockRecordItemCommandRepository(shouldDelay: true),
       ),
     ],
-    child: Scaffold(
-      appBar: AppBar(title: const Text('記録項目作成（エラーテスト）')),
-      body: _MockRecordItemFormWrapper(
-        userId: 'widgetbook-user',
-        onSuccess: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('作成が完了しました！')));
-        },
-        onCancel: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('キャンセルしました')));
-        },
+    child: _MockRecordItemFormWrapper(
+      formState: const RecordItemFormState(
+        title: '筋トレ',
+        description: 'ジムでのトレーニング記録',
+        icon: '💪',
+        unit: '回',
+        isSubmitting: true,
       ),
     ),
   );
 }
 
+// Error State
 @widgetbook.UseCase(
-  name: 'With Delay',
+  name: 'エラー表示',
   type: RecordItemForm,
-  path: 'features/record_items/',
+  path: 'features/record_item',
 )
-Widget recordItemFormWithDelay(BuildContext context) {
+Widget buildRecordItemFormErrorUseCase(BuildContext context) {
   return ProviderScope(
     overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(shouldDelay: true),
+      recordItemQueryRepositoryProvider.overrideWithValue(
+        MockRecordItemQueryRepository(shouldThrowError: true),
+      ),
+      recordItemCommandRepositoryProvider.overrideWithValue(
+        MockRecordItemCommandRepository(shouldThrowError: true),
       ),
     ],
-    child: Scaffold(
-      appBar: AppBar(title: const Text('記録項目作成（ローディングテスト）')),
-      body: _MockRecordItemFormWrapper(
-        userId: 'widgetbook-user',
-        onSuccess: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('作成が完了しました！')));
-        },
-        onCancel: () {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('キャンセルしました')));
-        },
+    child: _MockRecordItemFormWrapper(
+      formState: const RecordItemFormState(
+        title: '水分補給',
+        icon: '💧',
+        unit: 'ml',
+        errorMessage: 'ネットワークエラーが発生しました。再度お試しください。',
       ),
     ),
   );
 }
 
+// Edit Mode
 @widgetbook.UseCase(
-  name: 'Without Callbacks',
+  name: '編集モード',
   type: RecordItemForm,
-  path: 'features/record_items/',
+  path: 'features/record_item',
 )
-Widget recordItemFormWithoutCallbacks(BuildContext context) {
+Widget buildRecordItemFormEditModeUseCase(BuildContext context) {
   return ProviderScope(
     overrides: [
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(),
+      recordItemQueryRepositoryProvider.overrideWithValue(
+        MockRecordItemQueryRepository(),
+      ),
+      recordItemCommandRepositoryProvider.overrideWithValue(
+        MockRecordItemCommandRepository(),
       ),
     ],
-    child: Scaffold(
-      appBar: AppBar(title: const Text('記録項目作成（コールバックなし）')),
-      body: const _MockRecordItemFormWrapper(
-        userId: 'widgetbook-user',
-        // onSuccess・onCancelを指定しない
-      ),
-    ),
+    child: const _PrefilledFormWrapper(),
   );
 }
 
-@widgetbook.UseCase(
-  name: 'Prefilled Form',
-  type: RecordItemForm,
-  path: 'features/record_items/',
-)
-Widget recordItemFormPrefilled(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(title: const Text('記録項目作成（入力済み）')),
-    body: const _PrefilledFormWrapper(),
-  );
-}
-
-/// 事前入力済みフォームのラッパー
-class _PrefilledFormWrapper extends StatelessWidget {
+// 編集モード用のWrapper（既存データをフォームに設定）
+class _PrefilledFormWrapper extends ConsumerWidget {
   const _PrefilledFormWrapper();
 
   @override
-  Widget build(BuildContext context) {
-    // 初期値を持つモックフォーム状態を作成
-    const prefilledFormState = RecordItemFormState(
-      title: '読書記録',
-      description: '毎日30分以上本を読んで知識を身につける',
-      icon: '📖',
-      unit: 'ページ',
-      isSubmitting: false,
-      errorMessage: null,
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 既存の記録項目データで初期化
+    const formState = RecordItemFormState(
+      title: '瞑想',
+      description: '朝の瞑想時間を記録',
+      icon: '🧘',
+      unit: '分',
     );
 
+    final notifier = ref.read(recordItemFormProvider.notifier);
+
     return RecordItemForm(
-      userId: 'widgetbook-user',
-      formState: prefilledFormState,
-      onTitleChanged: (_) {},
-      onDescriptionChanged: (_) {},
-      onIconChanged: (_) {},
-      onUnitChanged: (_) {},
-      onErrorCleared: () {},
-      onSubmit: () async {
-        await Future.delayed(const Duration(seconds: 1));
-        if (context.mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('作成が完了しました！')));
-        }
-        return true;
-      },
-      onSuccess: () {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('作成が完了しました！')));
-      },
-      onCancel: () {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('キャンセルしました')));
-      },
+      userId: 'test-user-id',
+      formState: formState,
+      onTitleChanged: notifier.updateTitle,
+      onDescriptionChanged: notifier.updateDescription,
+      onIconChanged: notifier.updateIcon,
+      onUnitChanged: notifier.updateUnit,
+      onErrorCleared: notifier.clearError,
+      onSubmit: () => notifier.update(
+        userId: 'test-user-id',
+        recordItemId: 'test-item-id',
+      ),
+      initialItem: RecordItem(
+        id: 'test-item-id',
+        userId: 'test-user-id',
+        title: '瞑想',
+        description: '朝の瞑想時間を記録',
+        icon: '🧘',
+        unit: '分',
+        sortOrder: 0,
+        createdAt: DateTime.now().subtract(const Duration(days: 7)),
+        updatedAt: DateTime.now(),
+      ),
+      onSuccess: () => debugPrint('編集成功'),
+      onCancel: () => debugPrint('編集キャンセル'),
     );
   }
 }

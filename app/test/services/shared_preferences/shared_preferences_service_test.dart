@@ -6,7 +6,7 @@ import 'package:myapp/services/shared_preferences/shared_preferences_service.dar
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  
+
   group('SharedPreferencesService', () {
     late SharedPreferences prefs;
     late SharedPreferencesService service;
@@ -25,24 +25,23 @@ void main() {
       test('値を設定できる', () async {
         await service.setIsFirstRun(false);
         expect(service.isFirstRun, isFalse);
-        
+
         await service.setIsFirstRun(true);
         expect(service.isFirstRun, isTrue);
       });
     });
 
-
     group('clear', () {
       test('すべてのデータをクリアする', () async {
         // データを設定
         await service.setIsFirstRun(false);
-        
+
         // データが設定されていることを確認
         expect(service.isFirstRun, isFalse);
-        
+
         // クリア
         await service.clear();
-        
+
         // デフォルト値に戻る
         expect(service.isFirstRun, isTrue);
       });
@@ -51,11 +50,9 @@ void main() {
     group('Provider', () {
       test('Providerから取得できる', () {
         final container = ProviderContainer(
-          overrides: [
-            sharedPreferencesProvider.overrideWithValue(prefs),
-          ],
+          overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
         );
-        
+
         final service = container.read(sharedPreferencesServiceProvider);
         expect(service, isA<SharedPreferencesService>());
       });

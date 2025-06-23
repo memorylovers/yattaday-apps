@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/_gen/i18n/strings.g.dart';
 import 'package:myapp/common/providers/service_providers.dart';
-import 'package:myapp/features/_authentication/3_application/auth_store.dart';
+import 'package:myapp/features/_authentication/3_store/auth_store.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
-import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
-import 'package:myapp/features/record_items/3_application/record_items_store.dart';
-import 'package:myapp/features/record_items/6_page/record_items_list_page.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_query_repository.dart';
+import 'package:myapp/features/record_items/3_store/record_items_store.dart';
+import 'package:myapp/features/record_items/7_page/record_items_list_page.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// モック用のAuthStore
@@ -21,11 +20,11 @@ class MockAuthStore extends AuthStore {
   }
 }
 
-/// RecordItemsListPage用のモックリポジトリ
-class MockRecordItemRepository implements IRecordItemRepository {
+/// RecordItemsListPage用のモッククエリリポジトリ
+class MockRecordItemQueryRepository implements IRecordItemQueryRepository {
   final List<RecordItem> _mockItems;
 
-  MockRecordItemRepository(this._mockItems);
+  MockRecordItemQueryRepository(this._mockItems);
 
   @override
   Future<List<RecordItem>> getByUserId(String userId) async {
@@ -43,106 +42,146 @@ class MockRecordItemRepository implements IRecordItemRepository {
   }
 
   @override
-  Future<void> create(RecordItem recordItem) async =>
-      throw UnimplementedError();
+  Future<RecordItem?> getById(String userId, String recordItemId) async {
+    try {
+      return _mockItems.firstWhere(
+        (item) => item.id == recordItemId && item.userId == userId,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
 
   @override
-  Future<void> update(RecordItem recordItem) async =>
-      throw UnimplementedError();
-
-  @override
-  Future<void> delete(String userId, String recordItemId) async =>
-      throw UnimplementedError();
-
-  @override
-  Future<RecordItem?> getById(String userId, String recordItemId) async =>
-      throw UnimplementedError();
-
-  @override
-  Future<int> getNextSortOrder(String userId) async =>
-      throw UnimplementedError();
+  Future<int> getNextSortOrder(String userId) async {
+    final userItems = _mockItems.where((item) => item.userId == userId).toList();
+    if (userItems.isEmpty) return 0;
+    return userItems.map((item) => item.sortOrder).reduce((a, b) => a > b ? a : b) + 1;
+  }
 }
 
-@widgetbook.UseCase(name: 'Default', type: RecordItemsListPage, path: '[pages]')
-Widget recordItemsListPageDefault(BuildContext context) {
-  const userId = 'widgetbook-user';
-
-  final mockItems = [
+// サンプルデータ生成
+List<RecordItem> _createSampleItems(String userId) {
+  final now = DateTime.now();
+  return [
     RecordItem(
       id: '1',
       userId: userId,
-      title: 'お薬',
-      description: '毎日の薬の服用を記録します。朝・昼・夜の服薬を忘れずに',
-      icon: '💊',
-      unit: '',
+      title: '読書',
+      description: '毎日読んだ本のページ数を記録',
+      icon: '📚',
+      unit: 'ページ',
       sortOrder: 0,
-      createdAt: DateTime(2024, 1, 1),
-      updatedAt: DateTime(2024, 1, 1),
+      createdAt: now.subtract(const Duration(days: 30)),
+      updatedAt: now.subtract(const Duration(days: 1)),
     ),
     RecordItem(
       id: '2',
       userId: userId,
       title: '運動',
-      description: 'ウォーキング、ランニング、筋トレなどの運動を記録',
-      icon: '🏃',
-      unit: '',
+      description: '運動時間を記録',
+      icon: '💪',
+      unit: '分',
       sortOrder: 1,
-      createdAt: DateTime(2024, 1, 2),
-      updatedAt: DateTime(2024, 1, 2),
+      createdAt: now.subtract(const Duration(days: 20)),
+      updatedAt: now.subtract(const Duration(hours: 2)),
     ),
     RecordItem(
       id: '3',
       userId: userId,
       title: '水分補給',
-      description: '1日の水分摂取量を記録して健康管理',
+      description: '1日の水分摂取量を記録',
       icon: '💧',
-      unit: '',
+      unit: 'ml',
       sortOrder: 2,
-      createdAt: DateTime(2024, 1, 3),
-      updatedAt: DateTime(2024, 1, 3),
+      createdAt: now.subtract(const Duration(days: 10)),
+      updatedAt: now.subtract(const Duration(minutes: 30)),
     ),
     RecordItem(
       id: '4',
       userId: userId,
-      title: '読書',
-      description: '読んだ本のページ数や感想を記録',
-      icon: '📚',
-      unit: '',
+      title: '瞑想',
+      description: '瞑想時間を記録',
+      icon: '🧘',
+      unit: '分',
       sortOrder: 3,
-      createdAt: DateTime(2024, 1, 4),
-      updatedAt: DateTime(2024, 1, 4),
-    ),
-    RecordItem(
-      id: '5',
-      userId: userId,
-      title: '睡眠',
-      description: '睡眠時間と質を記録して生活リズムを整える',
-      icon: '😴',
-      unit: '',
-      sortOrder: 4,
-      createdAt: DateTime(2024, 1, 5),
-      updatedAt: DateTime(2024, 1, 5),
+      createdAt: now.subtract(const Duration(days: 5)),
+      updatedAt: now,
     ),
   ];
+}
+
+@widgetbook.UseCase(
+  name: 'Default',
+  type: RecordItemsListPage,
+  path: 'pages',
+)
+Widget buildRecordItemsListPageDefaultUseCase(BuildContext context) {
+  const userId = 'test-user-id';
 
   return ProviderScope(
     overrides: [
-      // リポジトリのモック
-      recordItemRepositoryProvider.overrideWithValue(
-        MockRecordItemRepository(mockItems),
-      ),
-      // 認証状態のモック
-      authStoreProvider.overrideWith(() => MockAuthStore(userId)),
-      // Firebase関連プロバイダーのモック
-      firebaseUserProvider.overrideWith((ref) => const Stream.empty()),
       firebaseUserUidProvider.overrideWith((ref) async => userId),
-      // watchRecordItemsProviderを直接オーバーライド
-      watchRecordItemsProvider.overrideWith((ref) {
-        return Stream.value(mockItems);
-      }),
+      authStoreProvider.overrideWith(() => MockAuthStore(userId)),
+      recordItemQueryRepositoryProvider.overrideWithValue(
+        MockRecordItemQueryRepository(_createSampleItems(userId)),
+      ),
     ],
-    child: TranslationProvider(
-      child: const MaterialApp(home: RecordItemsListPage()),
-    ),
+    child: const RecordItemsListPage(),
+  );
+}
+
+@widgetbook.UseCase(
+  name: 'Empty State',
+  type: RecordItemsListPage,
+  path: 'pages',
+)
+Widget buildRecordItemsListPageEmptyUseCase(BuildContext context) {
+  const userId = 'test-user-id';
+
+  return ProviderScope(
+    overrides: [
+      firebaseUserUidProvider.overrideWith((ref) async => userId),
+      authStoreProvider.overrideWith(() => MockAuthStore(userId)),
+      recordItemQueryRepositoryProvider.overrideWithValue(
+        MockRecordItemQueryRepository([]), // 空のリスト
+      ),
+    ],
+    child: const RecordItemsListPage(),
+  );
+}
+
+@widgetbook.UseCase(
+  name: 'Many Items',
+  type: RecordItemsListPage,
+  path: 'pages',
+)
+Widget buildRecordItemsListPageManyItemsUseCase(BuildContext context) {
+  const userId = 'test-user-id';
+
+  // 多数のアイテムを生成
+  final manyItems = List.generate(20, (index) {
+    return RecordItem(
+      id: 'item-$index',
+      userId: userId,
+      title: '記録項目 ${index + 1}',
+      description: '説明文 ${index + 1}',
+      icon: ['📚', '💪', '💧', '🧘', '🎯', '📝'][index % 6],
+      unit: ['ページ', '回', 'ml', '分', '個', '時間'][index % 6],
+      sortOrder: index,
+      createdAt: DateTime.now().subtract(Duration(days: 30 - index)),
+      updatedAt: DateTime.now().subtract(Duration(hours: index)),
+    );
+  });
+
+  return ProviderScope(
+    overrides: [
+      firebaseUserUidProvider.overrideWith((ref) async => userId),
+      authStoreProvider.overrideWith(() => MockAuthStore(userId)),
+      recordItemQueryRepositoryProvider.overrideWithValue(
+        MockRecordItemQueryRepository(manyItems),
+      ),
+    ],
+    child: const RecordItemsListPage(),
   );
 }
