@@ -17,12 +17,12 @@ class RecordItemCrudState with _$RecordItemCrudState {
   }) = _RecordItemCrudState;
 }
 
-
 /// 記録項目のCRUD操作を管理するプロバイダ
 /// RecordItemCommandRepositoryのプロバイダ
-final recordItemCommandRepositoryProvider = Provider<IRecordItemCommandRepository>((ref) {
-  return FirebaseRecordItemCommandRepository();
-});
+final recordItemCommandRepositoryProvider =
+    Provider<IRecordItemCommandRepository>((ref) {
+      return FirebaseRecordItemCommandRepository();
+    });
 
 final recordItemCrudProvider =
     StateNotifierProvider<RecordItemCrudNotifier, RecordItemCrudState>((ref) {
@@ -56,7 +56,7 @@ class RecordItemCrudNotifier extends StateNotifier<RecordItemCrudState> {
       if (existingItem == null) {
         throw Exception('記録項目が見つかりません');
       }
-      
+
       // 記録項目を更新
       final updatedItem = existingItem.copyWith(
         title: title,
@@ -64,7 +64,7 @@ class RecordItemCrudNotifier extends StateNotifier<RecordItemCrudState> {
         unit: unit,
         updatedAt: DateTime.now(),
       );
-      
+
       await _commandRepository.update(updatedItem);
 
       // 成功時

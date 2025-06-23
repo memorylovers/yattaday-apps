@@ -6,10 +6,11 @@ import '../2_repository/interfaces/record_item_query_repository.dart';
 import '../1_models/record_item.dart';
 
 /// RecordItemQueryRepositoryのプロバイダ
-final recordItemQueryRepositoryProvider = Provider<IRecordItemQueryRepository>((ref) {
+final recordItemQueryRepositoryProvider = Provider<IRecordItemQueryRepository>((
+  ref,
+) {
   return FirebaseRecordItemQueryRepository();
 });
-
 
 /// 指定したユーザーの記録項目一覧を取得するプロバイダ
 final recordItemsProvider = FutureProvider.family<List<RecordItem>, String>((

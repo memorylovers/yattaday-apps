@@ -101,7 +101,7 @@ class _MockRecordItemFormWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier = ref.read(recordItemFormProvider.notifier);
-    
+
     return RecordItemForm(
       userId: 'test-user-id',
       formState: formState,
@@ -133,9 +133,7 @@ Widget buildRecordItemFormDefaultUseCase(BuildContext context) {
         MockRecordItemCommandRepository(),
       ),
     ],
-    child: _MockRecordItemFormWrapper(
-      formState: const RecordItemFormState(),
-    ),
+    child: _MockRecordItemFormWrapper(formState: const RecordItemFormState()),
   );
 }
 
@@ -265,10 +263,11 @@ class _PrefilledFormWrapper extends ConsumerWidget {
       onIconChanged: notifier.updateIcon,
       onUnitChanged: notifier.updateUnit,
       onErrorCleared: notifier.clearError,
-      onSubmit: () => notifier.update(
-        userId: 'test-user-id',
-        recordItemId: 'test-item-id',
-      ),
+      onSubmit:
+          () => notifier.update(
+            userId: 'test-user-id',
+            recordItemId: 'test-item-id',
+          ),
       initialItem: RecordItem(
         id: 'test-item-id',
         userId: 'test-user-id',

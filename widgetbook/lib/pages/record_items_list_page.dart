@@ -54,9 +54,13 @@ class MockRecordItemQueryRepository implements IRecordItemQueryRepository {
 
   @override
   Future<int> getNextSortOrder(String userId) async {
-    final userItems = _mockItems.where((item) => item.userId == userId).toList();
+    final userItems =
+        _mockItems.where((item) => item.userId == userId).toList();
     if (userItems.isEmpty) return 0;
-    return userItems.map((item) => item.sortOrder).reduce((a, b) => a > b ? a : b) + 1;
+    return userItems
+            .map((item) => item.sortOrder)
+            .reduce((a, b) => a > b ? a : b) +
+        1;
   }
 }
 
@@ -111,11 +115,7 @@ List<RecordItem> _createSampleItems(String userId) {
   ];
 }
 
-@widgetbook.UseCase(
-  name: 'Default',
-  type: RecordItemsListPage,
-  path: 'pages',
-)
+@widgetbook.UseCase(name: 'Default', type: RecordItemsListPage, path: 'pages')
 Widget buildRecordItemsListPageDefaultUseCase(BuildContext context) {
   const userId = 'test-user-id';
 

@@ -9,6 +9,9 @@ enum AppErrorCode {
   authAlreadyLinked, // 別のアカウントに連携済みです
   // ** AdMob
   adLoadFailed, // 広告の読み込みに失敗しました
+  // ** Data
+  concurrentUpdate, // 同時更新エラー
+  validationError, // バリデーションエラー
   // ** Purchase
   purchaseError, // 購入エラーが発生しました
   purchaseNotConfigured, // 購入機能が初期化されていません

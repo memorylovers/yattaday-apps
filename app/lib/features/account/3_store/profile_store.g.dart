@@ -6,31 +6,30 @@ part of 'profile_store.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$accountProfileCollectionReferenceHash() =>
-    r'73b46e797c992eb430d2116b7ef79ef0dd8dc6f4';
+String _$myAccountProfileHash() => r'4b687a6483d1ce9ad063cd56a73b59908d827f0c';
 
-/// AccountProfile: collectionのreference
+/// ログインユーザーのプロフィール情報を取得するProvider
 ///
-/// Copied from [accountProfileCollectionReference].
-@ProviderFor(accountProfileCollectionReference)
-final accountProfileCollectionReferenceProvider =
-    Provider<CollectionReference<AccountProfile>>.internal(
-      accountProfileCollectionReference,
-      name: r'accountProfileCollectionReferenceProvider',
+/// 他のfeatureから参照する際の主要なエントリポイント
+///
+/// Copied from [myAccountProfile].
+@ProviderFor(myAccountProfile)
+final myAccountProfileProvider =
+    AutoDisposeFutureProvider<AccountProfile?>.internal(
+      myAccountProfile,
+      name: r'myAccountProfileProvider',
       debugGetCreateSourceHash:
           const bool.fromEnvironment('dart.vm.product')
               ? null
-              : _$accountProfileCollectionReferenceHash,
+              : _$myAccountProfileHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef AccountProfileCollectionReferenceRef =
-    ProviderRef<CollectionReference<AccountProfile>>;
-String _$accountProfileDocumentSnapshotHash() =>
-    r'76f8101c427b654d9853f8ee5a1d1271cb852da2';
+typedef MyAccountProfileRef = AutoDisposeFutureProviderRef<AccountProfile?>;
+String _$accountProfileHash() => r'6b8bb02436366dafb3ca12a199dc3fe8024ae571';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -53,167 +52,30 @@ class _SystemHash {
   }
 }
 
-/// AccountProfile: docのreference
+/// 特定ユーザーのプロフィール情報を取得するProvider
 ///
-/// Copied from [accountProfileDocumentSnapshot].
-@ProviderFor(accountProfileDocumentSnapshot)
-const accountProfileDocumentSnapshotProvider =
-    AccountProfileDocumentSnapshotFamily();
-
-/// AccountProfile: docのreference
-///
-/// Copied from [accountProfileDocumentSnapshot].
-class AccountProfileDocumentSnapshotFamily
-    extends Family<AsyncValue<DocumentSnapshot<AccountProfile>>> {
-  /// AccountProfile: docのreference
-  ///
-  /// Copied from [accountProfileDocumentSnapshot].
-  const AccountProfileDocumentSnapshotFamily();
-
-  /// AccountProfile: docのreference
-  ///
-  /// Copied from [accountProfileDocumentSnapshot].
-  AccountProfileDocumentSnapshotProvider call(String uid) {
-    return AccountProfileDocumentSnapshotProvider(uid);
-  }
-
-  @override
-  AccountProfileDocumentSnapshotProvider getProviderOverride(
-    covariant AccountProfileDocumentSnapshotProvider provider,
-  ) {
-    return call(provider.uid);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'accountProfileDocumentSnapshotProvider';
-}
-
-/// AccountProfile: docのreference
-///
-/// Copied from [accountProfileDocumentSnapshot].
-class AccountProfileDocumentSnapshotProvider
-    extends AutoDisposeStreamProvider<DocumentSnapshot<AccountProfile>> {
-  /// AccountProfile: docのreference
-  ///
-  /// Copied from [accountProfileDocumentSnapshot].
-  AccountProfileDocumentSnapshotProvider(String uid)
-    : this._internal(
-        (ref) => accountProfileDocumentSnapshot(
-          ref as AccountProfileDocumentSnapshotRef,
-          uid,
-        ),
-        from: accountProfileDocumentSnapshotProvider,
-        name: r'accountProfileDocumentSnapshotProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$accountProfileDocumentSnapshotHash,
-        dependencies: AccountProfileDocumentSnapshotFamily._dependencies,
-        allTransitiveDependencies:
-            AccountProfileDocumentSnapshotFamily._allTransitiveDependencies,
-        uid: uid,
-      );
-
-  AccountProfileDocumentSnapshotProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.uid,
-  }) : super.internal();
-
-  final String uid;
-
-  @override
-  Override overrideWith(
-    Stream<DocumentSnapshot<AccountProfile>> Function(
-      AccountProfileDocumentSnapshotRef provider,
-    )
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: AccountProfileDocumentSnapshotProvider._internal(
-        (ref) => create(ref as AccountProfileDocumentSnapshotRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        uid: uid,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeStreamProviderElement<DocumentSnapshot<AccountProfile>>
-  createElement() {
-    return _AccountProfileDocumentSnapshotProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is AccountProfileDocumentSnapshotProvider && other.uid == uid;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, uid.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin AccountProfileDocumentSnapshotRef
-    on AutoDisposeStreamProviderRef<DocumentSnapshot<AccountProfile>> {
-  /// The parameter `uid` of this provider.
-  String get uid;
-}
-
-class _AccountProfileDocumentSnapshotProviderElement
-    extends AutoDisposeStreamProviderElement<DocumentSnapshot<AccountProfile>>
-    with AccountProfileDocumentSnapshotRef {
-  _AccountProfileDocumentSnapshotProviderElement(super.provider);
-
-  @override
-  String get uid => (origin as AccountProfileDocumentSnapshotProvider).uid;
-}
-
-String _$accountProfileHash() => r'd8476e79122a4e37d1079ae8318f9ba203a1f4bb';
-
-/// AccountProfile: 特定のプロフィールのdoc stream
+/// 他ユーザーのプロフィールを参照する際に使用
 ///
 /// Copied from [accountProfile].
 @ProviderFor(accountProfile)
 const accountProfileProvider = AccountProfileFamily();
 
-/// AccountProfile: 特定のプロフィールのdoc stream
+/// 特定ユーザーのプロフィール情報を取得するProvider
+///
+/// 他ユーザーのプロフィールを参照する際に使用
 ///
 /// Copied from [accountProfile].
-class AccountProfileFamily
-    extends Family<AsyncValue<DocumentPair<AccountProfile>?>> {
-  /// AccountProfile: 特定のプロフィールのdoc stream
+class AccountProfileFamily extends Family<AsyncValue<AccountProfile?>> {
+  /// 特定ユーザーのプロフィール情報を取得するProvider
+  ///
+  /// 他ユーザーのプロフィールを参照する際に使用
   ///
   /// Copied from [accountProfile].
   const AccountProfileFamily();
 
-  /// AccountProfile: 特定のプロフィールのdoc stream
+  /// 特定ユーザーのプロフィール情報を取得するProvider
+  ///
+  /// 他ユーザーのプロフィールを参照する際に使用
   ///
   /// Copied from [accountProfile].
   AccountProfileProvider call(String uid) {
@@ -242,12 +104,16 @@ class AccountProfileFamily
   String? get name => r'accountProfileProvider';
 }
 
-/// AccountProfile: 特定のプロフィールのdoc stream
+/// 特定ユーザーのプロフィール情報を取得するProvider
+///
+/// 他ユーザーのプロフィールを参照する際に使用
 ///
 /// Copied from [accountProfile].
 class AccountProfileProvider
-    extends AutoDisposeStreamProvider<DocumentPair<AccountProfile>?> {
-  /// AccountProfile: 特定のプロフィールのdoc stream
+    extends AutoDisposeFutureProvider<AccountProfile?> {
+  /// 特定ユーザーのプロフィール情報を取得するProvider
+  ///
+  /// 他ユーザーのプロフィールを参照する際に使用
   ///
   /// Copied from [accountProfile].
   AccountProfileProvider(String uid)
@@ -279,8 +145,7 @@ class AccountProfileProvider
 
   @override
   Override overrideWith(
-    Stream<DocumentPair<AccountProfile>?> Function(AccountProfileRef provider)
-    create,
+    FutureOr<AccountProfile?> Function(AccountProfileRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -297,8 +162,7 @@ class AccountProfileProvider
   }
 
   @override
-  AutoDisposeStreamProviderElement<DocumentPair<AccountProfile>?>
-  createElement() {
+  AutoDisposeFutureProviderElement<AccountProfile?> createElement() {
     return _AccountProfileProviderElement(this);
   }
 
@@ -318,14 +182,13 @@ class AccountProfileProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin AccountProfileRef
-    on AutoDisposeStreamProviderRef<DocumentPair<AccountProfile>?> {
+mixin AccountProfileRef on AutoDisposeFutureProviderRef<AccountProfile?> {
   /// The parameter `uid` of this provider.
   String get uid;
 }
 
 class _AccountProfileProviderElement
-    extends AutoDisposeStreamProviderElement<DocumentPair<AccountProfile>?>
+    extends AutoDisposeFutureProviderElement<AccountProfile?>
     with AccountProfileRef {
   _AccountProfileProviderElement(super.provider);
 
@@ -333,27 +196,193 @@ class _AccountProfileProviderElement
   String get uid => (origin as AccountProfileProvider).uid;
 }
 
-String _$myAccountProfileHash() => r'abbe213f1ff279fc72b06df399bf850bed925918';
+String _$searchAccountProfilesHash() =>
+    r'44f41a3583acd5f2e1279405df358ed292e816d9';
 
-/// AccountProfile: ログインアカウントのプロフィールのdoc stream
+/// 表示名でユーザーを検索するProvider
 ///
-/// Copied from [myAccountProfile].
-@ProviderFor(myAccountProfile)
-final myAccountProfileProvider =
-    AutoDisposeStreamProvider<DocumentPair<AccountProfile>?>.internal(
-      myAccountProfile,
-      name: r'myAccountProfileProvider',
+/// ユーザー検索機能で使用
+///
+/// Copied from [searchAccountProfiles].
+@ProviderFor(searchAccountProfiles)
+const searchAccountProfilesProvider = SearchAccountProfilesFamily();
+
+/// 表示名でユーザーを検索するProvider
+///
+/// ユーザー検索機能で使用
+///
+/// Copied from [searchAccountProfiles].
+class SearchAccountProfilesFamily
+    extends Family<AsyncValue<List<AccountProfile>>> {
+  /// 表示名でユーザーを検索するProvider
+  ///
+  /// ユーザー検索機能で使用
+  ///
+  /// Copied from [searchAccountProfiles].
+  const SearchAccountProfilesFamily();
+
+  /// 表示名でユーザーを検索するProvider
+  ///
+  /// ユーザー検索機能で使用
+  ///
+  /// Copied from [searchAccountProfiles].
+  SearchAccountProfilesProvider call(String query, {int limit = 20}) {
+    return SearchAccountProfilesProvider(query, limit: limit);
+  }
+
+  @override
+  SearchAccountProfilesProvider getProviderOverride(
+    covariant SearchAccountProfilesProvider provider,
+  ) {
+    return call(provider.query, limit: provider.limit);
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'searchAccountProfilesProvider';
+}
+
+/// 表示名でユーザーを検索するProvider
+///
+/// ユーザー検索機能で使用
+///
+/// Copied from [searchAccountProfiles].
+class SearchAccountProfilesProvider
+    extends AutoDisposeFutureProvider<List<AccountProfile>> {
+  /// 表示名でユーザーを検索するProvider
+  ///
+  /// ユーザー検索機能で使用
+  ///
+  /// Copied from [searchAccountProfiles].
+  SearchAccountProfilesProvider(String query, {int limit = 20})
+    : this._internal(
+        (ref) => searchAccountProfiles(
+          ref as SearchAccountProfilesRef,
+          query,
+          limit: limit,
+        ),
+        from: searchAccountProfilesProvider,
+        name: r'searchAccountProfilesProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$searchAccountProfilesHash,
+        dependencies: SearchAccountProfilesFamily._dependencies,
+        allTransitiveDependencies:
+            SearchAccountProfilesFamily._allTransitiveDependencies,
+        query: query,
+        limit: limit,
+      );
+
+  SearchAccountProfilesProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.query,
+    required this.limit,
+  }) : super.internal();
+
+  final String query;
+  final int limit;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<AccountProfile>> Function(SearchAccountProfilesRef provider)
+    create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SearchAccountProfilesProvider._internal(
+        (ref) => create(ref as SearchAccountProfilesRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        query: query,
+        limit: limit,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<AccountProfile>> createElement() {
+    return _SearchAccountProfilesProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SearchAccountProfilesProvider &&
+        other.query == query &&
+        other.limit == limit;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
+    hash = _SystemHash.combine(hash, limit.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin SearchAccountProfilesRef
+    on AutoDisposeFutureProviderRef<List<AccountProfile>> {
+  /// The parameter `query` of this provider.
+  String get query;
+
+  /// The parameter `limit` of this provider.
+  int get limit;
+}
+
+class _SearchAccountProfilesProviderElement
+    extends AutoDisposeFutureProviderElement<List<AccountProfile>>
+    with SearchAccountProfilesRef {
+  _SearchAccountProfilesProviderElement(super.provider);
+
+  @override
+  String get query => (origin as SearchAccountProfilesProvider).query;
+  @override
+  int get limit => (origin as SearchAccountProfilesProvider).limit;
+}
+
+String _$profileStoreHash() => r'2fb0c1ce5aa01f4787d9468ebd7f27ee7831ddd7';
+
+/// プロフィール情報を管理するStore
+///
+/// ユーザーの公開プロフィール情報を管理し、
+/// アカウント作成時のプロフィール自動作成も担当する。
+///
+/// Copied from [ProfileStore].
+@ProviderFor(ProfileStore)
+final profileStoreProvider =
+    AsyncNotifierProvider<ProfileStore, AccountProfile?>.internal(
+      ProfileStore.new,
+      name: r'profileStoreProvider',
       debugGetCreateSourceHash:
           const bool.fromEnvironment('dart.vm.product')
               ? null
-              : _$myAccountProfileHash,
+              : _$profileStoreHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef MyAccountProfileRef =
-    AutoDisposeStreamProviderRef<DocumentPair<AccountProfile>?>;
+typedef _$ProfileStore = AsyncNotifier<AccountProfile?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

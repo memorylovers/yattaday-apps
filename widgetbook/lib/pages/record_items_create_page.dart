@@ -26,8 +26,7 @@ class MockRecordItemQueryRepository implements IRecordItemQueryRepository {
   Stream<List<RecordItem>> watchByUserId(String userId) => Stream.value([]);
 
   @override
-  Future<RecordItem?> getById(String userId, String recordItemId) async =>
-      null;
+  Future<RecordItem?> getById(String userId, String recordItemId) async => null;
 }
 
 /// RecordItemsCreatePage用のモックコマンドリポジトリ

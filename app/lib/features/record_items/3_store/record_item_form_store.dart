@@ -28,7 +28,6 @@ class RecordItemFormState with _$RecordItemFormState {
   bool get isValid => title.trim().isNotEmpty;
 }
 
-
 /// 記録項目フォームの状態管理プロバイダ
 final recordItemFormProvider =
     StateNotifierProvider<RecordItemFormNotifier, RecordItemFormState>((ref) {
@@ -94,7 +93,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
     try {
       // 新しいソート順序を取得
       final sortOrder = await _queryRepository.getNextSortOrder(userId);
-      
+
       // 記録項目を作成
       final recordItem = RecordItem(
         id: ULID.randomULID(),
@@ -107,7 +106,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
-      
+
       await _commandRepository.create(recordItem);
 
       // 成功時はフォームをリセット
@@ -143,7 +142,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
       if (existingItem == null) {
         throw Exception('記録項目が見つかりません');
       }
-      
+
       // 記録項目を更新
       final updatedItem = existingItem.copyWith(
         title: state.title,
@@ -152,7 +151,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
         unit: state.unit.isEmpty ? null : state.unit,
         updatedAt: DateTime.now(),
       );
-      
+
       await _commandRepository.update(updatedItem);
 
       // 成功時は処理完了状態にする（フォームはリセットしない）

@@ -32,7 +32,6 @@ class MockRecordItemQueryRepository implements IRecordItemQueryRepository {
     );
   }
 
-
   @override
   Future<RecordItem?> getById(String userId, String recordItemId) async {
     try {
@@ -107,7 +106,9 @@ Widget buildRecordItemsEditPageDefault(BuildContext context) {
   return ProviderScope(
     overrides: [
       recordItemQueryRepositoryProvider.overrideWithValue(mockQueryRepository),
-      recordItemCommandRepositoryProvider.overrideWithValue(mockCommandRepository),
+      recordItemCommandRepositoryProvider.overrideWithValue(
+        mockCommandRepository,
+      ),
     ],
     child: RecordItemsEditPage(userId: 'user1', recordItem: recordItem),
   );
