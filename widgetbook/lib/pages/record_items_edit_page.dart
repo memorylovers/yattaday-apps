@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/features/record_items/3_store/record_items_store.dart';
-import 'package:myapp/features/record_items/2_repository/record_item_query_repository.dart';
-import 'package:myapp/features/record_items/2_repository/record_item_command_repository.dart';
+import 'package:myapp/features/record_items/2_repository/interfaces/record_item_query_repository.dart';
+import 'package:myapp/features/record_items/2_repository/interfaces/record_item_command_repository.dart';
 import 'package:myapp/features/record_items/3_store/record_item_crud_store.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 import 'package:myapp/features/record_items/7_page/record_items_edit_page.dart';
