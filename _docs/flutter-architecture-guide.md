@@ -221,7 +221,7 @@ class GoodView extends StatelessWidget {
 
 ## Store パターン
 
-### 責任範囲
+### 責任範囲(Store)
 
 Storeはアプリ全体で共有されるグローバルな状態を管理します。
 
@@ -366,7 +366,7 @@ AuthStore → AccountStore → PaymentStore
 
 ## ViewModel パターン
 
-### 責任範囲
+### 責任範囲(ViewModel)
 
 ViewModelは特定の画面のUI状態を管理します。**画面と1対1**の関係を維持します。
 
@@ -686,7 +686,7 @@ class CheckoutFlowScreen extends StatelessWidget {
 }
 ```
 
-## CQRS アプローチ
+## 参考: CQRS アプローチ
 
 ### Repository導出プロセス
 

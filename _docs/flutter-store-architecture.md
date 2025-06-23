@@ -9,6 +9,7 @@ FlutterアプリケーションにおけるStoreパターンを使用した状�
 ### AuthStore（認証状態管理）
 
 **責任範囲：**
+
 - 認証トークンの管理（アクセストークン、リフレッシュトークン）
 - 認証状態の管理（未認証、認証中、認証済み、エラー）
 - 認証方法の管理（メール/パスワード、OAuth、生体認証など）
@@ -16,6 +17,7 @@ FlutterアプリケーションにおけるStoreパターンを使用した状�
 - 最小限の識別情報（userId、email）
 
 **主要メソッド：**
+
 ```dart
 - signIn(email, password)
 - signOut()
@@ -29,12 +31,14 @@ FlutterアプリケーションにおけるStoreパターンを使用した状�
 ### AccountStore（アカウント情報管理）
 
 **責任範囲：**
+
 - ユーザープロファイル情報（ID、名前、メールアドレス、アバター）
 - アカウント設定（通知設定、プライバシー設定、言語設定）
 - アカウントステータス（アクティブ、停止中、削除予定など）
 - 連携プロバイダー情報（表示用）
 
 **主要メソッド：**
+
 ```dart
 - loadUserProfile(userId)
 - updateProfile(name, bio)
@@ -46,6 +50,7 @@ FlutterアプリケーションにおけるStoreパターンを使用した状�
 ### PaymentStore（決済・サブスクリプション管理）
 
 **責任範囲：**
+
 - サブスクリプション状態（active、expired、cancelled）
 - 現在のプラン情報
 - 決済方法の管理
@@ -53,6 +58,7 @@ FlutterアプリケーションにおけるStoreパターンを使用した状�
 - Revenue Cat/Purchases SDKとの連携
 
 **主要メソッド：**
+
 ```dart
 - initializeForUser(userId, email)
 - purchaseSubscription(planId)
@@ -274,26 +280,31 @@ class PaymentStore extends ChangeNotifier {
 ## 設計原則
 
 ### 1. 単方向データフロー
+
 - AuthStore → AccountStore/PaymentStore の単方向依存
 - AccountStore、PaymentStoreはAuthStoreを直接変更しない
 
 ### 2. 責任の明確化
+
 - AuthStore: 認証の「動作」を担当
 - AccountStore: ユーザー情報の「保持」を担当
 - PaymentStore: 決済状態の「管理」を担当
 
 ### 3. 真実の源泉（Single Source of Truth）
+
 - userId: AuthStoreが管理（AccountStoreは表示用にコピー保持）
 - サブスク状態: PaymentStoreが管理
 - ユーザープロファイル: AccountStoreが管理
 
 ### 4. エラーハンドリング
+
 - 各Storeは自身の責任範囲のエラーを処理
 - 認証エラー（401）はAuthStoreが検知し、全Storeをクリア
 
 ## ストレージ戦略
 
 ### セキュアストレージ（機密情報）
+
 ```dart
 // iOS: Keychain, Android: Keystore
 FlutterSecureStorage()
@@ -303,6 +314,7 @@ FlutterSecureStorage()
 ```
 
 ### 通常ストレージ（一般情報）
+
 ```dart
 // SharedPreferences
 - ユーザープロファイル（キャッシュ）
