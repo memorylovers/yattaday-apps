@@ -89,4 +89,29 @@ class FirebaseAccountCommandRepository implements IAccountCommandRepository {
       handleError(error);
     }
   }
+
+  @override
+  Future<Account> createIfNotExists(String uid) async {
+    try {
+      // 既存チェック
+      final existing = await _collection.doc(uid).get();
+      if (existing.exists) {
+        // 既に存在する場合はそのまま返す
+        return existing.data()!;
+      }
+
+      // 存在しない場合は新規作成
+      final now = DateTime.now();
+      final account = Account(uid: uid, createdAt: now, updatedAt: now);
+
+      await _collection.doc(uid).set(account);
+
+      // 作成したアカウントを返す
+      return account;
+    } catch (error) {
+      handleError(error);
+      // handleErrorがエラーを再throwするので、ここには到達しない
+      rethrow;
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import '../../1_models/account.dart';
+
 /// アカウント情報の更新用リポジトリのインターフェース
 ///
 /// Firestoreへのアカウント情報の作成・更新・削除を行う
@@ -57,4 +59,24 @@ abstract class IAccountCommandRepository {
   /// await repository.delete('user123');
   /// ```
   Future<void> delete(String uid);
+
+  /// アカウントが存在しない場合のみ作成する
+  ///
+  /// 認証後の初回ログイン時に呼び出され、
+  /// アカウントが既に存在する場合はそのまま返す。
+  /// 存在しない場合は新規作成して返す。
+  ///
+  /// [uid] ユーザーID（Firebase AuthのUID）
+  ///
+  /// 戻り値: 作成または取得したアカウント情報
+  ///
+  /// 例外:
+  /// - ネットワークエラー: [AppException]
+  /// - データベースエラー: [AppException]
+  ///
+  /// Example:
+  /// ```dart
+  /// final account = await repository.createIfNotExists('user123');
+  /// ```
+  Future<Account> createIfNotExists(String uid);
 }
