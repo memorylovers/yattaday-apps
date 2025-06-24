@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -32,15 +31,6 @@ class UserSettings with _$UserSettings {
 
   factory UserSettings.fromJson(Map<String, dynamic> json) =>
       _$UserSettingsFromJson(json);
-
-  /// firestoreのcollection path
-  static String get collectionPath => "user_settings";
-
-  static FromFirestore<UserSettings> get fromFirestore =>
-      (snapshot, _) => UserSettings.fromJson(snapshot.data() ?? {});
-
-  static ToFirestore<UserSettings> get toFirestore =>
-      (data, _) => data.toJson();
 }
 
 extension UserSettingsExtension on UserSettings {

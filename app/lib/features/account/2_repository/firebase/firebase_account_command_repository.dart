@@ -5,6 +5,7 @@ import '../../../../common/exception/app_error_code.dart';
 import '../../../../common/exception/handling_error.dart';
 import '../../1_models/account.dart';
 import '../interfaces/account_command_repository.dart';
+import 'firebase_account_helper.dart';
 
 /// アカウント情報の更新用リポジトリのFirebase実装
 ///
@@ -20,12 +21,7 @@ class FirebaseAccountCommandRepository implements IAccountCommandRepository {
   ///
   /// [firestore] Firestoreインスタンス（テスト時はモックを注入可能）
   FirebaseAccountCommandRepository(this._firestore) {
-    _collection = _firestore
-        .collection(Account.collectionPath)
-        .withConverter(
-          fromFirestore: Account.fromFirestore,
-          toFirestore: Account.toFirestore,
-        );
+    _collection = FirebaseAccountHelper.getTypedCollection(_firestore);
   }
 
   @override

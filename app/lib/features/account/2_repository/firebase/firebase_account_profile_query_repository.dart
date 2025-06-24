@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../common/exception/handling_error.dart';
 import '../../1_models/profile.dart';
 import '../interfaces/account_profile_query_repository.dart';
+import 'firebase_account_profile_helper.dart';
 
 /// アカウントプロフィール情報の参照用リポジトリのFirebase実装
 ///
@@ -19,12 +20,7 @@ class FirebaseAccountProfileQueryRepository
   ///
   /// [firestore] Firestoreインスタンス（テスト時はモックを注入可能）
   FirebaseAccountProfileQueryRepository(this._firestore) {
-    _collection = _firestore
-        .collection(AccountProfile.collectionPath)
-        .withConverter(
-          fromFirestore: AccountProfile.fromFirestore,
-          toFirestore: AccountProfile.toFirestore,
-        );
+    _collection = FirebaseAccountProfileHelper.getTypedCollection(_firestore);
   }
 
   @override

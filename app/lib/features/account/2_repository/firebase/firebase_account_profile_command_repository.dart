@@ -5,6 +5,7 @@ import '../../../../common/exception/app_error_code.dart';
 import '../../../../common/exception/handling_error.dart';
 import '../../1_models/profile.dart';
 import '../interfaces/account_profile_command_repository.dart';
+import 'firebase_account_profile_helper.dart';
 
 /// アカウントプロフィール情報の更新用リポジトリのFirebase実装
 ///
@@ -21,12 +22,7 @@ class FirebaseAccountProfileCommandRepository
   ///
   /// [firestore] Firestoreインスタンス（テスト時はモックを注入可能）
   FirebaseAccountProfileCommandRepository(this._firestore) {
-    _collection = _firestore
-        .collection(AccountProfile.collectionPath)
-        .withConverter(
-          fromFirestore: AccountProfile.fromFirestore,
-          toFirestore: AccountProfile.toFirestore,
-        );
+    _collection = FirebaseAccountProfileHelper.getTypedCollection(_firestore);
   }
 
   @override

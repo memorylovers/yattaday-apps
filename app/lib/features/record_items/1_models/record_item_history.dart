@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../common/json_converter/datetime_converter.dart';
@@ -34,16 +33,6 @@ class RecordItemHistory with _$RecordItemHistory {
 
   factory RecordItemHistory.fromJson(Map<String, dynamic> json) =>
       _$RecordItemHistoryFromJson(json);
-
-  /// firestoreのcollection path
-  static String collectionPath(String userId, String recordItemId) =>
-      "users/$userId/recordItems/$recordItemId/histories";
-
-  static FromFirestore<RecordItemHistory> get fromFirestore =>
-      (snapshot, _) => RecordItemHistory.fromJson(snapshot.data() ?? {});
-
-  static ToFirestore<RecordItemHistory> get toFirestore =>
-      (data, _) => data.toJson();
 }
 
 extension RecordItemHistoryExtension on RecordItemHistory {

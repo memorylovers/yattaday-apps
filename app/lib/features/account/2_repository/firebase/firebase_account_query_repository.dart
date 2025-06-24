@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../common/exception/handling_error.dart';
 import '../../1_models/account.dart';
 import '../interfaces/account_query_repository.dart';
+import 'firebase_account_helper.dart';
 
 /// アカウント情報の参照用リポジトリのFirebase実装
 ///
@@ -18,12 +19,7 @@ class FirebaseAccountQueryRepository implements IAccountQueryRepository {
   ///
   /// [firestore] Firestoreインスタンス（テスト時はモックを注入可能）
   FirebaseAccountQueryRepository(this._firestore) {
-    _collection = _firestore
-        .collection(Account.collectionPath)
-        .withConverter(
-          fromFirestore: Account.fromFirestore,
-          toFirestore: Account.toFirestore,
-        );
+    _collection = FirebaseAccountHelper.getTypedCollection(_firestore);
   }
 
   @override

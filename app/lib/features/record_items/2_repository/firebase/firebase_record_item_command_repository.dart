@@ -4,6 +4,7 @@ import 'package:ulid4d/ulid4d.dart';
 import '../../../../common/exception/handling_error.dart';
 import '../../1_models/record_item.dart';
 import '../interfaces/record_item_command_repository.dart';
+import 'firebase_record_item_helper.dart';
 
 /// RecordItemCommandRepositoryのFirestore実装
 class FirebaseRecordItemCommandRepository
@@ -13,12 +14,8 @@ class FirebaseRecordItemCommandRepository
   FirebaseRecordItemCommandRepository({FirebaseFirestore? firestore})
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  CollectionReference<RecordItem> _col(String userId) => _firestore
-      .collection(RecordItem.collectionPath(userId))
-      .withConverter(
-        fromFirestore: RecordItem.fromFirestore,
-        toFirestore: RecordItem.toFirestore,
-      );
+  CollectionReference<RecordItem> _col(String userId) =>
+      FirebaseRecordItemHelper.getTypedCollection(_firestore, userId);
 
   @override
   Future<void> create(RecordItem recordItem) async {

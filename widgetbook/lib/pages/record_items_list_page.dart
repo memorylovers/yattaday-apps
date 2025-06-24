@@ -86,9 +86,7 @@ Widget buildRecordItemsListPageDefaultUseCase(BuildContext context) {
   return ProviderScope(
     overrides: [
       recordItemsListViewModelProvider.overrideWith(
-        () => MockRecordItemsListViewModel(
-          mockItems: _createSampleItems(),
-        ),
+        () => MockRecordItemsListViewModel(mockItems: _createSampleItems()),
       ),
     ],
     child: const RecordItemsListPage(),
@@ -137,9 +135,7 @@ Widget buildRecordItemsListPageManyItemsUseCase(BuildContext context) {
   return ProviderScope(
     overrides: [
       recordItemsListViewModelProvider.overrideWith(
-        () => MockRecordItemsListViewModel(
-          mockItems: manyItems,
-        ),
+        () => MockRecordItemsListViewModel(mockItems: manyItems),
       ),
     ],
     child: const RecordItemsListPage(),

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../common/exception/handling_error.dart';
 import '../../1_models/record_item.dart';
 import '../interfaces/record_item_query_repository.dart';
+import 'firebase_record_item_helper.dart';
 
 /// RecordItemQueryRepositoryのFirestore実装
 class FirebaseRecordItemQueryRepository implements IRecordItemQueryRepository {
@@ -11,12 +12,8 @@ class FirebaseRecordItemQueryRepository implements IRecordItemQueryRepository {
   FirebaseRecordItemQueryRepository({FirebaseFirestore? firestore})
     : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  CollectionReference<RecordItem> _col(String userId) => _firestore
-      .collection(RecordItem.collectionPath(userId))
-      .withConverter(
-        fromFirestore: RecordItem.fromFirestore,
-        toFirestore: RecordItem.toFirestore,
-      );
+  CollectionReference<RecordItem> _col(String userId) =>
+      FirebaseRecordItemHelper.getTypedCollection(_firestore, userId);
 
   @override
   Future<RecordItem?> getById(String userId, String recordItemId) async {

@@ -31,7 +31,6 @@ class MockRecordItemsEditViewModel extends RecordItemsEditViewModel {
   }
 }
 
-
 @widgetbook.UseCase(name: 'Default', type: RecordItemsEditPage, path: '[pages]')
 Widget buildRecordItemsEditPageDefault(BuildContext context) {
   final recordItem = RecordItem(

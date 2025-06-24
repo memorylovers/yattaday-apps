@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../common/json_converter/datetime_converter.dart';
@@ -17,12 +16,4 @@ class Account with _$Account {
 
   factory Account.fromJson(Map<String, dynamic> json) =>
       _$AccountFromJson(json);
-
-  /// firestoreのcollection path
-  static String get collectionPath => "accounts";
-
-  static FromFirestore<Account> get fromFirestore =>
-      (snapshot, _) => Account.fromJson(snapshot.data() ?? {});
-
-  static ToFirestore<Account> get toFirestore => (data, _) => data.toJson();
 }

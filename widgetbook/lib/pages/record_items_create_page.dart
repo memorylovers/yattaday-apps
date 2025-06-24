@@ -29,7 +29,6 @@ class MockRecordItemsCreateViewModel extends RecordItemsCreateViewModel {
   }
 }
 
-
 @widgetbook.UseCase(
   name: 'Default',
   type: RecordItemsCreatePage,

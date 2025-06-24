@@ -1,7 +1,7 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/features/record_items/2_repository/firebase/firebase_record_item_repository.dart';
-import 'package:myapp/features/record_items/1_models/record_item.dart';
+import 'package:myapp/features/record_items/2_repository/firebase/firebase_record_item_helper.dart';
 
 import '../../../test_helpers/record_item_helpers.dart';
 
@@ -21,7 +21,7 @@ void main() {
 
         await repository.create(recordItem);
 
-        final collectionPath = RecordItem.collectionPath(recordItem.userId);
+        final collectionPath = FirebaseRecordItemHelper.collectionPath(recordItem.userId);
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 
@@ -51,7 +51,7 @@ void main() {
 
         await repository.update(updatedItem);
 
-        final collectionPath = RecordItem.collectionPath(recordItem.userId);
+        final collectionPath = FirebaseRecordItemHelper.collectionPath(recordItem.userId);
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 
@@ -69,7 +69,7 @@ void main() {
 
         await repository.delete(recordItem.userId, recordItem.id);
 
-        final collectionPath = RecordItem.collectionPath(recordItem.userId);
+        final collectionPath = FirebaseRecordItemHelper.collectionPath(recordItem.userId);
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 

@@ -66,7 +66,9 @@ Widget recordItemsDetailPageDefault(BuildContext context) {
     final date = now.subtract(Duration(days: i));
     // 70%の確率で記録あり
     if (i % 10 < 7) {
-      recordedDates.add('${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}');
+      recordedDates.add(
+        '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
+      );
     }
   }
 
@@ -80,9 +82,9 @@ Widget recordItemsDetailPageDefault(BuildContext context) {
 
   return ProviderScope(
     overrides: [
-      recordItemDetailViewModelProvider('test-id').overrideWith(
-        () => MockRecordItemDetailViewModel(mockState: mockState),
-      ),
+      recordItemDetailViewModelProvider(
+        'test-id',
+      ).overrideWith(() => MockRecordItemDetailViewModel(mockState: mockState)),
     ],
     child: const MaterialApp(
       home: RecordItemsDetailPage(recordItemId: 'test-id'),
