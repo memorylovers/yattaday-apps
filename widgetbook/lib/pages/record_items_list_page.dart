@@ -1,76 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/common/providers/service_providers.dart';
-import 'package:myapp/features/_authentication/3_store/auth_store.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
-import 'package:myapp/features/record_items/2_repository/interfaces/record_item_query_repository.dart';
-import 'package:myapp/features/record_items/3_store/record_items_store.dart';
+import 'package:myapp/features/record_items/5_view_model/record_items_list_view_model.dart';
 import 'package:myapp/features/record_items/7_page/record_items_list_page.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-/// モック用のAuthStore
-class MockAuthStore extends AuthStore {
-  final String mockUid;
+/// RecordItemsListPage用のモックViewModel
+class MockRecordItemsListViewModel extends RecordItemsListViewModel {
+  final List<RecordItem> mockItems;
+  final Set<String> completedItemIds;
 
-  MockAuthStore(this.mockUid);
-
-  @override
-  Future<AuthState?> build() async {
-    return AuthState(uid: mockUid);
-  }
-}
-
-/// RecordItemsListPage用のモッククエリリポジトリ
-class MockRecordItemQueryRepository implements IRecordItemQueryRepository {
-  final List<RecordItem> _mockItems;
-
-  MockRecordItemQueryRepository(this._mockItems);
+  MockRecordItemsListViewModel({
+    required this.mockItems,
+    this.completedItemIds = const {},
+  });
 
   @override
-  Future<List<RecordItem>> getByUserId(String userId) async {
-    await Future.delayed(const Duration(milliseconds: 500)); // ローディング体験
-    return _mockItems.where((item) => item.userId == userId).toList()
-      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-  }
-
-  @override
-  Stream<List<RecordItem>> watchByUserId(String userId) {
-    return Stream.value(
-      _mockItems.where((item) => item.userId == userId).toList()
-        ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
+  RecordItemsListPageState build() {
+    return RecordItemsListPageState(
+      selectedDate: DateTime.now(),
+      completedItemIds: completedItemIds,
+      recordItemsAsync: AsyncValue.data(mockItems),
     );
   }
 
   @override
-  Future<RecordItem?> getById(String userId, String recordItemId) async {
-    try {
-      return _mockItems.firstWhere(
-        (item) => item.id == recordItemId && item.userId == userId,
-      );
-    } catch (_) {
-      return null;
-    }
-  }
-
-  @override
-  Future<int> getNextSortOrder(String userId) async {
-    final userItems =
-        _mockItems.where((item) => item.userId == userId).toList();
-    if (userItems.isEmpty) return 0;
-    return userItems
-            .map((item) => item.sortOrder)
-            .reduce((a, b) => a > b ? a : b) +
-        1;
+  void refresh() {
+    // モックなので何もしない
   }
 }
 
 // サンプルデータ生成
-List<RecordItem> _createSampleItems(String userId) {
+List<RecordItem> _createSampleItems() {
   final now = DateTime.now();
   return [
     RecordItem(
       id: '1',
-      userId: userId,
+      userId: 'test-user-id',
       title: '読書',
       description: '毎日読んだ本のページ数を記録',
       icon: '📚',
@@ -81,7 +47,7 @@ List<RecordItem> _createSampleItems(String userId) {
     ),
     RecordItem(
       id: '2',
-      userId: userId,
+      userId: 'test-user-id',
       title: '運動',
       description: '運動時間を記録',
       icon: '💪',
@@ -92,7 +58,7 @@ List<RecordItem> _createSampleItems(String userId) {
     ),
     RecordItem(
       id: '3',
-      userId: userId,
+      userId: 'test-user-id',
       title: '水分補給',
       description: '1日の水分摂取量を記録',
       icon: '💧',
@@ -103,7 +69,7 @@ List<RecordItem> _createSampleItems(String userId) {
     ),
     RecordItem(
       id: '4',
-      userId: userId,
+      userId: 'test-user-id',
       title: '瞑想',
       description: '瞑想時間を記録',
       icon: '🧘',
@@ -115,16 +81,14 @@ List<RecordItem> _createSampleItems(String userId) {
   ];
 }
 
-@widgetbook.UseCase(name: 'Default', type: RecordItemsListPage, path: 'pages')
+@widgetbook.UseCase(name: 'Default', type: RecordItemsListPage, path: '[pages]')
 Widget buildRecordItemsListPageDefaultUseCase(BuildContext context) {
-  const userId = 'test-user-id';
-
   return ProviderScope(
     overrides: [
-      firebaseUserUidProvider.overrideWith((ref) async => userId),
-      authStoreProvider.overrideWith(() => MockAuthStore(userId)),
-      recordItemQueryRepositoryProvider.overrideWithValue(
-        MockRecordItemQueryRepository(_createSampleItems(userId)),
+      recordItemsListViewModelProvider.overrideWith(
+        () => MockRecordItemsListViewModel(
+          mockItems: _createSampleItems(),
+        ),
       ),
     ],
     child: const RecordItemsListPage(),
@@ -134,17 +98,15 @@ Widget buildRecordItemsListPageDefaultUseCase(BuildContext context) {
 @widgetbook.UseCase(
   name: 'Empty State',
   type: RecordItemsListPage,
-  path: 'pages',
+  path: '[pages]',
 )
 Widget buildRecordItemsListPageEmptyUseCase(BuildContext context) {
-  const userId = 'test-user-id';
-
   return ProviderScope(
     overrides: [
-      firebaseUserUidProvider.overrideWith((ref) async => userId),
-      authStoreProvider.overrideWith(() => MockAuthStore(userId)),
-      recordItemQueryRepositoryProvider.overrideWithValue(
-        MockRecordItemQueryRepository([]), // 空のリスト
+      recordItemsListViewModelProvider.overrideWith(
+        () => MockRecordItemsListViewModel(
+          mockItems: [], // 空のリスト
+        ),
       ),
     ],
     child: const RecordItemsListPage(),
@@ -154,16 +116,14 @@ Widget buildRecordItemsListPageEmptyUseCase(BuildContext context) {
 @widgetbook.UseCase(
   name: 'Many Items',
   type: RecordItemsListPage,
-  path: 'pages',
+  path: '[pages]',
 )
 Widget buildRecordItemsListPageManyItemsUseCase(BuildContext context) {
-  const userId = 'test-user-id';
-
   // 多数のアイテムを生成
   final manyItems = List.generate(20, (index) {
     return RecordItem(
       id: 'item-$index',
-      userId: userId,
+      userId: 'test-user-id',
       title: '記録項目 ${index + 1}',
       description: '説明文 ${index + 1}',
       icon: ['📚', '💪', '💧', '🧘', '🎯', '📝'][index % 6],
@@ -176,10 +136,10 @@ Widget buildRecordItemsListPageManyItemsUseCase(BuildContext context) {
 
   return ProviderScope(
     overrides: [
-      firebaseUserUidProvider.overrideWith((ref) async => userId),
-      authStoreProvider.overrideWith(() => MockAuthStore(userId)),
-      recordItemQueryRepositoryProvider.overrideWithValue(
-        MockRecordItemQueryRepository(manyItems),
+      recordItemsListViewModelProvider.overrideWith(
+        () => MockRecordItemsListViewModel(
+          mockItems: manyItems,
+        ),
       ),
     ],
     child: const RecordItemsListPage(),

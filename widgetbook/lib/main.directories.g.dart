@@ -11,36 +11,36 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:widgetbook/widgetbook.dart' as _i1;
-import 'package:widgetbook_workspace/components/buttons/buttons.dart' as _i8;
+import 'package:widgetbook_workspace/components/buttons/buttons.dart' as _i9;
 import 'package:widgetbook_workspace/components/buttons/primary_button.dart'
-    as _i9;
-import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
     as _i10;
-import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
+import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
     as _i11;
-import 'package:widgetbook_workspace/components/logo/app_logo.dart' as _i12;
+import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
+    as _i12;
+import 'package:widgetbook_workspace/components/logo/app_logo.dart' as _i13;
 import 'package:widgetbook_workspace/components/logo/apple_auth_button.dart'
-    as _i13;
-import 'package:widgetbook_workspace/components/logo/bubble_border.dart'
     as _i14;
-import 'package:widgetbook_workspace/components/logo/dismissible_background.dart'
+import 'package:widgetbook_workspace/components/logo/bubble_border.dart'
     as _i15;
-import 'package:widgetbook_workspace/components/logo/google_auth_button.dart'
+import 'package:widgetbook_workspace/components/logo/dismissible_background.dart'
     as _i16;
-import 'package:widgetbook_workspace/components/logo/unfocus_on_tap.dart'
+import 'package:widgetbook_workspace/components/logo/google_auth_button.dart'
     as _i17;
-import 'package:widgetbook_workspace/components/scaffold/gradient_scaffold.dart'
+import 'package:widgetbook_workspace/components/logo/unfocus_on_tap.dart'
     as _i18;
-import 'package:widgetbook_workspace/features/_authentication/login_buttons.dart'
+import 'package:widgetbook_workspace/components/scaffold/gradient_scaffold.dart'
     as _i19;
-import 'package:widgetbook_workspace/features/record_items/record_item_card.dart'
-    as _i21;
-import 'package:widgetbook_workspace/features/record_items/record_item_form.dart'
+import 'package:widgetbook_workspace/features/_authentication/login_buttons.dart'
     as _i20;
-import 'package:widgetbook_workspace/features/startup/startup_error_widget.dart'
+import 'package:widgetbook_workspace/features/record_items/record_item_card.dart'
     as _i22;
-import 'package:widgetbook_workspace/features/startup/startup_loading_widget.dart'
+import 'package:widgetbook_workspace/features/record_items/record_item_form.dart'
+    as _i21;
+import 'package:widgetbook_workspace/features/startup/startup_error_widget.dart'
     as _i23;
+import 'package:widgetbook_workspace/features/startup/startup_loading_widget.dart'
+    as _i24;
 import 'package:widgetbook_workspace/pages/login_page.dart' as _i2;
 import 'package:widgetbook_workspace/pages/payment_page.dart' as _i3;
 import 'package:widgetbook_workspace/pages/record_items_create_page.dart'
@@ -48,8 +48,8 @@ import 'package:widgetbook_workspace/pages/record_items_create_page.dart'
 import 'package:widgetbook_workspace/pages/record_items_detail_page.dart'
     as _i5;
 import 'package:widgetbook_workspace/pages/record_items_edit_page.dart' as _i6;
-import 'package:widgetbook_workspace/pages/record_items_list_page.dart' as _i24;
-import 'package:widgetbook_workspace/pages/settings_page.dart' as _i7;
+import 'package:widgetbook_workspace/pages/record_items_list_page.dart' as _i7;
+import 'package:widgetbook_workspace/pages/settings_page.dart' as _i8;
 
 final directories = <_i1.WidgetbookNode>[
   _i1.WidgetbookCategory(
@@ -90,11 +90,28 @@ final directories = <_i1.WidgetbookNode>[
           builder: _i6.buildRecordItemsEditPageDefault,
         ),
       ),
+      _i1.WidgetbookComponent(
+        name: 'RecordItemsListPage',
+        useCases: [
+          _i1.WidgetbookUseCase(
+            name: 'Default',
+            builder: _i7.buildRecordItemsListPageDefaultUseCase,
+          ),
+          _i1.WidgetbookUseCase(
+            name: 'Empty State',
+            builder: _i7.buildRecordItemsListPageEmptyUseCase,
+          ),
+          _i1.WidgetbookUseCase(
+            name: 'Many Items',
+            builder: _i7.buildRecordItemsListPageManyItemsUseCase,
+          ),
+        ],
+      ),
       _i1.WidgetbookLeafComponent(
         name: 'SettingsPage',
         useCase: _i1.WidgetbookUseCase(
           name: 'Default',
-          builder: _i7.buildSettingsPageUseCase,
+          builder: _i8.buildSettingsPageUseCase,
         ),
       ),
     ],
@@ -109,21 +126,21 @@ final directories = <_i1.WidgetbookNode>[
             name: 'Button',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i8.usecaseButton,
+              builder: _i9.usecaseButton,
             ),
           ),
           _i1.WidgetbookLeafComponent(
             name: 'PrimaryButton',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i9.usecasePrimaryButton,
+              builder: _i10.usecasePrimaryButton,
             ),
           ),
           _i1.WidgetbookLeafComponent(
             name: 'SecondaryButton',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i10.usecaseSecondaryButton,
+              builder: _i11.usecaseSecondaryButton,
             ),
           ),
         ],
@@ -135,7 +152,7 @@ final directories = <_i1.WidgetbookNode>[
             name: 'ConfirmDialog',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i11.usecaseConfirmDialog,
+              builder: _i12.usecaseConfirmDialog,
             ),
           ),
         ],
@@ -148,27 +165,27 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Custom Color',
-                builder: _i12.customColorAppLogo,
+                builder: _i13.customColorAppLogo,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Custom Size',
-                builder: _i12.customSizeAppLogo,
+                builder: _i13.customSizeAppLogo,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Custom Width and Height',
-                builder: _i12.customWidthHeightAppLogo,
+                builder: _i13.customWidthHeightAppLogo,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i12.defaultAppLogo,
+                builder: _i13.defaultAppLogo,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Different Backgrounds',
-                builder: _i12.differentBackgroundsAppLogo,
+                builder: _i13.differentBackgroundsAppLogo,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Login Page Example',
-                builder: _i12.loginPageExampleAppLogo,
+                builder: _i13.loginPageExampleAppLogo,
               ),
             ],
           ),
@@ -177,23 +194,23 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Custom Label',
-                builder: _i13.customLabelAppleAuthButton,
+                builder: _i14.customLabelAppleAuthButton,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Dark Theme',
-                builder: _i13.darkThemeAppleAuthButton,
+                builder: _i14.darkThemeAppleAuthButton,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i13.defaultAppleAuthButton,
+                builder: _i14.defaultAppleAuthButton,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Disabled',
-                builder: _i13.disabledAppleAuthButton,
+                builder: _i14.disabledAppleAuthButton,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Multiple Sizes',
-                builder: _i13.multipleSizesAppleAuthButton,
+                builder: _i14.multipleSizesAppleAuthButton,
               ),
             ],
           ),
@@ -202,23 +219,23 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'All Directions',
-                builder: _i14.allDirectionsBubbleBorder,
+                builder: _i15.allDirectionsBubbleBorder,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Chat Message Example',
-                builder: _i14.chatMessageBubbleBorder,
+                builder: _i15.chatMessageBubbleBorder,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i14.defaultBubbleBorder,
+                builder: _i15.defaultBubbleBorder,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Interactive Direction',
-                builder: _i14.interactiveBubbleBorder,
+                builder: _i15.interactiveBubbleBorder,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With and Without Padding',
-                builder: _i14.paddingBubbleBorder,
+                builder: _i15.paddingBubbleBorder,
               ),
             ],
           ),
@@ -227,27 +244,27 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Custom Colors',
-                builder: _i15.customColorsDismissibleBackground,
+                builder: _i16.customColorsDismissibleBackground,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i15.defaultDismissibleBackground,
+                builder: _i16.defaultDismissibleBackground,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Different Alignments',
-                builder: _i15.differentAlignmentsDismissibleBackground,
+                builder: _i16.differentAlignmentsDismissibleBackground,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Interactive Example',
-                builder: _i15.interactiveDismissibleBackground,
+                builder: _i16.interactiveDismissibleBackground,
               ),
               _i1.WidgetbookUseCase(
                 name: 'List Item Example',
-                builder: _i15.listItemDismissibleBackground,
+                builder: _i16.listItemDismissibleBackground,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Border Radius',
-                builder: _i15.borderRadiusDismissibleBackground,
+                builder: _i16.borderRadiusDismissibleBackground,
               ),
             ],
           ),
@@ -256,23 +273,23 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Custom Label',
-                builder: _i16.customLabelGoogleAuthButton,
+                builder: _i17.customLabelGoogleAuthButton,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Dark Theme',
-                builder: _i16.darkThemeGoogleAuthButton,
+                builder: _i17.darkThemeGoogleAuthButton,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i16.defaultGoogleAuthButton,
+                builder: _i17.defaultGoogleAuthButton,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Disabled',
-                builder: _i16.disabledGoogleAuthButton,
+                builder: _i17.disabledGoogleAuthButton,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Multiple Sizes',
-                builder: _i16.multipleSizesGoogleAuthButton,
+                builder: _i17.multipleSizesGoogleAuthButton,
               ),
             ],
           ),
@@ -281,19 +298,19 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i17.defaultUnfocusOnTap,
+                builder: _i18.defaultUnfocusOnTap,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Form Example',
-                builder: _i17.formExampleUnfocusOnTap,
+                builder: _i18.formExampleUnfocusOnTap,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Multiple Input Types',
-                builder: _i17.multipleInputTypesUnfocusOnTap,
+                builder: _i18.multipleInputTypesUnfocusOnTap,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Background Color',
-                builder: _i17.backgroundColorUnfocusOnTap,
+                builder: _i18.backgroundColorUnfocusOnTap,
               ),
             ],
           ),
@@ -307,27 +324,27 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Complex Example',
-                builder: _i18.complexExampleGradientScaffold,
+                builder: _i19.complexExampleGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i18.defaultGradientScaffold,
+                builder: _i19.defaultGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Actions',
-                builder: _i18.withActionsGradientScaffold,
+                builder: _i19.withActionsGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With FAB',
-                builder: _i18.withFABGradientScaffold,
+                builder: _i19.withFABGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With Title',
-                builder: _i18.withTitleGradientScaffold,
+                builder: _i19.withTitleGradientScaffold,
               ),
               _i1.WidgetbookUseCase(
                 name: 'With White Container',
-                builder: _i18.withWhiteContainerGradientScaffold,
+                builder: _i19.withWhiteContainerGradientScaffold,
               ),
             ],
           ),
@@ -345,7 +362,7 @@ final directories = <_i1.WidgetbookNode>[
             name: 'LoginButton',
             useCase: _i1.WidgetbookUseCase(
               name: 'All Variants',
-              builder: _i19.loginButtonUseCase,
+              builder: _i20.loginButtonUseCase,
               designLink: '',
             ),
           ),
@@ -359,23 +376,23 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'エラー表示',
-                builder: _i20.buildRecordItemFormErrorUseCase,
+                builder: _i21.buildRecordItemFormErrorUseCase,
               ),
               _i1.WidgetbookUseCase(
                 name: '入力済み',
-                builder: _i20.buildRecordItemFormFilledUseCase,
+                builder: _i21.buildRecordItemFormFilledUseCase,
               ),
               _i1.WidgetbookUseCase(
                 name: '基本表示',
-                builder: _i20.buildRecordItemFormDefaultUseCase,
+                builder: _i21.buildRecordItemFormDefaultUseCase,
               ),
               _i1.WidgetbookUseCase(
                 name: '編集モード',
-                builder: _i20.buildRecordItemFormEditModeUseCase,
+                builder: _i21.buildRecordItemFormEditModeUseCase,
               ),
               _i1.WidgetbookUseCase(
                 name: '送信中',
-                builder: _i20.buildRecordItemFormSubmittingUseCase,
+                builder: _i21.buildRecordItemFormSubmittingUseCase,
               ),
             ],
           ),
@@ -389,19 +406,19 @@ final directories = <_i1.WidgetbookNode>[
             useCases: [
               _i1.WidgetbookUseCase(
                 name: 'Default',
-                builder: _i21.recordItemCardDefault,
+                builder: _i22.recordItemCardDefault,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Minimal',
-                builder: _i21.recordItemCardMinimal,
+                builder: _i22.recordItemCardMinimal,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Without Description',
-                builder: _i21.recordItemCardWithoutDescription,
+                builder: _i22.recordItemCardWithoutDescription,
               ),
               _i1.WidgetbookUseCase(
                 name: 'Without Unit',
-                builder: _i21.recordItemCardWithoutUnit,
+                builder: _i22.recordItemCardWithoutUnit,
               ),
             ],
           ),
@@ -414,37 +431,15 @@ final directories = <_i1.WidgetbookNode>[
             name: 'StartupErrorWidget',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i22.usecaseStartupErrorWidget,
+              builder: _i23.usecaseStartupErrorWidget,
             ),
           ),
           _i1.WidgetbookLeafComponent(
             name: 'StartupLoadingWidget',
             useCase: _i1.WidgetbookUseCase(
               name: 'Default',
-              builder: _i23.usecaseStartupLoadingWidget,
+              builder: _i24.usecaseStartupLoadingWidget,
             ),
-          ),
-        ],
-      ),
-    ],
-  ),
-  _i1.WidgetbookFolder(
-    name: 'pages',
-    children: [
-      _i1.WidgetbookComponent(
-        name: 'RecordItemsListPage',
-        useCases: [
-          _i1.WidgetbookUseCase(
-            name: 'Default',
-            builder: _i24.buildRecordItemsListPageDefaultUseCase,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Empty State',
-            builder: _i24.buildRecordItemsListPageEmptyUseCase,
-          ),
-          _i1.WidgetbookUseCase(
-            name: 'Many Items',
-            builder: _i24.buildRecordItemsListPageManyItemsUseCase,
           ),
         ],
       ),

@@ -1,93 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:myapp/features/record_items/3_store/record_items_store.dart';
-import 'package:myapp/features/record_items/2_repository/interfaces/record_item_query_repository.dart';
-import 'package:myapp/features/record_items/2_repository/interfaces/record_item_command_repository.dart';
-import 'package:myapp/features/record_items/3_store/record_item_crud_store.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
+import 'package:myapp/features/record_items/3_store/record_item_form_store.dart';
+import 'package:myapp/features/record_items/5_view_model/record_items_edit_view_model.dart';
 import 'package:myapp/features/record_items/7_page/record_items_edit_page.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
-/// 記録項目編集ページ用のモッククエリリポジトリ
-class MockRecordItemQueryRepository implements IRecordItemQueryRepository {
-  final List<RecordItem> _items = [];
+/// RecordItemsEditPage用のモックViewModel
+class MockRecordItemsEditViewModel extends RecordItemsEditViewModel {
+  final RecordItem mockRecordItem;
+  final RecordItemFormState mockFormState;
 
-  MockRecordItemQueryRepository({List<RecordItem>? initialItems}) {
-    if (initialItems != null) {
-      _items.addAll(initialItems);
-    }
-  }
-
-  @override
-  Future<List<RecordItem>> getByUserId(String userId) async {
-    return _items.where((item) => item.userId == userId).toList()
-      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-  }
+  MockRecordItemsEditViewModel({
+    required this.mockRecordItem,
+    required this.mockFormState,
+  });
 
   @override
-  Stream<List<RecordItem>> watchByUserId(String userId) {
-    return Stream.value(
-      _items.where((item) => item.userId == userId).toList()
-        ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder)),
+  RecordItemsEditPageState build(RecordItem recordItem) {
+    return RecordItemsEditPageState(
+      formState: mockFormState,
+      userId: 'test-user-id',
+      recordItem: mockRecordItem,
     );
   }
 
   @override
-  Future<RecordItem?> getById(String userId, String recordItemId) async {
-    try {
-      return _items.firstWhere(
-        (item) => item.id == recordItemId && item.userId == userId,
-      );
-    } catch (_) {
-      return null;
-    }
-  }
-
-  @override
-  Future<int> getNextSortOrder(String userId) async {
-    final userItems = _items.where((item) => item.userId == userId).toList();
-    if (userItems.isEmpty) return 0;
-    return userItems
-            .map((item) => item.sortOrder)
-            .reduce((a, b) => a > b ? a : b) +
-        1;
+  void initializeForm() {
+    // モックなので初期化処理は不要
   }
 }
 
-/// 記録項目編集ページ用のモックコマンドリポジトリ
-class MockRecordItemCommandRepository implements IRecordItemCommandRepository {
-  final List<RecordItem> _items;
-
-  MockRecordItemCommandRepository(this._items);
-
-  @override
-  Future<void> create(RecordItem recordItem) async {
-    _items.add(recordItem);
-  }
-
-  @override
-  Future<void> update(RecordItem recordItem) async {
-    final index = _items.indexWhere((item) => item.id == recordItem.id);
-    if (index != -1) {
-      _items[index] = recordItem;
-    } else {
-      throw Exception('記録項目が見つかりません');
-    }
-  }
-
-  @override
-  Future<void> delete(String userId, String recordItemId) async {
-    _items.removeWhere(
-      (item) => item.id == recordItemId && item.userId == userId,
-    );
-  }
-}
 
 @widgetbook.UseCase(name: 'Default', type: RecordItemsEditPage, path: '[pages]')
 Widget buildRecordItemsEditPageDefault(BuildContext context) {
   final recordItem = RecordItem(
     id: 'item1',
-    userId: 'user1',
+    userId: 'test-user-id',
     title: '読書記録',
     description: '毎日30分以上読書する',
     icon: '📖',
@@ -97,19 +46,22 @@ Widget buildRecordItemsEditPageDefault(BuildContext context) {
     updatedAt: DateTime(2024, 1, 15, 14, 30),
   );
 
-  final mockItems = [recordItem];
-  final mockQueryRepository = MockRecordItemQueryRepository(
-    initialItems: mockItems,
+  final formState = RecordItemFormState(
+    title: recordItem.title,
+    description: recordItem.description ?? '',
+    icon: recordItem.icon,
+    unit: recordItem.unit ?? '',
   );
-  final mockCommandRepository = MockRecordItemCommandRepository(mockItems);
 
   return ProviderScope(
     overrides: [
-      recordItemQueryRepositoryProvider.overrideWithValue(mockQueryRepository),
-      recordItemCommandRepositoryProvider.overrideWithValue(
-        mockCommandRepository,
+      recordItemsEditViewModelProvider(recordItem).overrideWith(
+        () => MockRecordItemsEditViewModel(
+          mockRecordItem: recordItem,
+          mockFormState: formState,
+        ),
       ),
     ],
-    child: RecordItemsEditPage(userId: 'user1', recordItem: recordItem),
+    child: RecordItemsEditPage(userId: 'test-user-id', recordItem: recordItem),
   );
 }
