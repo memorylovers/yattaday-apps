@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../common/types/types.dart';
+import '../../features/_authentication/1_models/auth_type.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) => AuthService());
 

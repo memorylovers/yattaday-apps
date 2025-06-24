@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../common/providers/service_providers.dart';
+import '../../_authentication/3_store/auth_store.dart';
 import '../1_models/record_item.dart';
 import '../1_models/record_item_statistics.dart';
 import '../3_store/record_item_crud_store.dart';
@@ -45,15 +45,15 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
     state = state.copyWith(isDeleting: true, deleteError: null);
 
     try {
-      final userIdNullable = await ref.read(firebaseUserUidProvider.future);
-      if (userIdNullable == null) {
+      final authState = await ref.read(authStoreProvider.future);
+      if (authState == null) {
         state = state.copyWith(
           isDeleting: false,
           deleteError: 'ユーザーがログインしていません',
         );
         return;
       }
-      final userId = userIdNullable;
+      final userId = authState.uid;
       final success = await ref
           .read(recordItemCrudProvider.notifier)
           .deleteRecordItem(userId: userId, recordItemId: recordItemId);

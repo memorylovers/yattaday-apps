@@ -2,8 +2,9 @@ import 'package:collection/collection.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../../../common/exception/handling_error.dart';
-import '../../../../common/providers/service_providers.dart';
 import '../../../../common/logger/logger.dart';
+import '../../../../common/providers/service_providers.dart';
+import '../../_authentication/3_store/auth_store.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -71,13 +72,13 @@ class Payment extends _$Payment {
     });
 
     // ログイン状態を監視
-    ref.listen(firebaseUserProvider, (prev, next) {
+    ref.listen(authStoreProvider, (prev, next) {
       if (next.value == null) {
         // 未ログインの場合は、ログアウトし、uidとemailをクリアする
         logout();
       } else {
         // ログイン済みの場合は、uidとemailを設定
-        setAppUserId(next.value!.uid, next.value!.email);
+        setAppUserId(next.value!.uid, next.value!.user.email);
       }
     });
 
@@ -94,9 +95,9 @@ class Payment extends _$Payment {
   Future<void> refresh() async {
     logger.debug("** $logTag:refresh: isConfigured=${state.isConfigured}");
     if (!state.isConfigured) {
-      final authUser = await ref.read(firebaseUserProvider.future);
-      if (authUser == null) return;
-      await setAppUserId(authUser.uid, authUser.email);
+      final authState = await ref.read(authStoreProvider.future);
+      if (authState == null) return;
+      await setAppUserId(authState.uid, authState.user.email);
       if (!state.isConfigured) return;
     }
     // fetch Customer Info

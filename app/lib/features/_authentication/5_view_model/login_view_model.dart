@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../../../common/types/types.dart';
+import '../1_models/auth_type.dart';
 import '../3_store/auth_store.dart';
 
 part 'login_view_model.freezed.dart';

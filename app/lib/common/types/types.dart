@@ -6,18 +6,6 @@ part 'types.freezed.dart';
 /// FirestoreのDocumentReferenceとそのdataのpair
 typedef DocumentPair<T> = ({DocumentReference<T> reference, T data});
 
-/// 認証のタイプ
-enum AuthType {
-  /// Google認証
-  google,
-
-  /// Apple認証
-  apple,
-
-  /// 匿名認証
-  anonymous,
-}
-
 /// ページング用のレスポンスデータ
 @freezed
 class PageResponse<T> with _$PageResponse<T> {

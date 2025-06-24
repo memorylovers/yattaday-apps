@@ -21,7 +21,8 @@ AuthState _$AuthStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AuthState {
-  String get uid => throw _privateConstructorUsedError;
+  /// 認証ユーザー情報
+  AuthUser get user => throw _privateConstructorUsedError;
 
   /// Serializes this AuthState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,9 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({String uid});
+  $Res call({AuthUser user});
+
+  $AuthUserCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -55,17 +58,27 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? uid = null}) {
+  $Res call({Object? user = null}) {
     return _then(
       _value.copyWith(
-            uid:
-                null == uid
-                    ? _value.uid
-                    : uid // ignore: cast_nullable_to_non_nullable
-                        as String,
+            user:
+                null == user
+                    ? _value.user
+                    : user // ignore: cast_nullable_to_non_nullable
+                        as AuthUser,
           )
           as $Val,
     );
+  }
+
+  /// Create a copy of AuthState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AuthUserCopyWith<$Res> get user {
+    return $AuthUserCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value) as $Val);
+    });
   }
 }
 
@@ -78,7 +91,10 @@ abstract class _$$AuthStateImplCopyWith<$Res>
   ) = __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid});
+  $Res call({AuthUser user});
+
+  @override
+  $AuthUserCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -94,14 +110,14 @@ class __$$AuthStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? uid = null}) {
+  $Res call({Object? user = null}) {
     return _then(
       _$AuthStateImpl(
-        uid:
-            null == uid
-                ? _value.uid
-                : uid // ignore: cast_nullable_to_non_nullable
-                    as String,
+        user:
+            null == user
+                ? _value.user
+                : user // ignore: cast_nullable_to_non_nullable
+                    as AuthUser,
       ),
     );
   }
@@ -110,17 +126,18 @@ class __$$AuthStateImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$AuthStateImpl extends _AuthState {
-  const _$AuthStateImpl({required this.uid}) : super._();
+  const _$AuthStateImpl({required this.user}) : super._();
 
   factory _$AuthStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthStateImplFromJson(json);
 
+  /// 認証ユーザー情報
   @override
-  final String uid;
+  final AuthUser user;
 
   @override
   String toString() {
-    return 'AuthState(uid: $uid)';
+    return 'AuthState(user: $user)';
   }
 
   @override
@@ -128,12 +145,12 @@ class _$AuthStateImpl extends _AuthState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AuthStateImpl &&
-            (identical(other.uid, uid) || other.uid == uid));
+            (identical(other.user, user) || other.user == user));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, uid);
+  int get hashCode => Object.hash(runtimeType, user);
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -150,14 +167,15 @@ class _$AuthStateImpl extends _AuthState {
 }
 
 abstract class _AuthState extends AuthState {
-  const factory _AuthState({required final String uid}) = _$AuthStateImpl;
+  const factory _AuthState({required final AuthUser user}) = _$AuthStateImpl;
   const _AuthState._() : super._();
 
   factory _AuthState.fromJson(Map<String, dynamic> json) =
       _$AuthStateImpl.fromJson;
 
+  /// 認証ユーザー情報
   @override
-  String get uid;
+  AuthUser get user;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
