@@ -235,6 +235,11 @@ features/
 - **基本的な計算ロジックやビジネスロジックを含むことができる**
 - 例：価格計算、割引計算、在庫判定などのドメイン固有のロジック
 
+#### ドメイン固有の型定義
+- `AuthType`のような特定featureに属する型は、そのfeatureの`1_models`に配置
+- `common/types`には汎用的な型定義のみを配置
+- 各featureは自身のドメインモデルを`1_models`で完結させる
+
 ### Repository: データアクセス層(Repositoryパターン)
 
 ```
@@ -253,6 +258,16 @@ features/
 - 外部ライブラリへのアクセスは、services層を経由
 - **データ中心の純粋なビジネスロジック**（データ変換、検証、計算）を含む
 
+#### DTOの適切な使用
+- 必須パラメータのみの場合、DTOは**使用しない**
+- 複数の任意パラメータがある場合のみDTOを使用
+- シンプルなCRUD操作はプリミティブ型で十分
+
+#### CommandRepositoryの責務
+- 「存在チェック→作成」のような複合処理はCommandRepositoryで実装
+- `createIfNotExists()`のようなメソッドで一連の処理を完結
+- Store層で複数のRepositoryを組み合わせたロジックは**禁止**
+
 ### Store: グローバル状態管理。外部featureへの公開ポイント
 
 ```
@@ -266,6 +281,17 @@ features/
 - 別featureは、3_storeのみ参照可能
 - **状態管理とアプリケーション固有のビジネスルール**を含む
 - Store間の依存は`ref.watch`と`select`で必要な値のみを監視（パフォーマンス最適化）
+
+#### 🚨 Firebase依存の完全排除
+- Store層は**絶対にFirebaseサービスを直接使用しない**
+- 必ずRepository層を経由してデータアクセスを行う
+- `firebaseUserProvider`などのFirebase関連プロバイダーの直接使用は**禁止**
+- 認証情報は`AuthStore`から取得する
+
+#### StreamSubscriptionの適切な管理
+- `listen()`で作成したStreamSubscriptionは**必ずdispose**する
+- `ref.onDispose()`でクリーンアップ処理を設定
+- ユーザー切り替え時は既存のSubscriptionをキャンセルしてから新規作成
 
 ### Flow: 複数画面間の一時的な状態管理
 
