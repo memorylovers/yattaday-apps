@@ -35,7 +35,12 @@
       "Bash(./replace_imports.sh)",
       "Bash(-e \"s|''../../data/repository/|''../../2_repository/|g\" )",
       "Bash({} ;)",
-      "Bash(/Users/fujiuray/workspace_memoryloves/workspace_apps/yattaday-apps/app/run_test_v2.sh:*)"
+      "Bash(/Users/fujiuray/workspace_memoryloves/workspace_apps/yattaday-apps/app/run_test_v2.sh:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(if [ -f \"app/android/key.properties\" ])",
+      "Bash(then echo \"key.properties exists\")",
+      "Bash(else echo \"key.properties not found\")",
+      "Bash(fi)"
     ],
     "deny": [
       "Read(../**)",

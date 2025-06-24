@@ -1,0 +1,30 @@
+# Flutter Version Management
+.fvm/
+
+# Android local configuration (SDK path)
+app/android/local.properties
+
+# Android signing key (if exists)
+app/android/key.properties
+
+# Environment files (if exists)
+.env
+.env.local
+.env.development
+.env.production
+
+# VS Code settings (optional)
+.vscode/settings.json
+.vscode/launch.json
+
+# IDE settings
+.idea/
+
+# Flutter plugins (auto-generated but needed for initial setup)
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Additional environment files
+.env.dev
+.env.stag
+.env.prod
