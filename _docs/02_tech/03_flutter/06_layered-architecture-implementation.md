@@ -8,17 +8,7 @@
 
 プロジェクトのディレクトリ構成と番号付き7層構造については[Flutterプロジェクト構造](./01_project-structure.md#features-の7層構造)を参照してください。
 
-### ディレクトリ番号の意図
-
-番号付けにより以下のメリットが得られます：
-
-1. **視覚的な依存関係**: エクスプローラーで見た際に依存の流れが明確
-2. **学習効率**: 新規開発者がアーキテクチャを理解しやすい
-3. **一貫性**: プロジェクト全体で統一された構造
-
 ## 各層の実装詳細
-
-各層の責務と設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)を参照してください。
 
 ### 1_models - Flutter実装
 
@@ -47,8 +37,6 @@ class RecordItem with _$RecordItem {
 ```
 
 ### 2_repository - Flutter実装
-
-Repository層のCQRSパターンについては[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#repository-データアクセス層)を参照してください。
 
 ```
 2_repository/
@@ -96,8 +84,6 @@ class RecordItemCommandRepository {
 
 ### 3_store - Flutter実装
 
-Store層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#store-グローバル状態管理層)および[Store実装パターンガイド](../01_architecture/05_store-implementation-guide.md)を参照してください。
-
 #### Riverpodを使用した実装例
 
 ```dart
@@ -133,8 +119,6 @@ class RecordItemStore extends _$RecordItemStore {
 
 ### 4_flow - Flutter実装
 
-Flow層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#flow-フロー状態管理層)を参照してください。
-
 #### Riverpodを使用した実装例
 
 ```dart
@@ -161,8 +145,6 @@ class RecordCreationFlow extends _$RecordCreationFlow {
 ```
 
 ### 5_view_model - Flutter実装
-
-ViewModel層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#viewmodel-画面状態管理層)を参照してください。
 
 #### Riverpodを使用した実装例
 
@@ -199,8 +181,6 @@ class RecordListViewModel extends _$RecordListViewModel {
 
 ### 6_component - Flutter実装
 
-Component層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#component-uiコンポーネント層)を参照してください。
-
 #### Flutter Widgetの実装例
 
 ```dart
@@ -228,8 +208,6 @@ class RecordItemCard extends StatelessWidget {
 ```
 
 ### 7_page - Flutter実装
-
-Page層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#page-画面層)を参照してください。
 
 #### ConsumerWidgetを使用した実装例
 
@@ -272,8 +250,6 @@ class RecordListPage extends ConsumerWidget {
 
 ## Feature間の参照ルール - Flutter実装
 
-Feature間の参照ルールについては[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#機能間の参照)を参照してください。
-
 ### Flutter/Dartでの実装例
 
 ```dart
@@ -310,4 +286,4 @@ test/features/<feature_name>/
 
 ## まとめ
 
-本ドキュメントでは、[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)で定義された設計原則をFlutter/Dartで実装する具体的な方法を示しました。各層の責務や依存関係の詳細については、アーキテクチャドキュメントを参照してください。
+本ガイドでは、レイヤードアーキテクチャをFlutterプロジェクトで実装する際の具体的なコード例とパターンを示しました。
