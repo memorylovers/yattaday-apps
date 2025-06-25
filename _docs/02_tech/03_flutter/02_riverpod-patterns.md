@@ -4,78 +4,49 @@
 
 本プロジェクトでは、Riverpod v2 + riverpod_generatorを使用した型安全な状態管理を実装しています。
 
-## プロジェクトでのRiverpod使用パターン
+Riverpodの基本的な使い方については[公式ドキュメント](https://riverpod.dev/ja/)を参照してください。
 
-本プロジェクトでは、レイヤードアーキテクチャに基づき、以下の用途でRiverpodを使用：
+## プロジェクトでのRiverpod使用方針
 
-- **Store層**: グローバル状態管理（`@riverpod class`）
-- **ViewModel層**: 画面固有の状態管理（`@riverpod class`）
-- **Repository注入**: DIコンテナとして活用
-- **認証状態**: Firebase Authの状態監視（`StreamProvider`）
+### レイヤー別の役割
 
-## 非同期処理パターン
+| レイヤー | Providerの種類 | 用途 |
+|---------|--------------|------|
+| **Service** | `Provider` | 外部ライブラリのラッパー、DIコンテナとして使用、状態は持たない |
+| **Repository** | `Provider` | データアクセス層、DIコンテナとして使用、状態は持たない |
+| **Store** | `@riverpod class` | グローバル状態管理、Feature間で共有 |
+| **Flow** | `@riverpod class` | 複数画面間の一時的な状態管理 |
+| **ViewModel** | `@riverpod class` | 画面固有の状態管理 |
 
-### StreamProvider（リアルタイムデータ）
+### Feature間の参照ルール
 
 ```dart
-@riverpod
-Stream<List<RecordItem>> recordItemList(Ref ref) async* {
-  final uid = await ref.watch(authUidProvider.future);
-  if (uid == null) {
-    yield [];
-    return;
-  }
-  
-  yield* recordItemRepository.watchByUserId(uid);
-}
+// ✅ 許可: 他FeatureのStore層を参照
+final userProfile = ref.watch(userStoreProvider);
 
-// 使用側
-class RecordListPage extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final itemsAsync = ref.watch(recordItemListProvider);
-    
-    return itemsAsync.when(
-      data: (items) => ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index) => RecordItemCard(items[index]),
-      ),
-      loading: () => const LoadingIndicator(),
-      error: (error, stack) => ErrorWidget(error),
-    );
-  }
+// ❌ 禁止: 他FeatureのViewModel/Repositoryを直接参照
+final otherViewModel = ref.watch(otherFeatureViewModelProvider);
+```
+
+## レイヤー別実装パターン
+
+### Service/Repository層 - DIコンテナパターン
+
+```dart
+// Service層: 外部ライブラリのラッパー
+@Riverpod(keepAlive: true)
+FirebaseFirestore firebaseFirestore(Ref ref) => FirebaseFirestore.instance;
+
+// Repository層: Serviceを注入して使用
+@riverpod
+RecordItemRepository recordItemRepository(Ref ref) {
+  return RecordItemRepository(ref.watch(firebaseFirestoreProvider));
 }
 ```
 
-### FutureProvider（一度きりのデータ取得）
+### Store層 - グローバル状態管理
 
 ```dart
-@riverpod
-Future<UserStats> userStats(Ref ref, String userId) async {
-  final repository = ref.read(statsRepositoryProvider);
-  return repository.getUserStats(userId);
-}
-
-// キャッシュの無効化
-ref.invalidate(userStatsProvider);
-```
-
-## StateNotifierProvider（状態管理）
-
-### Store層の実装
-
-エラーハンドリングの基本戦略については[エラーハンドリング戦略](../01_architecture/04_error-handling.md)を参照してください。以下はRiverpodでのAppException使用例です。
-
-```dart
-@freezed
-class AuthState with _$AuthState {
-  const factory AuthState.initial() = _Initial;
-  const factory AuthState.loading() = _Loading;
-  const factory AuthState.authenticated(User user) = _Authenticated;
-  const factory AuthState.unauthenticated() = _Unauthenticated;
-  const factory AuthState.error(String message) = _Error;
-}
-
 @riverpod
 class AuthStore extends _$AuthStore {
   @override
@@ -83,230 +54,145 @@ class AuthStore extends _$AuthStore {
 
   Future<void> signIn(String email, String password) async {
     state = const AuthState.loading();
-    
     try {
-      final user = await _authRepository.signIn(email, password);
+      final user = await ref.read(authRepositoryProvider).signIn(email, password);
       state = AuthState.authenticated(user);
     } on AppException catch (e) {
       state = AuthState.error(e.message);
     }
   }
-  
-  void signOut() {
-    _authRepository.signOut();
-    state = const AuthState.unauthenticated();
-  }
 }
 ```
 
-### ViewModel層の実装
+### ViewModel層 - 画面固有の状態管理
 
 ```dart
-@freezed
-class RecordListState with _$RecordListState {
-  const factory RecordListState({
-    @Default([]) List<RecordItem> items,
-    @Default(false) bool isLoading,
-    @Default(null) AppException? error,
-    @Default('') String searchQuery,
-  }) = _RecordListState;
-}
-
 @riverpod
 class RecordListViewModel extends _$RecordListViewModel {
   @override
   RecordListState build() {
-    // Storeの変更を監視
-    ref.listen(recordItemStoreProvider, (previous, next) {
-      _updateItems();
-    });
-    
+    // Store層の状態を監視
+    ref.listen(recordItemStoreProvider, (_, __) => _updateItems());
     return const RecordListState();
   }
   
-  void setSearchQuery(String query) {
-    state = state.copyWith(searchQuery: query);
-    _filterItems();
+  void setFilter(RecordFilter filter) {
+    state = state.copyWith(filter: filter);
+    _applyFilter();
   }
   
   Future<void> deleteItem(String itemId) async {
-    state = state.copyWith(isLoading: true);
-    
-    try {
-      await ref.read(recordItemStoreProvider.notifier).deleteItem(itemId);
-      state = state.copyWith(isLoading: false);
-    } on AppException catch (e) {
-      state = state.copyWith(isLoading: false, error: e);
-    }
+    // Store経由で操作
+    await ref.read(recordItemStoreProvider.notifier).deleteItem(itemId);
   }
 }
 ```
 
-## 依存関係の管理
-
-### ref.watch vs ref.read
+### Flow層 - 一時的な状態管理
 
 ```dart
 @riverpod
-class ExampleViewModel extends _$ExampleViewModel {
+class OnboardingFlow extends _$OnboardingFlow {
   @override
-  ExampleState build() {
-    // ✅ build内ではwatchを使用（リアクティブ）
-    final authState = ref.watch(authStateProvider);
-    
-    return ExampleState(isAuthenticated: authState is Authenticated);
-  }
+  OnboardingState build() => const OnboardingState();
+
+  void nextStep() => state = state.copyWith(step: state.step + 1);
   
-  Future<void> someAction() async {
-    // ✅ メソッド内ではreadを使用（一度きり）
-    final repository = ref.read(exampleRepositoryProvider);
-    await repository.doSomething();
+  void complete() {
+    // 完了後は状態をクリア
+    ref.invalidateSelf();
   }
 }
 ```
 
-### select による最適化
+## プロジェクト固有のパターン
+
+### 認証状態の監視
 
 ```dart
+// Firebase Auth状態をStreamProviderで監視
 @riverpod
-class CartSummary extends _$CartSummary {
-  @override
-  CartSummaryState build() {
-    // カート内のアイテム数のみを監視
-    final itemCount = ref.watch(
-      cartStoreProvider.select((cart) => cart.items.length),
-    );
-    
-    // 合計金額のみを監視
-    final totalPrice = ref.watch(
-      cartStoreProvider.select((cart) => cart.totalPrice),
-    );
-    
-    return CartSummaryState(
-      itemCount: itemCount,
-      totalPrice: totalPrice,
-    );
-  }
+Stream<User?> authStateChanges(Ref ref) {
+  return FirebaseAuth.instance.authStateChanges();
+}
+
+// 認証済みユーザーIDの提供
+@riverpod
+Future<String?> authUid(Ref ref) async {
+  final user = await ref.watch(authStateChangesProvider.future);
+  return user?.uid;
 }
 ```
 
-## ライフサイクル管理
-
-### 自動破棄とキープアライブ
+### エラーハンドリング
 
 ```dart
-// デフォルト：使用されなくなったら自動破棄
-@riverpod
-Future<Data> temporaryData(Ref ref) async {
-  return fetchData();
+// ViewModelでの統一的なエラーハンドリング
+try {
+  await someAsyncOperation();
+} on AppException catch (e) {
+  state = state.copyWith(error: e);
 }
+```
 
-// 明示的にキープアライブ
-@Riverpod(keepAlive: true)
-Future<Config> appConfig(Ref ref) async {
-  return loadConfig();
-}
+### 初期化パターン
 
-// 条件付きキープアライブ
-@riverpod
-Future<UserData> userData(Ref ref) async {
-  // 認証中のみキープアライブ
-  final isAuthenticated = ref.watch(authStateProvider) is Authenticated;
-  if (isAuthenticated) {
-    ref.keepAlive();
-  }
+```dart
+// main.dartでの初期化
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   
-  return fetchUserData();
-}
-```
-
-### リソースのクリーンアップ
-
-```dart
-@riverpod
-class WebSocketConnection extends _$WebSocketConnection {
-  @override
-  Stream<Message> build() {
-    final channel = WebSocketChannel.connect(wsUrl);
-    
-    // クリーンアップ処理を登録
-    ref.onDispose(() {
-      channel.sink.close();
-    });
-    
-    return channel.stream.map((data) => Message.fromJson(data));
-  }
-}
-```
-
-## テストパターン
-
-Riverpodのテスト実装パターンについては[Flutterテスト実装ガイド](./07_test-implementation.md#store層のテスト)を参照してください。
-
-## パフォーマンス最適化
-
-### 1. 不必要な再ビルドの回避
-
-```dart
-// ❌ 悪い例：全体を監視
-final cart = ref.watch(cartProvider);
-return Text('Items: ${cart.items.length}');
-
-// ✅ 良い例：必要な部分のみ監視
-final itemCount = ref.watch(
-  cartProvider.select((cart) => cart.items.length),
-);
-return Text('Items: $itemCount');
-```
-
-### 2. 高価な計算の最適化
-
-```dart
-@riverpod
-Future<ExpensiveResult> expensiveComputation(Ref ref) async {
-  // 自動的にキャッシュされる
-  return await heavyCalculation();
-}
-
-// 必要に応じて手動でキャッシュを無効化
-ref.invalidate(expensiveComputationProvider);
-```
-
-### 3. デバウンス処理
-
-```dart
-@riverpod
-class SearchViewModel extends _$SearchViewModel {
-  Timer? _debounceTimer;
+  final container = ProviderContainer(
+    overrides: [
+      // 初期化が必要なServiceをオーバーライド
+      sharedPreferencesProvider.overrideWithValue(
+        await SharedPreferences.getInstance(),
+      ),
+    ],
+  );
   
-  @override
-  SearchState build() {
-    ref.onDispose(() {
-      _debounceTimer?.cancel();
-    });
-    
-    return const SearchState();
-  }
-  
-  void updateSearchQuery(String query) {
-    _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
-      _performSearch(query);
-    });
-  }
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: const MyApp(),
+    ),
+  );
 }
 ```
 
-## プロジェクト固有のベストプラクティス
+## ベストプラクティス
 
-1. **レイヤー別の使用方法**
-   - Store層: `@riverpod class`で状態管理
-   - ViewModel層: 画面固有のロジックは`@riverpod class`
-   - Repository層: DIとして注入、状態は持たない
+### 1. 状態の分離
 
-2. **Feature間の参照ルール**
-   - 他Featureの参照はStore層のProviderのみ許可
-   - ViewModelやRepositoryの直接参照は禁止
+- **グローバル状態**: Store層で管理（認証、ユーザープロフィール等）
+- **画面固有状態**: ViewModel層で管理（フォーム入力、フィルター等）
+- **一時的状態**: Flow層で管理（マルチステップフォーム等）
 
-3. **テスト戦略**
-   - 詳細は[Flutterテスト実装ガイド](./07_test-implementation.md)を参照
+### 2. 依存関係の明確化
+
+```dart
+// Store → Repository（OK）
+class UserStore {
+  final repository = ref.read(userRepositoryProvider);
+}
+
+// ViewModel → Store（OK）
+class ProfileViewModel {
+  final userStore = ref.watch(userStoreProvider);
+}
+
+// ViewModel → 他FeatureのViewModel（NG）
+class CartViewModel {
+  final productVM = ref.watch(productViewModelProvider); // ❌
+}
+```
+
+### 3. テスタビリティ
+
+テストパターンの詳細は[Flutterテスト実装ガイド](./07_test-implementation.md#store層のテスト)を参照してください。
+
+## 参考リンク
+
+- [Riverpod公式ドキュメント](https://riverpod.dev/ja/)
+- [AsyncValueの使い方](https://riverpod.dev/docs/essentials/async_value)
+- [riverpod_generator](https://pub.dev/packages/riverpod_generator)
