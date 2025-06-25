@@ -271,18 +271,7 @@ class DashboardViewModel extends _$DashboardViewModel {
 
 ## テスト構造
 
-テストファイルも同じ構造を保ちます：
-
-```
-test/features/<feature_name>/
-├── 1_models/
-├── 2_repository/
-├── 3_store/
-├── 4_flow/
-├── 5_view_model/
-├── 6_component/
-└── 7_page/
-```
+テストファイルの構造については[Flutterテスト実装ガイド](./07_test-implementation.md#テストファイルの構造)を参照してください。
 
 ## まとめ
 
