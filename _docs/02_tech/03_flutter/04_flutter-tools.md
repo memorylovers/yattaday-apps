@@ -161,223 +161,29 @@ custom_lint:
 
 ## デバッグツール
 
-### Flutter Inspector
+プロジェクトでは以下のツールを活用：
 
-```dart
-// デバッグ情報の表示
-void main() {
-  // Widget境界線を表示
-  debugPaintSizeEnabled = true;
-  
-  // パフォーマンスオーバーレイ
-  debugShowPerformanceOverlay = true;
-  
-  runApp(const MyApp());
-}
-```
-
-### Riverpod DevTools
-
-```dart
-// ProviderScopeにオブザーバーを追加
-void main() {
-  runApp(
-    ProviderScope(
-      observers: [
-        // Riverpodのログ出力
-        const ProviderLogger(),
-      ],
-      child: const MyApp(),
-    ),
-  );
-}
-
-// カスタムオブザーバー
-class ProviderLogger extends ProviderObserver {
-  @override
-  void didUpdateProvider(
-    ProviderBase provider,
-    Object? previousValue,
-    Object? newValue,
-    ProviderContainer container,
-  ) {
-    debugPrint('${provider.name ?? provider.runtimeType}: $newValue');
-  }
-}
-```
-
-### Talker（ロギング）
-
-```dart
-// グローバルロガー
-final talker = Talker();
-
-// 使用例
-talker.info('情報メッセージ');
-talker.warning('警告メッセージ');
-talker.error('エラーメッセージ', error, stackTrace);
-
-// Flutterバインディング
-TalkerFlutter.init();
-
-// UIでログ表示
-Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => TalkerScreen(talker: talker),
-  ),
-);
-```
+- **Flutter DevTools**: パフォーマンス分析とWidgetツリー検査
+- **Riverpod DevTools**: Providerの状態監視
+- **Talker**: `app/lib/common/logger/`で設定済みのログシステム
 
 ## パフォーマンス最適化
 
-### flutter_gen（アセット最適化）
+### プロジェクトでの最適化方針
 
-```yaml
-# pubspec.yaml
-flutter_gen:
-  output: lib/_gen/assets/
-  integrations:
-    flutter_svg: true
-    flare_flutter: false
-    rive: false
-
-  assets:
-    enabled: true
-    outputs:
-      class_name: Assets
-      
-  fonts:
-    enabled: true
-```
-
-使用例：
-
-```dart
-// 型安全なアセット参照
-Image.asset(Assets.images.logo);
-Icon(Assets.icons.home);
-```
-
-### コード分割（Deferred Loading）
-
-```dart
-// 遅延ロードするライブラリ
-import 'package:app/features/premium/premium_feature.dart' deferred as premium;
-
-// 必要時にロード
-Future<void> loadPremiumFeature() async {
-  await premium.loadLibrary();
-  premium.showPremiumScreen();
-}
-```
+- **flutter_gen**: `lib/_gen/assets/`に型安全なアセット参照を生成
+- **遅延ロード**: プレミアム機能など、必要時のみロードする機能で使用
 
 ## CI/CD統合
 
-### GitHub Actions
-
-```yaml
-# .github/workflows/flutter.yml
-name: Flutter CI
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-      - run: flutter pub get
-      - run: flutter analyze
-      - run: flutter test
-      - run: flutter build apk
-```
-
-### pre-commit hooks
-
-```bash
-# .pre-commit-config.yaml
-repos:
-  - repo: local
-    hooks:
-      - id: flutter-format
-        name: Flutter Format
-        entry: flutter format .
-        language: system
-        pass_filenames: false
-      
-      - id: flutter-analyze
-        name: Flutter Analyze
-        entry: flutter analyze
-        language: system
-        pass_filenames: false
-```
+- **GitHub Actions**: `.github/workflows/`でFlutter CIを設定
+- **Pre-commit フック**: コミット前の自動フォーマットと解析
 
 ## トラブルシューティング
 
-### よくある問題と解決策
+一般的な問題解決についてはFlutter公式ドキュメントを参照してください。
 
-#### 1. コード生成エラー
+プロジェクト固有の問題：
 
-```bash
-# キャッシュクリア
-flutter clean
-dart run build_runner clean
-
-# 再生成
-dart run build_runner build --delete-conflicting-outputs
-```
-
-#### 2. 依存関係の競合
-
-```bash
-# pubspec.lockを削除
-rm pubspec.lock
-
-# 依存関係を再解決
-flutter pub get
-
-# または dependency_overrides を使用
-dependency_overrides:
-  package_name: ^version
-```
-
-#### 3. Riverpodの循環参照
-
-```dart
-// ❌ 悪い例
-final aProvider = Provider((ref) => ref.watch(bProvider));
-final bProvider = Provider((ref) => ref.watch(aProvider));
-
-// ✅ 良い例：遅延初期化
-final aProvider = Provider((ref) {
-  return AService(() => ref.read(bProvider));
-});
-```
-
-#### 4. メモリリーク
-
-```dart
-// StreamSubscriptionは必ずdispose
-class MyWidget extends ConsumerStatefulWidget {
-  @override
-  ConsumerState<MyWidget> createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends ConsumerState<MyWidget> {
-  StreamSubscription? _subscription;
-  
-  @override
-  void initState() {
-    super.initState();
-    _subscription = stream.listen((data) {});
-  }
-  
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
-}
-```
+- **コード生成エラー**: `make gen`で解決
+- **Riverpodの使用方法**: [Riverpod実装パターン](./02_riverpod-patterns.md)を参照

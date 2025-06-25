@@ -4,37 +4,14 @@
 
 本プロジェクトでは、Riverpod v2 + riverpod_generatorを使用した型安全な状態管理を実装しています。
 
-## 基本的な使い方
+## プロジェクトでのRiverpod使用パターン
 
-### Provider の種類と使い分け
+本プロジェクトでは、レイヤードアーキテクチャに基づき、以下の用途でRiverpodを使用：
 
-| Provider | 用途 | 例 |
-|----------|------|-----|
-| `@riverpod` | 単純な値や関数 | 設定値、ユーティリティ |
-| `@riverpod` + `Stream/Future` | 非同期データ | API呼び出し、リアルタイムデータ |
-| `@riverpod` + `class` | 状態を持つロジック | Store、ViewModel |
-
-### 基本的なProvider
-
-```dart
-// 単純な値
-@riverpod
-String appVersion(Ref ref) => '1.0.0';
-
-// 計算された値
-@riverpod
-int totalItems(Ref ref) {
-  final items = ref.watch(itemListProvider);
-  return items.length;
-}
-
-// 依存関係を持つProvider
-@riverpod
-UserProfile currentUser(Ref ref) {
-  final userId = ref.watch(authUserIdProvider);
-  return ref.watch(userProfileProvider(userId));
-}
-```
+- **Store層**: グローバル状態管理（`@riverpod class`）
+- **ViewModel層**: 画面固有の状態管理（`@riverpod class`）
+- **Repository注入**: DIコンテナとして活用
+- **認証状態**: Firebase Authの状態監視（`StreamProvider`）
 
 ## 非同期処理パターン
 
@@ -320,25 +297,16 @@ class SearchViewModel extends _$SearchViewModel {
 }
 ```
 
-## ベストプラクティス
+## プロジェクト固有のベストプラクティス
 
-1. **Provider の責務を明確に**
-   - 1つのProviderは1つの責務のみ
-   - 複雑なロジックはStore/ViewModelに分離
+1. **レイヤー別の使用方法**
+   - Store層: `@riverpod class`で状態管理
+   - ViewModel層: 画面固有のロジックは`@riverpod class`
+   - Repository層: DIとして注入、状態は持たない
 
-2. **適切なProvider の選択**
-   - 状態なし → `@riverpod`関数
-   - 状態あり → `@riverpod`クラス
-   - 非同期 → `Future`/`Stream`を返す
+2. **Feature間の参照ルール**
+   - 他Featureの参照はStore層のProviderのみ許可
+   - ViewModelやRepositoryの直接参照は禁止
 
-3. **依存関係の最小化**
-   - 必要な値のみを`select`で取得
-   - 循環参照を避ける
-
-4. **テスタビリティの確保**
-   - DIを活用してモック可能に
+3. **テスト戦略**
    - 詳細は[Flutterテスト実装ガイド](./07_test-implementation.md)を参照
-
-5. **メモリリークの防止**
-   - StreamSubscriptionは必ずdispose
-   - 不要なキープアライブは避ける

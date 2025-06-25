@@ -150,24 +150,10 @@ class FirebaseExampleRepository implements IExampleRepository {
 
 ### 重要なポイント
 
-1. **withConverterの使用**
-   - `fromFirestore` / `toFirestore`メソッドを活用
-   - 型安全なコレクション参照を実現
-   - 手動JSON変換を排除
-
-2. **ヘルパーメソッド**
-   - `_col(userId)`でコレクション参照の重複を排除
-   - 一貫したコンバーター適用
-
-3. **CRUD操作**
-   - 作成: `SetOptions(merge: false)`
-   - 更新: `SetOptions(merge: true)`
-   - 削除: `docRef.delete()`
-   - 取得: `docSnapshot.data()`で直接モデル取得
-
-4. **エラーハンドリング**
-   - すべての操作で`handleError()`を使用
-   - 適切なデフォルト値を返却
+- **withConverter**: 型安全なコレクション参照
+- **ヘルパーメソッド**: `_col(userId)`で重複排除
+- **CRUD操作**: 作成は`merge: false`、更新は`merge: true`
+- **エラーハンドリング**: AppExceptionで統一
 
 ## Presentation層の構成
 
@@ -246,29 +232,10 @@ class ExamplePage extends HookConsumerWidget {
 
 ### 重要な原則
 
-1. **責務の分離**
-   - ViewModel: 状態管理・ビジネスロジック
-   - View: UI表示・ユーザー入力
+- **責務の分離**: ViewModelが状態管理、ViewがUI表示
+- **依存関係**: View → ViewModel（一方向）
+- **状態管理**: AsyncValueでエラーハンドリング
 
-2. **依存関係の方向**
-   - View → ViewModel（一方向）
-   - ViewModelはViewを知らない
-
-3. **状態管理**
-   - AsyncValueを活用したエラーハンドリング
-   - riverpod_generatorによるコード生成
-
-## 広告
-
-- TDB
-
-## 課金
-
-- TDB
-
-## 強制アップデート
-
-- TDB
 
 ## コードフォーマット
 
@@ -283,19 +250,4 @@ cd app && dart format .
 cd widgetbook && dart format .
 ```
 
-### 重要な点
-
-1. **自動フォーマット**
-   - コード生成後は必ず `dart format` を実行
-   - build_runnerによる生成ファイルは対象外
-   - 一貫したコードスタイルを維持
-
-2. **フォーマット対象**
-   - 全ての`.dart`ファイル
-   - 生成ファイル（`*.g.dart`, `*.freezed.dart`）は含まない
-   - Widgetbookファイルも対象
-
-3. **タイミング**
-   - ファイル作成・編集後
-   - コード生成（build_runner）実行後
-   - コミット前
+**重要**: コード生成後は必ず`make format`を実行してください。
