@@ -23,21 +23,14 @@ Flutter固有の実装については[Flutter レイヤードアーキテクチ�
 
 ### **features配下での重要事項**
 
-- presentaionのpage/widgetから直接applicationを参照を禁止
-- applicationは、以下を満たさない場合、作成を禁止
-  - 複数のpage/view_modelが同一の状態を参照する場合
-- 状態を持つのは、view_modelとapplicationのみ
+- PageやComponentから直接Store/Flowを参照禁止（ViewModelを経由）
+- Storeは、以下を満たす場合のみ作成
+  - アプリ全体で共有されるグローバルな状態
+  - 複数のViewModelから参照される状態
+  - 別の機能モジュールから参照される状態
+- 状態を持つのは、Store、Flow、ViewModelのみ
 
-```
-features/feature_name/
-     ├── presentation/
-     │   ├── pages/        # applicationを参照しない
-     │   ├── widgets/      # applicationを参照しない
-     │   └── view_models/  # applicationを参照可能
-     ├── application/      # 複数のview_modelから参照される場合のみ存在
-     ├── domain/
-     └── data/
-```
+7層構造の詳細については[Flutterプロジェクト構造](./01_project-structure.md#features-の7層構造)を参照してください。
 
 ## 利用ライブラリ
 
