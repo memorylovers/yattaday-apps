@@ -1,0 +1,46 @@
+# アーキテクチャ概要
+
+## 基本原則
+
+本アーキテクチャは以下の原則に基づいて設計されています：
+
+1. **単一責任の原則 (Single Responsibility Principle)**
+   - 各層・各クラスは単一の責任のみを持つ
+   - 変更の理由は1つだけであるべき
+
+2. **一方向のデータフロー (Unidirectional Data Flow / UDF)**
+   - データは上位層から下位層へ一方向に流れる
+   - 循環参照を防ぎ、予測可能な状態管理を実現
+
+3. **コロケーション (Co-location)**
+   - 関連するコードは近くに配置
+   - 機能単位でファイルをグループ化
+
+4. **テスト駆動開発 (TDD)**
+   - テストファーストで品質を担保
+   - 層によってテスト戦略を使い分け
+
+5. **CQRS (Command Query Responsibility Segregation)**
+   - 読み取り（Query）と書き込み（Command）を分離
+   - Repository層で明確に責務を分割
+
+## アーキテクチャスタイル
+
+- **Feature-First Architecture**: 機能を中心にコードを組織化
+- **Clean Architecture**: 依存関係を内側に向ける
+- **レイヤードアーキテクチャ**: 責務を明確に分離した階層構造（詳細は[レイヤードアーキテクチャ](./02_layered-architecture.md)を参照）
+
+## 技術スタック
+
+### Flutter/Dart関連
+
+- **状態管理**: Riverpod v2 + hooks_riverpod
+- **ルーティング**: go_router + go_router_builder
+- **コード生成**: freezed + json_serializable
+- **国際化**: slang
+- **UIカタログ**: Widgetbook
+
+### バックエンド連携
+
+- **現在**: Firebase (Auth, Firestore, Analytics)
+- **将来**: REST APIへの移行を考慮した設計

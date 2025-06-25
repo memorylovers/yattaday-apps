@@ -79,7 +79,7 @@ Claude Code (claude.ai/code) への指針を提供する
 
 ### コーディング規約
 
-- **アーキテクチャ**: 7層構造を厳守
+- **アーキテクチャ**: レイヤー構造を厳守
   - models (1_models)
   - repository (2_repository)
   - store (3_store)
