@@ -2,7 +2,8 @@
 
 ## 概要
 
-本プロジェクトでは[Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/)を採用し、シンプルな1行のコミットメッセージで統一しています。
+本プロジェクトでは[Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/)を採用し、  
+シンプルな1行のコミットメッセージで統一しています。
 
 ## 基本フォーマット
 
