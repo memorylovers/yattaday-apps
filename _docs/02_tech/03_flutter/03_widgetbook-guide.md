@@ -189,6 +189,7 @@ Widget buildCustomButtonInteractiveUseCase(BuildContext context) {
 ### 1. コンポーネント/ページ作成
 
 メインアプリで実装：
+
 ```bash
 # app/lib/features/record_item/6_component/record_item_card.dart
 ```
@@ -196,6 +197,7 @@ Widget buildCustomButtonInteractiveUseCase(BuildContext context) {
 ### 2. Widgetbook UseCase作成
 
 対応するUseCaseを作成：
+
 ```bash
 # widgetbook/lib/features/record_item/record_item_card.dart
 ```

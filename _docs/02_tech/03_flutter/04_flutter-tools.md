@@ -261,6 +261,7 @@ flutter_gen:
 ```
 
 使用例：
+
 ```dart
 // 型安全なアセット参照
 Image.asset(Assets.images.logo);

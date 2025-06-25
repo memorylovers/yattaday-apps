@@ -252,6 +252,7 @@ Text(t.common.yes)  // slangによる型安全なアクセス
    - 同じ階層構造を維持
 
 5. **定期的な依存関係の更新**
+
    ```bash
    melos exec -- flutter pub outdated
    melos exec -- flutter pub upgrade
