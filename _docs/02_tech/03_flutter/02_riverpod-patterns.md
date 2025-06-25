@@ -87,6 +87,8 @@ ref.invalidate(userStatsProvider);
 
 ### Store層の実装
 
+エラーハンドリングの基本戦略については[エラーハンドリング戦略](../01_architecture/04_error-handling.md)を参照してください。以下はRiverpodでのAppException使用例です。
+
 ```dart
 @freezed
 class AuthState with _$AuthState {

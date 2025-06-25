@@ -2,7 +2,8 @@
 
 ## 概要
 
-本プロジェクトは、melosを利用したmonorepo構成で、Feature-Firstアーキテクチャと7層構造を組み合わせた設計になっています。
+本プロジェクトは、melosを利用したmonorepo構成で、
+Feature-Firstアーキテクチャと[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)で定義された7層構造を組み合わせた設計になっています。
 
 ## 全体構造
 
@@ -74,31 +75,33 @@ app/
 
 ### features/ の7層構造
 
+各層の責務と設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)を参照してください。
+
 ```
 features/<feature_name>/
-├── 1_models/                   # ドメインモデル
+├── 1_models/
 │   ├── <name>.dart            # エンティティ定義
 │   └── <name>.freezed.dart    # 自動生成（編集禁止）
 │
-├── 2_repository/               # データアクセス層
+├── 2_repository/
 │   ├── dto/                    # データ転送オブジェクト
 │   │   └── <name>_param.dart
-│   ├── <name>_query_repository.dart    # 読み取り専用
-│   └── <name>_command_repository.dart  # 書き込み専用
+│   ├── <name>_query_repository.dart    # 読み取り専用（Query）
+│   └── <name>_command_repository.dart  # 書き込み専用（Command）
 │
-├── 3_store/                    # グローバル状態管理
+├── 3_store/
 │   └── <name>_store.dart       # Riverpodプロバイダ
 │
-├── 4_flow/                     # フロー状態管理
+├── 4_flow/
 │   └── <name>_flow.dart        # 複数画面の調整
 │
-├── 5_view_model/               # 画面状態管理
+├── 5_view_model/
 │   └── <name>_view_model.dart # 画面固有のロジック
 │
-├── 6_component/                # UIコンポーネント
+├── 6_component/
 │   └── <name>_card.dart        # 再利用可能な部品
 │
-└── 7_page/                     # 画面
+└── 7_page/
     ├── <name>_page.dart        # メイン画面
     └── <name>_dialog.dart      # ダイアログ
 ```

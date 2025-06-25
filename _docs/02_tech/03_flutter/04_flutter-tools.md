@@ -45,30 +45,19 @@
 
 ## Makefileコマンド
 
-プロジェクトルートで使用可能なコマンド：
+基本的なmakeコマンドについては[開発フロー](../02_development/01_development-flow.md#makeコマンドリファレンス)を参照してください。
+
+### Flutter固有のコマンド
 
 ```bash
-# 初期セットアップ
-make            # 依存関係のインストール
-
-# 開発コマンド
-make run        # アプリ実行（開発環境）
+# Widgetbook（UIカタログ）
 make book       # Widgetbook起動
-make gen        # コード生成
-make format     # コードフォーマット
-make lint       # 静的解析
-make test       # テスト実行
 
-# 計画・ドキュメント
-make plan-new name=<名前>  # 新規計画ドキュメント作成
-make claude-read          # CLAUDE.mdの内容確認
-
-# E2Eテスト
+# Maestro E2Eテスト
 make e2e        # Maestroテスト実行
 
-# その他
-make clean      # ビルドキャッシュクリア
-make upgrade    # 依存関係の更新
+# Flutter固有のクリーンアップ
+make clean      # Flutterビルドキャッシュクリア
 ```
 
 ## コード生成

@@ -2,28 +2,9 @@
 
 ## TDD（テスト駆動開発）
 
-このプロジェクトでは**TDD（Test-Driven Development）**を採用しています。
+TDDの基本概念とサイクルについては[テスト戦略](../02_development/02_test-strategy.md)を参照してください。
 
-### TDDサイクル
-
-**Red → Green → Refactor**
-
-1. **Red（失敗するテストを書く）**
-   - 期待する動作を定義するテストを最初に書く
-   - `make test`でテストが失敗することを確認
-
-2. **Green（テストを通す最小限の実装）**
-   - テストが通る最小限のコードを実装
-   - 過度な設計や最適化は避ける
-   - `make test`でテストが成功することを確認
-
-3. **Refactor（リファクタリング）**
-   - テストが通る状態を維持しながらコードを改善
-   - 重複の除去、可読性の向上、設計の改善
-   - `make format`でコードフォーマット
-   - `make lint`で静的解析
-
-### テスト作成の指針
+### Flutterプロジェクトでのテスト作成指針
 
 - **各機能は必ずテストから始める**
 - **Repository層は`fake_cloud_firestore`を使用してテスト**
@@ -32,113 +13,13 @@
 
 ## アーキテクチャ
 
-```mermaid
-flowchart TD
-  subgraph PresentationLayer["Presentation Layer"]
-    Widgets --> States
-    States --> Controllers
-  end
-  
-  subgraph ApplicationLayer["Application Layer"]
-    Controllers --> Services
-  end
-  
-  subgraph DomainLayer["Domain Layer"]
-    Services --> Models
-  end
-  
-  subgraph DataLayer["Data Layer"]
-    Repositories --> Models
-    Repositories --> DTOs
-    DTOs --> DataSources
-  end
-  
-  PresentationLayer ~~~ ApplicationLayer
-  ApplicationLayer ~~~ DomainLayer
-  DomainLayer ~~~ DataLayer
-  
-  classDef presentationClass fill:#d4daff,stroke:#9dabff
-  classDef applicationClass fill:#ffd7c7,stroke:#ffb599
-  classDef domainClass fill:#e7d0ff,stroke:#d0b0ff
-  classDef dataClass fill:#d0ffd0,stroke:#a0e0a0
-  
-  classDef widgetsClass fill:#4169e1,color:white
-  classDef statesClass fill:#4169e1,color:white
-  classDef controllersClass fill:#4169e1,color:white
-  classDef servicesClass fill:#d2691e,color:white
-  classDef modelsClass fill:#663399,color:white
-  classDef repositoriesClass fill:#2e8b57,color:white
-  classDef dtosClass fill:#2e8b57,color:white
-  classDef dataSourcesClass fill:#2e8b57,color:white
-  
-  class PresentationLayer presentationClass
-  class ApplicationLayer applicationClass
-  class DomainLayer domainClass
-  class DataLayer dataClass
-  
-  class Widgets widgetsClass
-  class States statesClass
-  class Controllers controllersClass
-  class Services servicesClass
-  class Models modelsClass
-  class Repositories repositoriesClass
-  class DTOs dtosClass
-  class DataSources dataSourcesClass
-```
+アーキテクチャの概要と層構成については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)を参照してください。
+
+Flutter固有の実装については[Flutter レイヤードアーキテクチャ実装ガイド](./06_layered-architecture-implementation.md)を参照してください。
 
 ## ディレクトリ構成
 
-Flutter + Riverpod + Melos + Flavor 対応のディレクトリ構成
-
-```
-app/
-│── assets/
-│   ├── google_fonts/
-│   ├── i18n/
-│   │   ├── en.i18n.json
-│   │   └── ja.i18n.json 
-│   └── icons/
-│
-│── lib/
-│   │── _gen/
-│   │   ├── assets/                # flutter_genで生成したassets
-│   │   ├── firebase/              # flutterfire_cliが生成したFirebaseConfig
-│   │   └── i18n/                  # slangが生成した言語ファイル
-│   │
-│   │── common/                    # 🧱 アプリ全体の共通処理
-│   │   ├── exceptions/            # 共通例外
-│   │   ├── firebase/              # Firebase関連
-│   │   ├── json_converter/        # JsonConverter関連
-│   │   ├── logger/                # ロギング関連(talker)
-│   │   ├── theme/                 # アプリ共通のスタイル設定
-│   │   ├── types/                 # 共通の型定義
-│   │   └── utils/                 # 汎用ロジック
-│   │       ├── snack_bar_handler.dart
-│   │       ├── system_providers.dart
-│   │       └── ...
-│   │
-│   │── components/                # 🎨 共通UIコンポーネント（ボタン、ダイアログ等）
-│   │
-│   └── features/                  # 🧩 機能ごとの分離構成（feature-first）
-│       ├── _authentication/       # 認証（匿名・Google・Apple）
-│       │   ├── data/              # データレイヤ(Repository/DTO/DataSource)
-│       │   ├── domain/            # ドメインレイヤ(Model)
-│       │   ├── application/       # アプリケーションレイヤ(Riverpodプロバイダー)
-│       │   └── presentation/      # プレゼンテーションレイヤ(View/ViewModel)
-│       │       ├── view_model/    # ViewModel(Riverpodプロバイダー)
-│       │       └── pages/         # View(Widget/Page)
-│       ├── _advertisement/        # 広告機能: Admob/ATTなど
-│       ├── _force_update/         # 強制アップデート機能
-│       ├── _payment/              # 決済機能: プレミアム課金・購入・復元
-│       ├── _startup/              # アプリ起動時の処理
-│       ├── account/               # ログインアカウント関連(設定など)
-│       └── ...
-│
-│── routing/                   # 🚦 go_routerベースの画面遷移設定
-│── constants.dart             # 🔧 定数
-│── flavors.dart               # 🔧 フレーバーごとの設定
-└── main.dart                  # 🚀 エントリーポイント
-```
+プロジェクトの詳細なディレクトリ構成については[Flutterプロジェクト構造](./01_project-structure.md)を参照してください。
 
 ### **features配下での重要事項**
 
@@ -187,8 +68,6 @@ features/feature_name/
   - google_fonts
   - flutter_animate
 
-## 共通基盤
-
 ## 認証
 
 - 認証はFirebase Authを用いる
@@ -196,9 +75,12 @@ features/feature_name/
 
 ## エラーハンドリング
 
-- AppExceptionクラスを使用した例外処理
-- handleError関数を使用した例外の変換
-- Crashlyticsを使用したクラッシュレポート
+エラーハンドリングの基本戦略については[エラーハンドリング戦略](../01_architecture/04_error-handling.md)を参照してください。
+
+### Flutter固有の実装
+
+- Firebase Crashlyticsを使用したクラッシュレポートの送信
+- Flutter エラーハンドラーとの統合
 
 ## ロギング
 

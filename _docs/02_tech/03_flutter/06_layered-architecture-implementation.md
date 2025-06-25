@@ -2,7 +2,7 @@
 
 ## 概要
 
-このドキュメントは、[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)をFlutterプロジェクトで実装する際の具体的なガイドラインを提供します。
+このドキュメントは、[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)で定義された概念をFlutterプロジェクトで具体的に実装する方法を示します。アーキテクチャの基本概念や設計原則については、上記リンクを参照してください。
 
 ## ディレクトリ構成
 
@@ -35,7 +35,9 @@ app/lib/
 
 ## 各層の実装詳細
 
-### 1_models
+各層の責務と設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)を参照してください。
+
+### 1_models - Flutter実装
 
 ```dart
 // record_item.dart
@@ -61,9 +63,9 @@ class RecordItem with _$RecordItem {
 }
 ```
 
-### 2_repository
+### 2_repository - Flutter実装
 
-Repository層は以下の構成で実装します：
+Repository層のCQRSパターンについては[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#repository-データアクセス層)を参照してください。
 
 ```
 2_repository/
@@ -73,7 +75,7 @@ Repository層は以下の構成で実装します：
 └── <name>_command_repository.dart # 更新用（作成・更新・削除）
 ```
 
-#### CQRSパターンの実装
+#### Flutter/Dartでの実装例
 
 ```dart
 // record_item_query_repository.dart
@@ -109,9 +111,11 @@ class RecordItemCommandRepository {
 }
 ```
 
-### 3_store
+### 3_store - Flutter実装
 
-Riverpodを使用したグローバル状態管理：
+Store層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#store-グローバル状態管理層)および[Store実装パターンガイド](../01_architecture/05_store-implementation-guide.md)を参照してください。
+
+#### Riverpodを使用した実装例
 
 ```dart
 @riverpod
@@ -144,9 +148,11 @@ class RecordItemStore extends _$RecordItemStore {
 }
 ```
 
-### 4_flow
+### 4_flow - Flutter実装
 
-複数画面にまたがる状態管理：
+Flow層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#flow-フロー状態管理層)を参照してください。
+
+#### Riverpodを使用した実装例
 
 ```dart
 @riverpod
@@ -171,9 +177,11 @@ class RecordCreationFlow extends _$RecordCreationFlow {
 }
 ```
 
-### 5_view_model
+### 5_view_model - Flutter実装
 
-画面固有の状態管理：
+ViewModel層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#viewmodel-画面状態管理層)を参照してください。
+
+#### Riverpodを使用した実装例
 
 ```dart
 @riverpod
@@ -206,9 +214,11 @@ class RecordListViewModel extends _$RecordListViewModel {
 }
 ```
 
-### 6_component
+### 6_component - Flutter実装
 
-再利用可能なUIコンポーネント：
+Component層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#component-uiコンポーネント層)を参照してください。
+
+#### Flutter Widgetの実装例
 
 ```dart
 class RecordItemCard extends StatelessWidget {
@@ -234,9 +244,11 @@ class RecordItemCard extends StatelessWidget {
 }
 ```
 
-### 7_page
+### 7_page - Flutter実装
 
-画面の実装：
+Page層の設計原則については[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#page-画面層)を参照してください。
+
+#### ConsumerWidgetを使用した実装例
 
 ```dart
 class RecordListPage extends ConsumerWidget {
@@ -275,12 +287,11 @@ class RecordListPage extends ConsumerWidget {
 }
 ```
 
-## Feature間の参照ルール
+## Feature間の参照ルール - Flutter実装
 
-- 別featureからは`3_store`のみ参照可能
-- 他の層は参照禁止
+Feature間の参照ルールについては[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md#機能間の参照)を参照してください。
 
-例：
+### Flutter/Dartでの実装例
 
 ```dart
 // features/dashboard/5_view_model/dashboard_view_model.dart
@@ -316,4 +327,4 @@ test/features/<feature_name>/
 
 ## まとめ
 
-この番号付きディレクトリ構造により、レイヤードアーキテクチャの依存関係が視覚的に明確になり、開発者がアーキテクチャを理解しやすくなります。
+本ドキュメントでは、[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)で定義された設計原則をFlutter/Dartで実装する具体的な方法を示しました。各層の責務や依存関係の詳細については、アーキテクチャドキュメントを参照してください。
