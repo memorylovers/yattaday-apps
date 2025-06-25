@@ -16,12 +16,14 @@
 
 システム設計の基本原則と実装パターンを説明します。
 
-**対象読者**: 
+**対象読者**:
+
 - 設計に関わる開発者
 - コードレビュアー
 - テックリード
 
 **主な内容**:
+
 - 7層アーキテクチャによる責務分離
 - CQRSパターンによるデータアクセス
 - 統一的なエラーハンドリング
@@ -32,11 +34,13 @@
 効率的で品質の高い開発を実現するための手法とルールです。
 
 **対象読者**:
+
 - 全ての開発者
 - プロジェクトマネージャー
 - QAエンジニア
 
 **主な内容**:
+
 - TDDによる品質担保
 - Gitワークフロー
 - コーディング規約
@@ -47,10 +51,12 @@
 Flutter固有の実装パターンとツールの使い方です。
 
 **対象読者**:
+
 - Flutter開発者
 - モバイルエンジニア
 
 **主な内容**:
+
 - プロジェクト構造
 - Riverpod状態管理
 - UIカタログ作成
@@ -61,6 +67,7 @@ Flutter固有の実装パターンとツールの使い方です。
 ### Flutterプロジェクトへの適用
 
 1. **このディレクトリをコピー**
+
    ```bash
    cp -r _docs/02_tech/ <new-project>/_docs/tech/
    ```
@@ -85,6 +92,7 @@ Flutter固有の実装パターンとツールの使い方です。
 - `02_development/` - 全ドキュメント（開発プロセスは共通）
 
 Flutter固有の内容は、対応するWeb技術に読み替え：
+
 - Riverpod → Pinia/Vuex
 - Widget → Component
 - Dart → TypeScript
@@ -102,7 +110,7 @@ Flutter固有の内容は、対応するWeb技術に読み替え：
 
 1. `01_architecture/02_7-layer-architecture.md` - アーキテクチャ詳細
 2. `03_flutter/02_riverpod-patterns.md` - 状態管理
-3. `02_development/02_tdd-strategy.md` - テスト戦略
+3. `02_development/02_test-strategy.md` - テスト戦略
 4. `01_architecture/04_error-handling.md` - エラー処理
 
 ### 上級者向け（1ヶ月以上）

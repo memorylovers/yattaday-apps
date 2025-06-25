@@ -42,7 +42,7 @@ YattaDay固有のビジネス要件やドメイン知識をまとめています
 | ファイル | 内容 |
 |----------|------|
 | `01_development-flow.md` | 開発フロー全体の流れ |
-| `02_tdd-strategy.md` | TDD（テスト駆動開発）戦略 |
+| `02_test-strategy.md` | テスト戦略 |
 | `03_branch-strategy.md` | Gitブランチ運用ルール |
 | `04_commit-convention.md` | コミットメッセージ規約 |
 
@@ -70,7 +70,7 @@ YattaDay固有のビジネス要件やドメイン知識をまとめています
 
 3. **開発手法**
    - `02_tech/02_development/01_development-flow.md` - 開発の流れ
-   - `02_tech/02_development/02_tdd-strategy.md` - テスト方針
+   - `02_tech/02_development/02_test-strategy.md` - テスト方針
 
 4. **実装詳細**
    - `02_tech/03_flutter/01_project-structure.md` - プロジェクト構造

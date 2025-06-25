@@ -38,7 +38,7 @@ Claude Code (claude.ai/code) への指針を提供する
 
 **TDD必須層**（ビジネスロジック中心）:
 
-- **1_models、2_repository、3_store、4_flow**: 先にテストを書いてから実装
+- **1_models、2_repository、3_store、4_flow、services**: 先にテストを書いてから実装
 
 **柔軟なアプローチ層**:
 
@@ -368,6 +368,10 @@ features/
 ```
 app/test/
 ├── components/          # 共通コンポーネントのテスト
+├── services/           # サービス層のテスト
+│   ├── firebase/       # Firebaseサービスのテスト
+│   ├── admob/          # AdMobサービスのテスト
+│   └── shared_preferences/ # SharedPreferencesのテスト
 ├── features/           # 機能別モジュールのテスト
 │   └── <feature_name>/ # lib/features/<feature_name>と対応
 │       ├── models/     # モデルのテスト
@@ -395,6 +399,7 @@ app/test/
 - **Repository層**: モック/フェイクを使用（カバレッジ90%以上）
 - **Store層**: 状態管理のテスト（カバレッジ90%以上）
 - **Flow層**: フロー遷移のテスト（カバレッジ85%以上）
+- **Services層**: 外部ライブラリのラッピングテスト（カバレッジ95%以上）
 
 **柔軟層（中カバレッジ）**:
 
