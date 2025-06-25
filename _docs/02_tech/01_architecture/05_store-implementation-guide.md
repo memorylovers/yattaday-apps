@@ -57,7 +57,7 @@
 - 現在のプラン情報
 - 決済方法の管理
 - 購入履歴
-- Revenue Cat/Purchases SDKとの連携
+- 外部決済サービス（Revenue Catなど）との連携
 
 **主要メソッド：**
 
@@ -123,6 +123,7 @@
 ### 1. Store初期化
 
 ```dart
+// Providerを使用した実装例
 class StoreProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -219,14 +220,14 @@ class AuthStore extends ChangeNotifier {
     if (!isAuthenticated) throw Exception('ログインが必要です');
     
     try {
-      // 1. Googleで認証
-      final googleCredential = await _googleSignIn.signIn();
+      // 1. 外部認証サービスで認証
+      final authCredential = await _authService.signInWithProvider('google');
       
       // 2. バックエンドに連携をリクエスト
       await _api.linkAuthProvider(
         userId: userId!,
         provider: 'google',
-        providerToken: googleCredential.idToken,
+        providerToken: authCredential.idToken,
         currentToken: accessToken,
       );
       
@@ -254,8 +255,8 @@ class PaymentStore extends ChangeNotifier {
     }
     
     try {
-      // 2. アプリ内購入の実行
-      final result = await _purchases.purchasePackage(planId);
+      // 2. 外部決済サービスを通じて購入実行
+      final result = await _paymentService.purchasePackage(planId);
       
       // 3. サーバーに購入情報を送信
       await _api.verifyPurchase(
@@ -308,8 +309,8 @@ class PaymentStore extends ChangeNotifier {
 ### セキュアストレージ（機密情報）
 
 ```dart
-// iOS: Keychain, Android: Keystore
-FlutterSecureStorage()
+// セキュアストレージ（例：iOS Keychain, Android Keystore）
+SecureStorage:
 - アクセストークン
 - リフレッシュトークン
 - 認証関連の機密情報
@@ -318,7 +319,8 @@ FlutterSecureStorage()
 ### 通常ストレージ（一般情報）
 
 ```dart
-// SharedPreferences
+// ローカルストレージ（例：SharedPreferences）
+LocalStorage:
 - ユーザープロファイル（キャッシュ）
 - アプリ設定
 - 非機密の状態情報

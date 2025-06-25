@@ -30,17 +30,8 @@
 - **Clean Architecture**: 依存関係を内側に向ける
 - **レイヤードアーキテクチャ**: 責務を明確に分離した階層構造（詳細は[レイヤードアーキテクチャ](./02_layered-architecture.md)を参照）
 
-## 技術スタック
+## 技術中立性
 
-### Flutter/Dart関連
+本アーキテクチャは特定の技術スタックに依存しない設計原則を採用しています。具体的な実装技術については、プロジェクトの要件に応じて選択可能です。
 
-- **状態管理**: Riverpod v2 + hooks_riverpod
-- **ルーティング**: go_router + go_router_builder
-- **コード生成**: freezed + json_serializable
-- **国際化**: slang
-- **UIカタログ**: Widgetbook
-
-### バックエンド連携
-
-- **現在**: Firebase (Auth, Firestore, Analytics)
-- **将来**: REST APIへの移行を考慮した設計
+具体的な技術選定については[システムアーキテクチャ](../../01_domain/06_system-architecture.md)を参照してください。

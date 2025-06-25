@@ -92,13 +92,13 @@ CQRSパターンを採用し、データの読み取りと更新の責任を分�
 ```dart
 // Query Repository - 読み取り専用
 class RecordItemQueryRepository {
-  final FirestoreService _firestoreService;
+  final DataStorageService _dataStorageService;
   
-  RecordItemQueryRepository(this._firestoreService);
+  RecordItemQueryRepository(this._dataStorageService);
   
   // データのリアルタイム監視
   Stream<List<RecordItem>> watchByUserId(String userId) {
-    return _firestoreService.watchCollection(
+    return _dataStorageService.watchCollection(
       RecordItem.collectionPath(userId),
     );
   }
@@ -111,13 +111,13 @@ class RecordItemQueryRepository {
 
 // Command Repository - 更新専用
 class RecordItemCommandRepository {
-  final FirestoreService _firestoreService;
+  final DataStorageService _dataStorageService;
   
-  RecordItemCommandRepository(this._firestoreService);
+  RecordItemCommandRepository(this._dataStorageService);
   
   // 作成
   Future<void> create(RecordItem item) async {
-    await _firestoreService.setDocument(
+    await _dataStorageService.setDocument(
       RecordItem.collectionPath(item.userId),
       item.id,
       item.toJson(),
@@ -126,7 +126,7 @@ class RecordItemCommandRepository {
   
   // 存在しなければ作成（複合処理の例）
   Future<void> createIfNotExists(RecordItem item) async {
-    final exists = await _firestoreService.documentExists(
+    final exists = await _dataStorageService.documentExists(
       RecordItem.collectionPath(item.userId),
       item.id,
     );
@@ -357,10 +357,10 @@ class RecordListPage extends ConsumerWidget {
 
 ```dart
 // 外部ライブラリの複雑な実装を隠蔽し、プロジェクト専用のインターフェースを提供
-class SharedPreferenceService {
+class LocalStorageService {
   final SharedPreferences _prefs;
   
-  SharedPreferenceService(this._prefs);
+  LocalStorageService(this._prefs);
   
   // プロジェクトで必要な型安全なメソッドのみを公開
   Future<void> saveUserSettings(UserSettings settings) async {
