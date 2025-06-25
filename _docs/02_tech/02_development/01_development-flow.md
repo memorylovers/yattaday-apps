@@ -9,7 +9,7 @@
 
 1. **すべてのコマンドは`make`経由で実行** - 環境差異を吸収し、統一的な開発体験を提供
 2. **小さなステップで継続的に検証** - 各フェーズ後に`make test`を実行
-3. **TDD必須層とUI層で戦略を使い分け** - ビジネスロジックはTDD、UIはWidgetbookで確認
+3. **TDD必須層とUI層で戦略を使い分け** - ビジネスロジックはTDD、UIはUIカタログツールで確認
 
 ## 開発の基本サイクル
 
@@ -61,7 +61,7 @@ make check-all
 
 # または個別に実行
 make format  # コードフォーマット
-make gen     # コード生成（freezed, json_serializable等）
+make gen     # コード生成
 make lint    # 静的解析
 make test    # テスト実行
 ```
@@ -70,22 +70,22 @@ make test    # テスト実行
 
 | コマンド | 説明 |
 |---------|------|
-| `make` | 初期セットアップ（fvm, melos等のインストール） |
+| `make` | 初期セットアップ |
 | `make format` | コードフォーマット |
-| `make gen` | コード生成（freezed, build_runner） |
-| `make lint` | 静的解析（Flutter + Markdown） |
+| `make gen` | コード生成 |
+| `make lint` | 静的解析 |
 | `make test` | テスト実行 |
-| `make run` | アプリ実行（staging環境） |
-| `make book` | Widgetbook起動 |
+| `make run` | アプリ実行 |
+| `make book` | UIカタログ起動 |
 | `make check-all` | format → lint → test を順次実行 |
 | `make plan-new name=<名前>` | 計画ドキュメント作成 |
-| `make e2e` | E2Eテスト実行（Maestro） |
+| `make e2e` | E2Eテスト実行 |
 
 ## 完了条件チェックリスト
 
 - [ ] **計画ドキュメントを作成した**: `make plan-new`
 - [ ] **TDD対象層はテストファーストで実装した**
-- [ ] **UI層はWidgetbookに登録した**
+- [ ] **UI層はUIカタログに登録した**
 - [ ] **すべてのチェックが通過した**: `make check-all`
   - フォーマット適用済み
   - コード生成が最新
@@ -108,7 +108,7 @@ make check-all
 
 - **import エラー**: `make gen`でコード生成をやり直す
 - **テスト失敗**: エラーメッセージを確認し、該当箇所を修正
-- **Widgetbookが表示されない**: `make book`で再起動
+- **UIカタログが表示されない**: `make book`で再起動
 
 ### 詳細なトラブルシューティング
 
@@ -116,7 +116,6 @@ make check-all
 
 - [アーキテクチャガイド](../01_architecture/02_layered-architecture.md)
 - [テスト戦略](./02_test-strategy.md)
-- [コーディングスタイル](../03_flutter/05_coding-style.md)
 
 ## ベストプラクティス
 
