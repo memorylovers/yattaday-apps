@@ -5,6 +5,13 @@
 本プロジェクトは、melosを利用したmonorepo構成で、
 Feature-Firstアーキテクチャと[レイヤードアーキテクチャ](../01_architecture/02_layered-architecture.md)で定義された7層構造を組み合わせた設計になっています。
 
+### 重要：コマンド実行規約
+
+プロジェクト内でのコマンド実行は、必ず**makeコマンド**を使用してください。
+dart/flutterコマンドの直接実行は避け、Makefileで定義されたコマンドを利用します。
+
+詳細は[開発フロー](../02_development/01_development-flow.md#makeコマンドリファレンス)を参照してください。
+
 ## 全体構造
 
 ```
@@ -258,6 +265,7 @@ Text(t.common.yes)  // slangによる型安全なアクセス
 5. **定期的な依存関係の更新**
 
    ```bash
+   # melosを使用した一括更新（プロジェクトルートで実行）
    melos exec -- flutter pub outdated
    melos exec -- flutter pub upgrade
    ```

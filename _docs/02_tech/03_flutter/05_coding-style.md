@@ -1,5 +1,17 @@
 # コーディングスタイル(Flutter)
 
+## コマンド実行規約
+
+### makeコマンドの使用（必須）
+
+本プロジェクトでは、すべてのビルド・テスト・フォーマット操作は**makeコマンド経由**で実行します：
+
+- `make gen` - コード生成
+- `make format` - フォーマット
+- `make test` - テスト実行
+
+dart/flutterコマンドの直接実行は禁止されています。
+
 ## TDD（テスト駆動開発）
 
 TDDの基本概念とサイクルについては[テスト戦略](../02_development/02_test-strategy.md)を参照してください。
@@ -236,18 +248,13 @@ class ExamplePage extends HookConsumerWidget {
 - **依存関係**: View → ViewModel（一方向）
 - **状態管理**: AsyncValueでエラーハンドリング
 
-
 ## コードフォーマット
 
 生成するコードは必ずフォーマットを実行する：
 
 ```bash
-# 推奨: 生成ファイルを除外してフォーマット
+# 生成ファイルを除外してフォーマット
 make format
-
-# 手動でフォーマットする場合
-cd app && dart format .
-cd widgetbook && dart format .
 ```
 
 **重要**: コード生成後は必ず`make format`を実行してください。

@@ -2,13 +2,17 @@
 
 ## 概要
 
-本プロジェクトでは、UI層（Component/Page）のビジュアルテストとして、Widgetbookを活用しています。  
-`make book`コマンドで起動し、UIコンポーネントの各種状態を確認できます。
+本プロジェクトでは、UI層（6_component/7_page）のビジュアルテストとして[Widgetbook](https://docs.widgetbook.io/)を活用しています。
 
-## Widgetbookの役割
+```bash
+make book  # Widgetbook起動（http://localhost:9442）
+```
 
-1. **UIカタログ**: すべてのコンポーネントとページを一覧で確認
-2. **UIのユニットテスト**: Page/ComponentのUIはUIカタログツールで実施
+## プロジェクトでの役割
+
+- **UIカタログ**: コンポーネントの各種状態を一覧で確認
+- **ビジュアルテスト**: TDDにおけるUI層のテスト手段
+- **デザイン確認**: デザイナーとの仕様確認ツール
 
 ## プロジェクト構造
 
@@ -28,82 +32,25 @@ widgetbook/
 └── pubspec.yaml
 ```
 
-## 基本的な実装
+## 実装例
 
-### UseCase の作成
+### コンポーネントのUseCase（必須）
 
 ```dart
-import 'package:widgetbook_annotation/widgetbook_annotation.dart';
-import 'package:widgetbook/widgetbook.dart';
-
-// デフォルトのUseCase（必須）
+// widgetbook/lib/features/record_item/record_item_card.dart
 @UseCase(name: 'Default', type: RecordItemCard)
 Widget buildRecordItemCardDefaultUseCase(BuildContext context) {
   return RecordItemCard(
-    item: RecordItem(
-      id: '1',
-      title: 'サンプルタスク',
-      unit: '回',
-      description: '毎日の運動記録',
-      icon: '🏃',
-    ),
+    item: RecordItemMocks.simple(),
     onTap: () => context.showSnackbar('タップされました'),
-  );
-}
-
-// ローディング状態
-@UseCase(name: 'Loading', type: RecordItemCard)
-Widget buildRecordItemCardLoadingUseCase(BuildContext context) {
-  return const RecordItemCard(
-    isLoading: true,
-  );
-}
-
-// エラー状態
-@UseCase(name: 'Error', type: RecordItemCard)
-Widget buildRecordItemCardErrorUseCase(BuildContext context) {
-  return RecordItemCard(
-    item: mockItem,
-    error: AppException(
-      code: AppErrorCode.networkError,
-      message: 'ネットワークエラー',
-    ),
-  );
-}
-
-// 長いテキストの場合
-@UseCase(name: 'Long Text', type: RecordItemCard)
-Widget buildRecordItemCardLongTextUseCase(BuildContext context) {
-  return RecordItemCard(
-    item: RecordItem(
-      id: '2',
-      title: 'とても長いタイトルが設定されている場合の表示確認用サンプル',
-      unit: '回',
-      description: 'とても長い説明文が入力されている場合のレイアウト確認。'
-          '複数行にわたる説明文がどのように表示されるかを確認します。',
-    ),
   );
 }
 ```
 
-### ページのUseCase
+### ページのUseCase（ViewModelモック使用）
 
 ```dart
-// ViewModelのモックを作成
-class MockRecordListViewModel extends StateNotifier<RecordListState> {
-  MockRecordListViewModel({RecordListState? initialState})
-      : super(initialState ?? const RecordListState());
-  
-  void setLoading(bool isLoading) {
-    state = state.copyWith(isLoading: isLoading);
-  }
-  
-  void setItems(List<RecordItem> items) {
-    state = state.copyWith(items: items);
-  }
-}
-
-// デフォルトのページ表示
+// widgetbook/lib/pages/record_list_page.dart
 @UseCase(name: 'Default', type: RecordListPage)
 Widget buildRecordListPageDefaultUseCase(BuildContext context) {
   return ProviderScope(
@@ -111,14 +58,7 @@ Widget buildRecordListPageDefaultUseCase(BuildContext context) {
       recordListViewModelProvider.overrideWith((ref) {
         return MockRecordListViewModel(
           initialState: RecordListState(
-            items: List.generate(
-              10,
-              (i) => RecordItem(
-                id: '$i',
-                title: 'タスク ${i + 1}',
-                unit: '回',
-              ),
-            ),
+            items: RecordItemMocks.list(10),
           ),
         );
       }),
@@ -126,62 +66,9 @@ Widget buildRecordListPageDefaultUseCase(BuildContext context) {
     child: const RecordListPage(),
   );
 }
-
-// 空状態
-@UseCase(name: 'Empty', type: RecordListPage)
-Widget buildRecordListPageEmptyUseCase(BuildContext context) {
-  return ProviderScope(
-    overrides: [
-      recordListViewModelProvider.overrideWith((ref) {
-        return MockRecordListViewModel(
-          initialState: const RecordListState(items: []),
-        );
-      }),
-    ],
-    child: const RecordListPage(),
-  );
-}
 ```
 
-## Knobs（インタラクティブなプロパティ）
-
-```dart
-@UseCase(name: 'Interactive', type: CustomButton)
-Widget buildCustomButtonInteractiveUseCase(BuildContext context) {
-  return CustomButton(
-    // テキスト入力
-    text: context.knobs.string(
-      label: 'Button Text',
-      initialValue: 'Click me',
-    ),
-    // 有効/無効の切り替え
-    enabled: context.knobs.boolean(
-      label: 'Enabled',
-      initialValue: true,
-    ),
-    // 色の選択
-    color: context.knobs.color(
-      label: 'Color',
-      initialValue: Colors.blue,
-    ),
-    // サイズの選択
-    size: context.knobs.list(
-      label: 'Size',
-      options: ButtonSize.values,
-      initialOption: ButtonSize.medium,
-    ),
-    // 数値入力
-    padding: EdgeInsets.all(
-      context.knobs.double.slider(
-        label: 'Padding',
-        initialValue: 16,
-        min: 0,
-        max: 32,
-      ),
-    ),
-  );
-}
-```
+詳細な実装方法は[Widgetbook公式ドキュメント](https://docs.widgetbook.io/)を参照してください。
 
 ## 開発フロー
 
@@ -204,8 +91,7 @@ Widget buildCustomButtonInteractiveUseCase(BuildContext context) {
 ### 3. コード生成
 
 ```bash
-cd widgetbook
-dart run build_runner build
+make gen
 ```
 
 ### 4. 確認
@@ -215,156 +101,85 @@ make book
 # ブラウザが自動的に開く
 ```
 
-## テストデータの管理
+## プロジェクト固有の実装パターン
 
-### モックデータファクトリ
-
-```dart
-// widgetbook/lib/mocks/record_item_mocks.dart
-class RecordItemMocks {
-  static RecordItem simple() => RecordItem(
-    id: '1',
-    title: 'シンプルなアイテム',
-    unit: '回',
-  );
-  
-  static RecordItem withIcon() => RecordItem(
-    id: '2',
-    title: 'アイコン付き',
-    unit: '個',
-    icon: '📝',
-  );
-  
-  static RecordItem completed() => RecordItem(
-    id: '3',
-    title: '完了済み',
-    unit: '回',
-    completedAt: DateTime.now(),
-  );
-  
-  static List<RecordItem> list(int count) => List.generate(
-    count,
-    (i) => RecordItem(
-      id: '$i',
-      title: 'アイテム ${i + 1}',
-      unit: '回',
-    ),
-  );
-}
-```
-
-### ViewModelモックヘルパー
+### モックデータの管理
 
 ```dart
-// widgetbook/lib/mocks/view_model_mocks.dart
-extension ViewModelMockHelpers on WidgetRef {
-  T mockViewModel<T>(T Function() factory) {
-    return factory();
-  }
-}
-
-// 使用例
-final viewModel = ref.mockViewModel(() => MockRecordListViewModel());
+// widgetbook/lib/mocks/にfeature毎のモックを配置
+widgetbook/lib/mocks/
+├── record_item_mocks.dart     # RecordItemのテストデータ
+├── user_mocks.dart            # Userのテストデータ
+└── view_model_mocks.dart      # ViewModelモックヘルパー
 ```
+
+### 7層構造との対応
+
+| レイヤー | Widgetbookでの扱い |
+|---------|-------------------|
+| 6_component | 個別にUseCaseを作成、各種状態を網羅 |
+| 7_page | ViewModelをモックして画面全体を確認 |
+| 5_view_model | MockViewModelで置き換え |
+| 1-4層 | Widgetbookでは扱わない |
 
 ## ディレクトリ別の実装方針
 
-### components/（共通コンポーネント）
+### components/（app/lib/components/に対応）
 
-- 汎用的なプロパティを網羅
-- 各種サイズ、色、状態を確認
-- エッジケースを含める
+- 共通UIコンポーネントの各種バリエーション
+- Default, Loading, Error, Disabled状態を網羅
 
-```dart
-@UseCase(name: 'All Variants', type: PrimaryButton)
-Widget buildPrimaryButtonAllVariants(BuildContext context) {
-  return Column(
-    children: [
-      PrimaryButton(text: 'Default'),
-      PrimaryButton(text: 'Disabled', enabled: false),
-      PrimaryButton(text: 'Loading', isLoading: true),
-      PrimaryButton(text: 'With Icon', icon: Icons.add),
-    ],
-  );
-}
-```
+### features/（app/lib/features/*/6_component/に対応）
 
-### features/（機能別コンポーネント）
+- 実際のドメインデータを使用したUseCase
+- エッジケース（長いテキスト、大量データ）を含める
 
-- 実際のユースケースに近いデータ
-- ビジネスロジックの動作確認
-- エラー処理の確認
+### pages/（app/lib/features/*/7_page/に対応）
 
-### pages/（ページ）
-
-- 全体的なレイアウト確認
-- 状態遷移の確認
-- レスポンシブデザインの確認
+- ViewModelをモックして画面全体を確認
+- 画面遷移やエラー状態の確認
 
 ## ベストプラクティス
 
-1. **最低限Default UseCaseを作成**
-   - すべてのコンポーネント/ページに必須
-   - 最も一般的な使用例を表現
+### 必須要件
 
-2. **状態バリエーションを網羅**
-   - Default（通常）
-   - Loading（読み込み中）
-   - Error（エラー）
-   - Empty（空）
-   - Disabled（無効）
+- すべてのComponent/Pageに最低限Default UseCaseを作成
+- UseCase関数名: `build<ComponentName><State>UseCase`
+- モッククラス名: `Mock<OriginalName>`
 
-3. **エッジケースを含める**
-   - 長いテキスト
-   - 大量のデータ
-   - 極端に小さい/大きいサイズ
+### 推奨される状態パターン
 
-4. **モックは最小限に**
-   - UIの確認に必要な部分のみモック
-   - ビジネスロジックは含めない
+- Default, Loading, Error, Empty, Disabled
+- エッジケース（長いテキスト、境界値）
 
-5. **命名規則を統一**
-   - UseCase関数: `build<ComponentName><State>UseCase`
-   - モック: `Mock<OriginalName>`
+### ViewModelのモック方針
 
-## トラブルシューティング
+- UIの確認に必要な最小限の実装
+- ビジネスロジックは含めない
+- 状態の変更メソッドのみ実装
 
-### UseCaseが表示されない
+## プロジェクト固有の注意点
+
+### ProviderScopeの設定
+
+ページのUseCaseではProviderScopeでViewModelをオーバーライドする必要があります。
+
+### コード生成との連携
 
 ```bash
-# 1. コード生成を実行
-cd widgetbook && dart run build_runner build
-
-# 2. main.directories.g.dartを確認
-cat lib/main.directories.g.dart
-
-# 3. キャッシュクリア
-dart run build_runner clean
-dart run build_runner build --delete-conflicting-outputs
+# Widgetbookでもコード生成が必要
+make gen
 ```
 
-### ProviderScopeエラー
+### make bookコマンド
 
-```dart
-// ❌ 悪い例
-@UseCase(name: 'Test', type: MyPage)
-Widget buildMyPageUseCase(BuildContext context) {
-  return const MyPage(); // ProviderScopeがない
-}
+- ポート9442で起動
+- ホットリロード対応
+- 自動的にブラウザが開く
 
-// ✅ 良い例
-@UseCase(name: 'Test', type: MyPage)
-Widget buildMyPageUseCase(BuildContext context) {
-  return ProviderScope(
-    overrides: [...],
-    child: const MyPage(),
-  );
-}
-```
+## 参考リンク
 
-### Hot Reloadが効かない
-
-```bash
-# Widgetbookを再起動
-make book
-```
+- [Widgetbook公式ドキュメント](https://docs.widgetbook.io/)
+- [UseCaseの書き方](https://docs.widgetbook.io/guides/use-cases)
+- [Knobsの使い方](https://docs.widgetbook.io/knobs/overview)
+- [トラブルシューティング](https://docs.widgetbook.io/guides/troubleshooting)

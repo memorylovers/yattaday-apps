@@ -1,5 +1,15 @@
 # Flutter関連ツール
 
+## 重要事項
+
+本プロジェクトでは、dart/flutterコマンドの直接利用は非推奨です。
+すべての操作は**makeコマンド経由**で実行してください。
+
+- ❌ `dart run build_runner build`
+- ✅ `make gen`
+
+これにより、monorepo全体で一貫した操作が可能になります。
+
 ## 開発ツール一覧
 
 ### パッケージ管理・ビルド
@@ -7,9 +17,9 @@
 | ツール | 用途 | コマンド |
 |--------|------|----------|
 | **Melos** | Monorepo管理 | `melos bootstrap` |
-| **build_runner** | コード生成 | `dart run build_runner build` |
+| **build_runner** | コード生成 | `make gen` |
 | **flutter_gen** | アセット生成 | `fluttergen` |
-| **slang** | 多言語ファイル生成 | `dart run slang` |
+| **slang** | 多言語ファイル生成 | `make gen` |
 
 ### 状態管理・DI
 
@@ -67,15 +77,10 @@ make clean      # Flutterビルドキャッシュクリア
 ### 1. build_runner
 
 ```bash
-# 単一パッケージで実行
-cd app
-dart run build_runner build
+# コード生成実行
+make gen
 
-# 変更監視モード
-dart run build_runner watch
-
-# コンフリクト解決
-dart run build_runner build --delete-conflicting-outputs
+# 注: コンフリクトが発生した場合は、プロジェクトルートで make gen を再実行してください
 ```
 
 ### 2. 生成されるファイル
