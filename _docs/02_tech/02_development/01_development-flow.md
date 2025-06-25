@@ -4,6 +4,12 @@
 
 本プロジェクトでは、品質とスピードのバランスを取った「軽量化TDD戦略」を採用しています。層によってテスト手法を使い分けることで、効率的な品質保証を実現します。
 
+## 開発の基本原則
+
+1. **すべてのコマンドは`make`経由で実行** - 環境差異を吸収し、統一的な開発体験を提供
+2. **小さなステップで継続的に検証** - 各フェーズ後に`make test`を実行
+3. **TDD必須層とUI層で戦略を使い分け** - ビジネスロジックはTDD、UIはWidgetbookで確認
+
 ## 開発の基本サイクル
 
 ### 1. 計画フェーズ
@@ -13,193 +19,95 @@
 make plan-new name=<機能名>
 ```
 
-- `_planning/`ディレクトリに計画ドキュメントを作成
+- `_planning/`ディレクトリに計画ドキュメントを自動作成
 - 命名規則: `YYMMDD_HHMM_<説明>.md`
 - 実装前に設計を明確化
 
-### 2. 実装フェーズ（TDDサイクル）
+### 2. 実装フェーズ
 
-#### Red フェーズ（テスト作成）
+#### TDD対象層（ビジネスロジック中心）
 
-**TDD対象層のみ:**
-- 1_models
-- 2_repository
-- 3_store
-- 4_flow
-- 5_view_model（複雑なロジックがある場合）
+**対象**: 1_models, 2_repository, 3_store, 4_flow, 5_view_model（複雑なロジックのみ）
 
-```dart
-// test/features/record_item/models/record_item_test.dart
-void main() {
-  group('RecordItem', () {
-    test('should calculate streak correctly', () {
-      final item = RecordItem(id: '1', title: 'Test');
-      final dates = [DateTime(2024, 1, 1), DateTime(2024, 1, 2)];
-      
-      expect(item.calculateStreak(dates), equals(2));
-    });
-  });
-}
-```
+1. **Red**: テストを先に書く
+2. **Green**: 最小限のコードでテストを通す
+3. **Refactor**: テストが通る状態を維持しながらコードを改善
 
-#### Green フェーズ（実装）
+詳細なTDD実践方法は[TDD戦略](./02_tdd-strategy.md)を参照してください。
 
-最小限のコードでテストを通す：
+#### UI層（6_component, 7_page）
 
-```dart
-// lib/features/record_item/1_models/record_item.dart
-int calculateStreak(List<DateTime> dates) {
-  return dates.length; // 最小限の実装
-}
-```
+- Widgetbookでビジュアル確認
+- 各種状態（ローディング、エラー、空状態など）を網羅的に実装
 
-#### Refactor フェーズ（リファクタリング）
-
-テストが通る状態を維持しながら改善：
-
-```dart
-int calculateStreak(List<DateTime> dates) {
-  if (dates.isEmpty) return 0;
-  
-  final sortedDates = dates.toList()..sort();
-  int streak = 1;
-  
-  for (int i = 1; i < sortedDates.length; i++) {
-    final diff = sortedDates[i].difference(sortedDates[i - 1]).inDays;
-    if (diff == 1) {
-      streak++;
-    } else {
-      break;
-    }
-  }
-  
-  return streak;
-}
-```
-
-### 3. UI実装フェーズ
-
-#### Widgetbook実装（Page/Component）
-
-```dart
-// widgetbook/lib/features/record_item/record_item_card.dart
-@UseCase(name: 'Default', type: RecordItemCard)
-Widget buildRecordItemCardDefaultUseCase(BuildContext context) {
-  return RecordItemCard(
-    item: RecordItem(
-      id: '1',
-      title: 'サンプルアイテム',
-      unit: '回',
-    ),
-  );
-}
-```
-
-### 4. 品質保証フェーズ
+### 3. 品質保証フェーズ
 
 ```bash
-# フォーマット
-make format
+# すべてのチェックを一度に実行
+make check-all
 
-# コード生成
-make gen
-
-# リント
-make lint
-
-# テスト実行
-make test
+# または個別に実行
+make format  # コードフォーマット
+make gen     # コード生成（freezed, json_serializable等）
+make lint    # 静的解析
+make test    # テスト実行
 ```
 
-## 複雑なロジックの判断基準
+## makeコマンドリファレンス
 
-以下のいずれかに該当する場合は「複雑なロジック」としてTDDを適用：
-
-1. **条件分岐が3つ以上**
-   ```dart
-   if (condition1) {
-     // 処理1
-   } else if (condition2) {
-     // 処理2
-   } else if (condition3) {
-     // 処理3
-   } else {
-     // デフォルト処理
-   }
-   ```
-
-2. **非同期処理の組み合わせ**
-   ```dart
-   final result1 = await api1();
-   final result2 = await api2(result1);
-   final result3 = await api3(result2);
-   ```
-
-3. **エラーハンドリングが必要**
-   ```dart
-   try {
-     await riskyOperation();
-   } on SpecificException catch (e) {
-     // 特定のエラー処理
-   } catch (e) {
-     // 一般的なエラー処理
-   }
-   ```
-
-4. **状態遷移が複雑（3つ以上の状態）**
-   ```dart
-   enum ProcessState {
-     initial,
-     loading,
-     processing,
-     completed,
-     error,
-   }
-   ```
-
-5. **ビジネスルールの実装**
-   - 料金計算
-   - 権限チェック
-   - バリデーションルール
+| コマンド | 説明 |
+|---------|------|
+| `make` | 初期セットアップ（fvm, melos等のインストール） |
+| `make format` | コードフォーマット |
+| `make gen` | コード生成（freezed, build_runner） |
+| `make lint` | 静的解析（Flutter + Markdown） |
+| `make test` | テスト実行 |
+| `make run` | アプリ実行（staging環境） |
+| `make book` | Widgetbook起動 |
+| `make check-all` | format → lint → test を順次実行 |
+| `make plan-new name=<名前>` | 計画ドキュメント作成 |
+| `make e2e` | E2Eテスト実行（Maestro） |
 
 ## 完了条件チェックリスト
 
-- [ ] **フォーマットが適用されていること**: `make format`
-- [ ] **コード生成が最新化されていること**: `make gen`
-- [ ] **テストが通過していること**: `make test`
-- [ ] **静的解析が通過していること**: `make lint`
-- [ ] **Page/ComponentがすべてWidgetbook登録されていること**
-  - `lib/main.directories.g.dart`で確認
+- [ ] **計画ドキュメントを作成した**: `make plan-new`
+- [ ] **TDD対象層はテストファーストで実装した**
+- [ ] **UI層はWidgetbookに登録した**
+- [ ] **すべてのチェックが通過した**: `make check-all`
+  - フォーマット適用済み
+  - コード生成が最新
+  - テストが全て成功
+  - 静的解析エラーなし
 
 ## トラブルシューティング
 
-### コード生成でエラーが出る場合
+### エラー時の基本対処法
 
 ```bash
-# キャッシュクリア
-cd app && dart run build_runner clean
-cd app && dart run build_runner build --delete-conflicting-outputs
+# 1. コード生成をやり直す
+make gen
+
+# 2. それでも解決しない場合は、すべてのチェックを実行
+make check-all
 ```
 
-### テストが失敗する場合
+### よくある問題
 
-```bash
-# 特定のテストのみ実行
-cd app && flutter test test/features/record_item/models/record_item_test.dart
-```
+- **import エラー**: `make gen`でコード生成をやり直す
+- **テスト失敗**: エラーメッセージを確認し、該当箇所を修正
+- **Widgetbookが表示されない**: `make book`で再起動
 
-### Widgetbookが更新されない場合
+### 詳細なトラブルシューティング
 
-```bash
-# Widgetbookのコード生成
-cd widgetbook && dart run build_runner build
-make book
-```
+問題が解決しない場合は、以下を参照：
+
+- [アーキテクチャガイド](../01_architecture/02_layered-architecture.md)
+- [TDD戦略](./02_tdd-strategy.md)
+- [コーディングスタイル](../03_flutter/05_coding-style.md)
 
 ## ベストプラクティス
 
 1. **小さいコミット**: 機能単位で細かくコミット
-2. **継続的な実行**: 各フェーズ後に`make test`を実行
-3. **早期フィードバック**: CIでの自動チェックを活用
-4. **ペアプログラミング**: 複雑な実装は2人で実施
-5. **定期的なリファクタリング**: 技術的負債を溜めない
+2. **継続的な実行**: 各実装後に`make test`を実行
+3. **早期フィードバック**: プルリクエストは小さく、頻繁に
+4. **定期的なリファクタリング**: 技術的負債を溜めない
