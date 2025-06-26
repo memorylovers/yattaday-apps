@@ -119,7 +119,7 @@ class RecordItemStore extends _$RecordItemStore {
 
 ### 4_flow - Flutter実装
 
-#### Riverpodを使用した実装例
+#### Riverpodを使用した実装例(Flow)
 
 ```dart
 @riverpod
@@ -146,7 +146,7 @@ class RecordCreationFlow extends _$RecordCreationFlow {
 
 ### 5_view_model - Flutter実装
 
-#### Riverpodを使用した実装例
+#### Riverpodを使用した実装例(ViewModel)
 
 ```dart
 @riverpod
@@ -250,7 +250,7 @@ class RecordListPage extends ConsumerWidget {
 
 ## Feature間の参照ルール - Flutter実装
 
-### Flutter/Dartでの実装例
+### Flutter/Dartでの実装例(Feature)
 
 ```dart
 // features/dashboard/5_view_model/dashboard_view_model.dart
