@@ -476,4 +476,7 @@ doc/api/
 .flutter-plugins
 .flutter-plugins-dependencies
 
+# AI作業用一時ファイル
+_ai-tmp/
+
 
