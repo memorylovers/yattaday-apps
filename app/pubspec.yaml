@@ -90,7 +90,7 @@ dependencies:
 
   # packages
   common_widget:
-    path: ../common_widget
+    path: ../packages/common_widget
 
   # animation
   animations: ^2.0.11

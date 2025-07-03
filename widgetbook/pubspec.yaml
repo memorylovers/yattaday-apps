@@ -21,7 +21,7 @@ dependencies:
   myapp:
     path: ../app
   common_widget:
-    path: ../common_widget
+    path: ../packages/common_widget
 
 dev_dependencies:
   flutter_test:
