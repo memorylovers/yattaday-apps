@@ -1,7 +1,7 @@
 name: one_day_price
 packages:
   - apps/app
-  - widgetbook
+  - apps/widgetbook
   - packages/common_widget
 
 command:

@@ -10,8 +10,6 @@
       "Bash(rg:*)",
       "Bash(grep:*)",
       "Bash(mkdir:*)",
-      "Bash(gh:*)",
-      "Bash(git:*)",
       "Bash(mv:*)",
       "Bash(rmdir:*)",
       "Read(./**)",

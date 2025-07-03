@@ -19,9 +19,9 @@ dependencies:
   slang: ^4.7.1
   slang_flutter:
   myapp:
-    path: ../apps/app
+    path: ../app
   common_widget:
-    path: ../packages/common_widget
+    path: ../../packages/common_widget
 
 dev_dependencies:
   flutter_test:

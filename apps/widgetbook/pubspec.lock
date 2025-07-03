@@ -244,7 +244,7 @@ packages:
   common_widget:
     dependency: "direct main"
     description:
-      path: "../packages/common_widget"
+      path: "../../packages/common_widget"
       relative: true
     source: path
     version: "0.1.0"
@@ -887,7 +887,7 @@ packages:
   myapp:
     dependency: "direct main"
     description:
-      path: "../apps/app"
+      path: "../app"
       relative: true
     source: path
     version: "0.1.0"
