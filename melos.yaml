@@ -1,8 +1,8 @@
 name: one_day_price
 packages:
-  - app
+  - apps/app
   - widgetbook
-  - common_widget
+  - packages/common_widget
 
 command:
   clean:

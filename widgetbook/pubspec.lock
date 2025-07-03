@@ -887,7 +887,7 @@ packages:
   myapp:
     dependency: "direct main"
     description:
-      path: "../app"
+      path: "../apps/app"
       relative: true
     source: path
     version: "0.1.0"

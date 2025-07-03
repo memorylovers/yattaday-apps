@@ -19,7 +19,7 @@ dependencies:
   slang: ^4.7.1
   slang_flutter:
   myapp:
-    path: ../app
+    path: ../apps/app
   common_widget:
     path: ../packages/common_widget
 

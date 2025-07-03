@@ -3,4 +3,4 @@ dependency_overrides:
   common_widget:
     path: ../packages/common_widget
   myapp:
-    path: ../app
+    path: ../apps/app
