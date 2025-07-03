@@ -40,13 +40,12 @@ test:
 	melos run test
 
 run:
-	cd app && fvm flutter run lib/main.dart --flavor=stag
+	cd apps/app && fvm flutter run lib/main.dart --flavor=stag
 
 book:
-	cd widgetbook && fvm flutter run lib/main.dart --device-id=chrome
+	cd apps/widgetbook && fvm flutter run lib/main.dart --device-id=chrome
 
-mock:
-	npx http-server app-mock/
+# mockコマンドは削除（app-mockディレクトリは削除済み）
 
 # Maestro E2Eテスト
 e2e:
