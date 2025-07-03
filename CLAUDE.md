@@ -1,16 +1,14 @@
-# CLAUDE.md
+# CLAUDE.md - プロジェクトコンテキスト
 
-このファイルは、このリポジトリでコードを扱う際のClaude Code (claude.ai/code) への指針を提供します。
+このファイルは、Claude Code (claude.ai/code) への指針を提供する。
 
-## **重要事項**
+## **YOU MUST: 重要事項**
 
-- 日本語でのコミュニケーションとドキュメント記載を推奨
-- **軽量化TDD（テスト駆動開発）で実装すること**
-  - ビジネスロジック層（models、repository、store、flow）はTDD必須
-  - UI層（component、page）はWidgetbookでビジュアル確認
-- **`_planning/`ディレクトリに計画ドキュメントを統一配置**
-  - 命名規則: `YYMMDD_HHMM_<説明>.md`
-  - 作成コマンド: `make plan-new name=<説明>`
+- 日本語でのコミュニケーション
+- ユーザからの指示や仕様に疑問があれば作業を中断し、質問すること
+- 開発ガイドラインに従うこと`_docs/_guideline/`
+- 計画内容や進捗状況は、AI作業用の一時ファイルの`_ai-tmp/`に配置
+- DRY / YAGNIの原則に従うこと
 
 ## コマンド一覧
 
@@ -26,59 +24,33 @@ make lint    # 静的解析
 make run     # アプリ実行
 ```
 
-## プロジェクト構造
+## ガイドライン構成
 
-本プロジェクトは、melosを利用したmonorepo構成
+詳細な開発ガイドラインは[_docs/_guideline/](https://github.com/memorylovers/tech_guideline)を参照
 
-```
-yattaday-apps/
-├── app/          # メインアプリ
-│   └── CLAUDE.md # メインアプリのCLAUDE.md
-├── widgetbook/   # UIカタログ(Widgetbook)
-│   └── CLAUDE.md # UIカタログのCLAUDE.md
-├── common_widget/ # 共通UIコンポーネントパッケージ
-│   └── README.md # パッケージの説明
-└── CLAUDE.md     # このファイル
-```
+### プロジェクト共通ポリシー (./_docs/_guideline/00_process/)
 
-### common_widgetパッケージ
+- **[開発の基本思想](./_docs/_guideline/00_process/00_philosophy.md)**: 尊重する基本原則とアーキテクチャスタイル
+- **[開発フロー](./_docs/_guideline/00_process/01_development-flow.md)**: makeコマンドを中心とした開発サイクル
+- **[ブランチ戦略](./_docs/_guideline/00_process/02_branch-strategy.md)**: GitHub Flowベースの構造化
+- **[コミット規約](./_docs/_guideline/00_process/03_commit-convention.md)**: Conventional Commitsによる履歴管理
+- **[命名規則](./_docs/_guideline/00_process/04_naming-conventions.md)**: ファイル・メソッド・DTOの命名規則
 
-appとwidgetbookで共有する共通UIコンポーネントとアセットを管理するパッケージです。
+### アーキテクチャ・設計 (./_docs/_guideline/01_architecture/)
 
-- **アセット管理**: アイコンなどの共通アセット
-- **共通コンポーネント**: AppLogoなど、両方のプロジェクトで使用するUI部品
-- **依存関係**: app/pubspec.yamlとwidgetbook/pubspec.yamlから参照
+- **[アーキテクチャ概要](./_docs/_guideline/01_architecture/00_overview.md)**: 重要な設計判断のクイックリファレンス
+- **[プロジェクト構成](./_docs/_guideline/01_architecture/01_project-structure.md)**: monorepo構成とディレクトリ構造
+- **[レイヤードアーキテクチャ](./_docs/_guideline/01_architecture/02_layered-architecture.md)**: 8層構造による責務分離
+- **[エラーハンドリング](./_docs/_guideline/01_architecture/03_error-handling.md)**: 統一的な例外処理戦略
+- **[Storeパターン](./_docs/_guideline/01_architecture/04_store-patterns.md)**: 状態管理の実装パターン
+- **[テスト戦略](./_docs/_guideline/01_architecture/05_test-strategy.md)**: 層別のテスト方針とカバレッジ目標
 
-## 開発ガイドライン
+### Flutter実装 (./_docs/_guideline/10_flutter/)
 
-詳細な開発ガイドラインは[_docs/_guideline/](https://github.com/memorylovers/tech_guideline)を参照してください。
-
-- **開発プロセス**: `_docs/_guideline/00_process/` - ブランチ戦略、コミット規約、命名規則など
-- **アーキテクチャ**: `_docs/_guideline/01_architecture/` - レイヤードアーキテクチャ、エラーハンドリング、テスト戦略など
-- **Flutter実装**: `_docs/_guideline/10_flutter/` - Flutter固有の実装ガイド
-
-### ブランチルール（概要）
-
-```
-**main**: 本番環境用（常にデプロイ可能）
-**feature/issue-[number]**: 機能追加
-**bugfix/issue-[number]**: バグ修正
-**hotfix/issue-[number]**: 緊急修正
-```
-
-詳細は[_docs/_guideline/00_process/02_branch-strategy.md](_docs/_guideline/00_process/02_branch-strategy.md)を参照。
-
-### コミットメッセージ（概要）
-
-[Conventional Commits](https://www.conventionalcommits.org/ja/v1.0.0/)を採用：
-
-```
-feat: 新機能追加
-fix: バグ修正
-test: テスト追加・修正
-refactor: リファクタリング
-docs: ドキュメント更新
-chore: その他の変更
-```
-
-詳細は[_docs/_guideline/00_process/03_commit-convention.md](_docs/_guideline/00_process/03_commit-convention.md)を参照。
+- **[Flutter実装ガイド概要](./_docs/_guideline/10_flutter/00_flutter-overview.md)**: 技術スタックと実装の概要
+- **[monorepo構成とディレクトリ構造](10_flutter/01_project-structure-impl.md)**: パッケージ構成とディレクトリ設計
+- **[レイヤードアーキテクチャのFlutter実装](10_flutter/02_layered-architecture-impl.md)**: 8層構造の具体的な実装方法
+- **[エラーハンドリング実装](10_flutter/03_error-handling-impl.md)**: 統一的な例外処理の実装方法
+- **[Riverpodによる状態管理実装](10_flutter/04_store-patterns-impl.md)**: Storeパターンの実装例
+- **[Flutterテスト実装パターン](10_flutter/05_test-strategy-impl.md)**: 各層のテスト実装例
+- **[UIカタログ作成](10_flutter/11_widgetbook-guide.md)**: Widgetbookによるコンポーネント管理
