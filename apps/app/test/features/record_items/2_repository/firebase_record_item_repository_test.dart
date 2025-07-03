@@ -21,7 +21,9 @@ void main() {
 
         await repository.create(recordItem);
 
-        final collectionPath = FirebaseRecordItemHelper.collectionPath(recordItem.userId);
+        final collectionPath = FirebaseRecordItemHelper.collectionPath(
+          recordItem.userId,
+        );
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 
@@ -51,7 +53,9 @@ void main() {
 
         await repository.update(updatedItem);
 
-        final collectionPath = FirebaseRecordItemHelper.collectionPath(recordItem.userId);
+        final collectionPath = FirebaseRecordItemHelper.collectionPath(
+          recordItem.userId,
+        );
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 
@@ -69,7 +73,9 @@ void main() {
 
         await repository.delete(recordItem.userId, recordItem.id);
 
-        final collectionPath = FirebaseRecordItemHelper.collectionPath(recordItem.userId);
+        final collectionPath = FirebaseRecordItemHelper.collectionPath(
+          recordItem.userId,
+        );
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 

@@ -16,7 +16,6 @@
       "Edit(./**)",
       "mcp__ide__getDiagnostics",
       "Bash(melos:*)",
-      "Bash(fvm:*)",
       "Bash(make:*)",
       "Bash(touch:*)",
       "Bash(ls:*)",
@@ -43,6 +42,7 @@
     "deny": [
       "Read(../**)",
       "Edit(../**)",
+      "Bash(fvm:*)",
       "Bash(flutter:*)",
       "Bash(dart:*)"
     ]
