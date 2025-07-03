@@ -3,7 +3,7 @@
 # generate by [IconKitchen](https://icon.kitchen/)
 
 ASSET_DIR="./_assets/icons"
-APP_DIR="./app"
+APP_DIR="./apps/app"
 
 # Android icon and splash
 cp -fr "${ASSET_DIR}"/dev/android/res/ "${APP_DIR}/android/app/src/dev/res"
