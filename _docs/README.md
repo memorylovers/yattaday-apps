@@ -6,8 +6,11 @@
 
 ```
 _docs/
-├── 01_domain/    # プロジェクト固有のドメイン知識
-└── 02_tech/      # 汎用的な技術ドキュメント（横展開可能）
+├── _guideline/          # 弊社の技術ガイドライン（サブモジュール）
+│   ├── 00_process/      # 開発プロセス（ブランチ戦略、コミット規約など）
+│   ├── 01_architecture/ # アーキテクチャ概念（言語非依存）
+│   └── 10_flutter/      # Flutter実装ガイド
+└── 01_domain/    # YattaDay固有のドメイン知識
 ```
 
 ## 01_domain/ - ドメイン知識
@@ -23,38 +26,24 @@ YattaDay固有のビジネス要件やドメイン知識をまとめています
 | `05_designs.md` | デザイン仕様、UIガイドライン |
 | `06_system-architecture.md` | 使用する技術スタック、外部サービス |
 
-## 02_tech/ - 技術ドキュメント
+## _guideline/ - 技術ガイドライン（サブモジュール）
 
-プロジェクトに依存しない汎用的な技術内容です。他プロジェクトへの横展開が可能です。
+[memorylovers/tech_guideline](https://github.com/memorylovers/tech_guideline)リポジトリのサブモジュール。
+プロジェクトに依存しない汎用的な技術内容で、他プロジェクトへの横展開が可能です。
 
-### 01_architecture/ - アーキテクチャ
+### 00_process/ - プロジェクト共通ポリシー
 
-| ファイル | 内容 |
-|----------|------|
-| `01_overview.md` | アーキテクチャ全体の概要と基本原則 |
-| `02_7-layer-architecture.md` | 7層アーキテクチャの詳細説明 |
-| `03_cqrs-pattern.md` | CQRSパターンの実装方法 |
-| `04_error-handling.md` | エラーハンドリング戦略 |
-| `05_store-patterns.md` | Store実装パターン |
+開発プロセスに関する基本的なガイドライン。
 
-### 02_development/ - 開発手法
+### 01_architecture/ - アーキテクチャ・設計
 
-| ファイル | 内容 |
-|----------|------|
-| `01_development-flow.md` | 開発フロー全体の流れ |
-| `02_test-strategy.md` | テスト戦略 |
-| `03_branch-strategy.md` | Gitブランチ運用ルール |
-| `04_commit-convention.md` | コミットメッセージ規約 |
+言語非依存のアーキテクチャ概念と設計パターン。
 
-### 03_flutter/ - Flutter固有
+### 10_flutter/ - Flutter実装
 
-| ファイル | 内容 |
-|----------|------|
-| `01_project-structure.md` | Flutterプロジェクトの構造 |
-| `02_riverpod-patterns.md` | Riverpod実装パターン |
-| `03_widgetbook-guide.md` | Widgetbook統合ガイド |
-| `04_flutter-tools.md` | Flutter関連ツールと使い方 |
-| `05_coding-style.md` | Flutterコーディングスタイル |
+Flutter固有の実装ガイドとベストプラクティス。
+
+詳細は[_guideline/README.md](_guideline/README.md)を参照してください。
 
 ## 読む順序
 
@@ -65,32 +54,34 @@ YattaDay固有のビジネス要件やドメイン知識をまとめています
    - `01_domain/02_features.md` - 機能の詳細を把握
 
 2. **アーキテクチャ理解**
-   - `02_tech/01_architecture/01_overview.md` - 全体像を掴む
-   - `02_tech/01_architecture/02_7-layer-architecture.md` - 構造を理解
+   - `_guideline/00_process/00_philosophy.md` - 基本思想
+   - `_guideline/01_architecture/00_overview.md` - 全体像を掴む
+   - `_guideline/01_architecture/02_layered-architecture.md` - 構造を理解
 
 3. **開発手法**
-   - `02_tech/02_development/01_development-flow.md` - 開発の流れ
-   - `02_tech/02_development/02_test-strategy.md` - テスト方針
+   - `_guideline/00_process/01_development-flow.md` - 開発の流れ
+   - `_guideline/01_architecture/05_test-strategy.md` - テスト方針
 
 4. **実装詳細**
-   - `02_tech/03_flutter/01_project-structure.md` - プロジェクト構造
-   - `02_tech/03_flutter/02_riverpod-patterns.md` - 状態管理
+   - `_guideline/10_flutter/01_project-structure-impl.md` - プロジェクト構造
+   - `_guideline/10_flutter/04_store-patterns-impl.md` - 状態管理
 
 ### 横展開する場合
 
-`02_tech/`ディレクトリをコピーして、新プロジェクトで以下を調整：
+新プロジェクトでtech_guidelineを使用する場合：
 
-1. **技術スタックの確認**
-   - Flutter + Riverpod は共通
-   - Firebase → REST API などの変更があれば該当箇所を修正
+1. **サブモジュールとして追加**（推奨）
 
-2. **プロジェクト固有の調整**
-   - ディレクトリ名やパッケージ名を変更
-   - 不要な機能の説明を削除
+   ```bash
+   git submodule add https://github.com/memorylovers/tech_guideline.git _docs/_guideline
+   ```
 
-3. **ドメイン知識の追加**
+2. **プロジェクト固有のドメイン知識を追加**
    - 新プロジェクト用の`01_domain/`を作成
    - ビジネス要件に合わせてドキュメント作成
+
+3. **必要に応じてガイドラインをカスタマイズ**
+   - tech_guidelineの最新版を取り込みながら運用可能
 
 ## ドキュメントの更新
 

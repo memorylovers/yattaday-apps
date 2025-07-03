@@ -1,4 +1,4 @@
-all: fvm fvm_install melos melos_bs flutterfire_cli
+all: fvm fvm_install melos melos_bs flutterfire_cli submodule
 
 fvm:
 	brew tap leoafarias/fvm
@@ -6,6 +6,9 @@ fvm:
 
 fvm_install:
 	fvm install --setup
+
+submodule:
+	git submodule update --init --recursive
 
 melos:
 	dart pub global activate melos

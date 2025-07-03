@@ -1,0 +1,3 @@
+[submodule "_docs/_guideline"]
+	path = _docs/_guideline
+	url = https://github.com/memorylovers/tech_guideline.git
