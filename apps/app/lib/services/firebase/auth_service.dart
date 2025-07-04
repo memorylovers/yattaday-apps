@@ -6,9 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../common/providers/firebase_providers.dart';
 import '../../features/_authentication/1_models/auth_type.dart';
 
-final authServiceProvider = Provider<AuthService>((ref) => AuthService());
+final authServiceProvider = Provider<AuthService>((ref) {
+  final firebaseAuth = ref.watch(firebaseAuthProvider);
+  return AuthService(firebaseAuth: firebaseAuth);
+});
 
 class AuthService {
   final FirebaseAuth _firebaseAuth;
