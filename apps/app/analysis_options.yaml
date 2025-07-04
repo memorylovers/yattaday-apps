@@ -24,3 +24,4 @@ analyzer:
     - "coverage/**"
     - ".dart_tool/**"
     - "**/_gen/**"
+    - "**/*.mocks.dart"
