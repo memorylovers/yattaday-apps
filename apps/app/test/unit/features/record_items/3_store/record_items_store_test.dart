@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/common/providers/firebase_providers.dart';
 import 'package:myapp/features/record_items/3_store/record_items_store.dart';
 
-import '../../../../test_helpers/record_item_helpers.dart';
+import '../../../../test_helpers/fixtures/record_item_helpers.dart';
 
 void main() {
   group('RecordItemsStore', () {

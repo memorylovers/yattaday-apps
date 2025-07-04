@@ -2,7 +2,7 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
 
-import '../../../../test_helpers/record_item_helpers.dart';
+import '../../../../test_helpers/fixtures/record_item_helpers.dart';
 
 void main() {
   late FakeFirebaseFirestore fakeFirestore;
