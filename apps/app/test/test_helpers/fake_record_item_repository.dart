@@ -1,7 +1,7 @@
-import 'package:myapp/features/record_items/2_repository/interfaces/record_item_query_repository.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 
-class FakeRecordItemQueryRepository implements IRecordItemQueryRepository {
+class FakeRecordItemRepository implements RecordItemRepository {
   final List<RecordItem> _items = [];
   Exception? _exception;
 
@@ -16,6 +16,27 @@ class FakeRecordItemQueryRepository implements IRecordItemQueryRepository {
 
   void clearException() {
     _exception = null;
+  }
+
+  @override
+  Future<void> create(RecordItem recordItem) async {
+    if (_exception != null) throw _exception!;
+    _items.add(recordItem);
+  }
+
+  @override
+  Future<void> update(RecordItem recordItem) async {
+    if (_exception != null) throw _exception!;
+    final index = _items.indexWhere((item) => item.id == recordItem.id);
+    if (index != -1) _items[index] = recordItem;
+  }
+
+  @override
+  Future<void> delete(String userId, String recordItemId) async {
+    if (_exception != null) throw _exception!;
+    _items.removeWhere(
+      (item) => item.id == recordItemId && item.userId == userId,
+    );
   }
 
   @override
@@ -56,4 +77,6 @@ class FakeRecordItemQueryRepository implements IRecordItemQueryRepository {
             .reduce((a, b) => a > b ? a : b) +
         1;
   }
+
+  List<RecordItem> get items => List.unmodifiable(_items);
 }

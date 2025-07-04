@@ -11,7 +11,7 @@ submodule:
 	git submodule update --init --recursive
 
 melos:
-	dart pub global activate melos
+	fvm dart pub global activate melos
 
 melos_bs:
 	melos bootstrap

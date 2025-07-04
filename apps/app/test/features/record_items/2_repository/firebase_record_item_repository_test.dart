@@ -1,7 +1,6 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myapp/features/record_items/2_repository/firebase/firebase_record_item_repository.dart';
-import 'package:myapp/features/record_items/2_repository/firebase/firebase_record_item_helper.dart';
+import 'package:myapp/features/record_items/2_repository/record_item_repository.dart';
 
 import '../../../test_helpers/record_item_helpers.dart';
 
@@ -11,7 +10,7 @@ void main() {
 
   setUp(() {
     fakeFirestore = FakeFirebaseFirestore();
-    repository = FirebaseRecordItemRepository(firestore: fakeFirestore);
+    repository = FirebaseRecordItemRepository(fakeFirestore);
   });
 
   group('FirebaseRecordItemRepository', () {
@@ -21,9 +20,7 @@ void main() {
 
         await repository.create(recordItem);
 
-        final collectionPath = FirebaseRecordItemHelper.collectionPath(
-          recordItem.userId,
-        );
+        final collectionPath = 'users/${recordItem.userId}/recordItems';
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 
@@ -53,9 +50,7 @@ void main() {
 
         await repository.update(updatedItem);
 
-        final collectionPath = FirebaseRecordItemHelper.collectionPath(
-          recordItem.userId,
-        );
+        final collectionPath = 'users/${recordItem.userId}/recordItems';
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 
@@ -73,9 +68,7 @@ void main() {
 
         await repository.delete(recordItem.userId, recordItem.id);
 
-        final collectionPath = FirebaseRecordItemHelper.collectionPath(
-          recordItem.userId,
-        );
+        final collectionPath = 'users/${recordItem.userId}/recordItems';
         final doc =
             await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
 
@@ -209,25 +202,5 @@ void main() {
       });
     });
 
-    group('generateId', () {
-      test('新しいIDを生成できること（ULID形式）', () {
-        final id1 = repository.generateId();
-        final id2 = repository.generateId();
-
-        expect(id1, isNotEmpty);
-        expect(id2, isNotEmpty);
-        expect(id1, isNot(equals(id2))); // 毎回異なるIDが生成される
-
-        // ULIDの形式をチェック（26文字の大文字英数字）
-        final ulidRegex = RegExp(r'^[0-9A-Z]{26}$');
-        expect(id1, matches(ulidRegex));
-        expect(id2, matches(ulidRegex));
-        expect(id1.length, equals(26));
-        expect(id2.length, equals(26));
-
-        // ULIDはタイムスタンプベースなので、後に生成されたIDの方が辞書順で大きい
-        expect(id2.compareTo(id1), greaterThanOrEqualTo(0));
-      });
-    });
   });
 }
