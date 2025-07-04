@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,8 +10,8 @@ class FakeFirebaseCrashlytics implements FirebaseCrashlytics {
   final List<String> _logs = [];
   String? _userIdentifier;
   final Map<String, Object> _customKeys = {};
-  bool _crashlyticsCollectionEnabled = true;
   bool _isCrashlyticsCollectionEnabled = true;
+  FirebaseApp? _app;
 
   // テスト用のヘルパーメソッド
   List<RecordedError> get recordedErrors => List.unmodifiable(_recordedErrors);
@@ -60,7 +61,6 @@ class FakeFirebaseCrashlytics implements FirebaseCrashlytics {
 
   @override
   Future<void> setCrashlyticsCollectionEnabled(bool enabled) async {
-    _crashlyticsCollectionEnabled = enabled;
     _isCrashlyticsCollectionEnabled = enabled;
   }
 
@@ -91,6 +91,12 @@ class FakeFirebaseCrashlytics implements FirebaseCrashlytics {
 
   @override
   Future<bool> checkForUnsentReports() => throw UnimplementedError();
+
+  @override
+  FirebaseApp get app => _app ?? (throw UnimplementedError());
+
+  @override
+  set app(FirebaseApp value) => _app = value;
 }
 
 // テスト用のデータクラス
