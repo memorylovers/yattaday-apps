@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../common/exception/app_error_code.dart';
-import '../../../common/exception/app_exception.dart';
+import '../../../common/exception/app_exception_helpers.dart';
 import '../../../common/exception/handling_error.dart';
 import '../1_models/record_item.dart';
 
@@ -39,7 +38,7 @@ class FirebaseRecordItemRepository implements RecordItemRepository {
   Future<void> create(RecordItem recordItem) async {
     try {
       final collection = _getTypedCollection(recordItem.userId);
-      
+
       // IDが既に設定されている場合は指定のIDで作成
       if (recordItem.id.isNotEmpty) {
         await collection.doc(recordItem.id).set(recordItem);
@@ -56,16 +55,13 @@ class FirebaseRecordItemRepository implements RecordItemRepository {
   Future<void> update(RecordItem recordItem) async {
     try {
       final collection = _getTypedCollection(recordItem.userId);
-      
+
       // 存在チェック
       final doc = await collection.doc(recordItem.id).get();
       if (!doc.exists) {
-        throw const AppException(
-          code: AppErrorCode.notFound,
-          message: '記録項目が見つかりません',
-        );
+        throw AppExceptions.notFound('記録項目');
       }
-      
+
       await collection.doc(recordItem.id).set(recordItem);
     } catch (error) {
       handleError(error);
@@ -76,16 +72,13 @@ class FirebaseRecordItemRepository implements RecordItemRepository {
   Future<void> delete(String userId, String recordItemId) async {
     try {
       final collection = _getTypedCollection(userId);
-      
+
       // 存在チェック
       final doc = await collection.doc(recordItemId).get();
       if (!doc.exists) {
-        throw const AppException(
-          code: AppErrorCode.notFound,
-          message: '記録項目が見つかりません',
-        );
+        throw AppExceptions.notFound('記録項目');
       }
-      
+
       await collection.doc(recordItemId).delete();
     } catch (error) {
       handleError(error);
@@ -108,13 +101,9 @@ class FirebaseRecordItemRepository implements RecordItemRepository {
   Future<List<RecordItem>> getByUserId(String userId) async {
     try {
       final collection = _getTypedCollection(userId);
-      final querySnapshot = await collection
-          .orderBy('sortOrder')
-          .get();
-      
-      return querySnapshot.docs
-          .map((doc) => doc.data())
-          .toList();
+      final querySnapshot = await collection.orderBy('sortOrder').get();
+
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
     } catch (error) {
       handleError(error);
       return [];
@@ -128,9 +117,7 @@ class FirebaseRecordItemRepository implements RecordItemRepository {
       return collection
           .orderBy('sortOrder')
           .snapshots()
-          .map((snapshot) => snapshot.docs
-              .map((doc) => doc.data())
-              .toList())
+          .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList())
           .handleError((error) => handleError(error));
     } catch (error) {
       handleError(error);
@@ -142,15 +129,16 @@ class FirebaseRecordItemRepository implements RecordItemRepository {
   Future<int> getNextSortOrder(String userId) async {
     try {
       final collection = _getTypedCollection(userId);
-      final querySnapshot = await collection
-          .orderBy('sortOrder', descending: true)
-          .limit(1)
-          .get();
-      
+      final querySnapshot =
+          await collection
+              .orderBy('sortOrder', descending: true)
+              .limit(1)
+              .get();
+
       if (querySnapshot.docs.isEmpty) {
         return 0;
       }
-      
+
       final lastItem = querySnapshot.docs.first.data();
       return lastItem.sortOrder + 1;
     } catch (error) {
@@ -169,8 +157,8 @@ class FirebaseRecordItemRepository implements RecordItemRepository {
     return _firestore
         .collection(_collectionPath(userId))
         .withConverter<RecordItem>(
-          fromFirestore: (snapshot, _) => 
-              RecordItem.fromJson(snapshot.data() ?? {}),
+          fromFirestore:
+              (snapshot, _) => RecordItem.fromJson(snapshot.data() ?? {}),
           toFirestore: (recordItem, _) => recordItem.toJson(),
         );
   }

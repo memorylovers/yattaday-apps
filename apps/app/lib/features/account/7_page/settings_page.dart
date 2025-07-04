@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../_gen/i18n/strings.g.dart';
+import '../../../common/hooks/use_error_message.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
 import '../../../routing/router_routes.dart';
 import '../5_view_model/settings_view_model.dart';
@@ -14,6 +15,9 @@ class SettingsPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settingsState = ref.watch(settingsViewModelProvider);
     final settingsViewModel = ref.read(settingsViewModelProvider.notifier);
+
+    // エラーメッセージの監視
+    useErrorMessage(settingsState.errorMessage, context);
 
     return GradientScaffold(
       title: i18n.settings.title,
@@ -165,7 +169,18 @@ class SettingsPage extends HookConsumerWidget {
             margin: const EdgeInsets.symmetric(horizontal: 16),
             child: TextButton.icon(
               onPressed:
-                  settingsState.isLoading ? null : settingsViewModel.signOut,
+                  settingsState.isLoading
+                      ? null
+                      : () {
+                        settingsViewModel.signOut(
+                          onSuccess: () {
+                            // ログアウト成功時はルートへ自動遷移
+                          },
+                          onError: (error) {
+                            // エラーはuseErrorMessageで表示される
+                          },
+                        );
+                      },
               icon: Icon(Icons.logout, color: Colors.grey[600], size: 20),
               label: Text(
                 i18n.settings.logout,

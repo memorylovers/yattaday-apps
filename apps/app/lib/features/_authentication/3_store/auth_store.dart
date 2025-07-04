@@ -56,14 +56,24 @@ class AuthStore extends _$AuthStore {
   ///
   /// [type] 使用する認証プロバイダー
   Future<void> signIn(AuthType type) async {
-    await ref.read(authRepositoryProvider).signIn(type);
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(authRepositoryProvider).signIn(type);
+      // 認証状態の更新はStreamで自動的に反映される
+      return state.value;
+    });
   }
 
   /// ログアウト
   ///
   /// 現在のユーザーをログアウトさせる。
   Future<void> signOut() async {
-    await ref.read(authRepositoryProvider).signOut();
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(authRepositoryProvider).signOut();
+      // 認証状態の更新はStreamで自動的に反映される
+      return state.value;
+    });
   }
 
   /// 退会
@@ -71,7 +81,12 @@ class AuthStore extends _$AuthStore {
   /// ユーザーアカウントを完全に削除する。
   /// この操作は取り消しできない。
   Future<void> delete() async {
-    await ref.read(authRepositoryProvider).delete();
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(authRepositoryProvider).delete();
+      // 認証状態の更新はStreamで自動的に反映される
+      return state.value;
+    });
   }
 
   /// アカウントの連携
@@ -80,7 +95,12 @@ class AuthStore extends _$AuthStore {
   ///
   /// [type] 連携する認証プロバイダー
   Future<void> linkAccount(AuthType type) async {
-    await ref.read(authRepositoryProvider).linkAccount(type);
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(authRepositoryProvider).linkAccount(type);
+      // 認証状態の更新はStreamで自動的に反映される
+      return state.value;
+    });
   }
 }
 
@@ -90,7 +110,7 @@ class AuthStore extends _$AuthStore {
 /// 自動的にサインアウトを実行する。
 @riverpod
 Future<void> authSignOutWhenFirstRun(Ref ref) async {
-  final service = ref.watch(sharedPreferencesServiceProvider);
+  final service = ref.read(sharedPreferencesServiceProvider);
 
   if (service.isFirstRun) {
     // Repository経由でサインアウト

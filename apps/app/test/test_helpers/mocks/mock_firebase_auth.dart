@@ -6,13 +6,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'mock_firebase_app.dart';
 
 /// FirebaseAuth用のモック実装
-/// 
+///
 /// テストで使用するためのシンプルなFirebaseAuthのモック実装。
 /// 基本的な認証機能のみを実装している。
 class MockFirebaseAuth implements FirebaseAuth {
   User? _currentUser;
-  final StreamController<User?> _authStateController = StreamController<User?>.broadcast();
-  final StreamController<User?> _userChangesController = StreamController<User?>.broadcast();
+  final StreamController<User?> _authStateController =
+      StreamController<User?>.broadcast();
+  final StreamController<User?> _userChangesController =
+      StreamController<User?>.broadcast();
 
   MockFirebaseAuth({User? currentUser}) : _currentUser = currentUser {
     _authStateController.add(_currentUser);
@@ -71,11 +73,14 @@ class MockFirebaseAuth implements FirebaseAuth {
   Future<void> applyActionCode(String code) => throw UnimplementedError();
 
   @override
-  Future<ActionCodeInfo> checkActionCode(String code) => throw UnimplementedError();
+  Future<ActionCodeInfo> checkActionCode(String code) =>
+      throw UnimplementedError();
 
   @override
-  Future<void> confirmPasswordReset({required String code, required String newPassword}) => 
-      throw UnimplementedError();
+  Future<void> confirmPasswordReset({
+    required String code,
+    required String newPassword,
+  }) => throw UnimplementedError();
 
   @override
   Future<UserCredential> createUserWithEmailAndPassword({
@@ -84,7 +89,8 @@ class MockFirebaseAuth implements FirebaseAuth {
   }) => throw UnimplementedError();
 
   @override
-  Future<List<String>> fetchSignInMethodsForEmail(String email) => throw UnimplementedError();
+  Future<List<String>> fetchSignInMethodsForEmail(String email) =>
+      throw UnimplementedError();
 
   @override
   Future<UserCredential> getRedirectResult() => throw UnimplementedError();
@@ -111,10 +117,12 @@ class MockFirebaseAuth implements FirebaseAuth {
   }) => throw UnimplementedError();
 
   @override
-  Future<void> setLanguageCode(String? languageCode) => throw UnimplementedError();
+  Future<void> setLanguageCode(String? languageCode) =>
+      throw UnimplementedError();
 
   @override
-  Future<void> setPersistence(Persistence persistence) => throw UnimplementedError();
+  Future<void> setPersistence(Persistence persistence) =>
+      throw UnimplementedError();
 
   @override
   Future<void> setSettings({
@@ -128,11 +136,12 @@ class MockFirebaseAuth implements FirebaseAuth {
   }
 
   @override
-  Future<UserCredential> signInWithCredential(AuthCredential credential) => 
+  Future<UserCredential> signInWithCredential(AuthCredential credential) =>
       throw UnimplementedError();
 
   @override
-  Future<UserCredential> signInWithCustomToken(String token) => throw UnimplementedError();
+  Future<UserCredential> signInWithCustomToken(String token) =>
+      throw UnimplementedError();
 
   @override
   Future<UserCredential> signInWithEmailAndPassword({
@@ -153,20 +162,27 @@ class MockFirebaseAuth implements FirebaseAuth {
   ]) => throw UnimplementedError();
 
   @override
-  Future<UserCredential> signInWithPopup(AuthProvider provider) => throw UnimplementedError();
-
-  @override
-  Future<UserCredential> signInWithProvider(AuthProvider provider) => throw UnimplementedError();
-
-  @override
-  Future<UserCredential> signInWithRedirect(AuthProvider provider) => throw UnimplementedError();
-
-  @override
-  Future<void> useAuthEmulator(String host, int port, {bool automaticHostMapping = true}) => 
+  Future<UserCredential> signInWithPopup(AuthProvider provider) =>
       throw UnimplementedError();
 
   @override
-  Future<String> verifyPasswordResetCode(String code) => throw UnimplementedError();
+  Future<UserCredential> signInWithProvider(AuthProvider provider) =>
+      throw UnimplementedError();
+
+  @override
+  Future<UserCredential> signInWithRedirect(AuthProvider provider) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> useAuthEmulator(
+    String host,
+    int port, {
+    bool automaticHostMapping = true,
+  }) => throw UnimplementedError();
+
+  @override
+  Future<String> verifyPasswordResetCode(String code) =>
+      throw UnimplementedError();
 
   @override
   Future<void> verifyPhoneNumber({
@@ -192,7 +208,7 @@ class MockFirebaseAuth implements FirebaseAuth {
   Map get pluginConstants => {};
 
   @override
-  Future<void> revokeTokenWithAuthorizationCode(String authorizationCode) => 
+  Future<void> revokeTokenWithAuthorizationCode(String authorizationCode) =>
       throw UnimplementedError();
 
   @override
@@ -246,14 +262,15 @@ class MockUser implements User {
   Future<void> delete() => throw UnimplementedError();
 
   @override
-  Future<String> getIdToken([bool forceRefresh = false]) => throw UnimplementedError();
-
-  @override
-  Future<IdTokenResult> getIdTokenResult([bool forceRefresh = false]) => 
+  Future<String> getIdToken([bool forceRefresh = false]) =>
       throw UnimplementedError();
 
   @override
-  Future<UserCredential> linkWithCredential(AuthCredential credential) => 
+  Future<IdTokenResult> getIdTokenResult([bool forceRefresh = false]) =>
+      throw UnimplementedError();
+
+  @override
+  Future<UserCredential> linkWithCredential(AuthCredential credential) =>
       throw UnimplementedError();
 
   @override
@@ -263,45 +280,51 @@ class MockUser implements User {
   ]) => throw UnimplementedError();
 
   @override
-  Future<UserCredential> linkWithPopup(AuthProvider provider) => throw UnimplementedError();
+  Future<UserCredential> linkWithPopup(AuthProvider provider) =>
+      throw UnimplementedError();
 
   @override
-  Future<UserCredential> linkWithProvider(AuthProvider provider) => throw UnimplementedError();
+  Future<UserCredential> linkWithProvider(AuthProvider provider) =>
+      throw UnimplementedError();
 
   @override
-  Future<UserCredential> linkWithRedirect(AuthProvider provider) => throw UnimplementedError();
+  Future<UserCredential> linkWithRedirect(AuthProvider provider) =>
+      throw UnimplementedError();
 
   @override
   MultiFactor get multiFactor => throw UnimplementedError();
 
   @override
-  Future<UserCredential> reauthenticateWithCredential(AuthCredential credential) => 
+  Future<UserCredential> reauthenticateWithCredential(
+    AuthCredential credential,
+  ) => throw UnimplementedError();
+
+  @override
+  Future<UserCredential> reauthenticateWithPopup(AuthProvider provider) =>
       throw UnimplementedError();
 
   @override
-  Future<UserCredential> reauthenticateWithPopup(AuthProvider provider) => 
+  Future<UserCredential> reauthenticateWithProvider(AuthProvider provider) =>
       throw UnimplementedError();
 
   @override
-  Future<UserCredential> reauthenticateWithProvider(AuthProvider provider) => 
-      throw UnimplementedError();
-
-  @override
-  Future<UserCredential> reauthenticateWithRedirect(AuthProvider provider) => 
+  Future<UserCredential> reauthenticateWithRedirect(AuthProvider provider) =>
       throw UnimplementedError();
 
   @override
   Future<void> reload() => throw UnimplementedError();
 
   @override
-  Future<void> sendEmailVerification([ActionCodeSettings? actionCodeSettings]) => 
-      throw UnimplementedError();
+  Future<void> sendEmailVerification([
+    ActionCodeSettings? actionCodeSettings,
+  ]) => throw UnimplementedError();
 
   @override
   Future<User> unlink(String providerId) => throw UnimplementedError();
 
   @override
-  Future<void> updateDisplayName(String? displayName) => throw UnimplementedError();
+  Future<void> updateDisplayName(String? displayName) =>
+      throw UnimplementedError();
 
   @override
   Future<void> updateEmail(String newEmail) => throw UnimplementedError();
@@ -310,14 +333,14 @@ class MockUser implements User {
   Future<void> updatePassword(String newPassword) => throw UnimplementedError();
 
   @override
-  Future<void> updatePhoneNumber(PhoneAuthCredential phoneCredential) => 
+  Future<void> updatePhoneNumber(PhoneAuthCredential phoneCredential) =>
       throw UnimplementedError();
 
   @override
   Future<void> updatePhotoURL(String? photoURL) => throw UnimplementedError();
 
   @override
-  Future<void> updateProfile({String? displayName, String? photoURL}) => 
+  Future<void> updateProfile({String? displayName, String? photoURL}) =>
       throw UnimplementedError();
 
   @override
@@ -330,7 +353,8 @@ class MockUser implements User {
 /// UserMetadata用のモック実装
 class MockUserMetadata implements UserMetadata {
   @override
-  DateTime? get creationTime => DateTime.now().subtract(const Duration(days: 30));
+  DateTime? get creationTime =>
+      DateTime.now().subtract(const Duration(days: 30));
 
   @override
   DateTime? get lastSignInTime => DateTime.now();

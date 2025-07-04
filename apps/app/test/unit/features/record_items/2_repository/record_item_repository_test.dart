@@ -201,6 +201,5 @@ void main() {
         expect(nextOrder, equals(9)); // 最大値8 + 1
       });
     });
-
   });
 }

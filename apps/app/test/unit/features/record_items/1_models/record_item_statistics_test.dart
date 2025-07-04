@@ -58,7 +58,10 @@ void main() {
         expect(stats.totalCount, 100);
         expect(stats.currentStreak, 5);
         expect(stats.longestStreak, 20);
-        expect(stats.firstRecordDate, DateTime.parse('2023-12-01T00:00:00.000'));
+        expect(
+          stats.firstRecordDate,
+          DateTime.parse('2023-12-01T00:00:00.000'),
+        );
         expect(stats.lastRecordDate, DateTime.parse('2024-01-15T00:00:00.000'));
         expect(stats.thisMonthCount, 15);
         expect(stats.thisWeekCount, 7);

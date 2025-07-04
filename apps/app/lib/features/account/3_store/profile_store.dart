@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../common/exception/app_exception_helpers.dart';
 import '../../../common/providers/firebase_providers.dart';
 import '../1_models/profile.dart';
 import '../2_repository/profile_repository.dart';
@@ -27,12 +28,17 @@ class ProfileStore extends _$ProfileStore {
 
     // プロフィールを取得（アカウント作成時に自動作成されているはず）
     final profileRepo = ref.read(profileRepositoryProvider);
-    final profile = await profileRepo.getProfileById(account.uid);
 
-    // リアルタイム監視を設定
-    _setupRealtimeListener(account.uid);
+    try {
+      final profile = await profileRepo.getProfileById(account.uid);
 
-    return profile;
+      // リアルタイム監視を設定
+      _setupRealtimeListener(account.uid);
+
+      return profile;
+    } catch (error, stackTrace) {
+      throw AsyncValue.error(error, stackTrace).error!;
+    }
   }
 
   /// リアルタイム監視を設定
@@ -49,8 +55,8 @@ class ProfileStore extends _$ProfileStore {
               state = AsyncValue.data(profile);
             }
           },
-          onError: (error) {
-            state = AsyncValue.error(error, StackTrace.current);
+          onError: (error, stackTrace) {
+            state = AsyncValue.error(error, stackTrace ?? StackTrace.current);
           },
         );
   }
@@ -64,17 +70,23 @@ class ProfileStore extends _$ProfileStore {
   Future<void> updateProfile({String? displayName, String? avatarUrl}) async {
     final currentProfile = state.value;
     if (currentProfile == null) {
-      throw Exception('プロフィールが見つかりません');
+      throw AppExceptions.notFound('プロフィール');
     }
 
-    // 更新対象のフィールドのみ変更
-    final updatedProfile = currentProfile.copyWith(
-      displayName: displayName ?? currentProfile.displayName,
-      avatarUrl: avatarUrl ?? currentProfile.avatarUrl,
-    );
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      // 更新対象のフィールドのみ変更
+      final updatedProfile = currentProfile.copyWith(
+        displayName: displayName ?? currentProfile.displayName,
+        avatarUrl: avatarUrl ?? currentProfile.avatarUrl,
+      );
 
-    final profileRepo = ref.read(profileRepositoryProvider);
-    await profileRepo.updateProfile(updatedProfile);
+      final profileRepo = ref.read(profileRepositoryProvider);
+      await profileRepo.updateProfile(updatedProfile);
+
+      // 更新後のプロフィールを返す
+      return updatedProfile;
+    });
   }
 }
 
@@ -94,7 +106,13 @@ Future<AccountProfile?> accountProfile(Ref ref, String uid) async {
   if (uid.isEmpty) return null;
 
   final profileRepo = ref.read(profileRepositoryProvider);
-  return profileRepo.getProfileById(uid);
+
+  try {
+    return await profileRepo.getProfileById(uid);
+  } catch (error) {
+    // エラーを再スローしてAsyncValue.guardでハンドリング
+    rethrow;
+  }
 }
 
 /// 表示名でユーザーを検索するProvider
@@ -107,5 +125,11 @@ Future<List<AccountProfile>> searchAccountProfiles(
   int limit = 20,
 }) async {
   final profileRepo = ref.read(profileRepositoryProvider);
-  return profileRepo.searchByDisplayName(query, limit: limit);
+
+  try {
+    return await profileRepo.searchByDisplayName(query, limit: limit);
+  } catch (error) {
+    // エラーを再スローしてAsyncValue.guardでハンドリング
+    rethrow;
+  }
 }

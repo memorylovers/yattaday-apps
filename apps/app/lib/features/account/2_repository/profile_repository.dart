@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../common/exception/app_error_code.dart';
-import '../../../common/exception/app_exception.dart';
+import '../../../common/exception/app_exception_helpers.dart';
 import '../../../common/exception/handling_error.dart';
 import '../1_models/profile.dart';
 
@@ -59,10 +58,7 @@ class FirebaseProfileRepository implements ProfileRepository {
       // プロフィールの存在チェック
       final existing = await _profilesRef.doc(profile.uid).get();
       if (!existing.exists) {
-        throw const AppException(
-          code: AppErrorCode.notFound,
-          message: 'プロフィールが見つかりません',
-        );
+        throw AppExceptions.notFound('プロフィール');
       }
 
       // 更新日時を設定
@@ -147,10 +143,7 @@ class FirebaseProfileRepository implements ProfileRepository {
       // 2. URLを取得
       // 3. プロフィールのavatarUrlを更新
 
-      throw const AppException(
-        code: AppErrorCode.unknown,
-        message: 'アバターアップロード機能は未実装です',
-      );
+      throw AppExceptions.unknown('アバターアップロード機能は未実装です');
     } catch (error) {
       handleError(error);
       rethrow;

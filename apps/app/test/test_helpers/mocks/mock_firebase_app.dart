@@ -4,14 +4,12 @@ import 'package:firebase_core/firebase_core.dart';
 class MockFirebaseApp implements FirebaseApp {
   @override
   final String name;
-  
+
   @override
   final FirebaseOptions options;
 
-  MockFirebaseApp({
-    this.name = '[DEFAULT]',
-    FirebaseOptions? options,
-  }) : options = options ?? _defaultOptions;
+  MockFirebaseApp({this.name = '[DEFAULT]', FirebaseOptions? options})
+    : options = options ?? _defaultOptions;
 
   static final _defaultOptions = FirebaseOptions(
     apiKey: 'test-api-key',

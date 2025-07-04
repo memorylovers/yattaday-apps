@@ -37,8 +37,7 @@ final recordItemFormProvider =
 class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
   final RecordItemRepository _repository;
 
-  RecordItemFormNotifier(this._repository)
-    : super(const RecordItemFormState());
+  RecordItemFormNotifier(this._repository) : super(const RecordItemFormState());
 
   /// タイトルを更新
   void updateTitle(String title) {

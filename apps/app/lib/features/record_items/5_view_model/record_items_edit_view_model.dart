@@ -70,14 +70,32 @@ class RecordItemsEditViewModel extends _$RecordItemsEditViewModel {
     ref.read(recordItemFormProvider.notifier).reset();
   }
 
-  Future<bool> update() async {
+  Future<void> update({
+    void Function()? onSuccess,
+    void Function(String error)? onError,
+  }) async {
     final userId = state.userId;
     if (userId == null) {
-      return false;
+      onError?.call('ユーザーが認証されていません');
+      return;
     }
 
-    return await ref
-        .read(recordItemFormProvider.notifier)
-        .update(userId: userId, recordItemId: recordItem.id);
+    try {
+      final success = await ref
+          .read(recordItemFormProvider.notifier)
+          .update(userId: userId, recordItemId: recordItem.id);
+
+      if (success) {
+        onSuccess?.call();
+      } else {
+        // フォームのバリデーションエラーはformStateにerrorMessageとして保持されている
+        final errorMessage = state.formState.errorMessage;
+        if (errorMessage != null) {
+          onError?.call(errorMessage);
+        }
+      }
+    } catch (e) {
+      onError?.call(e.toString());
+    }
   }
 }

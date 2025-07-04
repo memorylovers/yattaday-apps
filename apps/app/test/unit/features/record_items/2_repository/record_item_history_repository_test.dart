@@ -42,14 +42,15 @@ void main() {
         await repository.create(testHistory);
 
         // 作成されたことを確認
-        final doc = await fakeFirestore
-            .collection('users')
-            .doc('test-user')
-            .collection('recordItems')
-            .doc('record-item-1')
-            .collection('histories')
-            .doc('2024-01-01')
-            .get();
+        final doc =
+            await fakeFirestore
+                .collection('users')
+                .doc('test-user')
+                .collection('recordItems')
+                .doc('record-item-1')
+                .collection('histories')
+                .doc('2024-01-01')
+                .get();
 
         expect(doc.exists, isTrue);
         final data = RecordItemHistory.fromJson(doc.data()!);
@@ -87,14 +88,15 @@ void main() {
         await repository.update(updatedHistory);
 
         // 更新されたことを確認
-        final doc = await fakeFirestore
-            .collection('users')
-            .doc('test-user')
-            .collection('recordItems')
-            .doc('record-item-1')
-            .collection('histories')
-            .doc('2024-01-01')
-            .get();
+        final doc =
+            await fakeFirestore
+                .collection('users')
+                .doc('test-user')
+                .collection('recordItems')
+                .doc('record-item-1')
+                .collection('histories')
+                .doc('2024-01-01')
+                .get();
 
         final data = RecordItemHistory.fromJson(doc.data()!);
         expect(data.note, '更新後のメモ');
@@ -126,14 +128,15 @@ void main() {
         );
 
         // 削除されたことを確認
-        final doc = await fakeFirestore
-            .collection('users')
-            .doc('test-user')
-            .collection('recordItems')
-            .doc('record-item-1')
-            .collection('histories')
-            .doc('2024-01-01')
-            .get();
+        final doc =
+            await fakeFirestore
+                .collection('users')
+                .doc('test-user')
+                .collection('recordItems')
+                .doc('record-item-1')
+                .collection('histories')
+                .doc('2024-01-01')
+                .get();
 
         expect(doc.exists, isFalse);
       });
@@ -230,7 +233,10 @@ void main() {
         );
 
         expect(results.length, 2);
-        expect(results.map((h) => h.date).toList(), ['2024-01-10', '2024-01-05']);
+        expect(results.map((h) => h.date).toList(), [
+          '2024-01-10',
+          '2024-01-05',
+        ]);
       });
 
       test('日付の降順で返される', () async {
@@ -365,11 +371,7 @@ void main() {
         );
 
         expect(dates.length, 3);
-        expect(dates.toSet(), {
-          '2024-01-01',
-          '2024-01-05',
-          '2024-01-10',
-        });
+        expect(dates.toSet(), {'2024-01-01', '2024-01-05', '2024-01-10'});
       });
 
       test('記録がない場合は空のリストを返す', () async {
@@ -408,9 +410,12 @@ void main() {
         await repository.create(testHistory);
 
         // 正しいパスに保存されていることを確認
-        final doc = await fakeFirestore
-            .doc('users/test-user/recordItems/record-item-1/histories/2024-01-01')
-            .get();
+        final doc =
+            await fakeFirestore
+                .doc(
+                  'users/test-user/recordItems/record-item-1/histories/2024-01-01',
+                )
+                .get();
 
         expect(doc.exists, isTrue);
       });
@@ -420,9 +425,7 @@ void main() {
         await repository.create(testHistory);
 
         // ユーザー2の記録
-        final user2History = testHistory.copyWith(
-          userId: 'test-user-2',
-        );
+        final user2History = testHistory.copyWith(userId: 'test-user-2');
         await repository.create(user2History);
 
         // それぞれ独立して取得できることを確認

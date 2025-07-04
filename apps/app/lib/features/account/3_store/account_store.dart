@@ -42,12 +42,17 @@ class AccountStore extends _$AccountStore {
 
     // アカウントが存在しない場合は自動作成
     final accountRepo = ref.read(accountRepositoryProvider);
-    final account = await accountRepo.createAccountIfNotExists(authState.uid);
 
-    // リアルタイム監視を設定
-    _setupRealtimeListener(authState.uid);
+    try {
+      final account = await accountRepo.createAccountIfNotExists(authState.uid);
 
-    return account;
+      // リアルタイム監視を設定
+      _setupRealtimeListener(authState.uid);
+
+      return account;
+    } catch (error, stackTrace) {
+      throw AsyncValue.error(error, stackTrace).error!;
+    }
   }
 
   /// リアルタイム監視を設定
@@ -67,8 +72,8 @@ class AccountStore extends _$AccountStore {
               state = AsyncValue.data(account);
             }
           },
-          onError: (error) {
-            state = AsyncValue.error(error, StackTrace.current);
+          onError: (error, stackTrace) {
+            state = AsyncValue.error(error, stackTrace ?? StackTrace.current);
           },
         );
   }

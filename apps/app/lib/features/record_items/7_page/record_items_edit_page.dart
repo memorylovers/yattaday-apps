@@ -56,10 +56,20 @@ class _RecordItemsEditPageState extends ConsumerState<RecordItemsEditPage> {
         onIconChanged: viewModel.updateIcon,
         onUnitChanged: viewModel.updateUnit,
         onErrorCleared: viewModel.clearError,
-        onSubmit: viewModel.update,
-        onSuccess: () {
-          Navigator.of(context).pop();
+        onSubmit: () async {
+          bool success = false;
+          await viewModel.update(
+            onSuccess: () {
+              success = true;
+              Navigator.of(context).pop();
+            },
+            onError: (error) {
+              // エラーはformStateにerrorMessageとして表示される
+            },
+          );
+          return success;
         },
+        onSuccess: null,
         onCancel: () {
           Navigator.of(context).pop();
         },

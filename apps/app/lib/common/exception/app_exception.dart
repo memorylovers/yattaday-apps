@@ -1,22 +1,37 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'app_error_code.dart';
+import 'exception_category.dart';
 
-class AppException implements Exception {
-  final AppErrorCode code;
-  final String? message;
-  final Object? cause;
-  final StackTrace? stackTrace;
+part 'app_exception.freezed.dart';
 
-  const AppException({
-    this.code = AppErrorCode.unknown,
-    this.message,
-    this.cause,
-    this.stackTrace,
-  });
+/// アプリケーション共通の例外クラス
+///
+/// エラーハンドリングガイドラインに基づいて、
+/// すべての例外をこのクラスに変換して扱う。
+@freezed
+class AppException with _$AppException implements Exception {
+  const factory AppException({
+    /// エラーカテゴリ
+    required ExceptionCategory category,
 
-  // String message(L10n l10n) => code.toMessage(l10n);
+    /// エラーコード
+    required AppErrorCode code,
+
+    /// エラーメッセージ
+    required String message,
+
+    /// 元の例外オブジェクト
+    Object? originalError,
+
+    /// スタックトレース
+    StackTrace? stackTrace,
+  }) = _AppException;
+
+  const AppException._();
 
   @override
   String toString() {
-    return "Error: $code";
+    return 'AppException(category: $category, code: $code, message: $message)';
   }
 }

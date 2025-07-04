@@ -39,13 +39,25 @@ class LoginPage extends HookConsumerWidget {
                 // ログインボタン
                 GoogleLoginButton(
                   isLoading: loginState.isLoading,
-                  onPressed: loginViewModel.signInGoogle,
+                  onPressed: () {
+                    loginViewModel.signInGoogle(
+                      onError: (error) {
+                        // エラーはuseErrorMessageで表示される
+                      },
+                    );
+                  },
                 ),
                 const Gap(12),
 
                 AppleLoginButton(
                   isLoading: loginState.isLoading,
-                  onPressed: loginViewModel.signInApple,
+                  onPressed: () {
+                    loginViewModel.signInApple(
+                      onError: (error) {
+                        // エラーはuseErrorMessageで表示される
+                      },
+                    );
+                  },
                 ),
 
                 // 区切り線
@@ -56,7 +68,13 @@ class LoginPage extends HookConsumerWidget {
                 // 匿名ログインボタン
                 AnonymousLoginButton(
                   isLoading: loginState.isLoading,
-                  onPressed: loginViewModel.signInAnonymous,
+                  onPressed: () {
+                    loginViewModel.signInAnonymous(
+                      onError: (error) {
+                        // エラーはuseErrorMessageで表示される
+                      },
+                    );
+                  },
                 ),
 
                 // 利用規約

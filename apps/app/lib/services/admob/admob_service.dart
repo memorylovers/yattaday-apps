@@ -1,8 +1,7 @@
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../common/exception/app_error_code.dart';
-import '../../common/exception/app_exception.dart';
+import '../../common/exception/app_exception_helpers.dart';
 import '../../common/logger/logger.dart';
 
 final adMobServiceProvider = Provider.autoDispose<AdMobService>((ref) {
@@ -26,7 +25,7 @@ class AdMobService {
       logger.info('AdMob initialized successfully');
     } catch (error) {
       logger.error('Failed to initialize AdMob', error);
-      throw const AppException(code: AppErrorCode.adLoadFailed);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 
@@ -161,7 +160,7 @@ class AdMobService {
       );
     } catch (error) {
       logger.error('Failed to load rewarded ad', error);
-      throw const AppException(code: AppErrorCode.adLoadFailed);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 

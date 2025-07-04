@@ -91,7 +91,9 @@ Future<void> startup(Ref ref) async {
     ref.watch(deviceInfoProvider.future),
 
     // Firebase Auth
-    ref.watch(firebaseAuthProvider).setSettings(userAccessGroup: kKeychainGroup),
+    ref
+        .watch(firebaseAuthProvider)
+        .setSettings(userAccessGroup: kKeychainGroup),
 
     // ステータスバー/ナビゲーションバーを非表示
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky),

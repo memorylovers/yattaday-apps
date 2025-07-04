@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SettingsPageState {
   bool get isLoading => throw _privateConstructorUsedError;
+  String? get errorMessage => throw _privateConstructorUsedError;
 
   /// Create a copy of SettingsPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -33,7 +34,7 @@ abstract class $SettingsPageStateCopyWith<$Res> {
     $Res Function(SettingsPageState) then,
   ) = _$SettingsPageStateCopyWithImpl<$Res, SettingsPageState>;
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String? errorMessage});
 }
 
 /// @nodoc
@@ -50,7 +51,7 @@ class _$SettingsPageStateCopyWithImpl<$Res, $Val extends SettingsPageState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? isLoading = null}) {
+  $Res call({Object? isLoading = null, Object? errorMessage = freezed}) {
     return _then(
       _value.copyWith(
             isLoading:
@@ -58,6 +59,11 @@ class _$SettingsPageStateCopyWithImpl<$Res, $Val extends SettingsPageState>
                     ? _value.isLoading
                     : isLoading // ignore: cast_nullable_to_non_nullable
                         as bool,
+            errorMessage:
+                freezed == errorMessage
+                    ? _value.errorMessage
+                    : errorMessage // ignore: cast_nullable_to_non_nullable
+                        as String?,
           )
           as $Val,
     );
@@ -73,7 +79,7 @@ abstract class _$$SettingsPageStateImplCopyWith<$Res>
   ) = __$$SettingsPageStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String? errorMessage});
 }
 
 /// @nodoc
@@ -89,7 +95,7 @@ class __$$SettingsPageStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? isLoading = null}) {
+  $Res call({Object? isLoading = null, Object? errorMessage = freezed}) {
     return _then(
       _$SettingsPageStateImpl(
         isLoading:
@@ -97,6 +103,11 @@ class __$$SettingsPageStateImplCopyWithImpl<$Res>
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
                     as bool,
+        errorMessage:
+            freezed == errorMessage
+                ? _value.errorMessage
+                : errorMessage // ignore: cast_nullable_to_non_nullable
+                    as String?,
       ),
     );
   }
@@ -105,15 +116,17 @@ class __$$SettingsPageStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SettingsPageStateImpl implements _SettingsPageState {
-  const _$SettingsPageStateImpl({this.isLoading = false});
+  const _$SettingsPageStateImpl({this.isLoading = false, this.errorMessage});
 
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  final String? errorMessage;
 
   @override
   String toString() {
-    return 'SettingsPageState(isLoading: $isLoading)';
+    return 'SettingsPageState(isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
@@ -122,11 +135,13 @@ class _$SettingsPageStateImpl implements _SettingsPageState {
         (other.runtimeType == runtimeType &&
             other is _$SettingsPageStateImpl &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading);
+  int get hashCode => Object.hash(runtimeType, isLoading, errorMessage);
 
   /// Create a copy of SettingsPageState
   /// with the given fields replaced by the non-null parameter values.
@@ -141,11 +156,15 @@ class _$SettingsPageStateImpl implements _SettingsPageState {
 }
 
 abstract class _SettingsPageState implements SettingsPageState {
-  const factory _SettingsPageState({final bool isLoading}) =
-      _$SettingsPageStateImpl;
+  const factory _SettingsPageState({
+    final bool isLoading,
+    final String? errorMessage,
+  }) = _$SettingsPageStateImpl;
 
   @override
   bool get isLoading;
+  @override
+  String? get errorMessage;
 
   /// Create a copy of SettingsPageState
   /// with the given fields replaced by the non-null parameter values.

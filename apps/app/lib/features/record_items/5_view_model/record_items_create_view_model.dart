@@ -50,12 +50,31 @@ class RecordItemsCreateViewModel extends _$RecordItemsCreateViewModel {
     ref.read(recordItemFormProvider.notifier).reset();
   }
 
-  Future<bool> submit() async {
+  Future<void> submit({
+    void Function()? onSuccess,
+    void Function(String error)? onError,
+  }) async {
     final userId = state.userId;
     if (userId == null) {
-      return false;
+      onError?.call('ユーザーが認証されていません');
+      return;
     }
 
-    return await ref.read(recordItemFormProvider.notifier).submit(userId);
+    try {
+      final success = await ref
+          .read(recordItemFormProvider.notifier)
+          .submit(userId);
+      if (success) {
+        onSuccess?.call();
+      } else {
+        // フォームのバリデーションエラーはformStateにerrorMessageとして保持されている
+        final errorMessage = state.formState.errorMessage;
+        if (errorMessage != null) {
+          onError?.call(errorMessage);
+        }
+      }
+    } catch (e) {
+      onError?.call(e.toString());
+    }
   }
 }

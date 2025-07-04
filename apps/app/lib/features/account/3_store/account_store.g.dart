@@ -26,7 +26,7 @@ final myAccountProvider = AutoDisposeFutureProvider<Account?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef MyAccountRef = AutoDisposeFutureProviderRef<Account?>;
-String _$accountStoreHash() => r'ab54479d80db8f496c8446e00653838d159491c1';
+String _$accountStoreHash() => r'744cd3302e3dc8f26ce64429bb8964a1fe889884';
 
 /// アカウント情報を管理するStore
 ///

@@ -28,10 +28,20 @@ class RecordItemsCreatePage extends ConsumerWidget {
         onIconChanged: viewModel.updateIcon,
         onUnitChanged: viewModel.updateUnit,
         onErrorCleared: viewModel.clearError,
-        onSubmit: viewModel.submit,
-        onSuccess: () {
-          Navigator.of(context).pop();
+        onSubmit: () async {
+          bool success = false;
+          await viewModel.submit(
+            onSuccess: () {
+              success = true;
+              Navigator.of(context).pop();
+            },
+            onError: (error) {
+              // エラーはformStateにerrorMessageとして表示される
+            },
+          );
+          return success;
         },
+        onSuccess: null,
         onCancel: () {
           Navigator.of(context).pop();
         },

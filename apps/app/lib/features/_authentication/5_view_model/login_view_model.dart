@@ -22,26 +22,46 @@ class LoginViewModel extends _$LoginViewModel {
     return const LoginPageState();
   }
 
-  Future<void> signIn(AuthType authType) async {
+  Future<void> signIn(
+    AuthType authType, {
+    void Function()? onSuccess,
+    void Function(String error)? onError,
+  }) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
       await ref.read(authStoreProvider.notifier).signIn(authType);
       state = state.copyWith(isLoading: false);
+
+      // 成功時の副作用を実行
+      onSuccess?.call();
     } catch (e) {
-      state = state.copyWith(isLoading: false, errorMessage: e.toString());
+      final errorMessage = e.toString();
+      state = state.copyWith(isLoading: false, errorMessage: errorMessage);
+
+      // エラー時の副作用を実行
+      onError?.call(errorMessage);
     }
   }
 
-  Future<void> signInGoogle() async {
-    await signIn(AuthType.google);
+  Future<void> signInGoogle({
+    void Function()? onSuccess,
+    void Function(String error)? onError,
+  }) async {
+    await signIn(AuthType.google, onSuccess: onSuccess, onError: onError);
   }
 
-  Future<void> signInApple() async {
-    await signIn(AuthType.apple);
+  Future<void> signInApple({
+    void Function()? onSuccess,
+    void Function(String error)? onError,
+  }) async {
+    await signIn(AuthType.apple, onSuccess: onSuccess, onError: onError);
   }
 
-  Future<void> signInAnonymous() async {
-    await signIn(AuthType.anonymous);
+  Future<void> signInAnonymous({
+    void Function()? onSuccess,
+    void Function(String error)? onError,
+  }) async {
+    await signIn(AuthType.anonymous, onSuccess: onSuccess, onError: onError);
   }
 }

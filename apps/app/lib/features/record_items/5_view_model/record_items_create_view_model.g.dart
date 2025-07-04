@@ -7,7 +7,7 @@ part of 'record_items_create_view_model.dart';
 // **************************************************************************
 
 String _$recordItemsCreateViewModelHash() =>
-    r'ef2733502e5539fe8868d0f9c97fdbbceecd399a';
+    r'c68e3bcb4b3d67b8c7c5bf64050dd5fa02a9613f';
 
 /// See also [RecordItemsCreateViewModel].
 @ProviderFor(RecordItemsCreateViewModel)

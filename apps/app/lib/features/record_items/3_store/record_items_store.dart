@@ -13,10 +13,11 @@ final recordItemRepositoryProvider = Provider<RecordItemRepository>((ref) {
 });
 
 /// RecordItemHistoryRepositoryのプロバイダ
-final recordItemHistoryRepositoryProvider = Provider<RecordItemHistoryRepository>((ref) {
-  final firestore = ref.watch(firebaseFirestoreProvider);
-  return FirebaseRecordItemHistoryRepository(firestore);
-});
+final recordItemHistoryRepositoryProvider =
+    Provider<RecordItemHistoryRepository>((ref) {
+      final firestore = ref.watch(firebaseFirestoreProvider);
+      return FirebaseRecordItemHistoryRepository(firestore);
+    });
 
 /// 指定したユーザーの記録項目一覧を取得するプロバイダ
 final recordItemsProvider = FutureProvider.family<List<RecordItem>, String>((

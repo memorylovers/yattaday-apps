@@ -19,7 +19,7 @@ Map<String, dynamic> _$$AuthStateImplToJson(_$AuthStateImpl instance) =>
 // **************************************************************************
 
 String _$authSignOutWhenFirstRunHash() =>
-    r'b2e4810655432a8e4847d97cadc3dc7247c0ae27';
+    r'b8f16fcc52ccf6777342db8a715cf5cd9a3979c6';
 
 /// アプリ初回起動時のサインアウト処理
 ///
@@ -43,7 +43,7 @@ final authSignOutWhenFirstRunProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AuthSignOutWhenFirstRunRef = AutoDisposeFutureProviderRef<void>;
-String _$authStoreHash() => r'b7ed9adb330a27fc94f63ee3a68758bc73122607';
+String _$authStoreHash() => r'1dbb55f924520efb4d88045153c5a1c80efa3719';
 
 /// 認証状態管理Store
 ///

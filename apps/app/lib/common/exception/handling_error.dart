@@ -4,13 +4,14 @@ import 'package:purchases_flutter/errors.dart';
 import 'package:purchases_flutter/models/purchases_error.dart';
 
 import '../logger/logger.dart';
-import 'app_error_code.dart';
 import 'app_exception.dart';
+import 'app_exception_helpers.dart';
 
 /// 例外のハンドリング
 ///
 /// - 例外をAppExceptionにwrap
-void handleError(Object error) {
+/// - ExceptionCategoryを判定して適切に分類
+void handleError(Object error, [StackTrace? stackTrace]) {
   logger.debug("** handleError=$error");
 
   // AppExceptionの場合は、rethrowする
@@ -18,44 +19,54 @@ void handleError(Object error) {
     throw error;
   } else if (error is FirebaseException) {
     // FirebaseExceptionは変換する
-    _convertFirebaseException(error);
+    _convertFirebaseException(error, stackTrace);
   } else if (error is PurchasesError) {
     // RevenueCatの例外は変換する
-    _convertPurchasesErrorCodeToException(error.code, error);
+    _convertPurchasesErrorCodeToException(error.code, error, stackTrace);
   } else if (error is PlatformException) {
     switch (error.code) {
       // ネットワークエラー
       case "network_error":
-        throw AppException(code: AppErrorCode.networkError, cause: error);
+        throw AppExceptions.networkError(null, error);
     }
     // RevenueCat
     final code = PurchasesErrorHelper.getErrorCode(error);
-    _convertPurchasesErrorCodeToException(code, error);
+    _convertPurchasesErrorCodeToException(code, error, stackTrace);
   } else {
-    throw AppException(code: AppErrorCode.unknown, cause: error);
+    throw AppExceptions.unknown(null, error);
   }
 }
 
 /// Firebase関連のエラーハンドリング
-_convertFirebaseException(FirebaseException error) {
+_convertFirebaseException(FirebaseException error, StackTrace? stackTrace) {
   logger.debug("** handleError@Firebase: ${error.code}, ${error.message}");
   switch (error.code) {
     case "credential-already-in-use":
-      throw AppException(code: AppErrorCode.authAlreadyLinked, cause: error);
+      throw AppExceptions.alreadyLinked(error.message);
     case "web-context-canceled": // AndroidでApple認証のキャンセル
     case "canceled": // iOSでApple認証のキャンセル
       return;
     case "network-request-failed":
     case "unavailable":
-      throw AppException(code: AppErrorCode.networkError, cause: error);
+      throw AppExceptions.networkError(error.message, error);
   }
 
-  throw AppException(code: AppErrorCode.unknown, cause: error);
+  throw AppExceptions.unknown(error.message, error);
 }
 
 /// 購入関連のエラーハンドリング
-_convertPurchasesErrorCodeToException(PurchasesErrorCode code, Object error) {
+_convertPurchasesErrorCodeToException(
+  PurchasesErrorCode code,
+  Object error,
+  StackTrace? stackTrace,
+) {
   logger.debug("** _convertPurchasesErrorCodeToException: $code / $error");
+
+  String? message;
+  if (error is PurchasesError) {
+    message = error.message;
+  }
+
   switch (code) {
     case PurchasesErrorCode.purchaseCancelledError:
       // 購入画面を開いて、キャンセルした時 / DO NOTHING
@@ -68,30 +79,30 @@ _convertPurchasesErrorCodeToException(PurchasesErrorCode code, Object error) {
     // ********************************************************
     case PurchasesErrorCode.networkError: // ネットワークエラー
     case PurchasesErrorCode.offlineConnectionError: // ネットワークエラー
-      throw AppException(code: AppErrorCode.networkError, cause: error);
+      throw AppExceptions.networkError(message, error);
     // ********************************************************
     // * その他のエラー
     // ********************************************************
     case PurchasesErrorCode.purchaseNotAllowedError: // 購入が許可されていないデバイス or ユーザ
     case PurchasesErrorCode.insufficientPermissionsError: // ユーザに購入する権利がない
       // 購入できないユーザです
-      throw AppException(code: AppErrorCode.unknown, cause: error);
+      throw AppExceptions.purchaseError('購入が許可されていません', error);
     case PurchasesErrorCode.productNotAvailableForPurchaseError:
       // 購入できない商品
-      throw AppException(code: AppErrorCode.unknown, cause: error);
+      throw AppExceptions.purchaseError('この商品は購入できません', error);
     case PurchasesErrorCode.productAlreadyPurchasedError:
       // 購入済みの商品
       return;
     case PurchasesErrorCode.receiptAlreadyInUseError:
     case PurchasesErrorCode.receiptInUseByOtherSubscriberError:
       // 購入履歴がすでに他のアカウントで使用済み
-      throw AppException(code: AppErrorCode.unknown, cause: error);
+      throw AppExceptions.purchaseError('購入履歴が他のアカウントで使用されています', error);
     case PurchasesErrorCode.ineligibleError:
       // ユーザに実行する権限がない
-      throw AppException(code: AppErrorCode.unknown, cause: error);
+      throw AppExceptions.purchaseError('実行する権限がありません', error);
     case PurchasesErrorCode.paymentPendingError:
       // 支払いが保留中
-      throw AppException(code: AppErrorCode.unknown, cause: error);
+      throw AppExceptions.purchaseError('支払いが保留中です', error);
 
     // ********************************************************
     // * 予期せぬエラー
@@ -125,7 +136,7 @@ _convertPurchasesErrorCodeToException(PurchasesErrorCode code, Object error) {
         .invalidPromotionalOfferError: // PromotionalOfferに関連付けられた情報が不正
   }
 
-  throw AppException(code: AppErrorCode.unknown, cause: error);
+  throw AppExceptions.unknown(message, error);
 }
 
 // // エラーメッセージの取得

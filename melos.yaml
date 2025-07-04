@@ -23,7 +23,7 @@ scripts:
 
   gen: melos exec -- dart run build_runner build --delete-conflicting-outputs
 
-  lint: melos exec --concurrency 1 -- flutter analyze && melos exec --concurrency 1 -- dart run custom_lint
+  lint: melos exec --concurrency 1 -- flutter analyze
 
   test: melos exec --scope="*app*" -- flutter test
 

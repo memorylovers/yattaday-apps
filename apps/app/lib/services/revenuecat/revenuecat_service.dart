@@ -1,8 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-import '../../common/exception/app_error_code.dart';
-import '../../common/exception/app_exception.dart';
+import '../../common/exception/app_exception_helpers.dart';
 import '../../common/logger/logger.dart';
 
 final revenueCatServiceProvider = Provider.autoDispose<RevenueCatService>(
@@ -39,7 +38,7 @@ class RevenueCatService {
       logger.info('RevenueCat initialized successfully');
     } catch (error) {
       logger.error('Failed to initialize RevenueCat', error);
-      throw AppException(code: AppErrorCode.purchaseError, cause: error);
+      throw AppExceptions.purchaseError(null, error);
     }
   }
 
@@ -71,7 +70,7 @@ class RevenueCatService {
       return result;
     } catch (error) {
       logger.error('Failed to set user ID', error);
-      throw AppException(code: AppErrorCode.purchaseError, cause: error);
+      throw AppExceptions.purchaseError(null, error);
     }
   }
 
@@ -82,7 +81,7 @@ class RevenueCatService {
       return await Purchases.getCustomerInfo();
     } catch (error) {
       logger.error('Failed to get customer info', error);
-      throw AppException(code: AppErrorCode.purchaseError, cause: error);
+      throw AppExceptions.purchaseError(null, error);
     }
   }
 
@@ -93,7 +92,7 @@ class RevenueCatService {
       return await Purchases.getOfferings();
     } catch (error) {
       logger.error('Failed to get offerings', error);
-      throw AppException(code: AppErrorCode.purchaseError, cause: error);
+      throw AppExceptions.purchaseError(null, error);
     }
   }
 
@@ -106,7 +105,7 @@ class RevenueCatService {
       return customerInfo;
     } catch (error) {
       logger.error('Failed to purchase package', error);
-      throw AppException(code: AppErrorCode.purchaseError, cause: error);
+      throw AppExceptions.purchaseError(null, error);
     }
   }
 
@@ -119,7 +118,7 @@ class RevenueCatService {
       return customerInfo;
     } catch (error) {
       logger.error('Failed to restore purchases', error);
-      throw AppException(code: AppErrorCode.purchaseError, cause: error);
+      throw AppExceptions.purchaseError(null, error);
     }
   }
 
@@ -133,7 +132,7 @@ class RevenueCatService {
       return customerInfo;
     } catch (error) {
       logger.error('Failed to log out', error);
-      throw AppException(code: AppErrorCode.purchaseError, cause: error);
+      throw AppExceptions.purchaseError(null, error);
     }
   }
 
@@ -171,7 +170,7 @@ class RevenueCatService {
 
   void _ensureConfigured() {
     if (!_isConfigured) {
-      throw const AppException(code: AppErrorCode.purchaseNotConfigured);
+      throw AppExceptions.purchaseNotConfigured();
     }
   }
 }

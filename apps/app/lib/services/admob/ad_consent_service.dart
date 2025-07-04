@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../common/exception/app_error_code.dart';
-import '../../common/exception/app_exception.dart';
+import '../../common/exception/app_exception_helpers.dart';
 import '../../common/logger/logger.dart';
 
 final adConsentServiceProvider = Provider.autoDispose<AdConsentService>(
@@ -44,15 +43,13 @@ class AdConsentService {
           logger.error(
             'Failed to update consent info: ${error.errorCode}: ${error.message}',
           );
-          completer.completeError(
-            AppException(code: AppErrorCode.adLoadFailed, cause: error),
-          );
+          completer.completeError(AppExceptions.adLoadFailed(error));
         },
       );
       await completer.future;
     } catch (error) {
       logger.error('Failed to update consent info', error);
-      throw AppException(code: AppErrorCode.adLoadFailed, cause: error);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 
@@ -64,7 +61,7 @@ class AdConsentService {
       return status == PrivacyOptionsRequirementStatus.required;
     } catch (error) {
       logger.error('Failed to get privacy options requirement status', error);
-      throw AppException(code: AppErrorCode.adLoadFailed, cause: error);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 
@@ -77,9 +74,7 @@ class AdConsentService {
           logger.error(
             'Error loading consent form: ${error.errorCode}: ${error.message}',
           );
-          completer.completeError(
-            AppException(code: AppErrorCode.adLoadFailed, cause: error),
-          );
+          completer.completeError(AppExceptions.adLoadFailed(error));
         } else {
           logger.debug('Consent form shown');
           completer.complete();
@@ -88,7 +83,7 @@ class AdConsentService {
       await completer.future;
     } catch (error) {
       logger.error('Error loading consent form', error);
-      throw AppException(code: AppErrorCode.adLoadFailed, cause: error);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 
@@ -101,9 +96,7 @@ class AdConsentService {
           logger.error(
             'Error showing privacy options: ${error.errorCode}: ${error.message}',
           );
-          completer.completeError(
-            AppException(code: AppErrorCode.adLoadFailed, cause: error),
-          );
+          completer.completeError(AppExceptions.adLoadFailed(error));
         } else {
           logger.debug('Privacy options form shown');
           completer.complete();
@@ -112,7 +105,7 @@ class AdConsentService {
       await completer.future;
     } catch (error) {
       logger.error('Error showing privacy options', error);
-      throw AppException(code: AppErrorCode.adLoadFailed, cause: error);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 
@@ -123,7 +116,7 @@ class AdConsentService {
       logger.info('Consent information reset');
     } catch (error) {
       logger.error('Failed to reset consent', error);
-      throw AppException(code: AppErrorCode.adLoadFailed, cause: error);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 
@@ -133,7 +126,7 @@ class AdConsentService {
       return await _consentInformation.canRequestAds();
     } catch (error) {
       logger.error('Failed to check if can request ads', error);
-      throw AppException(code: AppErrorCode.adLoadFailed, cause: error);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 
@@ -165,7 +158,7 @@ class AdConsentService {
       }
     } catch (error) {
       logger.error('Failed to check and request ad consent', error);
-      throw AppException(code: AppErrorCode.adLoadFailed, cause: error);
+      throw AppExceptions.adLoadFailed(error);
     }
   }
 }

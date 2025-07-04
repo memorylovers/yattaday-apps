@@ -26,8 +26,7 @@ final recordItemCrudProvider =
 class RecordItemCrudNotifier extends StateNotifier<RecordItemCrudState> {
   final RecordItemRepository _repository;
 
-  RecordItemCrudNotifier(this._repository)
-    : super(const RecordItemCrudState());
+  RecordItemCrudNotifier(this._repository) : super(const RecordItemCrudState());
 
   /// 記録項目を更新
   Future<bool> updateRecordItem({

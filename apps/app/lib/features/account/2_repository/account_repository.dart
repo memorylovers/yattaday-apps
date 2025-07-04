@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../common/exception/app_error_code.dart';
-import '../../../common/exception/app_exception.dart';
+import '../../../common/exception/app_exception_helpers.dart';
 import '../../../common/exception/handling_error.dart';
 import '../1_models/account.dart';
 import '../1_models/profile.dart';
@@ -66,10 +65,7 @@ class FirebaseAccountRepository implements AccountRepository {
         // アカウントの存在チェック
         final accountDoc = await transaction.get(_accountsRef.doc(account.uid));
         if (accountDoc.exists) {
-          throw const AppException(
-            code: AppErrorCode.concurrentUpdate,
-            message: 'アカウントは既に存在します',
-          );
+          throw AppExceptions.concurrentUpdate('アカウントは既に存在します');
         }
 
         // トランザクション内で両方のドキュメントを作成
@@ -101,10 +97,7 @@ class FirebaseAccountRepository implements AccountRepository {
         // アカウントの存在チェック
         final accountDoc = await transaction.get(_accountsRef.doc(account.uid));
         if (!accountDoc.exists) {
-          throw const AppException(
-            code: AppErrorCode.notFound,
-            message: 'アカウントが見つかりません',
-          );
+          throw AppExceptions.notFound('アカウント');
         }
 
         // トランザクション内で両方のドキュメントを更新
@@ -163,10 +156,7 @@ class FirebaseAccountRepository implements AccountRepository {
         // アカウントの存在チェック
         final accountDoc = await transaction.get(_accountsRef.doc(uid));
         if (!accountDoc.exists) {
-          throw const AppException(
-            code: AppErrorCode.notFound,
-            message: 'アカウントが見つかりません',
-          );
+          throw AppExceptions.notFound('アカウント');
         }
 
         // トランザクション内で関連データを削除

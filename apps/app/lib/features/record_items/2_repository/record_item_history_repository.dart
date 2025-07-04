@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../common/exception/app_error_code.dart';
-import '../../../common/exception/app_exception.dart';
+import '../../../common/exception/app_exception_helpers.dart';
 import '../../../common/exception/handling_error.dart';
 import '../1_models/record_item_history.dart';
 
@@ -64,7 +63,8 @@ abstract class RecordItemHistoryRepository {
 }
 
 /// Firebase実装
-class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository {
+class FirebaseRecordItemHistoryRepository
+    implements RecordItemHistoryRepository {
   final FirebaseFirestore _firestore;
 
   FirebaseRecordItemHistoryRepository(this._firestore);
@@ -72,17 +72,17 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
   @override
   Future<void> create(RecordItemHistory history) async {
     try {
-      final collection = _getTypedCollection(history.userId, history.recordItemId);
-      
+      final collection = _getTypedCollection(
+        history.userId,
+        history.recordItemId,
+      );
+
       // 同じ日付の記録が既に存在するか確認
       final existingDoc = await collection.doc(history.date).get();
       if (existingDoc.exists) {
-        throw const AppException(
-          code: AppErrorCode.concurrentUpdate,
-          message: 'この日付の記録は既に存在します',
-        );
+        throw AppExceptions.concurrentUpdate('この日付の記録は既に存在します');
       }
-      
+
       await collection.doc(history.date).set(history);
     } catch (error) {
       handleError(error);
@@ -92,17 +92,17 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
   @override
   Future<void> update(RecordItemHistory history) async {
     try {
-      final collection = _getTypedCollection(history.userId, history.recordItemId);
-      
+      final collection = _getTypedCollection(
+        history.userId,
+        history.recordItemId,
+      );
+
       // 存在チェック
       final doc = await collection.doc(history.date).get();
       if (!doc.exists) {
-        throw const AppException(
-          code: AppErrorCode.notFound,
-          message: '記録が見つかりません',
-        );
+        throw AppExceptions.notFound('記録');
       }
-      
+
       await collection.doc(history.date).set(history);
     } catch (error) {
       handleError(error);
@@ -117,16 +117,13 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
   }) async {
     try {
       final collection = _getTypedCollection(userId, recordItemId);
-      
+
       // 存在チェック
       final doc = await collection.doc(historyId).get();
       if (!doc.exists) {
-        throw const AppException(
-          code: AppErrorCode.notFound,
-          message: '記録が見つかりません',
-        );
+        throw AppExceptions.notFound('記録');
       }
-      
+
       await collection.doc(historyId).delete();
     } catch (error) {
       handleError(error);
@@ -174,20 +171,19 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
   }) async {
     try {
       final collection = _getTypedCollection(userId, recordItemId);
-      
+
       // 日付をyyyy-MM-dd形式の文字列に変換
       final startDateStr = _formatDate(startDate);
       final endDateStr = _formatDate(endDate);
-      
-      final querySnapshot = await collection
-          .where('date', isGreaterThanOrEqualTo: startDateStr)
-          .where('date', isLessThanOrEqualTo: endDateStr)
-          .orderBy('date', descending: true)
-          .get();
-      
-      return querySnapshot.docs
-          .map((doc) => doc.data())
-          .toList();
+
+      final querySnapshot =
+          await collection
+              .where('date', isGreaterThanOrEqualTo: startDateStr)
+              .where('date', isLessThanOrEqualTo: endDateStr)
+              .orderBy('date', descending: true)
+              .get();
+
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
     } catch (error) {
       handleError(error);
       return [];
@@ -203,19 +199,17 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
   }) {
     try {
       final collection = _getTypedCollection(userId, recordItemId);
-      
+
       // 日付をyyyy-MM-dd形式の文字列に変換
       final startDateStr = _formatDate(startDate);
       final endDateStr = _formatDate(endDate);
-      
+
       return collection
           .where('date', isGreaterThanOrEqualTo: startDateStr)
           .where('date', isLessThanOrEqualTo: endDateStr)
           .orderBy('date', descending: true)
           .snapshots()
-          .map((snapshot) => snapshot.docs
-              .map((doc) => doc.data())
-              .toList())
+          .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList())
           .handleError((error) => handleError(error));
     } catch (error) {
       handleError(error);
@@ -230,13 +224,10 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
   }) async {
     try {
       final collection = _getTypedCollection(userId, recordItemId);
-      final querySnapshot = await collection
-          .orderBy('date', descending: true)
-          .get();
-      
-      return querySnapshot.docs
-          .map((doc) => doc.data())
-          .toList();
+      final querySnapshot =
+          await collection.orderBy('date', descending: true).get();
+
+      return querySnapshot.docs.map((doc) => doc.data()).toList();
     } catch (error) {
       handleError(error);
       return [];
@@ -251,10 +242,8 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
     try {
       final collection = _getTypedCollection(userId, recordItemId);
       final querySnapshot = await collection.get();
-      
-      return querySnapshot.docs
-          .map((doc) => doc.id)
-          .toList();
+
+      return querySnapshot.docs.map((doc) => doc.id).toList();
     } catch (error) {
       handleError(error);
       return [];
@@ -264,7 +253,7 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
   // Private helper methods (元のhelperクラスの内容を統合)
 
   /// Firestoreのコレクションパス
-  String _collectionPath(String userId, String recordItemId) => 
+  String _collectionPath(String userId, String recordItemId) =>
       'users/$userId/recordItems/$recordItemId/histories';
 
   /// 型付きコレクション参照を生成
@@ -275,8 +264,9 @@ class FirebaseRecordItemHistoryRepository implements RecordItemHistoryRepository
     return _firestore
         .collection(_collectionPath(userId, recordItemId))
         .withConverter<RecordItemHistory>(
-          fromFirestore: (snapshot, _) => 
-              RecordItemHistory.fromJson(snapshot.data() ?? {}),
+          fromFirestore:
+              (snapshot, _) =>
+                  RecordItemHistory.fromJson(snapshot.data() ?? {}),
           toFirestore: (history, _) => history.toJson(),
         );
   }

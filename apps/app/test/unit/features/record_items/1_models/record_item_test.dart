@@ -166,10 +166,7 @@ void main() {
           updatedAt: testDate,
         );
 
-        final updated = original.copyWith(
-          description: null,
-          unit: null,
-        );
+        final updated = original.copyWith(description: null, unit: null);
 
         expect(updated.description, isNull);
         expect(updated.unit, isNull);

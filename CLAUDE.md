@@ -9,4 +9,5 @@
 - 開発ガイドラインに従うこと [`_docs/_guideline/`](_docs/_guideline/)
 - 計画内容や進捗状況は、AI作業用の一時ファイルの`_ai-tmp/`に配置
 - DRY / YAGNIの原則に従うこと
-- すべてのコマンドは`make`経由で実行
+- すべてのコマンドは、ルートディレクトリから`make`経由で実行
+- 完了条件: `make check-all`と`make test`でエラーが無いこと
