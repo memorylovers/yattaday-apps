@@ -1,8 +1,7 @@
 all: fvm fvm_install melos melos_bs flutterfire_cli submodule
 
 fvm:
-	brew tap leoafarias/fvm
-	brew install fvm
+	brew tap leoafarias/fvm && brew install fvm
 
 fvm_install:
 	fvm install --setup
@@ -73,9 +72,6 @@ e2e-full:
 maestro:
 	curl -Ls "https://get.maestro.mobile.dev" | bash
 	@echo "PATHに以下を追加してください: export PATH=\"\$$PATH:\$$HOME/.maestro/bin\""
-
-cc:
-	npx ccusage@latest
 
 # Planning file management
 plan-new:

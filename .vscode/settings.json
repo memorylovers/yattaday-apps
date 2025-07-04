@@ -41,6 +41,8 @@
     "https://json.schemastore.org/github-issue-config.json": ".github/ISSUE_TEMPLATE/config.yaml"
   },
   "cSpell.words": [
+    "flutterfire",
+    "leoafarias",
     "myapp",
     "Riverpod",
     "Widgetbook"
