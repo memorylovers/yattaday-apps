@@ -9,7 +9,7 @@ part of 'router_routes.dart';
 List<RouteBase> get $appRoutes => [
   $startupPageRoute,
   $loginPageRoute,
-  $homePageLaytoutRoute,
+  $homePageRoute,
 ];
 
 RouteBase get $startupPageRoute => GoRouteData.$route(
@@ -56,10 +56,10 @@ extension $LoginPageRouteExtension on LoginPageRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $homePageLaytoutRoute => StatefulShellRouteData.$route(
-  parentNavigatorKey: HomePageLaytoutRoute.$parentNavigatorKey,
-  restorationScopeId: HomePageLaytoutRoute.$restorationScopeId,
-  factory: $HomePageLaytoutRouteExtension._fromState,
+RouteBase get $homePageRoute => StatefulShellRouteData.$route(
+  parentNavigatorKey: HomePageRoute.$parentNavigatorKey,
+  restorationScopeId: HomePageRoute.$restorationScopeId,
+  factory: $HomePageRouteExtension._fromState,
   branches: [
     StatefulShellBranchData.$branch(
       navigatorKey: RecordItemsListPageBranch.$navigatorKey,
@@ -102,9 +102,8 @@ RouteBase get $homePageLaytoutRoute => StatefulShellRouteData.$route(
   ],
 );
 
-extension $HomePageLaytoutRouteExtension on HomePageLaytoutRoute {
-  static HomePageLaytoutRoute _fromState(GoRouterState state) =>
-      const HomePageLaytoutRoute();
+extension $HomePageRouteExtension on HomePageRoute {
+  static HomePageRoute _fromState(GoRouterState state) => const HomePageRoute();
 }
 
 extension $RecordItemsListPageRouteExtension on RecordItemsListPageRoute {

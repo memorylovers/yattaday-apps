@@ -1,15 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../_authentication/3_store/auth_store.dart';
-import '../2_repository/firebase/firebase_record_item_query_repository.dart';
-import '../2_repository/interfaces/record_item_query_repository.dart';
 import '../1_models/record_item.dart';
+import '../2_repository/record_item_history_repository.dart';
+import '../2_repository/record_item_repository.dart';
 
-/// RecordItemQueryRepositoryのプロバイダ
-final recordItemQueryRepositoryProvider = Provider<IRecordItemQueryRepository>((
-  ref,
-) {
-  return FirebaseRecordItemQueryRepository();
+/// RecordItemRepositoryのプロバイダ
+final recordItemRepositoryProvider = Provider<RecordItemRepository>((ref) {
+  return FirebaseRecordItemRepository(FirebaseFirestore.instance);
+});
+
+/// RecordItemHistoryRepositoryのプロバイダ
+final recordItemHistoryRepositoryProvider = Provider<RecordItemHistoryRepository>((ref) {
+  return FirebaseRecordItemHistoryRepository(FirebaseFirestore.instance);
 });
 
 /// 指定したユーザーの記録項目一覧を取得するプロバイダ
@@ -17,7 +21,7 @@ final recordItemsProvider = FutureProvider.family<List<RecordItem>, String>((
   ref,
   userId,
 ) async {
-  final repository = ref.watch(recordItemQueryRepositoryProvider);
+  final repository = ref.watch(recordItemRepositoryProvider);
   return await repository.getByUserId(userId);
 });
 
@@ -28,7 +32,7 @@ final watchRecordItemsProvider = StreamProvider<List<RecordItem>>((ref) async* {
     yield [];
     return;
   }
-  final repository = ref.watch(recordItemQueryRepositoryProvider);
+  final repository = ref.watch(recordItemRepositoryProvider);
   yield* repository.watchByUserId(authState.uid);
 });
 
@@ -41,6 +45,6 @@ final recordItemByIdProvider = FutureProvider.family<RecordItem?, String>((
   if (authState == null) {
     return null;
   }
-  final repository = ref.watch(recordItemQueryRepositoryProvider);
+  final repository = ref.watch(recordItemRepositoryProvider);
   return await repository.getById(authState.uid, recordItemId);
 });

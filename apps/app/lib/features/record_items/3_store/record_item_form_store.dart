@@ -3,10 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ulid4d/ulid4d.dart';
 
 import '../1_models/record_item.dart';
-import '../2_repository/interfaces/record_item_query_repository.dart';
-import '../2_repository/interfaces/record_item_command_repository.dart';
+import '../2_repository/record_item_repository.dart';
 import 'record_items_store.dart';
-import 'record_item_crud_store.dart';
 
 part 'record_item_form_store.freezed.dart';
 
@@ -31,17 +29,15 @@ class RecordItemFormState with _$RecordItemFormState {
 /// 記録項目フォームの状態管理プロバイダ
 final recordItemFormProvider =
     StateNotifierProvider<RecordItemFormNotifier, RecordItemFormState>((ref) {
-      final queryRepository = ref.watch(recordItemQueryRepositoryProvider);
-      final commandRepository = ref.watch(recordItemCommandRepositoryProvider);
-      return RecordItemFormNotifier(queryRepository, commandRepository);
+      final repository = ref.watch(recordItemRepositoryProvider);
+      return RecordItemFormNotifier(repository);
     });
 
 /// 記録項目フォームの状態管理クラス
 class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
-  final IRecordItemQueryRepository _queryRepository;
-  final IRecordItemCommandRepository _commandRepository;
+  final RecordItemRepository _repository;
 
-  RecordItemFormNotifier(this._queryRepository, this._commandRepository)
+  RecordItemFormNotifier(this._repository)
     : super(const RecordItemFormState());
 
   /// タイトルを更新
@@ -92,7 +88,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
 
     try {
       // 新しいソート順序を取得
-      final sortOrder = await _queryRepository.getNextSortOrder(userId);
+      final sortOrder = await _repository.getNextSortOrder(userId);
 
       // 記録項目を作成
       final recordItem = RecordItem(
@@ -107,7 +103,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
         updatedAt: DateTime.now(),
       );
 
-      await _commandRepository.create(recordItem);
+      await _repository.create(recordItem);
 
       // 成功時はフォームをリセット
       state = const RecordItemFormState();
@@ -138,7 +134,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
 
     try {
       // 既存の記録項目を取得
-      final existingItem = await _queryRepository.getById(userId, recordItemId);
+      final existingItem = await _repository.getById(userId, recordItemId);
       if (existingItem == null) {
         throw Exception('記録項目が見つかりません');
       }
@@ -152,7 +148,7 @@ class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
         updatedAt: DateTime.now(),
       );
 
-      await _commandRepository.update(updatedItem);
+      await _repository.update(updatedItem);
 
       // 成功時は処理完了状態にする（フォームはリセットしない）
       state = state.copyWith(isSubmitting: false);

@@ -5,7 +5,7 @@ import '../features/_authentication/7_page/login_page.dart';
 import '../features/_payment/7_page/payment_page.dart';
 import '../features/_startup/7_page/startup_page.dart';
 import '../features/account/7_page/settings_page.dart';
-import '../features/home/7_page/home_page_layout.dart';
+import '../features/home/7_page/home_page.dart';
 import '../features/record_items/7_page/record_items_list_page.dart';
 import '../features/record_items/7_page/record_items_detail_page.dart';
 import 'router_provider.dart';
@@ -48,7 +48,7 @@ class LoginPageRoute extends GoRouteData {
 }
 
 /// ホーム画面のレイアウト
-@TypedStatefulShellRoute<HomePageLaytoutRoute>(
+@TypedStatefulShellRoute<HomePageRoute>(
   branches: [
     TypedStatefulShellBranch<RecordItemsListPageBranch>(
       routes: [
@@ -72,8 +72,8 @@ class LoginPageRoute extends GoRouteData {
     ),
   ],
 )
-class HomePageLaytoutRoute extends StatefulShellRouteData {
-  const HomePageLaytoutRoute();
+class HomePageRoute extends StatefulShellRouteData {
+  const HomePageRoute();
 
   static GlobalKey<NavigatorState> $parentNavigatorKey = rootNavigatorKey;
   static const String $restorationScopeId = 'restorationScopeId';
@@ -84,7 +84,7 @@ class HomePageLaytoutRoute extends StatefulShellRouteData {
     GoRouterState state,
     StatefulNavigationShell navigationShell,
   ) {
-    return HomePageLayout(navigationShell: navigationShell);
+    return HomePage(navigationShell: navigationShell);
   }
 }
 

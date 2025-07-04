@@ -1,9 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../2_repository/interfaces/record_item_query_repository.dart';
-import '../2_repository/interfaces/record_item_command_repository.dart';
-import '../2_repository/firebase/firebase_record_item_command_repository.dart';
+import '../2_repository/record_item_repository.dart';
 import 'record_items_store.dart';
 
 part 'record_item_crud_store.freezed.dart';
@@ -18,25 +16,17 @@ class RecordItemCrudState with _$RecordItemCrudState {
 }
 
 /// 記録項目のCRUD操作を管理するプロバイダ
-/// RecordItemCommandRepositoryのプロバイダ
-final recordItemCommandRepositoryProvider =
-    Provider<IRecordItemCommandRepository>((ref) {
-      return FirebaseRecordItemCommandRepository();
-    });
-
 final recordItemCrudProvider =
     StateNotifierProvider<RecordItemCrudNotifier, RecordItemCrudState>((ref) {
-      final queryRepository = ref.watch(recordItemQueryRepositoryProvider);
-      final commandRepository = ref.watch(recordItemCommandRepositoryProvider);
-      return RecordItemCrudNotifier(queryRepository, commandRepository);
+      final repository = ref.watch(recordItemRepositoryProvider);
+      return RecordItemCrudNotifier(repository);
     });
 
 /// 記録項目のCRUD操作を管理するクラス
 class RecordItemCrudNotifier extends StateNotifier<RecordItemCrudState> {
-  final IRecordItemQueryRepository _queryRepository;
-  final IRecordItemCommandRepository _commandRepository;
+  final RecordItemRepository _repository;
 
-  RecordItemCrudNotifier(this._queryRepository, this._commandRepository)
+  RecordItemCrudNotifier(this._repository)
     : super(const RecordItemCrudState());
 
   /// 記録項目を更新
@@ -52,7 +42,7 @@ class RecordItemCrudNotifier extends StateNotifier<RecordItemCrudState> {
 
     try {
       // 既存の記録項目を取得
-      final existingItem = await _queryRepository.getById(userId, recordItemId);
+      final existingItem = await _repository.getById(userId, recordItemId);
       if (existingItem == null) {
         throw Exception('記録項目が見つかりません');
       }
@@ -65,7 +55,7 @@ class RecordItemCrudNotifier extends StateNotifier<RecordItemCrudState> {
         updatedAt: DateTime.now(),
       );
 
-      await _commandRepository.update(updatedItem);
+      await _repository.update(updatedItem);
 
       // 成功時
       state = state.copyWith(isProcessing: false, errorMessage: null);
@@ -89,7 +79,7 @@ class RecordItemCrudNotifier extends StateNotifier<RecordItemCrudState> {
     state = state.copyWith(isProcessing: true, errorMessage: null);
 
     try {
-      await _commandRepository.delete(userId, recordItemId);
+      await _repository.delete(userId, recordItemId);
 
       // 成功時
       state = state.copyWith(isProcessing: false, errorMessage: null);

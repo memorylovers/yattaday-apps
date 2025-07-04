@@ -5,10 +5,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../common/providers/service_providers.dart';
 import '../1_models/auth_type.dart';
 import '../1_models/auth_user.dart';
-import '../2_repository/firebase/firebase_auth_repository.dart';
+import '../2_repository/auth_repository.dart';
 
 part 'auth_store.freezed.dart';
 part 'auth_store.g.dart';
+
+/// AuthRepositoryのProvider
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  final authService = ref.watch(authServiceProvider);
+  return FirebaseAuthRepository(authService);
+});
 
 /// 認証状態
 ///

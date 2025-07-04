@@ -5,10 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../_gen/i18n/strings.g.dart';
 import '../../../common/theme/app_colors.dart';
 
-final homePageScaffoldKey = GlobalKey(debugLabel: "HomePageLayout");
+final homePageScaffoldKey = GlobalKey(debugLabel: "HomePage");
 
-class HomePageLayout extends HookConsumerWidget {
-  const HomePageLayout({super.key, required this.navigationShell});
+class HomePage extends HookConsumerWidget {
+  const HomePage({super.key, required this.navigationShell});
   final StatefulNavigationShell navigationShell;
 
   @override
