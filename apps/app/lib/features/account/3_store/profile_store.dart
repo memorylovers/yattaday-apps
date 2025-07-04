@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../1_models/profile.dart';
-import '../2_repository/providers.dart';
+import '../2_repository/profile_repository.dart';
 import 'account_store.dart';
 
 part 'profile_store.g.dart';
+
+/// ProfileRepositoryのProvider
+final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
+  return FirebaseProfileRepository(FirebaseFirestore.instance);
+});
 
 /// プロフィール情報を管理するStore
 ///
@@ -18,8 +24,9 @@ class ProfileStore extends _$ProfileStore {
     final account = await ref.watch(accountStoreProvider.future);
     if (account == null) return null;
 
-    // プロフィールが存在しない場合は自動作成
-    final profile = await _ensureProfileExists(account.uid);
+    // プロフィールを取得（アカウント作成時に自動作成されているはず）
+    final profileRepo = ref.read(profileRepositoryProvider);
+    final profile = await profileRepo.getProfileById(account.uid);
 
     // リアルタイム監視を設定
     _setupRealtimeListener(account.uid);
@@ -27,44 +34,14 @@ class ProfileStore extends _$ProfileStore {
     return profile;
   }
 
-  /// プロフィールの存在を確認し、なければ作成する
-  ///
-  /// アカウント作成時に自動的に呼び出される。
-  /// プロフィールが既に存在する場合はそのまま返す。
-  ///
-  /// [uid] 対象のユーザーID
-  ///
-  /// 戻り値: 作成または取得したプロフィール情報
-  Future<AccountProfile> _ensureProfileExists(String uid) async {
-    final queryRepo = ref.read(accountProfileQueryRepositoryProvider);
-    final commandRepo = ref.read(accountProfileCommandRepositoryProvider);
-
-    // 既存確認
-    final existing = await queryRepo.getById(uid);
-    if (existing != null) {
-      return existing;
-    }
-
-    // 新規作成
-    await commandRepo.create(uid: uid);
-
-    // 作成したプロフィールを取得
-    final created = await queryRepo.getById(uid);
-    if (created == null) {
-      throw Exception('プロフィールの作成に失敗しました');
-    }
-
-    return created;
-  }
-
   /// リアルタイム監視を設定
   ///
   /// Firestoreの変更を監視して、自動的にStateを更新する
   void _setupRealtimeListener(String uid) {
-    final queryRepo = ref.read(accountProfileQueryRepositoryProvider);
+    final profileRepo = ref.read(profileRepositoryProvider);
 
-    queryRepo
-        .watchById(uid)
+    profileRepo
+        .watchProfile(uid)
         .listen(
           (profile) {
             if (profile != null) {
@@ -84,17 +61,19 @@ class ProfileStore extends _$ProfileStore {
   /// [displayName] 新しい表示名（nullの場合は更新しない）
   /// [avatarUrl] 新しいアバターURL（nullの場合は更新しない）
   Future<void> updateProfile({String? displayName, String? avatarUrl}) async {
-    final account = await ref.read(accountStoreProvider.future);
-    if (account == null) {
-      throw Exception('アカウントが見つかりません');
+    final currentProfile = state.value;
+    if (currentProfile == null) {
+      throw Exception('プロフィールが見つかりません');
     }
 
-    final commandRepo = ref.read(accountProfileCommandRepositoryProvider);
-    await commandRepo.update(
-      uid: account.uid,
-      displayName: displayName,
-      avatarUrl: avatarUrl,
+    // 更新対象のフィールドのみ変更
+    final updatedProfile = currentProfile.copyWith(
+      displayName: displayName ?? currentProfile.displayName,
+      avatarUrl: avatarUrl ?? currentProfile.avatarUrl,
     );
+
+    final profileRepo = ref.read(profileRepositoryProvider);
+    await profileRepo.updateProfile(updatedProfile);
   }
 }
 
@@ -113,8 +92,8 @@ Future<AccountProfile?> myAccountProfile(Ref ref) async {
 Future<AccountProfile?> accountProfile(Ref ref, String uid) async {
   if (uid.isEmpty) return null;
 
-  final queryRepo = ref.read(accountProfileQueryRepositoryProvider);
-  return queryRepo.getById(uid);
+  final profileRepo = ref.read(profileRepositoryProvider);
+  return profileRepo.getProfileById(uid);
 }
 
 /// 表示名でユーザーを検索するProvider
@@ -126,6 +105,6 @@ Future<List<AccountProfile>> searchAccountProfiles(
   String query, {
   int limit = 20,
 }) async {
-  final queryRepo = ref.read(accountProfileQueryRepositoryProvider);
-  return queryRepo.searchByDisplayName(query, limit: limit);
+  final profileRepo = ref.read(profileRepositoryProvider);
+  return profileRepo.searchByDisplayName(query, limit: limit);
 }

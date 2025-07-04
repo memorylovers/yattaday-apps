@@ -1,12 +1,18 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../_authentication/3_store/auth_store.dart';
 import '../1_models/account.dart';
-import '../2_repository/providers.dart';
+import '../2_repository/account_repository.dart';
 
 part 'account_store.g.dart';
+
+/// AccountRepositoryのProvider
+final accountRepositoryProvider = Provider<AccountRepository>((ref) {
+  return FirebaseAccountRepository(FirebaseFirestore.instance);
+});
 
 /// アカウント情報を管理するStore
 ///
@@ -34,9 +40,8 @@ class AccountStore extends _$AccountStore {
     }
 
     // アカウントが存在しない場合は自動作成
-    final account = await ref
-        .read(accountCommandRepositoryProvider)
-        .createIfNotExists(authState.uid);
+    final accountRepo = ref.read(accountRepositoryProvider);
+    final account = await accountRepo.createAccountIfNotExists(authState.uid);
 
     // リアルタイム監視を設定
     _setupRealtimeListener(authState.uid);
@@ -51,10 +56,10 @@ class AccountStore extends _$AccountStore {
     // 既存のサブスクリプションをキャンセル
     _subscription?.cancel();
 
-    final queryRepo = ref.read(accountQueryRepositoryProvider);
+    final accountRepo = ref.read(accountRepositoryProvider);
 
-    _subscription = queryRepo
-        .watchById(uid)
+    _subscription = accountRepo
+        .watchAccount(uid)
         .listen(
           (account) {
             if (account != null) {
