@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/common/providers/firebase_providers.dart';
 import 'package:myapp/features/account/1_models/account.dart';
-import 'package:myapp/features/account/1_models/profile.dart';
 import 'package:myapp/features/account/2_repository/profile_repository.dart';
 import 'package:myapp/features/account/3_store/account_store.dart';
 import 'package:myapp/features/account/3_store/profile_store.dart';
@@ -185,8 +184,12 @@ void main() {
             .doc(uid)
             .set(profile.toJson());
 
-        final profileFromStore = await container.read(profileStoreProvider.future);
-        final profileFromMyAccount = await container.read(myAccountProfileProvider.future);
+        final profileFromStore = await container.read(
+          profileStoreProvider.future,
+        );
+        final profileFromMyAccount = await container.read(
+          myAccountProfileProvider.future,
+        );
 
         expect(profileFromMyAccount, equals(profileFromStore));
       });
@@ -219,7 +222,9 @@ void main() {
       });
 
       test('存在しないユーザーの場合はnullを返す', () async {
-        final result = await container.read(accountProfileProvider('non-existent').future);
+        final result = await container.read(
+          accountProfileProvider('non-existent').future,
+        );
 
         expect(result, isNull);
       });
