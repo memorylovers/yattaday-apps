@@ -1,7 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../common/exception/app_exception_helpers.dart';
-import '../../../common/providers/firebase_providers.dart';
 import '../1_models/profile.dart';
 import '../2_repository/profile_repository.dart';
 import 'account_store.dart';
@@ -10,8 +10,7 @@ part 'profile_store.g.dart';
 
 /// ProfileRepositoryのProvider
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
-  final firestore = ref.watch(firebaseFirestoreProvider);
-  return FirebaseProfileRepository(firestore);
+  return FirebaseProfileRepository(FirebaseFirestore.instance);
 });
 
 /// プロフィール情報を管理するStore

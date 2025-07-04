@@ -1,6 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../../common/providers/firebase_providers.dart';
 import '../../_authentication/3_store/auth_store.dart';
 import '../1_models/record_item.dart';
 import '../2_repository/record_item_history_repository.dart';
@@ -8,15 +7,13 @@ import '../2_repository/record_item_repository.dart';
 
 /// RecordItemRepositoryのプロバイダ
 final recordItemRepositoryProvider = Provider<RecordItemRepository>((ref) {
-  final firestore = ref.watch(firebaseFirestoreProvider);
-  return FirebaseRecordItemRepository(firestore);
+  return FirebaseRecordItemRepository(FirebaseFirestore.instance);
 });
 
 /// RecordItemHistoryRepositoryのプロバイダ
 final recordItemHistoryRepositoryProvider =
     Provider<RecordItemHistoryRepository>((ref) {
-      final firestore = ref.watch(firebaseFirestoreProvider);
-      return FirebaseRecordItemHistoryRepository(firestore);
+      return FirebaseRecordItemHistoryRepository(FirebaseFirestore.instance);
     });
 
 /// 指定したユーザーの記録項目一覧を取得するプロバイダ

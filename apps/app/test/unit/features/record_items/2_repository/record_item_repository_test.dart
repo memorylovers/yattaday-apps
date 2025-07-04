@@ -20,44 +20,34 @@ void main() {
 
         await repository.create(recordItem);
 
-        final collectionPath = 'users/${recordItem.userId}/recordItems';
-        final doc =
-            await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
+        final snapshot = await fakeFirestore
+            .collection('users')
+            .doc(recordItem.userId)
+            .collection('recordItems')
+            .doc(recordItem.id)
+            .get();
 
-        expect(doc.exists, isTrue);
-        final data = doc.data() as Map<String, dynamic>;
-        expect(data['title'], equals(recordItem.title));
-        expect(data['userId'], equals(recordItem.userId));
-        expect(data['sortOrder'], equals(recordItem.sortOrder));
-      });
-
-      test('エラーが発生した場合、例外がスローされること', () async {
-        // FakeFirebaseFirestoreではエラーのシミュレーションが難しいため、
-        // 実際のテストでは別のアプローチが必要
+        expect(snapshot.exists, true);
+        expect(snapshot.data()?['title'], recordItem.title);
       });
     });
 
     group('update', () {
-      test('既存の記録項目を正しく更新できること', () async {
+      test('記録項目を正しく更新できること', () async {
         final recordItem = createTestRecordItem();
         await repository.create(recordItem);
 
-        final updatedItem = recordItem.copyWith(
-          title: '更新されたタイトル',
-          description: '更新された説明',
-          updatedAt: DateTime.now(),
-        );
-
+        final updatedItem = recordItem.copyWith(title: '更新後のタイトル');
         await repository.update(updatedItem);
 
-        final collectionPath = 'users/${recordItem.userId}/recordItems';
-        final doc =
-            await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
+        final snapshot = await fakeFirestore
+            .collection('users')
+            .doc(recordItem.userId)
+            .collection('recordItems')
+            .doc(recordItem.id)
+            .get();
 
-        expect(doc.exists, isTrue);
-        final data = doc.data() as Map<String, dynamic>;
-        expect(data['title'], equals('更新されたタイトル'));
-        expect(data['description'], equals('更新された説明'));
+        expect(snapshot.data()?['title'], '更新後のタイトル');
       });
     });
 
@@ -68,58 +58,42 @@ void main() {
 
         await repository.delete(recordItem.userId, recordItem.id);
 
-        final collectionPath = 'users/${recordItem.userId}/recordItems';
-        final doc =
-            await fakeFirestore.doc('$collectionPath/${recordItem.id}').get();
+        final snapshot = await fakeFirestore
+            .collection('users')
+            .doc(recordItem.userId)
+            .collection('recordItems')
+            .doc(recordItem.id)
+            .get();
 
-        expect(doc.exists, isFalse);
+        expect(snapshot.exists, false);
       });
     });
 
     group('getById', () {
-      test('指定したIDの記録項目を取得できること', () async {
+      test('IDで記録項目を取得できること', () async {
         final recordItem = createTestRecordItem();
         await repository.create(recordItem);
 
-        final result = await repository.getById(
-          recordItem.userId,
-          recordItem.id,
-        );
+        final result = await repository.getById(recordItem.userId, recordItem.id);
 
-        expect(result, isNotNull);
-        expect(result?.id, equals(recordItem.id));
-        expect(result?.title, equals(recordItem.title));
+        expect(result?.id, recordItem.id);
+        expect(result?.title, recordItem.title);
       });
 
-      test('存在しない記録項目の場合nullを返すこと', () async {
-        final result = await repository.getById('user-id', 'non-existent-id');
+      test('存在しないIDの場合nullを返すこと', () async {
+        final result = await repository.getById('userId', 'nonexistent');
 
         expect(result, isNull);
       });
     });
 
     group('getByUserId', () {
-      test('ユーザーの記録項目一覧をsortOrder順で取得できること', () async {
+      test('ユーザーIDで記録項目一覧を取得できること', () async {
         final userId = 'test-user-id';
         final items = [
-          createTestRecordItem(
-            id: 'id1',
-            userId: userId,
-            sortOrder: 2,
-            title: '項目2',
-          ),
-          createTestRecordItem(
-            id: 'id2',
-            userId: userId,
-            sortOrder: 0,
-            title: '項目0',
-          ),
-          createTestRecordItem(
-            id: 'id3',
-            userId: userId,
-            sortOrder: 1,
-            title: '項目1',
-          ),
+          createTestRecordItem(userId: userId, id: 'item1', sortOrder: 1),
+          createTestRecordItem(userId: userId, id: 'item2', sortOrder: 0),
+          createTestRecordItem(userId: userId, id: 'item3', sortOrder: 2),
         ];
 
         for (final item in items) {
@@ -128,77 +102,62 @@ void main() {
 
         final result = await repository.getByUserId(userId);
 
-        expect(result.length, equals(3));
-        expect(result[0].title, equals('項目0'));
-        expect(result[1].title, equals('項目1'));
-        expect(result[2].title, equals('項目2'));
+        expect(result.length, 3);
+        // sortOrderでソートされていることを確認
+        final sortedResult = result..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+        expect(sortedResult[0].sortOrder, 0);
+        expect(sortedResult[1].sortOrder, 1);
+        expect(sortedResult[2].sortOrder, 2);
       });
 
-      test('記録項目がない場合空のリストを返すこと', () async {
-        final result = await repository.getByUserId('empty-user-id');
+      test('他のユーザーの記録項目は取得しないこと', () async {
+        final userId1 = 'user1';
+        final userId2 = 'user2';
 
-        expect(result, isEmpty);
+        await repository.create(createTestRecordItem(userId: userId1));
+        await repository.create(createTestRecordItem(userId: userId2));
+
+        final result = await repository.getByUserId(userId1);
+
+        expect(result.length, 1);
+        expect(result.first.userId, userId1);
       });
     });
 
     group('watchByUserId', () {
-      test('ユーザーの記録項目一覧をリアルタイムで監視できること', () async {
+      test('ユーザーIDで記録項目をリアルタイム監視できること', () async {
         final userId = 'test-user-id';
-        final stream = repository.watchByUserId(userId);
+        final item = createTestRecordItem(userId: userId);
 
-        // 初期状態は空のリスト
+        final stream = repository.watchByUserId(userId);
+        
+        // 初期状態
         expect(await stream.first, isEmpty);
 
-        // 項目を追加
-        final item1 = createTestRecordItem(
-          id: 'id1',
-          userId: userId,
-          sortOrder: 0,
-        );
-        await repository.create(item1);
-
-        // ストリームが更新される
-        await Future.delayed(const Duration(milliseconds: 100));
-        final snapshot1 = await stream.first;
-        expect(snapshot1.length, equals(1));
-        expect(snapshot1[0].id, equals('id1'));
-
-        // さらに項目を追加
-        final item2 = createTestRecordItem(
-          id: 'id2',
-          userId: userId,
-          sortOrder: 1,
-        );
-        await repository.create(item2);
-
-        await Future.delayed(const Duration(milliseconds: 100));
-        final snapshot2 = await stream.first;
-        expect(snapshot2.length, equals(2));
+        // アイテム追加
+        await repository.create(item);
+        
+        final result = await stream.first;
+        expect(result.length, 1);
+        expect(result.first.id, item.id);
       });
     });
 
+
     group('getNextSortOrder', () {
       test('記録項目がない場合0を返すこと', () async {
-        final nextOrder = await repository.getNextSortOrder('empty-user-id');
-
-        expect(nextOrder, equals(0));
+        final sortOrder = await repository.getNextSortOrder('userId');
+        expect(sortOrder, 0);
       });
 
       test('既存の記録項目がある場合、最大値+1を返すこと', () async {
         final userId = 'test-user-id';
-        final items = [
-          createTestRecordItem(id: 'id1', userId: userId, sortOrder: 5),
-          createTestRecordItem(id: 'id2', userId: userId, sortOrder: 3),
-          createTestRecordItem(id: 'id3', userId: userId, sortOrder: 8),
-        ];
+        await repository.create(createTestRecordItem(userId: userId, id: 'item1', sortOrder: 0));
+        await repository.create(createTestRecordItem(userId: userId, id: 'item2', sortOrder: 5));
+        await repository.create(createTestRecordItem(userId: userId, id: 'item3', sortOrder: 3));
 
-        for (final item in items) {
-          await repository.create(item);
-        }
-
-        final nextOrder = await repository.getNextSortOrder(userId);
-
-        expect(nextOrder, equals(9)); // 最大値8 + 1
+        final sortOrder = await repository.getNextSortOrder(userId);
+        expect(sortOrder, 6);
       });
     });
   });

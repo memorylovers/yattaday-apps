@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../../common/providers/firebase_providers.dart';
 import '../../_authentication/3_store/auth_store.dart';
 import '../1_models/account.dart';
 import '../2_repository/account_repository.dart';
@@ -11,8 +11,7 @@ part 'account_store.g.dart';
 
 /// AccountRepositoryのProvider
 final accountRepositoryProvider = Provider<AccountRepository>((ref) {
-  final firestore = ref.watch(firebaseFirestoreProvider);
-  return FirebaseAccountRepository(firestore);
+  return FirebaseAccountRepository(FirebaseFirestore.instance);
 });
 
 /// アカウント情報を管理するStore
