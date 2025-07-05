@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../components/scaffold/gradient_scaffold.dart';
 import '../1_models/record_item.dart';
-import '../5_view_model/record_items_edit_view_model.dart';
+import '../5_view_model/record_item_edit_view_model.dart';
 import '../6_component/record_item_form.dart';
 
 /// 記録項目編集ページ

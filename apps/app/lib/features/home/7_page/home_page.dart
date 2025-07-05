@@ -7,7 +7,7 @@ import '../../../common/theme/app_colors.dart';
 
 final homePageScaffoldKey = GlobalKey(debugLabel: "HomePage");
 
-class HomePage extends HookConsumerWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({super.key, required this.navigationShell});
   final StatefulNavigationShell navigationShell;
 

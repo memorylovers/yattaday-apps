@@ -8,13 +8,13 @@ import '../../../../components/buttons/icon_button_arrow_right.dart';
 import '../../../../components/scaffold/gradient_scaffold.dart';
 import '../../../../routing/router_routes.dart';
 import '../1_models/record_item.dart';
-import '../5_view_model/record_items_list_view_model.dart';
+import '../5_view_model/record_item_list_view_model.dart';
 import '../6_component/error_state_widget.dart';
 import '../6_component/record_item_list_view.dart';
 import '../6_component/record_items_fab.dart';
 
 /// 記録項目一覧画面
-class RecordItemsListPage extends HookConsumerWidget {
+class RecordItemsListPage extends ConsumerWidget {
   const RecordItemsListPage({super.key});
 
   @override

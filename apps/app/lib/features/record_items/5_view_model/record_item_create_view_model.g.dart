@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'record_items_create_view_model.dart';
+part of 'record_item_create_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
 String _$recordItemsCreateViewModelHash() =>
-    r'c68e3bcb4b3d67b8c7c5bf64050dd5fa02a9613f';
+    r'49fc86af71b32bc92ec65c17b9b6b5c5670aedf7';
 
 /// See also [RecordItemsCreateViewModel].
 @ProviderFor(RecordItemsCreateViewModel)
