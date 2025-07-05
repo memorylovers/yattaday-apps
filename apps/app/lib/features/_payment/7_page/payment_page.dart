@@ -5,7 +5,7 @@ import '../../../_gen/i18n/strings.g.dart';
 import '../../../components/scaffold/gradient_scaffold.dart';
 
 /// 課金画面
-class PaymentPage extends HookConsumerWidget {
+class PaymentPage extends ConsumerWidget {
   const PaymentPage({super.key});
 
   @override

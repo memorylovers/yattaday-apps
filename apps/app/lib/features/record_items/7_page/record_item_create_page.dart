@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../components/scaffold/gradient_scaffold.dart';
-import '../5_view_model/record_items_create_view_model.dart';
+import '../5_view_model/record_item_create_view_model.dart';
 import '../6_component/record_item_form.dart';
 
 /// 記録項目作成ページ

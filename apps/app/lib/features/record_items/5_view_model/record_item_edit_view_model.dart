@@ -5,8 +5,8 @@ import '../../_authentication/3_store/auth_store.dart';
 import '../3_store/record_item_form_store.dart';
 import '../1_models/record_item.dart';
 
-part 'record_items_edit_view_model.freezed.dart';
-part 'record_items_edit_view_model.g.dart';
+part 'record_item_edit_view_model.freezed.dart';
+part 'record_item_edit_view_model.g.dart';
 
 @freezed
 class RecordItemsEditPageState with _$RecordItemsEditPageState {
@@ -21,7 +21,7 @@ class RecordItemsEditPageState with _$RecordItemsEditPageState {
 class RecordItemsEditViewModel extends _$RecordItemsEditViewModel {
   @override
   RecordItemsEditPageState build(RecordItem recordItem) {
-    final formState = ref.watch(recordItemFormProvider);
+    final formState = ref.watch(recordItemFormStoreProvider);
     final authState = ref.watch(authStoreProvider).valueOrNull;
     final userId = authState?.uid;
 
@@ -34,40 +34,46 @@ class RecordItemsEditViewModel extends _$RecordItemsEditViewModel {
 
   void initializeForm() {
     final recordItem = state.recordItem;
-    ref.read(recordItemFormProvider.notifier).updateTitle(recordItem.title);
-    ref.read(recordItemFormProvider.notifier).updateIcon(recordItem.icon);
+    ref
+        .read(recordItemFormStoreProvider.notifier)
+        .updateTitle(recordItem.title);
+    ref.read(recordItemFormStoreProvider.notifier).updateIcon(recordItem.icon);
     if (recordItem.description != null) {
       ref
-          .read(recordItemFormProvider.notifier)
+          .read(recordItemFormStoreProvider.notifier)
           .updateDescription(recordItem.description!);
     }
     if (recordItem.unit != null) {
-      ref.read(recordItemFormProvider.notifier).updateUnit(recordItem.unit!);
+      ref
+          .read(recordItemFormStoreProvider.notifier)
+          .updateUnit(recordItem.unit!);
     }
   }
 
   void updateTitle(String title) {
-    ref.read(recordItemFormProvider.notifier).updateTitle(title);
+    ref.read(recordItemFormStoreProvider.notifier).updateTitle(title);
   }
 
   void updateDescription(String description) {
-    ref.read(recordItemFormProvider.notifier).updateDescription(description);
+    ref
+        .read(recordItemFormStoreProvider.notifier)
+        .updateDescription(description);
   }
 
   void updateIcon(String icon) {
-    ref.read(recordItemFormProvider.notifier).updateIcon(icon);
+    ref.read(recordItemFormStoreProvider.notifier).updateIcon(icon);
   }
 
   void updateUnit(String unit) {
-    ref.read(recordItemFormProvider.notifier).updateUnit(unit);
+    ref.read(recordItemFormStoreProvider.notifier).updateUnit(unit);
   }
 
   void clearError() {
-    ref.read(recordItemFormProvider.notifier).clearError();
+    ref.read(recordItemFormStoreProvider.notifier).clearError();
   }
 
   void reset() {
-    ref.read(recordItemFormProvider.notifier).reset();
+    ref.read(recordItemFormStoreProvider.notifier).reset();
   }
 
   Future<void> update({
@@ -82,7 +88,7 @@ class RecordItemsEditViewModel extends _$RecordItemsEditViewModel {
 
     try {
       final success = await ref
-          .read(recordItemFormProvider.notifier)
+          .read(recordItemFormStoreProvider.notifier)
           .update(userId: userId, recordItemId: recordItem.id);
 
       if (success) {

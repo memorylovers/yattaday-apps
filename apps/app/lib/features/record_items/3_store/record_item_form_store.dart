@@ -1,11 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:ulid4d/ulid4d.dart';
 
 import '../1_models/record_item.dart';
 import '../2_repository/record_item_repository.dart';
 
 part 'record_item_form_store.freezed.dart';
+part 'record_item_form_store.g.dart';
 
 /// 記録項目フォームの状態
 @freezed
@@ -26,17 +27,15 @@ class RecordItemFormState with _$RecordItemFormState {
 }
 
 /// 記録項目フォームの状態管理プロバイダ
-final recordItemFormProvider =
-    StateNotifierProvider<RecordItemFormNotifier, RecordItemFormState>((ref) {
-      final repository = ref.watch(recordItemRepositoryProvider);
-      return RecordItemFormNotifier(repository);
-    });
+@Riverpod(keepAlive: true)
+class RecordItemFormStore extends _$RecordItemFormStore {
+  late final RecordItemRepository _repository;
 
-/// 記録項目フォームの状態管理クラス
-class RecordItemFormNotifier extends StateNotifier<RecordItemFormState> {
-  final RecordItemRepository _repository;
-
-  RecordItemFormNotifier(this._repository) : super(const RecordItemFormState());
+  @override
+  RecordItemFormState build() {
+    _repository = ref.watch(recordItemRepositoryProvider);
+    return const RecordItemFormState();
+  }
 
   /// タイトルを更新
   void updateTitle(String title) {

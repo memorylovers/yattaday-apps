@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
 import 'package:myapp/features/record_items/1_models/record_item_statistics.dart';
 import 'package:myapp/features/record_items/5_view_model/record_item_detail_view_model.dart';
-import 'package:myapp/features/record_items/7_page/record_items_detail_page.dart';
+import 'package:myapp/features/record_items/7_page/record_item_detail_page.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// RecordItemsDetailPage用のモックViewModel

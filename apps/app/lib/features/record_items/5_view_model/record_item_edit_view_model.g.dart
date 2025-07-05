@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'record_items_edit_view_model.dart';
+part of 'record_item_edit_view_model.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
 String _$recordItemsEditViewModelHash() =>
-    r'982183bdd17db9d7691a998182f55e7ab1ca7a33';
+    r'68fbb6414f58341f01e6fb9c5bf32e5c88c36c05';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -7,8 +7,8 @@ import '../../../features/_authentication/3_store/auth_store.dart';
 import '../1_models/record_item.dart';
 import '../2_repository/record_item_repository.dart';
 
-part 'record_items_list_view_model.freezed.dart';
-part 'record_items_list_view_model.g.dart';
+part 'record_item_list_view_model.freezed.dart';
+part 'record_item_list_view_model.g.dart';
 
 @freezed
 class RecordItemsListPageState with _$RecordItemsListPageState {

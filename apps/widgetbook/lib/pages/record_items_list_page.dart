@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:myapp/features/record_items/1_models/record_item.dart';
-import 'package:myapp/features/record_items/5_view_model/record_items_list_view_model.dart';
-import 'package:myapp/features/record_items/7_page/record_items_list_page.dart';
+import 'package:myapp/features/record_items/5_view_model/record_item_list_view_model.dart';
+import 'package:myapp/features/record_items/7_page/record_item_list_page.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 /// RecordItemsListPage用のモックViewModel

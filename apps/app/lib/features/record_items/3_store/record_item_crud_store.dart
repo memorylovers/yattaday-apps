@@ -1,9 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../2_repository/record_item_repository.dart';
 
 part 'record_item_crud_store.freezed.dart';
+part 'record_item_crud_store.g.dart';
 
 /// 記録項目のCRUD操作の状態
 @freezed
@@ -15,17 +16,15 @@ class RecordItemCrudState with _$RecordItemCrudState {
 }
 
 /// 記録項目のCRUD操作を管理するプロバイダ
-final recordItemCrudProvider =
-    StateNotifierProvider<RecordItemCrudNotifier, RecordItemCrudState>((ref) {
-      final repository = ref.watch(recordItemRepositoryProvider);
-      return RecordItemCrudNotifier(repository);
-    });
+@Riverpod(keepAlive: true)
+class RecordItemCrudStore extends _$RecordItemCrudStore {
+  late final RecordItemRepository _repository;
 
-/// 記録項目のCRUD操作を管理するクラス
-class RecordItemCrudNotifier extends StateNotifier<RecordItemCrudState> {
-  final RecordItemRepository _repository;
-
-  RecordItemCrudNotifier(this._repository) : super(const RecordItemCrudState());
+  @override
+  RecordItemCrudState build() {
+    _repository = ref.watch(recordItemRepositoryProvider);
+    return const RecordItemCrudState();
+  }
 
   /// 記録項目を更新
   Future<bool> updateRecordItem({

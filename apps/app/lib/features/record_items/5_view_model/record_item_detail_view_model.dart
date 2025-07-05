@@ -55,11 +55,11 @@ class RecordItemDetailViewModel extends _$RecordItemDetailViewModel {
       }
       final userId = authState.uid;
       final success = await ref
-          .read(recordItemCrudProvider.notifier)
+          .read(recordItemCrudStoreProvider.notifier)
           .deleteRecordItem(userId: userId, recordItemId: recordItemId);
 
       if (!success) {
-        final errorMessage = ref.read(recordItemCrudProvider).errorMessage;
+        final errorMessage = ref.read(recordItemCrudStoreProvider).errorMessage;
         state = state.copyWith(
           isDeleting: false,
           deleteError: errorMessage ?? '削除に失敗しました',
