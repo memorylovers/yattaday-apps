@@ -14,7 +14,7 @@ import 'package:widgetbook/widgetbook.dart' as _i1;
 import 'package:widgetbook_workspace/components/buttons/buttons.dart' as _i9;
 import 'package:widgetbook_workspace/components/buttons/primary_button.dart'
     as _i10;
-import 'package:widgetbook_workspace/components/buttons/scondary_button.dart'
+import 'package:widgetbook_workspace/components/buttons/secondary_button.dart'
     as _i11;
 import 'package:widgetbook_workspace/components/dialog/confirm_dialog.dart'
     as _i12;

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -7,17 +9,6 @@ import '../2_repository/record_item_repository.dart';
 
 part 'record_items_list_view_model.freezed.dart';
 part 'record_items_list_view_model.g.dart';
-
-/// 指定したユーザーの記録項目一覧をリアルタイム監視するプロバイダ
-final watchRecordItemsProvider = StreamProvider<List<RecordItem>>((ref) async* {
-  final authState = await ref.watch(authStoreProvider.future);
-  if (authState == null) {
-    yield [];
-    return;
-  }
-  final repository = ref.watch(recordItemRepositoryProvider);
-  yield* repository.watchByUserId(authState.uid);
-});
 
 @freezed
 class RecordItemsListPageState with _$RecordItemsListPageState {
@@ -30,9 +21,52 @@ class RecordItemsListPageState with _$RecordItemsListPageState {
 
 @riverpod
 class RecordItemsListViewModel extends _$RecordItemsListViewModel {
+  StreamSubscription<List<RecordItem>>? _subscription;
+  
   @override
   RecordItemsListPageState build() {
-    final recordItemsAsync = ref.watch(watchRecordItemsProvider);
+    // ディスポーズ時にStreamをクリーンアップ
+    ref.onDispose(() {
+      _subscription?.cancel();
+    });
+    
+    // 認証状態を監視
+    final authAsync = ref.watch(authStoreProvider);
+    
+    // 初期状態
+    var recordItemsAsync = const AsyncValue<List<RecordItem>>.loading();
+    
+    // 認証状態に応じて記録項目を監視
+    authAsync.whenData((authState) {
+      if (authState != null) {
+        // 既存のsubscriptionをキャンセル
+        _subscription?.cancel();
+        
+        // 新しいStreamを監視
+        final repository = ref.watch(recordItemRepositoryProvider);
+        final stream = repository.watchByUserId(authState.uid);
+        
+        _subscription = stream.listen(
+          (items) {
+            state = state.copyWith(
+              recordItemsAsync: AsyncValue.data(items),
+            );
+          },
+          onError: (error, stack) {
+            state = state.copyWith(
+              recordItemsAsync: AsyncValue.error(error, stack),
+            );
+          },
+        );
+      } else {
+        recordItemsAsync = const AsyncValue.data([]);
+      }
+    });
+    
+    // エラー状態の処理
+    if (authAsync.hasError) {
+      recordItemsAsync = AsyncValue.error(authAsync.error!, authAsync.stackTrace!);
+    }
 
     return RecordItemsListPageState(
       selectedDate: DateTime.now(),
@@ -70,7 +104,7 @@ class RecordItemsListViewModel extends _$RecordItemsListViewModel {
   }
 
   void refresh() {
-    // ignore: unused_result
-    ref.refresh(watchRecordItemsProvider);
+    // ViewModelの状態を再構築することでStreamが再読み込みされる
+    ref.invalidateSelf();
   }
 }
