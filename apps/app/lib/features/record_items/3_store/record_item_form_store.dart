@@ -4,7 +4,6 @@ import 'package:ulid4d/ulid4d.dart';
 
 import '../1_models/record_item.dart';
 import '../2_repository/record_item_repository.dart';
-import 'record_items_store.dart';
 
 part 'record_item_form_store.freezed.dart';
 

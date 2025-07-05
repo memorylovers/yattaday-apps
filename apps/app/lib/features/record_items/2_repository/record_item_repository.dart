@@ -1,8 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../common/exception/app_exception_helpers.dart';
 import '../../../common/exception/handling_error.dart';
 import '../1_models/record_item.dart';
+
+/// RecordItemRepositoryのプロバイダ
+final recordItemRepositoryProvider = Provider<RecordItemRepository>((ref) {
+  return FirebaseRecordItemRepository(FirebaseFirestore.instance);
+});
 
 /// 記録項目関連のリポジトリ
 abstract class RecordItemRepository {

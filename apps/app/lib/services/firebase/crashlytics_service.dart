@@ -7,14 +7,14 @@ final crashlyticsServiceProvider = Provider<CrashlyticsService>(
 );
 
 /// Firebase Crashlytics サービス
-/// 
+///
 /// このServiceは他のServiceとは異なり、意図的にAppExceptionをthrowしません。
-/// 
+///
 /// 理由：
 /// - Crashlyticsはエラー監視・レポートツールであり、自身がアプリをクラッシュさせては本末転倒
 /// - "Fail Silently"の原則に従い、Crashlytics自体のエラーは静かに処理される
 /// - ネットワークエラーや初期化失敗などがあっても、アプリの正常動作を最優先
-/// 
+///
 /// エラー時の動作：
 /// - デバッグモードではコンソールにログ出力
 /// - 本番環境では何もせず処理を継続（エラーレポートは後でリトライされる）
