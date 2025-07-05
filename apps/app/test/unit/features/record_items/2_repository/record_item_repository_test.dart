@@ -20,12 +20,13 @@ void main() {
 
         await repository.create(recordItem);
 
-        final snapshot = await fakeFirestore
-            .collection('users')
-            .doc(recordItem.userId)
-            .collection('recordItems')
-            .doc(recordItem.id)
-            .get();
+        final snapshot =
+            await fakeFirestore
+                .collection('users')
+                .doc(recordItem.userId)
+                .collection('recordItems')
+                .doc(recordItem.id)
+                .get();
 
         expect(snapshot.exists, true);
         expect(snapshot.data()?['title'], recordItem.title);
@@ -40,12 +41,13 @@ void main() {
         final updatedItem = recordItem.copyWith(title: '更新後のタイトル');
         await repository.update(updatedItem);
 
-        final snapshot = await fakeFirestore
-            .collection('users')
-            .doc(recordItem.userId)
-            .collection('recordItems')
-            .doc(recordItem.id)
-            .get();
+        final snapshot =
+            await fakeFirestore
+                .collection('users')
+                .doc(recordItem.userId)
+                .collection('recordItems')
+                .doc(recordItem.id)
+                .get();
 
         expect(snapshot.data()?['title'], '更新後のタイトル');
       });
@@ -58,12 +60,13 @@ void main() {
 
         await repository.delete(recordItem.userId, recordItem.id);
 
-        final snapshot = await fakeFirestore
-            .collection('users')
-            .doc(recordItem.userId)
-            .collection('recordItems')
-            .doc(recordItem.id)
-            .get();
+        final snapshot =
+            await fakeFirestore
+                .collection('users')
+                .doc(recordItem.userId)
+                .collection('recordItems')
+                .doc(recordItem.id)
+                .get();
 
         expect(snapshot.exists, false);
       });
@@ -74,7 +77,10 @@ void main() {
         final recordItem = createTestRecordItem();
         await repository.create(recordItem);
 
-        final result = await repository.getById(recordItem.userId, recordItem.id);
+        final result = await repository.getById(
+          recordItem.userId,
+          recordItem.id,
+        );
 
         expect(result?.id, recordItem.id);
         expect(result?.title, recordItem.title);
@@ -104,7 +110,8 @@ void main() {
 
         expect(result.length, 3);
         // sortOrderでソートされていることを確認
-        final sortedResult = result..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+        final sortedResult =
+            result..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
         expect(sortedResult[0].sortOrder, 0);
         expect(sortedResult[1].sortOrder, 1);
         expect(sortedResult[2].sortOrder, 2);
@@ -130,19 +137,18 @@ void main() {
         final item = createTestRecordItem(userId: userId);
 
         final stream = repository.watchByUserId(userId);
-        
+
         // 初期状態
         expect(await stream.first, isEmpty);
 
         // アイテム追加
         await repository.create(item);
-        
+
         final result = await stream.first;
         expect(result.length, 1);
         expect(result.first.id, item.id);
       });
     });
-
 
     group('getNextSortOrder', () {
       test('記録項目がない場合0を返すこと', () async {
@@ -152,9 +158,15 @@ void main() {
 
       test('既存の記録項目がある場合、最大値+1を返すこと', () async {
         final userId = 'test-user-id';
-        await repository.create(createTestRecordItem(userId: userId, id: 'item1', sortOrder: 0));
-        await repository.create(createTestRecordItem(userId: userId, id: 'item2', sortOrder: 5));
-        await repository.create(createTestRecordItem(userId: userId, id: 'item3', sortOrder: 3));
+        await repository.create(
+          createTestRecordItem(userId: userId, id: 'item1', sortOrder: 0),
+        );
+        await repository.create(
+          createTestRecordItem(userId: userId, id: 'item2', sortOrder: 5),
+        );
+        await repository.create(
+          createTestRecordItem(userId: userId, id: 'item3', sortOrder: 3),
+        );
 
         final sortOrder = await repository.getNextSortOrder(userId);
         expect(sortOrder, 6);

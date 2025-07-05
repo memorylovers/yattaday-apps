@@ -5,6 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../common/exception/app_exception.dart';
+import '../../common/exception/app_exception_helpers.dart';
+import '../../common/exception/handling_error.dart';
 import '../../features/_authentication/1_models/auth_type.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) {
@@ -23,6 +26,14 @@ class AuthService {
 
   User? get currentUser => _firebaseAuth.currentUser;
 
+  /// FirebaseAuthExceptionをAppExceptionに変換
+  AppException _convertFirebaseAuthException(FirebaseAuthException e) {
+    // handling_error.dartの_convertFirebaseExceptionを使用
+    handleError(e);
+    // ここには到達しないが、コンパイラのために必要
+    throw AppExceptions.unknown(e.message, e);
+  }
+
   /// 認証タイプに基づいてサインイン
   Future<User?> signIn(AuthType authType) async {
     switch (authType) {
@@ -37,106 +48,155 @@ class AuthService {
 
   /// 匿名でサインイン
   Future<User?> signInAnonymously() async {
-    final userCredential = await _firebaseAuth.signInAnonymously();
-    return userCredential.user;
+    try {
+      final userCredential = await _firebaseAuth.signInAnonymously();
+      return userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      throw _convertFirebaseAuthException(e);
+    } catch (e) {
+      throw AppExceptions.unknown('匿名サインインに失敗しました', e);
+    }
   }
 
   /// Googleでサインイン
   Future<User?> signInWithGoogle() async {
-    if (kIsWeb) {
-      final googleProvider = GoogleAuthProvider();
-      final userCredential = await _firebaseAuth.signInWithPopup(
-        googleProvider,
-      );
-      return userCredential.user;
-    } else if (Platform.isAndroid || Platform.isIOS) {
-      final credential = await _googleOAuth();
-      if (credential == null) return null;
+    try {
+      if (kIsWeb) {
+        final googleProvider = GoogleAuthProvider();
+        final userCredential = await _firebaseAuth.signInWithPopup(
+          googleProvider,
+        );
+        return userCredential.user;
+      } else if (Platform.isAndroid || Platform.isIOS) {
+        final credential = await _googleOAuth();
+        if (credential == null) return null;
 
-      final userCredential = await _firebaseAuth.signInWithCredential(
-        credential,
-      );
-      return userCredential.user;
-    } else {
-      throw Exception('Not supported platform');
+        final userCredential = await _firebaseAuth.signInWithCredential(
+          credential,
+        );
+        return userCredential.user;
+      } else {
+        throw AppExceptions.unknown('サポートされていないプラットフォームです', null);
+      }
+    } on FirebaseAuthException catch (e) {
+      throw _convertFirebaseAuthException(e);
+    } catch (e) {
+      throw AppExceptions.unknown('Googleサインインに失敗しました', e);
     }
   }
 
   /// Appleでサインイン
   Future<User?> signInWithApple() async {
-    final provider =
-        AppleAuthProvider()
-          ..addScope('email')
-          ..addScope('name');
+    try {
+      final provider =
+          AppleAuthProvider()
+            ..addScope('email')
+            ..addScope('name');
 
-    if (kIsWeb) {
-      final userCredential = await _firebaseAuth.signInWithPopup(provider);
-      return userCredential.user;
-    } else {
-      final userCredential = await _firebaseAuth.signInWithProvider(provider);
-      return userCredential.user;
+      if (kIsWeb) {
+        final userCredential = await _firebaseAuth.signInWithPopup(provider);
+        return userCredential.user;
+      } else {
+        final userCredential = await _firebaseAuth.signInWithProvider(provider);
+        return userCredential.user;
+      }
+    } on FirebaseAuthException catch (e) {
+      throw _convertFirebaseAuthException(e);
+    } catch (e) {
+      throw AppExceptions.unknown('Appleサインインに失敗しました', e);
     }
   }
 
   /// アカウントをリンク
   Future<void> linkAccount(AuthType authType) async {
-    final currentUser = _firebaseAuth.currentUser;
-    if (currentUser == null) return;
+    try {
+      final currentUser = _firebaseAuth.currentUser;
+      if (currentUser == null) {
+        throw AppExceptions.noAuth('認証されていません');
+      }
 
-    switch (authType) {
-      case AuthType.google:
-        await _linkGoogleAccount(currentUser);
-        break;
-      case AuthType.apple:
-        await _linkAppleAccount(currentUser);
-        break;
-      case AuthType.anonymous:
-        throw Exception('Cannot link anonymous account');
+      switch (authType) {
+        case AuthType.google:
+          await _linkGoogleAccount(currentUser);
+          break;
+        case AuthType.apple:
+          await _linkAppleAccount(currentUser);
+          break;
+        case AuthType.anonymous:
+          throw AppExceptions.validationError('匿名アカウントはリンクできません');
+      }
+    } on FirebaseAuthException catch (e) {
+      throw _convertFirebaseAuthException(e);
+    } catch (e) {
+      if (e is AppException) rethrow;
+      throw AppExceptions.unknown('アカウントリンクに失敗しました', e);
     }
   }
 
   /// 再認証
   Future<void> reauthenticate(AuthType authType) async {
-    final currentUser = _firebaseAuth.currentUser;
-    if (currentUser == null) return;
+    try {
+      final currentUser = _firebaseAuth.currentUser;
+      if (currentUser == null) {
+        throw AppExceptions.noAuth('認証されていません');
+      }
 
-    switch (authType) {
-      case AuthType.google:
-        await _reauthenticateWithGoogle(currentUser);
-        break;
-      case AuthType.apple:
-        await _reauthenticateWithApple(currentUser);
-        break;
-      case AuthType.anonymous:
-        throw Exception('Cannot reauthenticate anonymous account');
+      switch (authType) {
+        case AuthType.google:
+          await _reauthenticateWithGoogle(currentUser);
+          break;
+        case AuthType.apple:
+          await _reauthenticateWithApple(currentUser);
+          break;
+        case AuthType.anonymous:
+          throw AppExceptions.validationError('匿名アカウントは再認証できません');
+      }
+    } on FirebaseAuthException catch (e) {
+      throw _convertFirebaseAuthException(e);
+    } catch (e) {
+      if (e is AppException) rethrow;
+      throw AppExceptions.unknown('再認証に失敗しました', e);
     }
   }
 
   /// サインアウト
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+    try {
+      await _firebaseAuth.signOut();
+    } on FirebaseAuthException catch (e) {
+      throw _convertFirebaseAuthException(e);
+    } catch (e) {
+      throw AppExceptions.unknown('サインアウトに失敗しました', e);
+    }
   }
 
   /// アカウントを削除
   Future<void> deleteAccount() async {
-    final user = _firebaseAuth.currentUser;
-    if (user == null) return;
-
     try {
-      await user.delete();
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'requires-recent-login') {
-        // 再認証が必要な場合は、ユーザーの認証タイプを判定して再認証
-        final authType = _getCurrentAuthType();
-        if (authType != null && authType != AuthType.anonymous) {
-          await reauthenticate(authType);
-          await user.delete();
-        } else {
-          rethrow;
-        }
-      } else {
-        rethrow;
+      final user = _firebaseAuth.currentUser;
+      if (user == null) {
+        throw AppExceptions.noAuth('認証されていません');
       }
+
+      try {
+        await user.delete();
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'requires-recent-login') {
+          // 再認証が必要な場合は、ユーザーの認証タイプを判定して再認証
+          final authType = _getCurrentAuthType();
+          if (authType != null && authType != AuthType.anonymous) {
+            await reauthenticate(authType);
+            await user.delete();
+          } else {
+            throw _convertFirebaseAuthException(e);
+          }
+        } else {
+          throw _convertFirebaseAuthException(e);
+        }
+      }
+    } catch (e) {
+      if (e is AppException) rethrow;
+      throw AppExceptions.unknown('アカウント削除に失敗しました', e);
     }
   }
 
@@ -161,18 +221,22 @@ class AuthService {
 
   /// Google OAuth認証（Android/iOSのみ）
   Future<OAuthCredential?> _googleOAuth() async {
-    final googleSignIn = GoogleSignIn();
-    final googleUser = await googleSignIn.signIn();
-    if (googleUser == null) return null;
+    try {
+      final googleSignIn = GoogleSignIn();
+      final googleUser = await googleSignIn.signIn();
+      if (googleUser == null) return null;
 
-    final googleAuth = await googleUser.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    await googleSignIn.signOut();
-    return credential;
+      await googleSignIn.signOut();
+      return credential;
+    } catch (e) {
+      throw AppExceptions.unknown('Google認証に失敗しました', e);
+    }
   }
 
   /// Googleアカウントをリンク

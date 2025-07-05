@@ -83,5 +83,9 @@ String packageInfoVersion(Ref ref) =>
 String packageInfoAppName(Ref ref) =>
     ref.watch(packageInfoProvider).requireValue.appName;
 
+/// SharedPreferencesのインスタンスを提供するプロバイダ
+///
+/// このProviderはmain関数で初期化され、ProviderScopeでoverrideされることを前提としています。
+/// SharedPreferencesは非同期初期化が必要なため、事前初期化パターンを採用しています。
 @riverpod
 SharedPreferences sharedPreferences(Ref ref) => throw UnimplementedError();

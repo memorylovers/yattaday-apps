@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/components/buttons/scondary_button.dart';
+import 'package:myapp/components/buttons/secondary_button.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: "Default", type: SecondaryButton)

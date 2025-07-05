@@ -4,7 +4,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import '../../common/exception/app_exception_helpers.dart';
 import '../../common/logger/logger.dart';
 
-final revenueCatServiceProvider = Provider.autoDispose<RevenueCatService>(
+final revenueCatServiceProvider = Provider<RevenueCatService>(
   (ref) => RevenueCatService(),
 );
 

@@ -26,14 +26,15 @@ void main() {
       test('履歴を正しく作成できること', () async {
         await repository.create(testHistory);
 
-        final snapshot = await fakeFirestore
-            .collection('users')
-            .doc(testHistory.userId)
-            .collection('recordItems')
-            .doc(testHistory.recordItemId)
-            .collection('histories')
-            .doc(testHistory.date)
-            .get();
+        final snapshot =
+            await fakeFirestore
+                .collection('users')
+                .doc(testHistory.userId)
+                .collection('recordItems')
+                .doc(testHistory.recordItemId)
+                .collection('histories')
+                .doc(testHistory.date)
+                .get();
 
         expect(snapshot.exists, true);
         expect(snapshot.data()?['date'], testHistory.date);
@@ -49,14 +50,15 @@ void main() {
         final updatedHistory = testHistory.copyWith(note: '更新後のノート');
         await repository.update(updatedHistory);
 
-        final snapshot = await fakeFirestore
-            .collection('users')
-            .doc(testHistory.userId)
-            .collection('recordItems')
-            .doc(testHistory.recordItemId)
-            .collection('histories')
-            .doc(testHistory.date)
-            .get();
+        final snapshot =
+            await fakeFirestore
+                .collection('users')
+                .doc(testHistory.userId)
+                .collection('recordItems')
+                .doc(testHistory.recordItemId)
+                .collection('histories')
+                .doc(testHistory.date)
+                .get();
 
         expect(snapshot.data()?['note'], '更新後のノート');
       });
@@ -72,14 +74,15 @@ void main() {
           historyId: testHistory.id,
         );
 
-        final snapshot = await fakeFirestore
-            .collection('users')
-            .doc(testHistory.userId)
-            .collection('recordItems')
-            .doc(testHistory.recordItemId)
-            .collection('histories')
-            .doc(testHistory.date)
-            .get();
+        final snapshot =
+            await fakeFirestore
+                .collection('users')
+                .doc(testHistory.userId)
+                .collection('recordItems')
+                .doc(testHistory.recordItemId)
+                .collection('histories')
+                .doc(testHistory.date)
+                .get();
 
         expect(snapshot.exists, false);
       });
@@ -249,6 +252,5 @@ void main() {
         expect(result.every((h) => h.recordItemId == 'item1'), true);
       });
     });
-
   });
 }

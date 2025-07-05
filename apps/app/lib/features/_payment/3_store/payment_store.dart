@@ -1,12 +1,14 @@
 import 'package:collection/collection.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+// TODO: 将来的にRevenueCatの型（CustomerInfo、Offerings等）もService層でラップする
+import 'package:purchases_flutter/purchases_flutter.dart';
+
 import '../../../../common/exception/handling_error.dart';
 import '../../../../common/logger/logger.dart';
 import '../../../../common/providers/service_providers.dart';
 import '../../_authentication/3_store/auth_store.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../constants.dart';
 import '../../../../flavors.dart';

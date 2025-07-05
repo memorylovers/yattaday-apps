@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../flavors.dart';
 
-class FlavorBanner extends HookConsumerWidget {
+class FlavorBanner extends StatelessWidget {
   const FlavorBanner({super.key, required this.child});
   final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (kIsProd) return child;
 
     const color = Colors.red;

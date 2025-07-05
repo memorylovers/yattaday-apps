@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../common/exception/app_exception_helpers.dart';
 import '../../common/logger/logger.dart';
 
-final adMobServiceProvider = Provider.autoDispose<AdMobService>((ref) {
+final adMobServiceProvider = Provider<AdMobService>((ref) {
   final service = AdMobService();
   ref.onDispose(service.dispose);
   return service;

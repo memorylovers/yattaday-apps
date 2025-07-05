@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../common/exception/app_exception_helpers.dart';
 import '../../common/logger/logger.dart';
 
-final adConsentServiceProvider = Provider.autoDispose<AdConsentService>(
+final adConsentServiceProvider = Provider<AdConsentService>(
   (ref) => AdConsentService(),
 );
 

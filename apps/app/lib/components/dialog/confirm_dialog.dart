@@ -6,7 +6,7 @@ import 'package:gap/gap.dart';
 
 import '../../common/extensions/widget_extension.dart';
 import '../buttons/primary_button.dart';
-import '../buttons/scondary_button.dart';
+import '../buttons/secondary_button.dart';
 
 typedef OnConfirm = FutureOr<void> Function(ValueNotifier<bool> isLoading);
 
