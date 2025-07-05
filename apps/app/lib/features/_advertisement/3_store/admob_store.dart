@@ -42,7 +42,7 @@ class AdBannerStoreState with _$AdBannerStoreState {
   }) = _AdBannerStoreState;
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class AdBannerStore extends _$AdBannerStore {
   late final AdMobService _adMobService;
 
