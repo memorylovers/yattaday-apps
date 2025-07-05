@@ -2,7 +2,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../2_repository/record_item_repository.dart';
-import 'record_items_store.dart';
 
 part 'record_item_crud_store.freezed.dart';
 
