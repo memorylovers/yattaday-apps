@@ -37,7 +37,8 @@
       "Bash(if [ -f \"app/android/key.properties\" ])",
       "Bash(then echo \"key.properties exists\")",
       "Bash(else echo \"key.properties not found\")",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(gh pr view:*)"
     ],
     "deny": [
       "Read(../**)",
